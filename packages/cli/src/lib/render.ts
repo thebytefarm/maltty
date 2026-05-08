@@ -3,6 +3,7 @@ import { join, relative } from 'node:path'
 
 import { attemptAsync, ok, toError } from '@kidd-cli/utils/fp'
 import type { ResultAsync } from '@kidd-cli/utils/fp'
+import { path } from '@kidd-cli/utils/node'
 import { Liquid } from 'liquidjs'
 
 import type { GenerateError, RenderedFile, RenderTemplateParams } from './types.js'
@@ -64,7 +65,7 @@ async function collectLiquidFiles(root: string): Promise<readonly string[]> {
     .filter((entry) => entry.isFile() && entry.name.endsWith('.liquid'))
     .map((entry) => {
       const parent = entry.parentPath
-      return relative(root, join(parent, entry.name))
+      return path.toPosixPath(relative(root, join(parent, entry.name)))
     })
 }
 

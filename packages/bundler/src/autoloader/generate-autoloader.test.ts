@@ -17,8 +17,8 @@ describe('static autoloader generation', () => {
 
     const code = generateStaticAutoloader({ scan, tagModulePath: TAG_PATH })
 
-    expect(code).toContain("import _status from '/project/commands/status.ts'")
-    expect(code).toContain("import _whoami from '/project/commands/whoami.ts'")
+    expect(code).toContain("import _status from 'file:///project/commands/status.ts'")
+    expect(code).toContain("import _whoami from 'file:///project/commands/whoami.ts'")
     expect(code).toContain("'status': _status")
     expect(code).toContain("'whoami': _whoami")
     expect(code).toContain('export async function autoload()')
@@ -43,10 +43,12 @@ describe('static autoloader generation', () => {
 
     const code = generateStaticAutoloader({ scan, tagModulePath: TAG_PATH })
 
-    expect(code).toContain("import _deploy from '/project/commands/deploy/index.ts'")
-    expect(code).toContain("import _deploy_preview from '/project/commands/deploy/preview.ts'")
+    expect(code).toContain("import _deploy from 'file:///project/commands/deploy/index.ts'")
     expect(code).toContain(
-      "import _deploy_production from '/project/commands/deploy/production.ts'"
+      "import _deploy_preview from 'file:///project/commands/deploy/preview.ts'"
+    )
+    expect(code).toContain(
+      "import _deploy_production from 'file:///project/commands/deploy/production.ts'"
     )
     expect(code).toContain('withTag({ ..._deploy, commands:')
     expect(code).toContain("'preview': _deploy_preview")
@@ -69,7 +71,7 @@ describe('static autoloader generation', () => {
     const code = generateStaticAutoloader({ scan, tagModulePath: TAG_PATH })
 
     expect(code).not.toContain('import _auth from')
-    expect(code).toContain("import _auth_login from '/project/commands/auth/login.ts'")
+    expect(code).toContain("import _auth_login from 'file:///project/commands/auth/login.ts'")
     expect(code).toContain("'auth': withTag({ commands:")
     expect(code).toContain("'login': _auth_login")
   })
@@ -82,7 +84,7 @@ describe('static autoloader generation', () => {
 
     const code = generateStaticAutoloader({ scan, tagModulePath: TAG_PATH })
 
-    expect(code).toContain(`import { withTag } from '${TAG_PATH}'`)
+    expect(code).toContain(`import { withTag } from 'file://${TAG_PATH}'`)
   })
 
   it('should handle nested subdirectories', () => {
@@ -106,8 +108,10 @@ describe('static autoloader generation', () => {
 
     const code = generateStaticAutoloader({ scan, tagModulePath: TAG_PATH })
 
-    expect(code).toContain("import _deploy from '/project/commands/deploy/index.ts'")
-    expect(code).toContain("import _deploy_cloud_aws from '/project/commands/deploy/cloud/aws.ts'")
+    expect(code).toContain("import _deploy from 'file:///project/commands/deploy/index.ts'")
+    expect(code).toContain(
+      "import _deploy_cloud_aws from 'file:///project/commands/deploy/cloud/aws.ts'"
+    )
     expect(code).toContain("'cloud': withTag({ commands:")
     expect(code).toContain("'aws': _deploy_cloud_aws")
   })
@@ -155,7 +159,7 @@ describe('autoloader parts generation', () => {
     const parts = generateAutoloaderParts({ scan, tagModulePath: TAG_PATH })
 
     expect(parts.imports).toBe('')
-    expect(parts.region).toContain("import('/project/commands/status.ts')")
+    expect(parts.region).toContain("import('file:///project/commands/status.ts')")
     expect(parts.region).toContain('{ default: _status }')
     expect(parts.region).toContain('await Promise.all')
     expect(parts.region).toContain('async function autoload()')
@@ -201,7 +205,45 @@ describe('autoloader parts generation', () => {
     const parts = generateAutoloaderParts({ scan, tagModulePath: TAG_PATH })
 
     expect(parts.imports).toBe('')
-    expect(parts.region).toContain("import('/project/commands/auth/login.ts')")
+    expect(parts.region).toContain("import('file:///project/commands/auth/login.ts')")
     expect(parts.region).toContain("'auth': withTag(")
+  })
+})
+
+describe('module specifier generation', () => {
+  it('should emit file:// URL imports rather than raw paths', () => {
+    const scan: ScanResult = {
+      dirs: [],
+      files: [{ filePath: '/project/commands/status.ts', name: 'status' }],
+    }
+
+    const code = generateStaticAutoloader({ scan, tagModulePath: TAG_PATH })
+
+    expect(code).not.toContain("from '/project/commands/status.ts'")
+    expect(code).toContain("from 'file:///project/commands/status.ts'")
+  })
+
+  it('should emit file:// URL for the tag module import', () => {
+    const scan: ScanResult = {
+      dirs: [],
+      files: [{ filePath: '/project/commands/status.ts', name: 'status' }],
+    }
+
+    const code = generateStaticAutoloader({ scan, tagModulePath: TAG_PATH })
+
+    expect(code).not.toContain(`from '${TAG_PATH}'`)
+    expect(code).toContain(`from 'file://${TAG_PATH}'`)
+  })
+
+  it('should emit file:// URL inside dynamic import calls', () => {
+    const scan: ScanResult = {
+      dirs: [],
+      files: [{ filePath: '/project/commands/status.ts', name: 'status' }],
+    }
+
+    const parts = generateAutoloaderParts({ scan, tagModulePath: TAG_PATH })
+
+    expect(parts.region).not.toContain("import('/project/commands/status.ts')")
+    expect(parts.region).toContain("import('file:///project/commands/status.ts')")
   })
 })

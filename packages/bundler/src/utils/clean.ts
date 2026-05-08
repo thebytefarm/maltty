@@ -35,12 +35,11 @@ export async function clean(params: {
     return { foreign: [], removed: [] }
   }
 
-  const binaryNames = match(params.compile)
-    .with(true, () =>
-      buildBinaryNames(params.resolved.compile.name, params.resolved.compile.targets)
+  const binaryNames = match(params)
+    .with({ compile: true }, ({ resolved }) =>
+      buildBinaryNames(resolved.compile.name, resolved.compile.targets)
     )
-    .with(false, () => new Set<string>())
-    .exhaustive()
+    .otherwise(() => new Set<string>())
 
   const results = await Promise.all(
     entries.map(async (name) => {
@@ -77,7 +76,8 @@ function isBuildArtifact(filename: string): boolean {
  * Build the set of exact binary filenames that compile would produce.
  *
  * Single-target builds produce `{name}`, multi-target builds produce
- * `{name}-{target}`. Windows targets also get `{name}.exe` / `{name}-{target}.exe`.
+ * `{name}-{target}`. Windows targets append `.exe` to match the file bun
+ * actually creates on disk.
  *
  * @private
  * @param name - The resolved binary base name.
@@ -85,24 +85,19 @@ function isBuildArtifact(filename: string): boolean {
  * @returns A set of filenames to remove.
  */
 function buildBinaryNames(name: string, targets: readonly string[]): ReadonlySet<string> {
-  const resolvedTargets = match(targets.length > 0)
-    .with(true, () => targets)
-    .with(false, () => compileTargets.filter((t) => t.default).map((t) => t.target))
-    .exhaustive()
+  const resolvedTargets = match(targets)
+    .with([], () => compileTargets.filter((t) => t.default).map((t) => t.target))
+    .otherwise(() => targets)
 
-  const isMultiTarget = resolvedTargets.length > 1
+  const names = resolvedTargets.map((target) => {
+    const base = match(resolvedTargets.length)
+      .with(1, () => name)
+      .otherwise(() => `${name}-${target}`)
 
-  const names = resolvedTargets.flatMap((target) => {
-    const binaryName = match(isMultiTarget)
-      .with(true, () => `${name}-${target}`)
-      .with(false, () => name)
-      .exhaustive()
-
-    if (target.startsWith('windows')) {
-      return [binaryName, `${binaryName}.exe`]
+    if (target.startsWith('windows-')) {
+      return `${base}.exe`
     }
-
-    return [binaryName]
+    return base
   })
 
   return new Set(names)

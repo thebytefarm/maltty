@@ -1,6 +1,5 @@
 import { ok } from '@kidd-cli/utils/fp'
 import type { ResultAsync } from '@kidd-cli/utils/fp'
-import { match } from 'ts-pattern'
 
 import type { CommandContext } from '@/context/types.js'
 
@@ -62,10 +61,7 @@ export function createIconsContext(options: CreateIconsContextOptions): IconsCon
     },
     get: (name: string): string => resolveIcon(icons, name, state.isInstalled),
     has: (name: string): boolean => Object.hasOwn(icons, name),
-    installed: (): boolean =>
-      match(forceSetup)
-        .with(true, () => false)
-        .otherwise(() => state.isInstalled),
+    installed: (): boolean => isInstalled({ forceSetup, state }),
     setup: async (): ResultAsync<boolean, IconsError> => {
       const [error, result] = await installNerdFont({ ctx, font })
 
@@ -107,8 +103,28 @@ function resolveIcon(
     return ''
   }
 
-  return match(nerdFontsInstalled)
-    .with(true, () => def.nerdFont)
-    .with(false, () => def.emoji)
-    .exhaustive()
+  if (nerdFontsInstalled) {
+    return def.nerdFont
+  }
+  return def.emoji
+}
+
+/**
+ * Whether icons are currently installed.
+ *
+ * `forceSetup` overrides the runtime state — when true the context reports
+ * "not installed" so the consumer is forced to run setup.
+ *
+ * @private
+ * @param params - The forceSetup flag and the mutable installation state.
+ * @returns `true` when nerd fonts are usable.
+ */
+function isInstalled(params: {
+  readonly forceSetup: boolean | undefined
+  readonly state: { readonly isInstalled: boolean }
+}): boolean {
+  if (params.forceSetup) {
+    return false
+  }
+  return params.state.isInstalled
 }

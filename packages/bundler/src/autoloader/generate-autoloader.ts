@@ -1,3 +1,5 @@
+import { path } from '@kidd-cli/utils/node'
+
 import type { ScanResult, ScannedDir, ScannedFile } from '../types.js'
 
 /**
@@ -167,7 +169,9 @@ function buildImportStatements(
 ): readonly string[] {
   const tagLine = buildTagImportLine(imports, tagModulePath)
 
-  const importLines = imports.map((entry) => `import ${entry.identifier} from '${entry.filePath}'`)
+  const importLines = imports.map(
+    (entry) => `import ${entry.identifier} from '${path.toImportUrl(entry.filePath)}'`
+  )
 
   return [...tagLine, '', ...importLines]
 }
@@ -259,7 +263,7 @@ function buildTagImportLine(
   if (imports.length === 0) {
     return []
   }
-  return [`import { withTag } from '${tagModulePath}'`]
+  return [`import { withTag } from '${path.toImportUrl(tagModulePath)}'`]
 }
 
 /**
@@ -296,7 +300,9 @@ function buildDynamicAutoloaderRegion(
 ): string {
   const destructuring = imports.map((entry) => `    { default: ${entry.identifier} },`).join('\n')
 
-  const importCalls = imports.map((entry) => `    import('${entry.filePath}'),`).join('\n')
+  const importCalls = imports
+    .map((entry) => `    import('${path.toImportUrl(entry.filePath)}'),`)
+    .join('\n')
 
   return [
     '//#region src/autoload.ts (static)',

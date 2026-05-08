@@ -1,5 +1,4 @@
 import { toError } from '@kidd-cli/utils/fp'
-import { match } from 'ts-pattern'
 
 /**
  * Build a descriptive error message for a failed tsdown operation.
@@ -18,7 +17,8 @@ export function formatBuildError(params: {
   const header = `tsdown ${params.phase} failed`
   const detail = toError(params.error).message.trim()
 
-  return match({ verbose: params.verbose, hasDetail: detail.length > 0 })
-    .with({ verbose: true, hasDetail: true }, () => `${header}\n${detail}`)
-    .otherwise(() => header)
+  if (params.verbose && detail.length > 0) {
+    return `${header}\n${detail}`
+  }
+  return header
 }

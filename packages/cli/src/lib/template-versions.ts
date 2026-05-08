@@ -1,7 +1,7 @@
 import { existsSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
 
-import { attempt, err, match, ok } from '@kidd-cli/utils/fp'
+import { attempt, err, ok } from '@kidd-cli/utils/fp'
 import type { Result } from '@kidd-cli/utils/fp'
 import { parse } from 'yaml'
 import { z } from 'zod'
@@ -71,10 +71,10 @@ const RANGE_PREFIXES = ['^', '~', '>', '<', '='] as const
  */
 export function normalizeVersion(version: string): string {
   const hasRange = RANGE_PREFIXES.some((prefix) => version.startsWith(prefix))
-  return match(hasRange)
-    .with(true, () => version)
-    .with(false, () => `^${version}`)
-    .exhaustive()
+  if (hasRange) {
+    return version
+  }
+  return `^${version}`
 }
 
 /**

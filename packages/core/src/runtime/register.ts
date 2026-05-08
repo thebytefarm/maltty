@@ -244,9 +244,10 @@ function extractPositionalMeta(positionals: ArgsDef): readonly PositionalMeta[] 
  * @returns `<name>` for required positionals, `[name]` for optional ones.
  */
 function formatPlaceholder(meta: PositionalMeta): string {
-  return match(meta.isOptional)
-    .with(true, () => `[${meta.name}]`)
-    .otherwise(() => `<${meta.name}>`)
+  if (meta.isOptional) {
+    return `[${meta.name}]`
+  }
+  return `<${meta.name}>`
 }
 
 /**

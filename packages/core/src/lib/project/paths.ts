@@ -20,7 +20,7 @@ export function resolveLocalPath(options: {
   if (!projectRoot) {
     return null
   }
-  return join(projectRoot.path, options.dirName)
+  return join(projectRoot, options.dirName)
 }
 
 /**

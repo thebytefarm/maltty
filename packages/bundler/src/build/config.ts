@@ -98,15 +98,24 @@ function buildDeps(
   userExternals: readonly string[],
   compile: boolean
 ): { alwaysBundle: RegExp[]; neverBundle: (string | RegExp)[] } {
-  const alwaysBundle = match(compile)
-    .with(true, () => [/./])
-    .with(false, () => [...ALWAYS_BUNDLE])
-    .exhaustive()
-
   return {
-    alwaysBundle,
+    alwaysBundle: resolveAlwaysBundle(compile),
     neverBundle: [...NODE_BUILTINS, ...userExternals],
   }
+}
+
+/**
+ * Resolve the `alwaysBundle` rule list based on whether we're compiling.
+ *
+ * @private
+ * @param compile - Whether the build targets a compiled binary.
+ * @returns The matchers tsdown should always bundle.
+ */
+function resolveAlwaysBundle(compile: boolean): RegExp[] {
+  if (compile) {
+    return [/./]
+  }
+  return [...ALWAYS_BUNDLE]
 }
 
 /**
@@ -172,10 +181,10 @@ export function resolveBuildVars(
  * @returns An array of rolldown plugins (empty when not compiling).
  */
 function buildPlugins(compile: boolean): Rolldown.Plugin[] {
-  return match(compile)
-    .with(true, () => [createStubPlugin(STUB_PACKAGES)])
-    .with(false, () => [])
-    .exhaustive()
+  if (compile) {
+    return [createStubPlugin(STUB_PACKAGES)]
+  }
+  return []
 }
 
 /**
@@ -197,16 +206,16 @@ function createStubPlugin(packages: readonly string[]): Rolldown.Plugin {
   return {
     name: 'kidd-stub-packages',
     resolveId(source) {
-      return match(stubbed.has(source))
-        .with(true, () => `${STUB_PREFIX}${source}`)
-        .with(false, () => null)
-        .exhaustive()
+      if (stubbed.has(source)) {
+        return `${STUB_PREFIX}${source}`
+      }
+      return null
     },
     load(id) {
-      return match(id.startsWith(STUB_PREFIX))
-        .with(true, () => 'export default undefined;')
-        .with(false, () => null)
-        .exhaustive()
+      if (id.startsWith(STUB_PREFIX)) {
+        return 'export default undefined;'
+      }
+      return null
     },
   }
 }

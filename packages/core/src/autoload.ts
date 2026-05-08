@@ -1,9 +1,9 @@
 import type { Dirent } from 'node:fs'
 import { readdir } from 'node:fs/promises'
 import { basename, extname, join, resolve } from 'node:path'
-import { pathToFileURL } from 'node:url'
 
 import { isPlainObject, isString } from '@kidd-cli/utils/fp'
+import { path as pathUtils } from '@kidd-cli/utils/node'
 import { hasTag, withTag } from '@kidd-cli/utils/tag'
 import { match } from 'ts-pattern'
 
@@ -141,7 +141,7 @@ function findIndexInEntries(entries: Dirent[]): Dirent | undefined {
  * @returns The Command if valid, or undefined.
  */
 async function importCommand(filePath: string): Promise<Command | undefined> {
-  const specifier = pathToFileURL(filePath).href
+  const specifier = pathUtils.toImportUrl(filePath)
   try {
     const mod: unknown = await import(specifier)
     if (isCommandExport(mod)) {
@@ -248,18 +248,16 @@ function deduplicateCommandPairs(
   }>(
     (acc, pair) => {
       const [name] = pair
-      return match(acc.seen.has(name))
-        .with(true, () => {
-          console.warn(
-            `[kidd] duplicate command name "${name}" — first definition wins, later definition ignored`
-          )
-          return acc
-        })
-        .with(false, () => ({
-          result: [...acc.result, pair],
-          seen: new Set([...acc.seen, name]),
-        }))
-        .exhaustive()
+      if (acc.seen.has(name)) {
+        console.warn(
+          `[kidd] duplicate command name "${name}" — first definition wins, later definition ignored`
+        )
+        return acc
+      }
+      return {
+        result: [...acc.result, pair],
+        seen: new Set([...acc.seen, name]),
+      }
     },
     { result: [], seen: new Set<string>() }
   )

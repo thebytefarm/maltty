@@ -7,7 +7,6 @@ import { loadConfig } from '@kidd-cli/config/utils'
 import { command } from '@kidd-cli/core'
 import type { Command, CommandContext } from '@kidd-cli/core'
 import pc from 'picocolors'
-import { match } from 'ts-pattern'
 import { z } from 'zod'
 
 import { extractConfig } from '../lib/config-helpers.js'
@@ -48,10 +47,11 @@ const buildCommand: Command = command({
       targets: ctx.args.targets,
     })
 
-    const mergedConfig = match(shouldCompile)
-      .with(true, () => mergeCompileTargets({ config, targets: ctx.args.targets }))
-      .with(false, () => config)
-      .exhaustive()
+    const mergedConfig = resolveMergedConfig({
+      config,
+      shouldCompile,
+      targets: ctx.args.targets,
+    })
 
     const bundler = await createBundler({
       config: mergedConfig,
@@ -122,6 +122,24 @@ const buildCommand: Command = command({
 export default buildCommand
 
 // ---------------------------------------------------------------------------
+
+/**
+ * Apply compile-target overrides to the config when compilation will run.
+ *
+ * @private
+ * @param params - The base config, compile decision, and CLI target overrides.
+ * @returns The config to hand to the bundler.
+ */
+function resolveMergedConfig(params: {
+  readonly config: KiddConfig
+  readonly shouldCompile: boolean
+  readonly targets: readonly string[] | undefined
+}): KiddConfig {
+  if (params.shouldCompile) {
+    return mergeCompileTargets({ config: params.config, targets: params.targets })
+  }
+  return params.config
+}
 
 /**
  * Determine whether compilation should run based on CLI flags and config.
@@ -268,14 +286,25 @@ function formatOutroSummary(params: {
   readonly duration: number
 }): string {
   const stats = [
-    ...match(params.binaries > 0)
-      .with(true, () => [`${params.binaries} binaries compiled`])
-      .with(false, () => [])
-      .exhaustive(),
+    ...formatBinariesSegment(params.binaries),
     `finished in ${formatDuration(params.duration)}`,
   ]
 
   return stats.join(pc.gray(' · '))
+}
+
+/**
+ * Build the optional "binaries compiled" segment of the outro summary.
+ *
+ * @private
+ * @param count - The number of compiled binaries.
+ * @returns A single-element array describing the count, or an empty array.
+ */
+function formatBinariesSegment(count: number): readonly string[] {
+  if (count > 0) {
+    return [`${count} binaries compiled`]
+  }
+  return []
 }
 
 /**
@@ -286,10 +315,10 @@ function formatOutroSummary(params: {
  * @returns A formatted duration string (e.g. "1.2s", "350ms").
  */
 function formatDuration(ms: number): string {
-  return match(ms >= 1000)
-    .with(true, () => `${(ms / 1000).toFixed(1)}s`)
-    .with(false, () => `${ms}ms`)
-    .exhaustive()
+  if (ms >= 1000) {
+    return `${(ms / 1000).toFixed(1)}s`
+  }
+  return `${ms}ms`
 }
 
 function formatDefineLines(define: Readonly<Record<string, string>>): string[] {
