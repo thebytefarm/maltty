@@ -13,7 +13,12 @@ describe('KiddConfigSchema schema', () => {
     const result = KiddConfigSchema.safeParse({
       build: { external: ['pg'], minify: true, out: './dist', sourcemap: false, target: 'node20' },
       commands: './commands',
-      compile: { autoloadDotenv: true, name: 'my-cli', out: './bin', targets: ['linux-x64', 'darwin-arm64'] },
+      compile: {
+        autoloadDotenv: true,
+        name: 'my-cli',
+        out: './bin',
+        targets: ['linux-x64', 'darwin-arm64'],
+      },
       entry: './src/index.ts',
       include: ['assets/**'],
     })
