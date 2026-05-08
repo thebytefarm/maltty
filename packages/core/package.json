@@ -1,6 +1,6 @@
 {
   "name": "@kidd-cli/core",
-  "version": "0.23.2",
+  "version": "0.23.3",
   "description": "An opinionated CLI framework for Node.js",
   "keywords": [
     "cli",
