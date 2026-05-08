@@ -1,6 +1,6 @@
 {
   "name": "@kidd-cli/bundler",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "description": "Programmatic bundler for kidd CLI tools powered by tsdown",
   "keywords": [
     "bundler",

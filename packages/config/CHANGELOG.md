@@ -1,5 +1,12 @@
 # @kidd-cli/config
 
+## 0.4.1
+
+### Patch Changes
+
+- Updated dependencies [f8290a2]
+  - @kidd-cli/utils@0.4.2
+
 ## 0.4.0
 
 ### Minor Changes

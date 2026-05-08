@@ -1,6 +1,6 @@
 {
   "name": "@kidd-cli/config",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Build-time configuration for kidd CLIs",
   "keywords": [
     "cli",
