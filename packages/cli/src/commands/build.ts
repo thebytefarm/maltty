@@ -16,7 +16,10 @@ const options = z.object({
   clean: z.boolean().optional().describe('Clean build artifacts before bundling (default: true)'),
   compile: z.boolean().optional().describe('Compile to standalone binaries after bundling'),
   targets: z.array(z.string()).optional().describe('Compile targets (implies --compile)'),
-  verbose: z.boolean().optional().describe('Show detailed error output on compile failure'),
+  verbose: z
+    .boolean()
+    .optional()
+    .describe('Show detailed error output on bundle or compile failure'),
 })
 
 type BuildArgs = z.infer<typeof options>
@@ -61,7 +64,7 @@ const buildCommand: Command = command({
 
     ctx.status.spinner.start('Bundling...')
 
-    const [buildError, buildOutput] = await bundler.build()
+    const [buildError, buildOutput] = await bundler.build({ verbose: ctx.args.verbose })
 
     if (buildError) {
       ctx.status.spinner.stop('Bundle failed')
