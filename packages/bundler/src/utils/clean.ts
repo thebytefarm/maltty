@@ -77,7 +77,8 @@ function isBuildArtifact(filename: string): boolean {
  * Build the set of exact binary filenames that compile would produce.
  *
  * Single-target builds produce `{name}`, multi-target builds produce
- * `{name}-{target}`. Windows targets also get `{name}.exe` / `{name}-{target}.exe`.
+ * `{name}-{target}`. Windows targets append `.exe` to match the file bun
+ * actually creates on disk.
  *
  * @private
  * @param name - The resolved binary base name.
@@ -92,17 +93,16 @@ function buildBinaryNames(name: string, targets: readonly string[]): ReadonlySet
 
   const isMultiTarget = resolvedTargets.length > 1
 
-  const names = resolvedTargets.flatMap((target) => {
-    const binaryName = match(isMultiTarget)
+  const names = resolvedTargets.map((target) => {
+    const base = match(isMultiTarget)
       .with(true, () => `${name}-${target}`)
       .with(false, () => name)
       .exhaustive()
 
-    if (target.startsWith('windows')) {
-      return [binaryName, `${binaryName}.exe`]
+    if (target.startsWith('windows-')) {
+      return `${base}.exe`
     }
-
-    return [binaryName]
+    return base
   })
 
   return new Set(names)

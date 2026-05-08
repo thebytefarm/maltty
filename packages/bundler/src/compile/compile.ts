@@ -200,7 +200,13 @@ function resolveTargets(explicit: readonly CompileTarget[]): readonly CompileTar
 }
 
 /**
- * Build the output binary name, appending the target suffix for multi-target builds.
+ * Build the output binary name, appending the target suffix for multi-target
+ * builds and the `.exe` extension for Windows targets.
+ *
+ * Windows targets must end with `.exe` because that is the file bun actually
+ * produces (bun auto-appends `.exe` for any `bun-windows-*` target). Recording
+ * the path without `.exe` would cause filesystem operations on the recorded
+ * path to fail and would diverge from what is on disk.
  *
  * @private
  * @param name - Base binary name.
@@ -209,11 +215,38 @@ function resolveTargets(explicit: readonly CompileTarget[]): readonly CompileTar
  * @returns The resolved binary file name.
  */
 function resolveBinaryName(name: string, target: CompileTarget, isMultiTarget: boolean): string {
+  return appendBinaryExtension(buildBaseBinaryName(name, target, isMultiTarget), target)
+}
+
+/**
+ * Build the base name without the platform extension.
+ *
+ * @private
+ * @param name - Base binary name.
+ * @param target - The compile target.
+ * @param isMultiTarget - Whether multiple targets are being compiled.
+ * @returns The base binary name with optional target suffix.
+ */
+function buildBaseBinaryName(name: string, target: CompileTarget, isMultiTarget: boolean): string {
   if (isMultiTarget) {
     return `${name}-${target}`
   }
-
   return name
+}
+
+/**
+ * Append the `.exe` extension to Windows binary names.
+ *
+ * @private
+ * @param base - The base binary name.
+ * @param target - The compile target.
+ * @returns The base name plus `.exe` for Windows targets, or the base unchanged.
+ */
+function appendBinaryExtension(base: string, target: CompileTarget): string {
+  if (target.startsWith('windows-')) {
+    return `${base}.exe`
+  }
+  return base
 }
 
 /**

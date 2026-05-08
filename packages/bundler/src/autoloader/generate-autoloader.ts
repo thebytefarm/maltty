@@ -1,3 +1,5 @@
+import { pathToFileURL } from 'node:url'
+
 import type { ScanResult, ScannedDir, ScannedFile } from '../types.js'
 
 /**
@@ -167,7 +169,9 @@ function buildImportStatements(
 ): readonly string[] {
   const tagLine = buildTagImportLine(imports, tagModulePath)
 
-  const importLines = imports.map((entry) => `import ${entry.identifier} from '${entry.filePath}'`)
+  const importLines = imports.map(
+    (entry) => `import ${entry.identifier} from '${toModuleSpecifier(entry.filePath)}'`
+  )
 
   return [...tagLine, '', ...importLines]
 }
@@ -259,7 +263,7 @@ function buildTagImportLine(
   if (imports.length === 0) {
     return []
   }
-  return [`import { withTag } from '${tagModulePath}'`]
+  return [`import { withTag } from '${toModuleSpecifier(tagModulePath)}'`]
 }
 
 /**
@@ -296,7 +300,9 @@ function buildDynamicAutoloaderRegion(
 ): string {
   const destructuring = imports.map((entry) => `    { default: ${entry.identifier} },`).join('\n')
 
-  const importCalls = imports.map((entry) => `    import('${entry.filePath}'),`).join('\n')
+  const importCalls = imports
+    .map((entry) => `    import('${toModuleSpecifier(entry.filePath)}'),`)
+    .join('\n')
 
   return [
     '//#region src/autoload.ts (static)',
@@ -326,4 +332,21 @@ function formatObject(entries: readonly string[]): string {
 
   const body = entries.map((entry) => `  ${entry},`).join('\n')
   return `{\n${body}\n}`
+}
+
+/**
+ * Convert an absolute filesystem path to a `file://` URL for use as an ESM
+ * import specifier in generated source code.
+ *
+ * Windows paths contain backslashes (e.g. `C:\joggr\update.ts`) which the
+ * parser interprets as escape sequences when embedded directly into a string
+ * literal, breaking the bundle. The `file://` URL form is platform-neutral
+ * and parses cleanly on every OS.
+ *
+ * @private
+ * @param filePath - The absolute filesystem path.
+ * @returns A `file://` URL string suitable for use as an import specifier.
+ */
+function toModuleSpecifier(filePath: string): string {
+  return pathToFileURL(filePath).href
 }

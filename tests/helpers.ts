@@ -37,6 +37,20 @@ function resolveHostTarget(): string {
 }
 
 /**
+ * Resolve the platform-specific binary extension. Windows binaries end in
+ * `.exe`; other platforms have no extension.
+ *
+ * @private
+ * @returns The extension string (`.exe` on Windows, empty otherwise).
+ */
+function resolveBinaryExtension(): string {
+  if (process.platform === 'win32') {
+    return '.exe'
+  }
+  return ''
+}
+
+/**
  * Options for creating a node runner.
  */
 interface NodeRunnerOptions {
@@ -127,7 +141,7 @@ export function createBinaryRunner({
 }: BinaryRunnerOptions): SubprocessRunner {
   const cwd = `${EXAMPLES_DIR}/${example}`
   const binaryName = name ?? example
-  const binary = `${cwd}/${distDir}/${binaryName}-${resolveHostTarget()}`
+  const binary = `${cwd}/${distDir}/${binaryName}-${resolveHostTarget()}${resolveBinaryExtension()}`
 
   return (...args: readonly string[]): string => {
     const result = spawnSync(binary, [...args], {

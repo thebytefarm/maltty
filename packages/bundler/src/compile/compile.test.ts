@@ -327,4 +327,68 @@ describe('compile operation', () => {
       cwd: '/project',
     })
   })
+
+  describe('windows binary naming', () => {
+    it('should append .exe to single-target windows builds', async () => {
+      const [error, output] = await compile({
+        resolved: makeResolved({ targets: ['windows-x64'], name: 'my-app' }),
+        lifecycle: noopLifecycle,
+      })
+
+      expect(error).toBeNull()
+      expect(output!.binaries[0]!.path).toMatch(/[/\\]my-app\.exe$/)
+    })
+
+    it('should append .exe to multi-target windows builds', async () => {
+      const [error, output] = await compile({
+        resolved: makeResolved({
+          targets: ['windows-x64', 'windows-arm64'],
+          name: 'my-app',
+        }),
+        lifecycle: noopLifecycle,
+      })
+
+      expect(error).toBeNull()
+      expect(output).toMatchObject({
+        binaries: expect.arrayContaining([
+          expect.objectContaining({
+            path: expect.stringMatching(/my-app-windows-x64\.exe$/),
+            target: 'windows-x64',
+          }),
+          expect.objectContaining({
+            path: expect.stringMatching(/my-app-windows-arm64\.exe$/),
+            target: 'windows-arm64',
+          }),
+        ]),
+      })
+    })
+
+    it('should not append .exe to non-windows targets', async () => {
+      const [error, output] = await compile({
+        resolved: makeResolved({
+          targets: ['darwin-arm64', 'linux-x64', 'windows-x64'],
+          name: 'my-app',
+        }),
+        lifecycle: noopLifecycle,
+      })
+
+      expect(error).toBeNull()
+      const darwinBinary = output!.binaries.find((b) => b.target === 'darwin-arm64')
+      const linuxBinary = output!.binaries.find((b) => b.target === 'linux-x64')
+      expect(darwinBinary!.path).not.toMatch(/\.exe$/)
+      expect(linuxBinary!.path).not.toMatch(/\.exe$/)
+    })
+
+    it('should pass --outfile with .exe to bun for windows targets', async () => {
+      await compile({
+        resolved: makeResolved({ targets: ['windows-x64'], name: 'my-app' }),
+        lifecycle: noopLifecycle,
+      })
+
+      const execCall = mockProcessExec.mock.calls[0]?.[0] as { args: readonly string[] }
+      const outfileIndex = execCall.args.indexOf('--outfile')
+      const outfileValue = execCall.args[outfileIndex + 1]
+      expect(outfileValue).toMatch(/my-app\.exe$/)
+    })
+  })
 })

@@ -5,6 +5,14 @@ import { match } from 'ts-pattern'
 import type { ResultAsync } from '../fp/result.js'
 import { err, ok } from '../fp/result.js'
 
+/*
+ * On Windows, npm/pnpm-installed CLIs (e.g. tsx) ship as `.cmd` shim files
+ * that Node's child_process can't launch via CreateProcess — only cmd.exe
+ * can. shell: true routes through cmd.exe so the shim runs. On POSIX it's
+ * unnecessary and changes argument escaping, so it's gated to Windows.
+ */
+const NEEDS_SHELL = process.platform === 'win32'
+
 /**
  * Output from a successful command execution.
  */
@@ -29,7 +37,7 @@ export function exec(params: {
 }): ResultAsync<ExecOutput> {
   const { cmd, args = [], cwd } = params
   return new Promise((resolve) => {
-    execFile(cmd, [...args], { cwd }, (error, stdout, stderr) => {
+    execFile(cmd, [...args], { cwd, shell: NEEDS_SHELL }, (error, stdout, stderr) => {
       if (error) {
         const enriched = new Error(`${cmd} failed: ${error.message}`, { cause: error })
         Object.defineProperty(enriched, 'stderr', { enumerable: true, value: stderr })
@@ -61,6 +69,7 @@ export function spawn(params: {
   return new Promise((resolve) => {
     const child = nodeSpawn(params.cmd, [...params.args], {
       cwd: params.cwd,
+      shell: NEEDS_SHELL,
       stdio: 'inherit',
     })
 
