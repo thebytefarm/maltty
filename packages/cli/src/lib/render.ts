@@ -3,6 +3,7 @@ import { join, relative } from 'node:path'
 
 import { attemptAsync, ok, toError } from '@kidd-cli/utils/fp'
 import type { ResultAsync } from '@kidd-cli/utils/fp'
+import { path } from '@kidd-cli/utils/node'
 import { Liquid } from 'liquidjs'
 
 import type { GenerateError, RenderedFile, RenderTemplateParams } from './types.js'
@@ -64,25 +65,8 @@ async function collectLiquidFiles(root: string): Promise<readonly string[]> {
     .filter((entry) => entry.isFile() && entry.name.endsWith('.liquid'))
     .map((entry) => {
       const parent = entry.parentPath
-      return toPosixPath(relative(root, join(parent, entry.name)))
+      return path.toPosixPath(relative(root, join(parent, entry.name)))
     })
-}
-
-/**
- * Normalize a native path to use forward-slash separators.
- *
- * `path.relative()` returns separators native to the OS (`\` on Windows,
- * `/` elsewhere). Downstream consumers — the gitignore rename regex and
- * the `--no-example`/`--no-config` filters in `init` — match literal `/`,
- * so we normalize once at the boundary. Node's `path.join` accepts `/` on
- * Windows and produces correct native paths during write.
- *
- * @param p - The native path string.
- * @returns The path with all `\` replaced by `/`.
- * @private
- */
-function toPosixPath(p: string): string {
-  return p.replaceAll('\\', '/')
 }
 
 /**
