@@ -105,16 +105,7 @@ function checkSingleStory(story: Story, groupTitle?: string): readonly StoryDiag
     .exhaustive()
 
   const editableFieldCount = countEditableFields(story)
-  const fieldCountDiagnostics = match(editableFieldCount > MAX_EDITABLE_FIELDS)
-    .with(true, () => [
-      Object.freeze({
-        storyName: name,
-        severity: 'error' as const,
-        message: `Too many editable fields: ${String(editableFieldCount)} (max ${String(MAX_EDITABLE_FIELDS)}). Move fields to \`defaults\` to reduce.`,
-      }),
-    ])
-    .with(false, () => [] as readonly StoryDiagnostic[])
-    .exhaustive()
+  const fieldCountDiagnostics = buildFieldCountDiagnostics({ editableFieldCount, name })
 
   const propDiagnostics = validateProps({ schema: story.schema, props: story.props }).map(
     (fieldError) =>
@@ -126,6 +117,29 @@ function checkSingleStory(story: Story, groupTitle?: string): readonly StoryDiag
   )
 
   return [...fieldCountDiagnostics, ...propDiagnostics]
+}
+
+/**
+ * Build the diagnostics array for editable-field count violations.
+ *
+ * @private
+ * @param params - The current count and the qualified story name.
+ * @returns A single diagnostic when the count exceeds the max, else empty.
+ */
+function buildFieldCountDiagnostics(params: {
+  readonly editableFieldCount: number
+  readonly name: string
+}): readonly StoryDiagnostic[] {
+  if (params.editableFieldCount > MAX_EDITABLE_FIELDS) {
+    return [
+      Object.freeze({
+        storyName: params.name,
+        severity: 'error' as const,
+        message: `Too many editable fields: ${String(params.editableFieldCount)} (max ${String(MAX_EDITABLE_FIELDS)}). Move fields to \`defaults\` to reduce.`,
+      }),
+    ]
+  }
+  return []
 }
 
 /**

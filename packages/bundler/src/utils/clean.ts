@@ -35,12 +35,11 @@ export async function clean(params: {
     return { foreign: [], removed: [] }
   }
 
-  const binaryNames = match(params.compile)
-    .with(true, () =>
-      buildBinaryNames(params.resolved.compile.name, params.resolved.compile.targets)
+  const binaryNames = match(params)
+    .with({ compile: true }, ({ resolved }) =>
+      buildBinaryNames(resolved.compile.name, resolved.compile.targets)
     )
-    .with(false, () => new Set<string>())
-    .exhaustive()
+    .otherwise(() => new Set<string>())
 
   const results = await Promise.all(
     entries.map(async (name) => {

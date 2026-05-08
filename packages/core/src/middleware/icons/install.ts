@@ -330,26 +330,7 @@ async function showInstallCommands({
   const hasBrew = await checkBrewAvailable()
 
   const lines: readonly string[] = match(process.platform)
-    .with('darwin', () =>
-      match(hasBrew)
-        .with(true, () => [
-          '',
-          'Run the following command to install via Homebrew:',
-          '',
-          `  brew install --cask font-${slug}-nerd-font`,
-          '',
-        ])
-        .with(false, () => [
-          '',
-          'Run the following commands to install manually:',
-          '',
-          `  curl -fsSL -o "${fontDir}/${fontName}.zip" "${url}"`,
-          `  unzip -o "${fontDir}/${fontName}.zip" -d "${fontDir}"`,
-          `  rm -f "${fontDir}/${fontName}.zip"`,
-          '',
-        ])
-        .exhaustive()
-    )
+    .with('darwin', () => buildDarwinInstallLines({ fontDir, fontName, hasBrew, slug, url }))
     .with('linux', () => [
       '',
       'Run the following commands to install:',
@@ -369,6 +350,40 @@ async function showInstallCommands({
       return false
     }, false)
   )
+}
+
+/**
+ * Build the macOS install lines, branching on whether Homebrew is available.
+ *
+ * @private
+ * @param params - The font dir, font name, brew availability, slug, and URL.
+ * @returns The lines to print.
+ */
+function buildDarwinInstallLines(params: {
+  readonly fontDir: string
+  readonly fontName: string
+  readonly hasBrew: boolean
+  readonly slug: string
+  readonly url: string
+}): readonly string[] {
+  if (params.hasBrew) {
+    return [
+      '',
+      'Run the following command to install via Homebrew:',
+      '',
+      `  brew install --cask font-${params.slug}-nerd-font`,
+      '',
+    ]
+  }
+  return [
+    '',
+    'Run the following commands to install manually:',
+    '',
+    `  curl -fsSL -o "${params.fontDir}/${params.fontName}.zip" "${params.url}"`,
+    `  unzip -o "${params.fontDir}/${params.fontName}.zip" -d "${params.fontDir}"`,
+    `  rm -f "${params.fontDir}/${params.fontName}.zip"`,
+    '',
+  ]
 }
 
 /**

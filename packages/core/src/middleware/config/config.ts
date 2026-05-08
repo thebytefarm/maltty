@@ -376,14 +376,24 @@ async function resolveLayer(
     return { config: null, filePath: null, format: null, name: entry.name }
   }
 
-  const rawConfig = match(isPlainObject(result.config))
-    .with(true, () => result.config as Record<string, unknown>)
-    .otherwise(() => null)
-
   return {
-    config: rawConfig,
+    config: extractRawConfig(result.config),
     filePath: result.filePath,
     format: result.format,
     name: entry.name,
   }
+}
+
+/**
+ * Coerce a raw config value to a record, or null when it's not a plain object.
+ *
+ * @private
+ * @param value - The raw config value returned by the loader.
+ * @returns The config as a record, or null.
+ */
+function extractRawConfig(value: unknown): Record<string, unknown> | null {
+  if (isPlainObject(value)) {
+    return value as Record<string, unknown>
+  }
+  return null
 }

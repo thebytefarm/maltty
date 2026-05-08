@@ -121,13 +121,10 @@ export function normalizeKey(input: string, key: Key): NormalizedKeyEvent {
 export function parseKeyPattern(pattern: string): ParsedKeyPattern {
   const parts = pattern.split(' ')
 
-  return match(parts.length > 1)
-    .with(true, () => ({
-      type: 'sequence' as const,
-      steps: parts.map(parseSinglePattern),
-    }))
-    .with(false, () => parseSinglePattern(pattern))
-    .exhaustive()
+  if (parts.length > 1) {
+    return { type: 'sequence', steps: parts.map(parseSinglePattern) }
+  }
+  return parseSinglePattern(pattern)
 }
 
 /**

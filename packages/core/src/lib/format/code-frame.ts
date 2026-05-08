@@ -1,5 +1,4 @@
 import pc from 'picocolors'
-import { match } from 'ts-pattern'
 import { z } from 'zod'
 
 import { GLYPHS } from './constants.js'
@@ -52,14 +51,12 @@ export function formatCodeFrame(input: CodeFrameInput): string {
   const pointer = ' '.repeat(annotation.column - 1) + pc.red('^'.repeat(annotation.length))
   const annotationRow = `  ${' '.repeat(gutterWidth)} ${pc.cyan(GLYPHS.pipe)} ${pointer} ${pc.red(annotation.message)}`
 
-  const outputLines = codeLines.reduce<readonly string[]>(
-    (acc, line, idx) =>
-      match(idx === annotationLineIdx)
-        .with(true, () => [...acc, line, annotationRow])
-        .with(false, () => [...acc, line])
-        .exhaustive(),
-    []
-  )
+  const outputLines = codeLines.reduce<readonly string[]>((acc, line, idx) => {
+    if (idx === annotationLineIdx) {
+      return [...acc, line, annotationRow]
+    }
+    return [...acc, line]
+  }, [])
 
   return [header, separator, ...outputLines, separator].join('\n')
 }

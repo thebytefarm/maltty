@@ -248,18 +248,16 @@ function deduplicateCommandPairs(
   }>(
     (acc, pair) => {
       const [name] = pair
-      return match(acc.seen.has(name))
-        .with(true, () => {
-          console.warn(
-            `[kidd] duplicate command name "${name}" — first definition wins, later definition ignored`
-          )
-          return acc
-        })
-        .with(false, () => ({
-          result: [...acc.result, pair],
-          seen: new Set([...acc.seen, name]),
-        }))
-        .exhaustive()
+      if (acc.seen.has(name)) {
+        console.warn(
+          `[kidd] duplicate command name "${name}" — first definition wins, later definition ignored`
+        )
+        return acc
+      }
+      return {
+        result: [...acc.result, pair],
+        seen: new Set([...acc.seen, name]),
+      }
     },
     { result: [], seen: new Set<string>() }
   )
