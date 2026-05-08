@@ -11,6 +11,18 @@ vi.mock(import('node:fs/promises'), () => ({
   readdir: vi.fn(),
 }))
 
+const { mockPathToFileURL } = vi.hoisted(() => ({
+  mockPathToFileURL: vi.fn((p: string) => ({ href: p })),
+}))
+
+vi.mock(import('node:url'), async (importOriginal) => {
+  const actual = await importOriginal()
+  return {
+    ...actual,
+    pathToFileURL: mockPathToFileURL,
+  }
+})
+
 function makeDirent(name: string, isFile: boolean): Dirent {
   return {
     isBlockDevice: () => false,
@@ -32,6 +44,7 @@ describe('autoload()', () => {
   beforeEach(() => {
     vi.clearAllMocks()
     vi.restoreAllMocks()
+    mockPathToFileURL.mockImplementation((p: string) => ({ href: p }))
   })
 
   it('should return empty CommandMap for empty directory', async () => {
@@ -261,6 +274,18 @@ describe('autoload()', () => {
 
     delete process.env.KIDD_DEBUG
     warnSpy.mockRestore()
+  })
+
+  it('should convert filesystem paths to file:// URLs before importing (Windows compat)', async () => {
+    mockedReaddir.mockResolvedValue([makeDirent('build.ts', true)] as unknown as Dirent[])
+
+    vi.doMock('/tmp/commands/build.ts', () => ({
+      default: withTag({ description: 'Build' }, 'Command'),
+    }))
+
+    await autoload({ dir: '/tmp/commands' })
+
+    expect(mockPathToFileURL).toHaveBeenCalledWith('/tmp/commands/build.ts')
   })
 
   it('should ignore non-ts/js files', async () => {

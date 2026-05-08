@@ -1,6 +1,7 @@
 import type { Dirent } from 'node:fs'
 import { readdir } from 'node:fs/promises'
 import { basename, extname, join, resolve } from 'node:path'
+import { pathToFileURL } from 'node:url'
 
 import { isPlainObject, isString } from '@kidd-cli/utils/fp'
 import { hasTag, withTag } from '@kidd-cli/utils/tag'
@@ -131,20 +132,25 @@ function findIndexInEntries(entries: Dirent[]): Dirent | undefined {
 /**
  * Dynamically import a file and validate that its default export is a Command.
  *
+ * Converts the absolute filesystem path to a `file://` URL before passing to
+ * `import()` so resolution works on Windows (where backslash paths are not
+ * valid ESM specifiers).
+ *
  * @private
  * @param filePath - Absolute path to the file to import.
  * @returns The Command if valid, or undefined.
  */
 async function importCommand(filePath: string): Promise<Command | undefined> {
+  const specifier = pathToFileURL(filePath).href
   try {
-    const mod: unknown = await import(filePath)
+    const mod: unknown = await import(specifier)
     if (isCommandExport(mod)) {
       return mod.default
     }
     return undefined
   } catch (error: unknown) {
     if (isDebug()) {
-      console.warn(`[kidd] failed to import command from ${filePath}:`, error)
+      console.warn(`[kidd] failed to import command from ${specifier}:`, error)
     }
     return undefined
   }
