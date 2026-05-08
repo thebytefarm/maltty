@@ -315,6 +315,39 @@ describe('build command', () => {
     })
   })
 
+  describe('verbose forwarding', () => {
+    it('should pass verbose=true through to bundler.build', async () => {
+      const ctx = makeContext({ verbose: true })
+      setupBuildSuccess()
+
+      const mod = await import('./build.js')
+      await mod.default.handler!(ctx)
+
+      expect(mockBuild).toHaveBeenCalledWith({ verbose: true })
+    })
+
+    it('should pass verbose=undefined through to bundler.build by default', async () => {
+      const ctx = makeContext()
+      setupBuildSuccess()
+
+      const mod = await import('./build.js')
+      await mod.default.handler!(ctx)
+
+      expect(mockBuild).toHaveBeenCalledWith({ verbose: undefined })
+    })
+
+    it('should pass verbose=true through to bundler.compile', async () => {
+      const ctx = makeContext({ compile: true, verbose: true })
+      setupBuildSuccess()
+      setupCompileSuccess()
+
+      const mod = await import('./build.js')
+      await mod.default.handler!(ctx)
+
+      expect(mockCompile).toHaveBeenCalledWith({ verbose: true })
+    })
+  })
+
   describe('error handling', () => {
     it('should call fail when build returns an error', async () => {
       const ctx = makeContext()
