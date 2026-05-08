@@ -86,18 +86,14 @@ function isBuildArtifact(filename: string): boolean {
  * @returns A set of filenames to remove.
  */
 function buildBinaryNames(name: string, targets: readonly string[]): ReadonlySet<string> {
-  const resolvedTargets = match(targets.length > 0)
-    .with(true, () => targets)
-    .with(false, () => compileTargets.filter((t) => t.default).map((t) => t.target))
-    .exhaustive()
-
-  const isMultiTarget = resolvedTargets.length > 1
+  const resolvedTargets = match(targets)
+    .with([], () => compileTargets.filter((t) => t.default).map((t) => t.target))
+    .otherwise(() => targets)
 
   const names = resolvedTargets.map((target) => {
-    const base = match(isMultiTarget)
-      .with(true, () => `${name}-${target}`)
-      .with(false, () => name)
-      .exhaustive()
+    const base = match(resolvedTargets.length)
+      .with(1, () => name)
+      .otherwise(() => `${name}-${target}`)
 
     if (target.startsWith('windows-')) {
       return `${base}.exe`
