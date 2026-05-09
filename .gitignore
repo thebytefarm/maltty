@@ -156,3 +156,6 @@ vite.config.ts.timestamp-*
 
 # bun
 *.bun-build
+
+# joggr (gg planning artifacts — local only)
+.joggr/
