@@ -7,11 +7,11 @@ catalog:
   '@types/node': ^25.6.0
   '@vitest/coverage-v8': ^4.1.5
   es-toolkit: ^1.45.1
-  liquidjs: ^10.25.7
+  liquidjs: ^10.26.0
   ts-pattern: ^5.9.0
   tsdown: 0.21.8
   tsx: ^4.21.0
   typescript: ^6.0.2
   vitest: ^4.1.5
-  yaml: ^2.8.3
+  yaml: ^2.9.0
   zod: ^4.3.6
