@@ -1,7 +1,0 @@
-{
-  "buildCommand": "pnpm docs:build",
-  "outputDirectory": ".zpress/dist",
-  "framework": null,
-  "installCommand": "pnpm install",
-  "ignoreCommand": "git diff HEAD^ HEAD --quiet vercel.json zpress.config.ts docs/ contributing/"
-}

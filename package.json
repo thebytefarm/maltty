@@ -26,12 +26,7 @@
     "validate": "turbo run typecheck --filter='./packages/*' && turbo run test --filter='./packages/*' && pnpm lint && pnpm format",
     "changeset": "changeset",
     "version": "changeset version",
-    "release": "pnpm build && changeset publish",
-    "docs:dev": "zpress dev",
-    "docs:build": "zpress build",
-    "docs:serve": "zpress serve",
-    "docs:sync": "zpress sync",
-    "docs:clean": "zpress clean"
+    "release": "pnpm build && changeset publish"
   },
   "devDependencies": {
     "@changesets/cli": "^2.30.0",
@@ -40,7 +35,6 @@
     "@types/node": "catalog:",
     "@typescript/native-preview": "7.0.0-dev.20260414.1",
     "@vitest/coverage-v8": "catalog:",
-    "@zpress/kit": "^0.2.19",
     "eslint-plugin-functional": "^9.0.4",
     "eslint-plugin-jsdoc": "^62.9.0",
     "eslint-plugin-security": "^4.0.0",

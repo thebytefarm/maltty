@@ -12,12 +12,12 @@ This is a breaking change for any consumer importing from `@kidd-cli/*`. The old
 
 **Migration is a find-and-replace:**
 
-| Old | New |
-|-----|-----|
-| `@kidd-cli/core` | `@maltty/core` |
-| `@kidd-cli/cli` | `@maltty/cli` |
-| `@kidd-cli/config` | `@maltty/config` |
-| `@kidd-cli/utils` | `@maltty/utils` |
+| Old                 | New               |
+| ------------------- | ----------------- |
+| `@kidd-cli/core`    | `@maltty/core`    |
+| `@kidd-cli/cli`     | `@maltty/cli`     |
+| `@kidd-cli/config`  | `@maltty/config`  |
+| `@kidd-cli/utils`   | `@maltty/utils`   |
 | `@kidd-cli/bundler` | `@maltty/bundler` |
 
 **Also renamed:**
