@@ -41,7 +41,7 @@ type TestConfig = z.infer<typeof schema>
 const validConfig: TestConfig = { name: 'test-app', port: 8080 }
 
 function createTmpDir(): string {
-  const dir = realpathSync(mkdtempSync(join(tmpdir(), 'kidd-config-mw-')))
+  const dir = realpathSync(mkdtempSync(join(tmpdir(), 'maltty-config-mw-')))
   mkdirSync(join(dir, '.git'), { recursive: true })
   return dir
 }

@@ -3,7 +3,7 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 
 import * as clack from '@clack/prompts'
-import { P, attempt, match } from '@kidd-cli/utils/fp'
+import { P, attempt, match } from '@maltty/utils/fp'
 
 import { DEFAULT_EXIT_CODE, isContextError } from '@/context/index.js'
 
@@ -94,11 +94,11 @@ function formatCause(cause: unknown): readonly string[] {
  */
 function writeCrashLog(error: Error): string | undefined {
   const now = new Date().toISOString()
-  const filename = `kidd-crash-${now.replaceAll(':', '-')}.log`
+  const filename = `maltty-crash-${now.replaceAll(':', '-')}.log`
   const logPath = join(tmpdir(), filename)
 
   const lines = [
-    'Kidd Crash Log',
+    'Maltty Crash Log',
     `Timestamp: ${now}`,
     `Node: ${process.version}`,
     `Platform: ${process.platform} ${process.arch}`,

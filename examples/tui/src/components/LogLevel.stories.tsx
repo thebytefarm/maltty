@@ -1,4 +1,4 @@
-import { stories } from '@kidd-cli/core/stories'
+import { stories } from '@maltty/core/stories'
 import { z } from 'zod'
 
 import type { LogLevelProps } from './LogLevel'

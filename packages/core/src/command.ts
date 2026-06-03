@@ -1,5 +1,5 @@
-import { match } from '@kidd-cli/utils/fp'
-import { withTag } from '@kidd-cli/utils/tag'
+import { match } from '@maltty/utils/fp'
+import { withTag } from '@maltty/utils/tag'
 
 import type {
   ArgsDef,

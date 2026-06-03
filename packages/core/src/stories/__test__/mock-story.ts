@@ -1,4 +1,4 @@
-import { withTag } from '@kidd-cli/utils/tag'
+import { withTag } from '@maltty/utils/tag'
 
 import type { Story, StoryEntry } from '../types.js'
 

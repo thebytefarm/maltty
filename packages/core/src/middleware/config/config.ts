@@ -1,8 +1,8 @@
 import { join } from 'node:path'
 
-import { P, err, isPlainObject, match, merge, ok } from '@kidd-cli/utils/fp'
-import type { Result } from '@kidd-cli/utils/fp'
-import { validate } from '@kidd-cli/utils/validate'
+import { P, err, isPlainObject, match, merge, ok } from '@maltty/utils/fp'
+import type { Result } from '@maltty/utils/fp'
+import { validate } from '@maltty/utils/validate'
 import type { ZodTypeAny } from 'zod'
 import { z } from 'zod'
 

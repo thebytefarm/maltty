@@ -1,11 +1,11 @@
-# @kidd-cli/core
+# @maltty/core
 
 An opinionated CLI framework for Node.js built on yargs, Zod, and functional TypeScript patterns.
 
 ## Installation
 
 ```bash
-pnpm add @kidd-cli/core
+pnpm add @maltty/core
 ```
 
 ## Usage
@@ -13,12 +13,12 @@ pnpm add @kidd-cli/core
 ### Define a CLI
 
 ```ts
-import { cli } from '@kidd-cli/core'
+import { cli } from '@maltty/core'
 
 await cli({
   name: 'my-tool',
   version: '1.0.0',
-  description: 'A CLI built with kidd',
+  description: 'A CLI built with maltty',
   commands: './commands',
 })
 ```
@@ -26,7 +26,7 @@ await cli({
 ### Define a command
 
 ```ts
-import { command } from '@kidd-cli/core'
+import { command } from '@maltty/core'
 
 export default command({
   description: 'Greet a user',
@@ -42,7 +42,7 @@ export default command({
 ### Define middleware
 
 ```ts
-import { middleware, decorateContext } from '@kidd-cli/core'
+import { middleware, decorateContext } from '@maltty/core'
 
 const withUser = middleware<{ Variables: { user: User } }>(async (ctx, next) => {
   decorateContext(ctx, 'user', await fetchUser())
@@ -52,10 +52,10 @@ const withUser = middleware<{ Variables: { user: User } }>(async (ctx, next) => 
 
 ### Configuration
 
-Create a `kidd.config.ts` in your project root:
+Create a `maltty.config.ts` in your project root:
 
 ```ts
-import { defineConfig } from '@kidd-cli/core'
+import { defineConfig } from '@maltty/core'
 
 export default defineConfig({
   entry: './src/index.ts',
@@ -65,20 +65,20 @@ export default defineConfig({
 
 ## Subpath exports
 
-| Export                   | Description                        |
-| ------------------------ | ---------------------------------- |
-| `@kidd-cli/core`         | CLI bootstrap, command, middleware |
-| `@kidd-cli/core/report`  | Structured reporting middleware    |
-| `@kidd-cli/core/config`  | Runtime config access              |
-| `@kidd-cli/core/format`  | Terminal formatting utilities      |
-| `@kidd-cli/core/store`   | Key-value store                    |
-| `@kidd-cli/core/project` | Project detection helpers          |
-| `@kidd-cli/core/auth`    | Authentication middleware          |
-| `@kidd-cli/core/http`    | HTTP client middleware             |
-| `@kidd-cli/core/icons`   | Icon set middleware                |
-| `@kidd-cli/core/stories` | Stories viewer for component dev   |
-| `@kidd-cli/core/test`    | Test utilities for commands        |
+| Export                 | Description                        |
+| ---------------------- | ---------------------------------- |
+| `@maltty/core`         | CLI bootstrap, command, middleware |
+| `@maltty/core/report`  | Structured reporting middleware    |
+| `@maltty/core/config`  | Runtime config access              |
+| `@maltty/core/format`  | Terminal formatting utilities      |
+| `@maltty/core/store`   | Key-value store                    |
+| `@maltty/core/project` | Project detection helpers          |
+| `@maltty/core/auth`    | Authentication middleware          |
+| `@maltty/core/http`    | HTTP client middleware             |
+| `@maltty/core/icons`   | Icon set middleware                |
+| `@maltty/core/stories` | Stories viewer for component dev   |
+| `@maltty/core/test`    | Test utilities for commands        |
 
 ## License
 
-MIT -- [GitHub](https://github.com/joggrdocs/kidd)
+MIT -- [GitHub](https://github.com/thebytefarm/maltty)

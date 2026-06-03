@@ -1,4 +1,4 @@
-import type { CommandContext } from '@kidd-cli/core'
+import type { CommandContext } from '@maltty/core'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 vi.mock(import('../../lib/detect.js'), () => ({
@@ -49,7 +49,7 @@ function makeContext(argOverrides: Record<string, unknown> = {}): CommandContext
       text: vi.fn(),
     },
     status: { spinner: { message: vi.fn(), start: vi.fn(), stop: vi.fn() } },
-    meta: { command: ['add', 'middleware'], name: 'kidd', version: '0.0.0' },
+    meta: { command: ['add', 'middleware'], name: 'maltty', version: '0.0.0' },
     store: { clear: vi.fn(), delete: vi.fn(), get: vi.fn(), has: vi.fn(), set: vi.fn() },
   } as unknown as CommandContext
 }
@@ -65,7 +65,7 @@ describe('add middleware', () => {
       null,
       {
         commandsDir: '/project/src/commands',
-        hasKiddDep: true,
+        hasMalttyDep: true,
         rootDir: '/project',
       },
     ])
@@ -90,7 +90,7 @@ describe('add middleware', () => {
       null,
       {
         commandsDir: '/project/src/commands',
-        hasKiddDep: true,
+        hasMalttyDep: true,
         rootDir: '/project',
       },
     ])
@@ -116,7 +116,7 @@ describe('add middleware', () => {
       null,
       {
         commandsDir: null,
-        hasKiddDep: true,
+        hasMalttyDep: true,
         rootDir: '/project',
       },
     ])
@@ -139,7 +139,7 @@ describe('add middleware', () => {
       null,
       {
         commandsDir: null,
-        hasKiddDep: true,
+        hasMalttyDep: true,
         rootDir: '/project',
       },
     ])
@@ -157,12 +157,12 @@ describe('add middleware', () => {
     )
   })
 
-  it('should fail when not in a kidd project', async () => {
+  it('should fail when not in a maltty project', async () => {
     const ctx = makeContext({ name: 'auth' })
     mockedDetectProject.mockResolvedValue([null, null])
 
     const mod = await import('./middleware.js')
-    await expect(mod.default.handler!(ctx)).rejects.toThrow('Not in a kidd project')
+    await expect(mod.default.handler!(ctx)).rejects.toThrow('Not in a maltty project')
   })
 
   it('should fail when detect returns an error', async () => {
@@ -177,7 +177,7 @@ describe('add middleware', () => {
     const ctx = makeContext({ name: 'MyMiddleware' })
     mockedDetectProject.mockResolvedValue([
       null,
-      { commandsDir: null, hasKiddDep: true, rootDir: '/project' },
+      { commandsDir: null, hasMalttyDep: true, rootDir: '/project' },
     ])
 
     const mod = await import('./middleware.js')
@@ -188,7 +188,7 @@ describe('add middleware', () => {
     const ctx = makeContext({ description: 'Auth', name: 'auth' })
     mockedDetectProject.mockResolvedValue([
       null,
-      { commandsDir: null, hasKiddDep: true, rootDir: '/project' },
+      { commandsDir: null, hasMalttyDep: true, rootDir: '/project' },
     ])
     mockedRenderTemplate.mockResolvedValue([new Error('render failed'), null])
 
@@ -201,7 +201,7 @@ describe('add middleware', () => {
     const ctx = makeContext({ description: 'Auth', name: 'auth' })
     mockedDetectProject.mockResolvedValue([
       null,
-      { commandsDir: null, hasKiddDep: true, rootDir: '/project' },
+      { commandsDir: null, hasMalttyDep: true, rootDir: '/project' },
     ])
     mockedRenderTemplate.mockResolvedValue([
       null,
@@ -218,7 +218,7 @@ describe('add middleware', () => {
     const ctx = makeContext({ description: 'Auth', name: 'auth' })
     mockedDetectProject.mockResolvedValue([
       null,
-      { commandsDir: null, hasKiddDep: true, rootDir: '/project' },
+      { commandsDir: null, hasMalttyDep: true, rootDir: '/project' },
     ])
     mockedRenderTemplate.mockResolvedValue([
       null,
@@ -236,7 +236,7 @@ describe('add middleware', () => {
     const ctx = makeContext({ description: 'Auth', name: 'auth' })
     mockedDetectProject.mockResolvedValue([
       null,
-      { commandsDir: null, hasKiddDep: true, rootDir: '/project' },
+      { commandsDir: null, hasMalttyDep: true, rootDir: '/project' },
     ])
     mockedRenderTemplate.mockResolvedValue([
       null,
@@ -254,7 +254,7 @@ describe('add middleware', () => {
     const ctx = makeContext({ name: 'auth' })
     mockedDetectProject.mockResolvedValue([
       null,
-      { commandsDir: null, hasKiddDep: true, rootDir: '/project' },
+      { commandsDir: null, hasMalttyDep: true, rootDir: '/project' },
     ])
     vi.mocked(ctx.prompts.text).mockResolvedValueOnce('Auth middleware')
     mockedRenderTemplate.mockResolvedValue([

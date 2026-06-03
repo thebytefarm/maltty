@@ -15,7 +15,7 @@ Show only the critical parts. Omit imports, boilerplate, and obvious code.
 This example is focused on the API.
 
 ```ts
-const config = await loadConfig('kidd')
+const config = await loadConfig('maltty')
 const scripts = discoverScripts(config)
 ```
 
@@ -31,7 +31,7 @@ import { createContext } from './runtime/context'
 import { log } from '@clack/prompts'
 
 async function main() {
-  const config = await loadConfig('kidd')
+  const config = await loadConfig('maltty')
   const scripts = discoverScripts(config)
   const runner = createRunner(config)
   const context = createContext({ cwd: process.cwd() })
@@ -53,7 +53,7 @@ When the reader should copy the entire block, show everything including imports 
 
 ```ts
 // Full file template - reader copies this
-import { cli, z } from '@kidd-cli/core'
+import { cli, z } from '@maltty/core'
 
 export default cli({
   description: 'Generate types from the API schema',

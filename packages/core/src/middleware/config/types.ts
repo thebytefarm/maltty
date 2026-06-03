@@ -148,9 +148,9 @@ export interface ConfigMiddlewareOptions<TSchema extends ZodTypeAny> {
  * Use this in a `declare module` block to type `ctx.config` via the registry:
  *
  * ```ts
- * import type { ConfigType } from '@kidd-cli/core/config'
+ * import type { ConfigType } from '@maltty/core/config'
  *
- * declare module '@kidd-cli/core/config' {
+ * declare module '@maltty/core/config' {
  *   interface ConfigRegistry extends ConfigType<typeof configSchema> {}
  * }
  * ```
@@ -176,11 +176,11 @@ export type ResolvedConfig = keyof ConfigRegistry extends never
 // Module augmentation
 // ---------------------------------------------------------------------------
 
-declare module '@kidd-cli/core' {
+declare module '@maltty/core' {
   interface CommandContext {
     /**
      * Config handle for lazy, on-demand config loading.
-     * Added by the config middleware (`@kidd-cli/core/config`).
+     * Added by the config middleware (`@maltty/core/config`).
      *
      * Call `ctx.config.load()` to read and validate config from disk.
      * Results are cached after the first successful load.

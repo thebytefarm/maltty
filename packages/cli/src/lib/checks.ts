@@ -1,12 +1,12 @@
 import { dirname, join, relative } from 'node:path'
 
-import { DEFAULT_COMMANDS, DEFAULT_ENTRY } from '@kidd-cli/bundler'
-import type { LoadConfigResult } from '@kidd-cli/config/utils'
-import { err, ok } from '@kidd-cli/utils/fp'
-import type { ResultAsync } from '@kidd-cli/utils/fp'
-import { jsonParse, jsonStringify } from '@kidd-cli/utils/json'
-import type { Manifest } from '@kidd-cli/utils/manifest'
-import { fs } from '@kidd-cli/utils/node'
+import { DEFAULT_COMMANDS, DEFAULT_ENTRY } from '@maltty/bundler'
+import type { LoadConfigResult } from '@maltty/config/utils'
+import { err, ok } from '@maltty/utils/fp'
+import type { ResultAsync } from '@maltty/utils/fp'
+import { jsonParse, jsonStringify } from '@maltty/utils/json'
+import type { Manifest } from '@maltty/utils/manifest'
+import { fs } from '@maltty/utils/node'
 
 // ---------------------------------------------------------------------------
 // Types
@@ -140,26 +140,26 @@ function fixResult(params: {
 // ---------------------------------------------------------------------------
 
 /**
- * Check whether a kidd config file exists.
+ * Check whether a maltty config file exists.
  *
  * @private
  * @param context - The diagnostic check context.
  * @returns A CheckResult indicating pass or fail.
  */
-async function checkKiddConfig(context: CheckContext): Promise<CheckResult> {
+async function checkMalttyConfig(context: CheckContext): Promise<CheckResult> {
   if (context.configResult && context.configResult.configFile) {
     const rel = relative(context.cwd, context.configResult.configFile)
     return checkResult({
       message: `Config file found at ./${rel}`,
-      name: 'kidd.config',
+      name: 'maltty.config',
       status: 'pass',
     })
   }
 
   return checkResult({
-    hint: 'Run "kidd init" to scaffold a config file',
+    hint: 'Run "maltty init" to scaffold a config file',
     message: 'No config file found',
-    name: 'kidd.config',
+    name: 'maltty.config',
     status: 'fail',
   })
 }
@@ -178,7 +178,7 @@ async function checkConfigSchema(context: CheckContext): Promise<CheckResult> {
 
   if (context.configError) {
     return checkResult({
-      hint: 'Check your kidd.config.ts for syntax or schema errors',
+      hint: 'Check your maltty.config.ts for syntax or schema errors',
       message: `Config validation failed: ${context.configError.message}`,
       name: 'config schema',
       status: 'fail',
@@ -257,18 +257,18 @@ async function checkModuleType(context: CheckContext): Promise<CheckResult> {
 }
 
 /**
- * Check whether kidd is listed as a dependency or devDependency.
+ * Check whether maltty is listed as a dependency or devDependency.
  *
  * @private
  * @param context - The diagnostic check context.
  * @returns A CheckResult indicating pass or fail.
  */
-async function checkKiddDependency(context: CheckContext): Promise<CheckResult> {
+async function checkMalttyDependency(context: CheckContext): Promise<CheckResult> {
   if (!context.rawPackageJson) {
     return checkResult({
       hint: 'Run "pnpm init" to create a package.json first',
       message: 'No package.json found',
-      name: '@kidd-cli/core dependency',
+      name: '@maltty/core dependency',
       status: 'fail',
     })
   }
@@ -276,26 +276,26 @@ async function checkKiddDependency(context: CheckContext): Promise<CheckResult> 
   const deps = context.rawPackageJson.dependencies ?? {}
   const devDeps = context.rawPackageJson.devDependencies ?? {}
 
-  if ('@kidd-cli/core' in deps) {
+  if ('@maltty/core' in deps) {
     return checkResult({
       message: 'Found in dependencies',
-      name: '@kidd-cli/core dependency',
+      name: '@maltty/core dependency',
       status: 'pass',
     })
   }
 
-  if ('@kidd-cli/core' in devDeps) {
+  if ('@maltty/core' in devDeps) {
     return checkResult({
       message: 'Found in devDependencies',
-      name: '@kidd-cli/core dependency',
+      name: '@maltty/core dependency',
       status: 'pass',
     })
   }
 
   return checkResult({
-    hint: 'Run "pnpm add @kidd-cli/core" or use --fix to add it (fixable with --fix)',
+    hint: 'Run "pnpm add @maltty/core" or use --fix to add it (fixable with --fix)',
     message: 'Not found in dependencies or devDependencies',
-    name: '@kidd-cli/core dependency',
+    name: '@maltty/core dependency',
     status: 'fail',
   })
 }
@@ -320,7 +320,7 @@ async function checkEntryPoint(context: CheckContext): Promise<CheckResult> {
 
   if (!config) {
     return checkResult({
-      hint: 'Create the entry file or update "entry" in kidd.config.ts (fixable with --fix)',
+      hint: 'Create the entry file or update "entry" in maltty.config.ts (fixable with --fix)',
       message: `No config, default not found: ${entryPath}`,
       name: 'entry point',
       status: 'warn',
@@ -328,7 +328,7 @@ async function checkEntryPoint(context: CheckContext): Promise<CheckResult> {
   }
 
   return checkResult({
-    hint: 'Create the entry file or update "entry" in kidd.config.ts (fixable with --fix)',
+    hint: 'Create the entry file or update "entry" in maltty.config.ts (fixable with --fix)',
     message: `Not found: ${entryPath}`,
     name: 'entry point',
     status: 'fail',
@@ -359,7 +359,7 @@ async function checkCommandsDirectory(context: CheckContext): Promise<CheckResul
 
   if (!config) {
     return checkResult({
-      hint: 'Create the directory or update "commands" in kidd.config.ts (fixable with --fix)',
+      hint: 'Create the directory or update "commands" in maltty.config.ts (fixable with --fix)',
       message: `No config, default not found: ${commandsPath}`,
       name: 'commands directory',
       status: 'warn',
@@ -367,7 +367,7 @@ async function checkCommandsDirectory(context: CheckContext): Promise<CheckResul
   }
 
   return checkResult({
-    hint: 'Create the directory or update "commands" in kidd.config.ts (fixable with --fix)',
+    hint: 'Create the directory or update "commands" in maltty.config.ts (fixable with --fix)',
     message: `Not found: ${commandsPath}`,
     name: 'commands directory',
     status: 'fail',
@@ -422,18 +422,18 @@ async function fixModuleType(context: CheckContext): Promise<FixResult> {
 }
 
 /**
- * Fix the kidd dependency by adding it to package.json dependencies.
+ * Fix the maltty dependency by adding it to package.json dependencies.
  *
  * @private
  * @param context - The diagnostic check context.
  * @returns A FixResult indicating whether the fix was applied.
  */
-async function fixKiddDependency(context: CheckContext): Promise<FixResult> {
+async function fixMalttyDependency(context: CheckContext): Promise<FixResult> {
   const [updateError] = await updatePackageJson(context.cwd, (pkg) => {
     const deps = pkg.dependencies ?? {}
     return {
       ...pkg,
-      dependencies: { ...deps, '@kidd-cli/core': 'latest' },
+      dependencies: { ...deps, '@maltty/core': 'latest' },
     }
   })
 
@@ -441,14 +441,14 @@ async function fixKiddDependency(context: CheckContext): Promise<FixResult> {
     return fixResult({
       fixed: false,
       message: updateError.message,
-      name: '@kidd-cli/core dependency',
+      name: '@maltty/core dependency',
     })
   }
 
   return fixResult({
     fixed: true,
-    message: 'Added "@kidd-cli/core": "latest" to dependencies',
-    name: '@kidd-cli/core dependency',
+    message: 'Added "@maltty/core": "latest" to dependencies',
+    name: '@maltty/core dependency',
   })
 }
 
@@ -473,7 +473,7 @@ async function fixEntryPoint(context: CheckContext): Promise<FixResult> {
     })
   }
 
-  const content = `import { create } from '@kidd-cli/core'\n`
+  const content = `import { create } from '@maltty/core'\n`
   const [writeError] = await fs.write(absolutePath, content)
   if (writeError) {
     return fixResult({
@@ -514,12 +514,12 @@ async function fixCommandsDirectory(context: CheckContext): Promise<FixResult> {
  * All diagnostic checks to run in order.
  */
 export const CHECKS: readonly DiagnosticCheck[] = [
-  { name: 'kidd.config', run: checkKiddConfig },
+  { name: 'maltty.config', run: checkMalttyConfig },
   { name: 'config schema', run: checkConfigSchema },
   { name: 'package.json', run: checkPackageJson },
   { name: 'package version', run: checkPackageVersion },
   { fix: fixModuleType, name: 'module type', run: checkModuleType },
-  { fix: fixKiddDependency, name: '@kidd-cli/core dependency', run: checkKiddDependency },
+  { fix: fixMalttyDependency, name: '@maltty/core dependency', run: checkMalttyDependency },
   { fix: fixEntryPoint, name: 'entry point', run: checkEntryPoint },
   { fix: fixCommandsDirectory, name: 'commands directory', run: checkCommandsDirectory },
   { name: 'tsconfig.json', run: checkTsconfig },
@@ -558,7 +558,7 @@ export async function readRawPackageJson(cwd: string): ResultAsync<RawPackageJso
 // ---------------------------------------------------------------------------
 
 /**
- * Extract a KiddConfig from a load result, returning null when absent.
+ * Extract a MalttyConfig from a load result, returning null when absent.
  *
  * @private
  * @param result - The config load result, or null.

@@ -1,4 +1,4 @@
-import type { Result } from '@kidd-cli/utils/fp'
+import type { Result } from '@maltty/utils/fp'
 import type { z } from 'zod'
 
 // ---------------------------------------------------------------------------

@@ -1,20 +1,20 @@
 import { join } from 'node:path'
 
-import { ok } from '@kidd-cli/utils/fp'
-import type { ResultAsync } from '@kidd-cli/utils/fp'
-import { jsonParse } from '@kidd-cli/utils/json'
-import { fs } from '@kidd-cli/utils/node'
+import { ok } from '@maltty/utils/fp'
+import type { ResultAsync } from '@maltty/utils/fp'
+import { jsonParse } from '@maltty/utils/json'
+import { fs } from '@maltty/utils/node'
 
 import type { GenerateError, ProjectInfo } from './types.js'
 
 /**
- * Detect whether the given directory contains a kidd-based CLI project.
+ * Detect whether the given directory contains a maltty-based CLI project.
  *
- * Looks for a `package.json` with `@kidd-cli/core` listed in `dependencies` or
+ * Looks for a `package.json` with `@maltty/core` listed in `dependencies` or
  * `devDependencies`, and checks for a `src/commands/` directory.
  *
  * @param cwd - The directory to inspect.
- * @returns An async Result containing project info or null when no kidd project is found.
+ * @returns An async Result containing project info or null when no maltty project is found.
  */
 export async function detectProject(cwd: string): ResultAsync<ProjectInfo | null, GenerateError> {
   const packageJsonPath = join(cwd, 'package.json')
@@ -30,9 +30,9 @@ export async function detectProject(cwd: string): ResultAsync<ProjectInfo | null
 
   const deps = pkg.dependencies ?? {}
   const devDeps = pkg.devDependencies ?? {}
-  const hasKiddDep = '@kidd-cli/core' in deps || '@kidd-cli/core' in devDeps
+  const hasMalttyDep = '@maltty/core' in deps || '@maltty/core' in devDeps
 
-  if (!hasKiddDep) {
+  if (!hasMalttyDep) {
     return ok(null)
   }
 
@@ -42,14 +42,14 @@ export async function detectProject(cwd: string): ResultAsync<ProjectInfo | null
   if (commandsDirExists) {
     return ok({
       commandsDir: commandsPath,
-      hasKiddDep,
+      hasMalttyDep,
       rootDir: cwd,
     })
   }
 
   return ok({
     commandsDir: null,
-    hasKiddDep,
+    hasMalttyDep,
     rootDir: cwd,
   })
 }

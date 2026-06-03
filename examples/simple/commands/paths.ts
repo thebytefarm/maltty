@@ -1,11 +1,11 @@
 import { sep } from 'node:path'
 
-import { command } from '@kidd-cli/core'
+import { command } from '@maltty/core'
 import { match } from 'ts-pattern'
 
 /**
  * Exercise path-related context APIs so cross-platform integration tests
- * can verify that kidd never produces mixed or hardcoded separators.
+ * can verify that maltty never produces mixed or hardcoded separators.
  */
 export default command({
   description: 'Display resolved paths for this CLI',

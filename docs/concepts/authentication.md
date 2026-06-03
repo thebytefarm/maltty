@@ -1,8 +1,8 @@
 # Authentication
 
-The auth system for kidd CLIs. Provides credential resolution from multiple sources, an interactive login flow, persistent token storage, and automatic HTTP header injection.
+The auth system for maltty CLIs. Provides credential resolution from multiple sources, an interactive login flow, persistent token storage, and automatic HTTP header injection.
 
-Auth is a sub-export of the `@kidd-cli/core` package (`@kidd-cli/core/auth`), not a separate package. It ships as middleware that decorates `ctx.auth` with a `credential()` reader, a `login()` method, and a `logout()` method.
+Auth is a sub-export of the `@maltty/core` package (`@maltty/core/auth`), not a separate package. It ships as middleware that decorates `ctx.auth` with a `credential()` reader, a `login()` method, and a `logout()` method.
 
 ## Key Concepts
 
@@ -52,7 +52,7 @@ interface CustomCredential {
 
 ### Token Storage
 
-Credentials are persisted as JSON files using kidd's file store system.
+Credentials are persisted as JSON files using maltty's file store system.
 
 | Location | Path                     | Resolution order |
 | -------- | ------------------------ | ---------------- |
@@ -75,7 +75,7 @@ Credentials loaded from disk are validated against a Zod schema. Invalid data is
 The `auth` function doubles as a namespace with builder methods for constructing strategy configs. Each builder returns the same `StrategyConfig` type with the `source` discriminator pre-filled. Raw config objects (`{ source: 'env' }`) still work.
 
 ```ts
-import { auth } from '@kidd-cli/core/auth'
+import { auth } from '@maltty/core/auth'
 
 auth({
   strategies: [
@@ -143,7 +143,7 @@ auth.dotenv({ tokenVar: 'API_TOKEN', path: './.env.local' })
 
 ### `file` -- JSON File
 
-Reads any credential type from a JSON file on disk via kidd's store system.
+Reads any credential type from a JSON file on disk via maltty's store system.
 
 ```ts
 auth.file({ filename: 'auth.json', dirName: '.my-app' })
@@ -299,7 +299,7 @@ Auth is opt-in by default. The `auth()` middleware decorates `ctx.auth` with cre
 Use the built-in `auth.require()` helper to create a middleware that checks `ctx.auth.authenticated()` and calls `ctx.fail()` to short-circuit before the handler runs:
 
 ```ts
-import { auth } from '@kidd-cli/core/auth'
+import { auth } from '@maltty/core/auth'
 
 const requireAuth = auth.require()
 ```
@@ -313,7 +313,7 @@ const requireAuth = auth.require({ message: 'Not authenticated. Run `my-app logi
 Alternatively, write a custom middleware for full control:
 
 ```ts
-import { middleware } from '@kidd-cli/core'
+import { middleware } from '@maltty/core'
 
 const requireAuth = middleware((ctx, next) => {
   if (!ctx.auth.authenticated()) {
@@ -329,8 +329,8 @@ const requireAuth = middleware((ctx, next) => {
 Apply the middleware to individual commands via the `middleware` array. This is the recommended approach when only some commands require authentication (login, help, and version remain open).
 
 ```ts
-import { command } from '@kidd-cli/core'
-import { auth } from '@kidd-cli/core/auth'
+import { command } from '@maltty/core'
+import { auth } from '@maltty/core/auth'
 
 const requireAuth = auth.require()
 
@@ -362,14 +362,14 @@ See the [Add Authentication guide](../guides/add-authentication.md#3-guard-comma
 
 ## HTTP Integration
 
-Auth and HTTP are separate middleware. The `http()` middleware (from `@kidd-cli/core/http`) creates a typed HTTP client on `ctx[namespace]`. To inject auth credentials into HTTP requests automatically, use `auth.headers()` as the `headers` option on `http()`.
+Auth and HTTP are separate middleware. The `http()` middleware (from `@maltty/core/http`) creates a typed HTTP client on `ctx[namespace]`. To inject auth credentials into HTTP requests automatically, use `auth.headers()` as the `headers` option on `http()`.
 
 `auth.headers()` returns a function `(ctx) => headers` that reads `ctx.auth.credential()` and converts it into the appropriate HTTP header format. It returns an empty record when no auth middleware is present or no credential exists.
 
 ```ts
-import { cli } from '@kidd-cli/core'
-import { auth } from '@kidd-cli/core/auth'
-import { http } from '@kidd-cli/core/http'
+import { cli } from '@maltty/core'
+import { auth } from '@maltty/core/auth'
+import { http } from '@maltty/core/http'
 
 cli({
   name: 'my-app',
@@ -422,7 +422,7 @@ Both `ctx.api` and `ctx.admin` get auth credential headers injected automaticall
 The `http()` middleware does not require `auth()`. Use it standalone for public APIs or when providing headers explicitly.
 
 ```ts
-import { http } from '@kidd-cli/core/http'
+import { http } from '@maltty/core/http'
 
 // Static headers
 http({
@@ -455,6 +455,6 @@ http({
 
 ## References
 
-- [Core Reference](../reference/kidd.md)
+- [Core Reference](../reference/maltty.md)
 - [Context](./context.md)
 - [Add Authentication Guide](../guides/add-authentication.md)

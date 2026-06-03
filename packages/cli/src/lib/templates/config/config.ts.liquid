@@ -1,4 +1,4 @@
-import type { ConfigType } from '@kidd-cli/core'
+import type { ConfigType } from '@maltty/core'
 import { z } from 'zod'
 
 /**
@@ -11,6 +11,6 @@ export const configSchema = z.object({
   // Add your config fields here
 })
 
-declare module '@kidd-cli/core' {
+declare module '@maltty/core' {
   interface CliConfig extends ConfigType<typeof configSchema> {}
 }

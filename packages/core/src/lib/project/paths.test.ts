@@ -21,7 +21,7 @@ vi.mock(import('node:os'), async (importOriginal) => {
  * paths match what resolve() / process.cwd() produce.
  */
 function createTempDir(): string {
-  return realpathSync(mkdtempSync(join(tmpdir(), 'kidd-test-')))
+  return realpathSync(mkdtempSync(join(tmpdir(), 'maltty-test-')))
 }
 
 describe('resolveLocalPath()', () => {

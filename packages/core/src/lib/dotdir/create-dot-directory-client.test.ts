@@ -13,7 +13,7 @@ describe('createDotDirectoryClient()', () => {
   let registry: ReturnType<typeof createProtectionRegistry>
 
   beforeEach(() => {
-    tmpDir = mkdtempSync(join(tmpdir(), 'kidd-dotdir-'))
+    tmpDir = mkdtempSync(join(tmpdir(), 'maltty-dotdir-'))
     registry = createProtectionRegistry()
   })
 

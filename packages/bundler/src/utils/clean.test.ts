@@ -6,7 +6,7 @@ import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 
 import { clean } from './clean.js'
 
-const testDir = join(tmpdir(), `kidd-clean-test-${Date.now()}`)
+const testDir = join(tmpdir(), `maltty-clean-test-${Date.now()}`)
 
 function makeResolved(
   overrides: {

@@ -11,7 +11,7 @@ import { findProjectRoot } from './root.js'
  * paths match what resolve() / process.cwd() produce.
  */
 function createTempDir(): string {
-  return realpathSync(mkdtempSync(join(tmpdir(), 'kidd-test-')))
+  return realpathSync(mkdtempSync(join(tmpdir(), 'maltty-test-')))
 }
 
 describe('findProjectRoot()', () => {

@@ -2,9 +2,9 @@ import type { Dirent } from 'node:fs'
 import { readdir } from 'node:fs/promises'
 import { basename, extname, join, resolve } from 'node:path'
 
-import { isPlainObject, isString } from '@kidd-cli/utils/fp'
-import { path as pathUtils } from '@kidd-cli/utils/node'
-import { hasTag, withTag } from '@kidd-cli/utils/tag'
+import { isPlainObject, isString } from '@maltty/utils/fp'
+import { path as pathUtils } from '@maltty/utils/node'
+import { hasTag, withTag } from '@maltty/utils/tag'
 import { match } from 'ts-pattern'
 
 import { isDebug } from './lib/debug.js'
@@ -150,7 +150,7 @@ async function importCommand(filePath: string): Promise<Command | undefined> {
     return undefined
   } catch (error: unknown) {
     if (isDebug()) {
-      console.warn(`[kidd] failed to import command from ${specifier}:`, error)
+      console.warn(`[maltty] failed to import command from ${specifier}:`, error)
     }
     return undefined
   }
@@ -250,7 +250,7 @@ function deduplicateCommandPairs(
       const [name] = pair
       if (acc.seen.has(name)) {
         console.warn(
-          `[kidd] duplicate command name "${name}" — first definition wins, later definition ignored`
+          `[maltty] duplicate command name "${name}" — first definition wins, later definition ignored`
         )
         return acc
       }

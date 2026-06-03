@@ -1,5 +1,5 @@
 {
-  "name": "kidd-mono",
+  "name": "maltty-mono",
   "version": "1.0.0",
   "private": true,
   "description": "",
@@ -15,7 +15,7 @@
     "build": "turbo run build --filter='./packages/*'",
     "build:examples": "turbo run build --filter='./examples/*'",
     "dev": "turbo run dev",
-    "stories": "pnpm build && kidd stories --cwd packages/core",
+    "stories": "pnpm build && maltty stories --cwd packages/core",
     "test": "turbo run test test:exports",
     "test:integration": "vitest run --project integration",
     "test:exports": "vitest run --project exports",
@@ -36,7 +36,7 @@
   "devDependencies": {
     "@changesets/cli": "^2.30.0",
     "@clack/prompts": "^1.2.0",
-    "@kidd-cli/cli": "workspace:*",
+    "@maltty/cli": "workspace:*",
     "@types/node": "catalog:",
     "@typescript/native-preview": "7.0.0-dev.20260414.1",
     "@vitest/coverage-v8": "catalog:",

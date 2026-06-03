@@ -1,8 +1,8 @@
 import { existsSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
 
-import { attempt, err, ok } from '@kidd-cli/utils/fp'
-import type { Result } from '@kidd-cli/utils/fp'
+import { attempt, err, ok } from '@maltty/utils/fp'
+import type { Result } from '@maltty/utils/fp'
 import { parse } from 'yaml'
 import { z } from 'zod'
 

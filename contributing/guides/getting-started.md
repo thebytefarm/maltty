@@ -1,6 +1,6 @@
 # Get Started Contributing
 
-Set up your local environment to contribute to kidd.
+Set up your local environment to contribute to maltty.
 
 ## Prerequisites
 
@@ -14,8 +14,8 @@ Set up your local environment to contribute to kidd.
 ### 1. Fork and clone
 
 ```bash
-gh repo fork joggrdocs/kidd --clone
-cd kidd
+gh repo fork thebytefarm/maltty --clone
+cd maltty
 ```
 
 ### 2. Install dependencies
@@ -42,7 +42,7 @@ pnpm test
 
 Read the project docs in this order:
 
-1. [`CLAUDE.md`](https://github.com/joggrdocs/kidd/blob/main/CLAUDE.md) -- tech stack, project structure, available commands
+1. [`CLAUDE.md`](https://github.com/thebytefarm/maltty/blob/main/CLAUDE.md) -- tech stack, project structure, available commands
 2. [`contributing/concepts/architecture.md`](../concepts/architecture.md) -- system layers, packages, and data flow
 3. [`contributing/concepts/cli.md`](../concepts/cli.md) -- commands, context, middleware, and error flow
 4. Relevant standards in [`contributing/standards/`](../standards/) as needed
@@ -97,5 +97,5 @@ pnpm install
 ## References
 
 - [Architecture](../concepts/architecture.md)
-- [CONTRIBUTING.md](https://github.com/joggrdocs/kidd/blob/main/CONTRIBUTING.md)
-- [CLAUDE.md](https://github.com/joggrdocs/kidd/blob/main/CLAUDE.md)
+- [CONTRIBUTING.md](https://github.com/thebytefarm/maltty/blob/main/CONTRIBUTING.md)
+- [CLAUDE.md](https://github.com/thebytefarm/maltty/blob/main/CLAUDE.md)

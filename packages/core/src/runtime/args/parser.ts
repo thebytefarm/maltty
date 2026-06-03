@@ -1,6 +1,6 @@
-import { ok } from '@kidd-cli/utils/fp'
-import type { Result } from '@kidd-cli/utils/fp'
-import { validate } from '@kidd-cli/utils/validate'
+import { ok } from '@maltty/utils/fp'
+import type { Result } from '@maltty/utils/fp'
+import { validate } from '@maltty/utils/validate'
 import type { z } from 'zod'
 
 import type { ArgsDef } from '@/types/index.js'

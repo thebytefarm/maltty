@@ -1,10 +1,10 @@
 import { join } from 'node:path'
 
-import type { CompileTarget } from '@kidd-cli/config'
-import { compileTargets } from '@kidd-cli/config/utils'
-import { err, ok } from '@kidd-cli/utils/fp'
-import type { Result, ResultAsync } from '@kidd-cli/utils/fp'
-import { fs, process } from '@kidd-cli/utils/node'
+import type { CompileTarget } from '@maltty/config'
+import { compileTargets } from '@maltty/config/utils'
+import { err, ok } from '@maltty/utils/fp'
+import type { Result, ResultAsync } from '@maltty/utils/fp'
+import { fs, process } from '@maltty/utils/node'
 import { match } from 'ts-pattern'
 
 import type {
@@ -17,7 +17,7 @@ import type {
 import { resolveBuildEntry } from '../utils/resolve-build-entry.js'
 
 /**
- * Compile a kidd CLI tool into standalone binaries using `bun build --compile`.
+ * Compile a maltty CLI tool into standalone binaries using `bun build --compile`.
  *
  * Expects the bundled entry to already exist in `outDir` (i.e., `build()` must
  * be run first). For each requested target (or defaults when none configured),
@@ -252,12 +252,12 @@ function appendBinaryExtension(base: string, target: CompileTarget): string {
 /**
  * Map a `CompileTarget` to Bun's `--target` string.
  *
- * Every supported kidd target must have an explicit mapping. An unrecognized
+ * Every supported maltty target must have an explicit mapping. An unrecognized
  * target is a fatal error — it means `compileTargets` was extended without
  * updating this function.
  *
  * @private
- * @param target - The kidd compile target.
+ * @param target - The maltty compile target.
  * @returns A result with the Bun target string, or an Error for unknown targets.
  */
 function mapCompileTarget(target: CompileTarget): Result<string> {
@@ -299,7 +299,7 @@ function formatCompileError(target: CompileTarget, execError: Error, verbose: bo
 /**
  * Build the CLI flags that control Bun's compile-time config autoloading.
  *
- * `bunfig.toml` loading is always disabled — kidd CLIs should never load
+ * `bunfig.toml` loading is always disabled — maltty CLIs should never load
  * Bun runtime config. `.env` loading is controlled by the `autoloadDotenv`
  * option (disabled by default).
  *

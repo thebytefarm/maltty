@@ -1,4 +1,4 @@
-import { toError } from '@kidd-cli/utils/fp'
+import { toError } from '@maltty/utils/fp'
 
 /**
  * Build a descriptive error message for a failed tsdown operation.

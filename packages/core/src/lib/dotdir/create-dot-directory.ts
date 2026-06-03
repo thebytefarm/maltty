@@ -1,4 +1,4 @@
-import type { Result } from '@kidd-cli/utils/fp'
+import type { Result } from '@maltty/utils/fp'
 
 import { resolveGlobalPath, resolveLocalPath } from '@/lib/project/index.js'
 import type { ResolvedDirs } from '@/types/index.js'

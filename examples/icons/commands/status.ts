@@ -1,4 +1,4 @@
-import { command } from '@kidd-cli/core'
+import { command } from '@maltty/core'
 
 export default command({
   description: 'Show Nerd Font detection status and all icons',

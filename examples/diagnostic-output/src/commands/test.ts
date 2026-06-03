@@ -1,4 +1,4 @@
-import { command } from '@kidd-cli/core'
+import { command } from '@maltty/core'
 
 /**
  * Simulated test results for demonstration.

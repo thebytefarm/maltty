@@ -1,4 +1,4 @@
-import { withTag } from '@kidd-cli/utils/tag'
+import { withTag } from '@maltty/utils/tag'
 import { describe, expect, it } from 'vitest'
 import { z } from 'zod'
 

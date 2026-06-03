@@ -6,8 +6,8 @@ import type { DotDirectory } from '@/lib/dotdir/types.js'
 import type {
   AnyRecord,
   DeepReadonly,
-  KiddArgs,
-  KiddStore,
+  MalttyArgs,
+  MalttyStore,
   Merge,
   ResolvedDirs,
   StringKeyOf,
@@ -20,7 +20,7 @@ import type {
  * typed keys without threading generics through every handler:
  *
  * ```ts
- * declare module '@kidd-cli/core' {
+ * declare module '@maltty/core' {
  *   interface StoreMap { myKey: MyType }
  * }
  * ```
@@ -747,7 +747,7 @@ export interface CommandContext<TArgs extends AnyRecord = AnyRecord> {
   /**
    * Parsed and validated args for this command. Deeply immutable.
    */
-  readonly args: DeepReadonly<Merge<KiddArgs, TArgs>>
+  readonly args: DeepReadonly<Merge<MalttyArgs, TArgs>>
 
   /**
    * Color formatting utilities (picocolors). Use for coloring summary
@@ -784,7 +784,7 @@ export interface CommandContext<TArgs extends AnyRecord = AnyRecord> {
   /**
    * In-memory key-value store (mutable — use this for middleware-to-handler data flow).
    */
-  readonly store: Store<Merge<KiddStore, StoreMap>>
+  readonly store: Store<Merge<MalttyStore, StoreMap>>
 
   /**
    * Throw a user-facing error with a clean message (no stack in production).

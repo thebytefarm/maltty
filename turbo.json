@@ -30,11 +30,11 @@
     },
     "//#test:exports": {
       "dependsOn": [
-        "@kidd-cli/bundler#build",
-        "@kidd-cli/cli#build",
-        "@kidd-cli/config#build",
-        "@kidd-cli/core#build",
-        "@kidd-cli/utils#build"
+        "@maltty/bundler#build",
+        "@maltty/cli#build",
+        "@maltty/config#build",
+        "@maltty/core#build",
+        "@maltty/utils#build"
       ]
     }
   }

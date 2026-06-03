@@ -1,4 +1,4 @@
-import type { ResultAsync } from '@kidd-cli/utils/fp'
+import type { ResultAsync } from '@maltty/utils/fp'
 
 import type { Middleware } from '@/types/index.js'
 
@@ -120,10 +120,10 @@ export type IconsFactory = (options?: IconsOptions) => Middleware
 /**
  * Augments the base {@link CommandContext} with an optional `icons` property.
  *
- * When a consumer imports `@kidd-cli/core/icons`, this declaration merges
+ * When a consumer imports `@maltty/core/icons`, this declaration merges
  * `icons` onto `CommandContext` so that `ctx.icons` is typed without manual casting.
  */
-declare module '@kidd-cli/core' {
+declare module '@maltty/core' {
   interface CommandContext {
     readonly icons: IconsContext
   }

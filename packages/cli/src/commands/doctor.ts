@@ -1,8 +1,8 @@
-import { loadConfig } from '@kidd-cli/config/utils'
-import { command } from '@kidd-cli/core'
-import type { Command, CommandContext } from '@kidd-cli/core'
-import { match } from '@kidd-cli/utils/fp'
-import { readManifest } from '@kidd-cli/utils/manifest'
+import { loadConfig } from '@maltty/config/utils'
+import { command } from '@maltty/core'
+import type { Command, CommandContext } from '@maltty/core'
+import { match } from '@maltty/utils/fp'
+import { readManifest } from '@maltty/utils/manifest'
 import pc from 'picocolors'
 import { z } from 'zod'
 
@@ -16,14 +16,14 @@ const options = z.object({
 type DoctorArgs = z.infer<typeof options>
 
 /**
- * Diagnose common kidd project issues.
+ * Diagnose common maltty project issues.
  *
  * Validates config, checks package.json setup, verifies entry points exist,
  * and catches anything that could cause build or runtime failures.
  */
 const doctorCommand: Command = command({
   options,
-  description: 'Diagnose common kidd project issues',
+  description: 'Diagnose common maltty project issues',
   handler: async (ctx: CommandContext<DoctorArgs>) => {
     const cwd = process.cwd()
     const shouldFix = ctx.args.fix === true

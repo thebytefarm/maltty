@@ -1,5 +1,5 @@
 {
-  "name": "@kidd-cli/core",
+  "name": "@maltty/core",
   "version": "0.24.0",
   "description": "An opinionated CLI framework for Node.js",
   "keywords": [
@@ -10,14 +10,14 @@
     "yargs",
     "zod"
   ],
-  "homepage": "https://github.com/joggrdocs/kidd/tree/main/packages/core",
+  "homepage": "https://github.com/thebytefarm/maltty/tree/main/packages/core",
   "bugs": {
-    "url": "https://github.com/joggrdocs/kidd/issues"
+    "url": "https://github.com/thebytefarm/maltty/issues"
   },
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/joggrdocs/kidd.git",
+    "url": "https://github.com/thebytefarm/maltty.git",
     "directory": "packages/core"
   },
   "files": [
@@ -78,8 +78,8 @@
   },
   "dependencies": {
     "@clack/prompts": "^1.2.0",
-    "@kidd-cli/config": "workspace:*",
-    "@kidd-cli/utils": "workspace:*",
+    "@maltty/config": "workspace:*",
+    "@maltty/utils": "workspace:*",
     "@pinojs/redact": "^0.4.0",
     "c12": "4.0.0-beta.4",
     "dotenv": "^17.4.2",

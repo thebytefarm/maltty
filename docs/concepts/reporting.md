@@ -7,8 +7,8 @@ Structured terminal output for diagnostic commands. The report middleware decora
 Register the `report()` middleware in your CLI bootstrap:
 
 ```ts
-import { cli } from '@kidd-cli/core'
-import { report } from '@kidd-cli/core/report'
+import { cli } from '@maltty/core'
+import { report } from '@maltty/core/report'
 
 cli({
   name: 'my-tool',
@@ -108,7 +108,7 @@ See the [report() reference](../reference/report.md) for all input fields.
 Use `createReport()` outside the middleware pipeline for scripts or standalone tools:
 
 ```ts
-import { createReport } from '@kidd-cli/core/report'
+import { createReport } from '@maltty/core/report'
 
 const report = createReport()
 report.check({ status: 'pass', name: 'config.json' })
@@ -120,7 +120,7 @@ report.summary({ style: 'inline', stats: ['1 passed', '0 failed'] })
 A diagnostic command that checks project files and reports results:
 
 ```ts
-import { command } from '@kidd-cli/core'
+import { command } from '@maltty/core'
 
 export default command({
   description: 'Check project health',
@@ -149,9 +149,9 @@ export default command({
 When using the report middleware, augment the CommandContext interface to get type-safe access:
 
 ```ts
-import type { Report } from '@kidd-cli/core/report'
+import type { Report } from '@maltty/core/report'
 
-declare module '@kidd-cli/core' {
+declare module '@maltty/core' {
   interface CommandContext {
     readonly report: Report
   }
@@ -163,4 +163,4 @@ declare module '@kidd-cli/core' {
 - [Context](./context.md)
 - [Lifecycle](./lifecycle.md)
 - [report() Reference](../reference/report.md)
-- [Core](../reference/kidd.md)
+- [Core](../reference/maltty.md)

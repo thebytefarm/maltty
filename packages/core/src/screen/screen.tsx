@@ -1,7 +1,7 @@
 import process from 'node:process'
 
-import { isFunction } from '@kidd-cli/utils/fp'
-import { withTag } from '@kidd-cli/utils/tag'
+import { isFunction } from '@maltty/utils/fp'
+import { withTag } from '@maltty/utils/tag'
 import type { ComponentType } from 'react'
 import React from 'react'
 import { match } from 'ts-pattern'
@@ -14,7 +14,7 @@ import { createScreenReport } from './output/screen-report.js'
 import { createScreenSpinner } from './output/screen-spinner.js'
 import { injectOutputStore } from './output/store-key.js'
 import { createOutputStore } from './output/store.js'
-import { KiddProvider } from './provider.js'
+import { MalttyProvider } from './provider.js'
 
 // ---------------------------------------------------------------------------
 // Types
@@ -122,7 +122,7 @@ export interface ScreenDef<
  * `command()` and `screen()` contexts.
  *
  * @param def - Screen definition including description, options, exit behavior, and render component.
- * @returns A tagged Command object compatible with the kidd autoloader and command map.
+ * @returns A tagged Command object compatible with the maltty autoloader and command map.
  */
 export function screen<
   TOptionsDef extends ArgsDef = ArgsDef,
@@ -150,7 +150,7 @@ export function screen<
       .with(false, () => <ScreenComponent {...ctx.args} />)
       .exhaustive()
 
-    const instance = inkRender(<KiddProvider value={screenCtx}>{children}</KiddProvider>)
+    const instance = inkRender(<MalttyProvider value={screenCtx}>{children}</MalttyProvider>)
 
     if (exitMode === 'auto') {
       const { unmount } = instance

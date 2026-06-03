@@ -1,8 +1,8 @@
 import { resolve } from 'node:path'
 
 import { updateSettings } from '@clack/prompts'
-import { P, attemptAsync, err, isNil, isPlainObject, isString, match, ok } from '@kidd-cli/utils/fp'
-import type { Result } from '@kidd-cli/utils/fp'
+import { P, attemptAsync, err, isNil, isPlainObject, isString, match, ok } from '@maltty/utils/fp'
+import type { Result } from '@maltty/utils/fp'
 import yargs from 'yargs'
 import type { Argv } from 'yargs'
 import { hideBin } from 'yargs/helpers'
@@ -146,7 +146,7 @@ export default cli
 // ---------------------------------------------------------------------------
 
 const VERSION_ERROR = new Error(
-  'No CLI version available. Either pass `version` to cli() or build with the kidd bundler.'
+  'No CLI version available. Either pass `version` to cli() or build with the maltty bundler.'
 )
 
 const VersionSchema = z.string().trim().min(1)
@@ -156,7 +156,7 @@ const VersionSchema = z.string().trim().min(1)
  *
  * Resolution order:
  * 1. Explicit version string passed to `cli()`
- * 2. `__KIDD_VERSION__` injected by the kidd bundler at build time
+ * 2. `__MALTTY_VERSION__` injected by the maltty bundler at build time
  *
  * Returns an error when neither source provides a non-empty version.
  *
@@ -173,8 +173,8 @@ function resolveVersion(explicit: string | undefined): Result<string> {
     return err(VERSION_ERROR)
   }
 
-  if (typeof __KIDD_VERSION__ === 'string') {
-    const parsed = VersionSchema.safeParse(__KIDD_VERSION__)
+  if (typeof __MALTTY_VERSION__ === 'string') {
+    const parsed = VersionSchema.safeParse(__MALTTY_VERSION__)
     if (parsed.success) {
       return ok(parsed.data)
     }
@@ -197,7 +197,7 @@ interface ResolvedCommands {
  *
  * Accepts a directory string (triggers autoload), a static CommandMap,
  * a Promise<CommandMap>, a structured {@link CommandsConfig},
- * or undefined (loads `kidd.config.ts` and autoloads from its `commands` field,
+ * or undefined (loads `maltty.config.ts` and autoloads from its `commands` field,
  * falling back to `'./commands'`).
  *
  * @private
@@ -241,7 +241,7 @@ async function resolveCommandsConfig(config: CommandsConfig): Promise<ResolvedCo
 }
 
 /**
- * Load `kidd.config.ts` and autoload commands from its `commands` field.
+ * Load `maltty.config.ts` and autoload commands from its `commands` field.
  *
  * Falls back to `'./commands'` when the config file is missing, fails to load,
  * or does not specify a `commands` field.
@@ -252,7 +252,7 @@ async function resolveCommandsConfig(config: CommandsConfig): Promise<ResolvedCo
 async function resolveCommandsFromConfig(): Promise<ResolvedCommands> {
   const DEFAULT_COMMANDS_DIR = './commands'
 
-  const { loadConfig } = await import('@kidd-cli/config/utils')
+  const { loadConfig } = await import('@maltty/config/utils')
   const [configError, configResult] = await loadConfig()
   if (configError || !configResult) {
     return { commands: await autoload({ dir: DEFAULT_COMMANDS_DIR }) }

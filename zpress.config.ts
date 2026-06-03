@@ -1,7 +1,7 @@
 import { defineConfig } from '@zpress/kit'
 
 export default defineConfig({
-  title: 'kidd',
+  title: 'maltty',
   description: 'An opinionated CLI framework',
   tagline: 'Built on yargs and Zod. Convention over configuration, end-to-end type safety.',
   theme: { name: 'midnight' },
@@ -241,14 +241,14 @@ export default defineConfig({
       icon: 'pixelarticons:code',
       items: [
         {
-          title: '@kidd-cli/core',
+          title: '@maltty/core',
           description: 'The runtime framework for commands, middleware, auth, and terminal UI.',
-          path: '/reference/kidd',
+          path: '/reference/maltty',
           icon: 'pixelarticons:code',
           tags: ['framework', 'runtime'],
         },
         {
-          title: '@kidd-cli/cli',
+          title: '@maltty/cli',
           description: 'The developer CLI for scaffolding, building, and diagnostics.',
           path: '/reference/cli',
           icon: 'pixelarticons:command',
@@ -261,6 +261,6 @@ export default defineConfig({
     { title: 'Getting Started', link: '/getting-started/introduction' },
     { title: 'Concepts', link: '/concepts/lifecycle' },
     { title: 'Guides', link: '/guides/build-a-cli' },
-    { title: 'Reference', link: '/reference/kidd' },
+    { title: 'Reference', link: '/reference/maltty' },
   ],
 })

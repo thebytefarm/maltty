@@ -1,6 +1,6 @@
 # Lifecycle
 
-How a CLI invocation flows through kidd, from `process.argv` to process exit.
+How a CLI invocation flows through maltty, from `process.argv` to process exit.
 
 ## Phases
 
@@ -91,7 +91,7 @@ Each middleware calls `next()` to pass control inward. Code before `next()` runs
 Declared on `cli()`. Runs for every command. Use it for cross-cutting concerns.
 
 ```ts
-import { cli, middleware } from '@kidd-cli/core'
+import { cli, middleware } from '@maltty/core'
 
 const timing = middleware(async (ctx, next) => {
   const start = Date.now()
@@ -112,7 +112,7 @@ cli({
 Declared on `command()`. Runs only when that command is matched. Use it for command-specific setup.
 
 ```ts
-import { command, middleware } from '@kidd-cli/core'
+import { command, middleware } from '@maltty/core'
 
 const requireAuth = middleware(async (ctx, next) => {
   const token = process.env['API_TOKEN']
@@ -164,6 +164,6 @@ See [Context](./context.md) for the full `ctx.fail()` API and all other context 
 
 ## References
 
-- [Core Reference](../reference/kidd.md)
+- [Core Reference](../reference/maltty.md)
 - [Context](./context.md)
 - [Build a CLI](../guides/build-a-cli.md)

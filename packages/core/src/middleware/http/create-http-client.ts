@@ -1,4 +1,4 @@
-import { attemptAsync } from '@kidd-cli/utils/fp'
+import { attemptAsync } from '@maltty/utils/fp'
 
 import type { HttpClient, RequestOptions, TypedResponse } from './types.js'
 

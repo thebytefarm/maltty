@@ -1,6 +1,6 @@
 import { join } from 'node:path'
 
-import { fs } from '@kidd-cli/utils/node'
+import { fs } from '@maltty/utils/node'
 import { match } from 'ts-pattern'
 
 /**

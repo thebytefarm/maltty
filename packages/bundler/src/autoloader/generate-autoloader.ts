@@ -1,4 +1,4 @@
-import { path } from '@kidd-cli/utils/node'
+import { path } from '@maltty/utils/node'
 
 import type { ScanResult, ScannedDir, ScannedFile } from '../types.js'
 
@@ -48,16 +48,16 @@ export function generateStaticAutoloader(params: GenerateStaticAutoloaderParams)
 }
 
 /**
- * Generate the two parts needed to transform kidd's bundled dist.
+ * Generate the two parts needed to transform maltty's bundled dist.
  *
  * Returns an empty imports string (no prepended imports needed) and a
  * replacement autoloader region that uses dynamic `import()` calls inside
  * the async `autoload()` function. This avoids circular dependency issues:
- * command files import `command` from `@kidd-cli/core`, so static imports would be
- * hoisted above kidd's own initialization code, causing `TAG` to be
+ * command files import `command` from `@maltty/core`, so static imports would be
+ * hoisted above maltty's own initialization code, causing `TAG` to be
  * accessed before initialization.
  *
- * By deferring to dynamic imports, kidd fully initializes first, then
+ * By deferring to dynamic imports, maltty fully initializes first, then
  * command files are loaded when `autoload()` is called at CLI startup.
  *
  * @param params - The scan result and path to the tag utility module.
@@ -287,7 +287,7 @@ function buildEmptyAutoloaderRegion(): string {
  *
  * Uses `Promise.all` with array destructuring to load all command files
  * in parallel. The dynamic imports defer execution until `autoload()` is
- * called, avoiding circular dependency issues with kidd's own initialization.
+ * called, avoiding circular dependency issues with maltty's own initialization.
  *
  * @private
  * @param imports - The collected import entries.

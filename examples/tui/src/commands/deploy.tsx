@@ -1,4 +1,4 @@
-import { Box, screen, Spinner, Text, useApp } from '@kidd-cli/core/ui'
+import { Box, screen, Spinner, Text, useApp } from '@maltty/core/ui'
 import React, { useEffect, useState } from 'react'
 import { match } from 'ts-pattern'
 import { z } from 'zod'

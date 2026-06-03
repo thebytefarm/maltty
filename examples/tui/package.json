@@ -4,21 +4,21 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "kidd dev",
-    "build": "kidd build",
-    "stories": "kidd stories --cwd ../../packages/core",
+    "dev": "maltty dev",
+    "build": "maltty build",
+    "stories": "maltty stories --cwd ../../packages/core",
     "typecheck": "tsgo --noEmit"
   },
   "dependencies": {
     "@inkjs/ui": "^2.0.0",
-    "@kidd-cli/core": "workspace:*",
+    "@maltty/core": "workspace:*",
     "ink": "^7.0.0",
     "react": "^19.2.5",
     "ts-pattern": "catalog:",
     "zod": "catalog:"
   },
   "devDependencies": {
-    "@kidd-cli/cli": "workspace:*",
+    "@maltty/cli": "workspace:*",
     "@types/react": "^19.2.14",
     "tsdown": "catalog:",
     "tsx": "catalog:",

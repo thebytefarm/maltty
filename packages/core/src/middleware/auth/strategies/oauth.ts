@@ -1,7 +1,7 @@
 import { createHash, randomBytes } from 'node:crypto'
 import type { IncomingMessage, ServerResponse } from 'node:http'
 
-import { attemptAsync, isPlainObject } from '@kidd-cli/utils/fp'
+import { attemptAsync, isPlainObject } from '@maltty/utils/fp'
 
 import { createBearerCredential, postFormEncoded } from '../credential.js'
 import {

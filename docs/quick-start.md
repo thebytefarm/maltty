@@ -5,14 +5,14 @@ Get a working CLI in under 5 minutes.
 ## Install
 
 ```bash
-pnpm add @kidd-cli/core zod
+pnpm add @maltty/core zod
 ```
 
 ## Create a command
 
 ```ts
 // src/commands/greet.ts
-import { command } from '@kidd-cli/core'
+import { command } from '@maltty/core'
 import { z } from 'zod'
 
 export default command({
@@ -30,7 +30,7 @@ export default command({
 
 ```ts
 // src/index.ts
-import { cli } from '@kidd-cli/core'
+import { cli } from '@maltty/core'
 import greet from './commands/greet.js'
 
 cli({
@@ -52,7 +52,7 @@ Middleware wraps every command in an onion model -- each middleware can run logi
 
 ```ts
 // src/middleware/timing.ts
-import { middleware } from '@kidd-cli/core'
+import { middleware } from '@maltty/core'
 
 export const timing = middleware(async (ctx, next) => {
   const start = Date.now()
@@ -65,7 +65,7 @@ Update the bootstrap to register it:
 
 ```ts
 // src/index.ts
-import { cli } from '@kidd-cli/core'
+import { cli } from '@maltty/core'
 import greet from './commands/greet.js'
 import { timing } from './middleware/timing.js'
 
@@ -81,18 +81,18 @@ Every command now logs its execution time automatically.
 
 ## Add configuration
 
-kidd discovers and validates configuration files using Zod. Define a config schema and use module augmentation to type the config handle:
+maltty discovers and validates configuration files using Zod. Define a config schema and use module augmentation to type the config handle:
 
 ```ts
 // src/config.ts
-import type { ConfigType } from '@kidd-cli/core/config'
+import type { ConfigType } from '@maltty/core/config'
 import { z } from 'zod'
 
 export const configSchema = z.object({
   greeting: z.string().default('Hello'),
 })
 
-declare module '@kidd-cli/core/config' {
+declare module '@maltty/core/config' {
   interface ConfigRegistry extends ConfigType<typeof configSchema> {}
 }
 ```
@@ -101,8 +101,8 @@ Register the `config()` middleware in `cli()`:
 
 ```ts
 // src/index.ts
-import { cli } from '@kidd-cli/core'
-import { config } from '@kidd-cli/core/config'
+import { cli } from '@maltty/core'
+import { config } from '@maltty/core/config'
 import greet from './commands/greet.js'
 import { timing } from './middleware/timing.js'
 import { configSchema } from './config.js'
@@ -119,7 +119,7 @@ Now update the command to load config lazily via the handle:
 
 ```ts
 // src/commands/greet.ts
-import { command } from '@kidd-cli/core'
+import { command } from '@maltty/core'
 import { z } from 'zod'
 
 export default command({
@@ -138,15 +138,15 @@ export default command({
 })
 ```
 
-kidd will look for `.my-app.jsonc`, `.my-app.json`, and `.my-app.yaml` -- all validated against your Zod schema when `load()` is called.
+maltty will look for `.my-app.jsonc`, `.my-app.json`, and `.my-app.yaml` -- all validated against your Zod schema when `load()` is called.
 
 ## Build for production
 
-Install the kidd CLI tooling as a dev dependency and run the build command:
+Install the maltty CLI tooling as a dev dependency and run the build command:
 
 ```bash
-pnpm add -D @kidd-cli/cli
-kidd build
+pnpm add -D @maltty/cli
+maltty build
 ```
 
 This produces an ESM bundle ready for distribution. See the [Build a CLI](/guides/build-a-cli) guide for standalone binary output and advanced build options.

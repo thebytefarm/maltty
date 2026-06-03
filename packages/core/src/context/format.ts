@@ -1,4 +1,4 @@
-import { jsonStringify } from '@kidd-cli/utils/json'
+import { jsonStringify } from '@maltty/utils/json'
 
 import type { Format } from './types.js'
 

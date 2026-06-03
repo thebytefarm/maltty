@@ -1,5 +1,5 @@
-import { stories } from '@kidd-cli/core/stories'
-import type { StoryGroup } from '@kidd-cli/core/stories'
+import { stories } from '@maltty/core/stories'
+import type { StoryGroup } from '@maltty/core/stories'
 import type { ComponentType } from 'react'
 import { z } from 'zod'
 

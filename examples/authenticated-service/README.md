@@ -1,13 +1,13 @@
 # Authenticated Service Example
 
-Demonstrates the kidd `auth` middleware with an integrated HTTP client by building a CLI that makes authenticated requests to a faux API server. Includes an OAuth PKCE authorization code flow, a browser UI for visual testing, and a fallback prompt resolver.
+Demonstrates the maltty `auth` middleware with an integrated HTTP client by building a CLI that makes authenticated requests to a faux API server. Includes an OAuth PKCE authorization code flow, a browser UI for visual testing, and a fallback prompt resolver.
 
 ## Structure
 
 ```text
 authenticated-service/
   api/          # Faux API server (bearer token validation, PKCE OAuth)
-  cli/          # kidd CLI with auth middleware (includes HTTP client)
+  cli/          # maltty CLI with auth middleware (includes HTTP client)
   ui/           # Browser dashboard for testing the API
 ```
 
@@ -30,7 +30,7 @@ A single command boots the API server and the CLI dev environment together:
 pnpm start
 ```
 
-This starts the faux API on port 3001 in the background and launches `kidd dev` for the CLI. When `kidd dev` exits, the API server is cleaned up automatically.
+This starts the faux API on port 3001 in the background and launches `maltty dev` for the CLI. When `maltty dev` exits, the API server is cleaned up automatically.
 
 ### CLI commands
 
@@ -90,11 +90,11 @@ Open `ui/index.html` in a browser. Select a token, connect, and use the buttons 
 The CLI uses the `auth()` middleware for credential management and `http()` with `createAuthHeaders()` for authenticated API calls:
 
 ```ts
-import { auth, createAuthHeaders } from '@kidd-cli/core/auth'
-import type { HttpClient } from '@kidd-cli/core/http'
-import { http } from '@kidd-cli/core/http'
+import { auth, createAuthHeaders } from '@maltty/core/auth'
+import type { HttpClient } from '@maltty/core/http'
+import { http } from '@maltty/core/http'
 
-declare module '@kidd-cli/core' {
+declare module '@maltty/core' {
   interface Context {
     readonly api: HttpClient
   }

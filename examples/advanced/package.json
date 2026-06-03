@@ -4,18 +4,18 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "kidd dev",
-    "build": "KIDD_PUBLIC_APP_ENV=development KIDD_PUBLIC_ANALYTICS_KEY=client-abc123 kidd build",
-    "routes": "kidd routes",
+    "dev": "maltty dev",
+    "build": "MALTTY_PUBLIC_APP_ENV=development MALTTY_PUBLIC_ANALYTICS_KEY=client-abc123 maltty build",
+    "routes": "maltty routes",
     "typecheck": "tsgo --noEmit"
   },
   "dependencies": {
-    "@kidd-cli/core": "workspace:*",
+    "@maltty/core": "workspace:*",
     "ts-pattern": "catalog:",
     "zod": "catalog:"
   },
   "devDependencies": {
-    "@kidd-cli/cli": "workspace:*",
+    "@maltty/cli": "workspace:*",
     "tsdown": "catalog:",
     "tsx": "catalog:",
     "typescript": "catalog:"

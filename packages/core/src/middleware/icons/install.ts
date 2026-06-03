@@ -4,8 +4,8 @@ import { homedir } from 'node:os'
 import { join } from 'node:path'
 import { promisify } from 'node:util'
 
-import { attemptAsync, ok } from '@kidd-cli/utils/fp'
-import type { ResultAsync, Result } from '@kidd-cli/utils/fp'
+import { attemptAsync, ok } from '@maltty/utils/fp'
+import type { ResultAsync, Result } from '@maltty/utils/fp'
 import { match } from 'ts-pattern'
 import { z } from 'zod'
 

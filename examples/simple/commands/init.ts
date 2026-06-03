@@ -1,4 +1,4 @@
-import { command } from '@kidd-cli/core'
+import { command } from '@maltty/core'
 
 export default command({
   description: 'Initialize a new project interactively',

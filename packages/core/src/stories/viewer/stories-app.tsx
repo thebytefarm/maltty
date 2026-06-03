@@ -2,7 +2,7 @@
 import { relative } from 'node:path'
 import process from 'node:process'
 
-import { hasTag } from '@kidd-cli/utils/tag'
+import { hasTag } from '@maltty/utils/tag'
 import { Box, Text, useApp, useInput } from 'ink'
 import type { ReactElement } from 'react'
 import { useCallback, useEffect, useMemo, useState } from 'react'

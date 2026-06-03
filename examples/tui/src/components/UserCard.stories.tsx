@@ -1,4 +1,4 @@
-import { story } from '@kidd-cli/core/stories'
+import { story } from '@maltty/core/stories'
 import { z } from 'zod'
 
 import type { UserCardProps } from './UserCard'

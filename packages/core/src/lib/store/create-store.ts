@@ -1,9 +1,9 @@
 import { existsSync, mkdirSync, readFileSync, unlinkSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 
-import { attempt, err, match, ok } from '@kidd-cli/utils/fp'
-import type { Result } from '@kidd-cli/utils/fp'
-import { jsonParse, jsonStringify } from '@kidd-cli/utils/json'
+import { attempt, err, match, ok } from '@maltty/utils/fp'
+import type { Result } from '@maltty/utils/fp'
+import { jsonParse, jsonStringify } from '@maltty/utils/json'
 
 import { resolveGlobalPath, resolveLocalPath } from '@/lib/project/index.js'
 import type { PathSource } from '@/lib/project/types.js'

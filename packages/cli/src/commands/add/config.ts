@@ -1,8 +1,8 @@
 import { join } from 'node:path'
 
-import { command } from '@kidd-cli/core'
-import type { Command, CommandContext } from '@kidd-cli/core'
-import { readManifest } from '@kidd-cli/utils/manifest'
+import { command } from '@maltty/core'
+import type { Command, CommandContext } from '@maltty/core'
+import { readManifest } from '@maltty/utils/manifest'
 
 import { detectProject } from '../../lib/detect.js'
 import { renderTemplate } from '../../lib/render.js'
@@ -18,7 +18,7 @@ const addConfigCommand: Command = command({
       return ctx.fail(detectError.message)
     }
     if (!project) {
-      return ctx.fail('Not in a kidd project. Run `kidd init` first.')
+      return ctx.fail('Not in a maltty project. Run `maltty init` first.')
     }
 
     const projectName = await resolveProjectName(project.rootDir)

@@ -18,7 +18,7 @@
 #
 #   linux-x64-musl — Standard ubuntu-latest runners use glibc.
 #                    Testing musl would require a container-based
-#                    job (e.g. alpine:latest), but kidd produces
+#                    job (e.g. alpine:latest), but maltty produces
 #                    a standalone binary so the glibc test on
 #                    ubuntu-latest provides sufficient coverage
 #                    for the Linux x64 code path. The musl

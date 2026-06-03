@@ -1,4 +1,4 @@
-import { isPlainObject } from '@kidd-cli/utils/fp'
+import { isPlainObject } from '@maltty/utils/fp'
 import pinoRedact from '@pinojs/redact'
 
 const CENSOR = '[REDACTED]'

@@ -1,4 +1,4 @@
-import { hasTag } from '@kidd-cli/utils/tag'
+import { hasTag } from '@maltty/utils/tag'
 import type { DOMElement } from 'ink'
 import { Box, Text, useInput } from 'ink'
 import type { ReactElement } from 'react'

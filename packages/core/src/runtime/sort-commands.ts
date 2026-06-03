@@ -1,5 +1,5 @@
-import { err, ok } from '@kidd-cli/utils/fp'
-import type { Result } from '@kidd-cli/utils/fp'
+import { err, ok } from '@maltty/utils/fp'
+import type { Result } from '@maltty/utils/fp'
 
 import type { Command } from '@/types/index.js'
 

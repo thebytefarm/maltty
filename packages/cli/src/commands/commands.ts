@@ -1,9 +1,9 @@
 import { join } from 'node:path'
 
-import { loadConfig } from '@kidd-cli/config/utils'
-import { autoload, command } from '@kidd-cli/core'
-import type { Command as KiddCommand, CommandContext } from '@kidd-cli/core'
-import { fs } from '@kidd-cli/utils/node'
+import { loadConfig } from '@maltty/config/utils'
+import { autoload, command } from '@maltty/core'
+import type { Command as MalttyCommand, CommandContext } from '@maltty/core'
+import { fs } from '@maltty/utils/node'
 
 import { extractConfig } from '../lib/config-helpers.js'
 
@@ -17,14 +17,14 @@ interface TreeEntry {
 }
 
 /**
- * Display the command tree for a kidd CLI project.
+ * Display the command tree for a maltty CLI project.
  *
- * Loads the project's `kidd.config.ts` to locate the commands directory,
+ * Loads the project's `maltty.config.ts` to locate the commands directory,
  * scans it with the autoloader, and prints an ASCII tree of all discovered
  * commands and subcommands.
  */
-const commandsCommand: KiddCommand = command({
-  description: 'Display the command tree for a kidd CLI project',
+const commandsCommand: MalttyCommand = command({
+  description: 'Display the command tree for a maltty CLI project',
   handler: async (ctx: CommandContext) => {
     const cwd = process.cwd()
 
@@ -65,8 +65,8 @@ export default commandsCommand
  * @returns The resolved CommandMap, or an empty object when none exist.
  */
 async function resolveSubcommands(
-  commands: Record<string, KiddCommand> | Promise<Record<string, KiddCommand>> | undefined
-): Promise<Record<string, KiddCommand>> {
+  commands: Record<string, MalttyCommand> | Promise<Record<string, MalttyCommand>> | undefined
+): Promise<Record<string, MalttyCommand>> {
   if (!commands) {
     return {}
   }
@@ -90,7 +90,7 @@ async function resolveSubcommands(
  * @returns A sorted array of TreeEntry nodes.
  */
 async function buildTree(
-  commandMap: Record<string, KiddCommand>,
+  commandMap: Record<string, MalttyCommand>,
   order?: readonly string[]
 ): Promise<readonly TreeEntry[]> {
   const entries = sortEntries({ entries: Object.entries(commandMap), order })
@@ -121,9 +121,9 @@ async function buildTree(
  * @returns Sorted array of entries.
  */
 function sortEntries(params: {
-  readonly entries: [string, KiddCommand][]
+  readonly entries: [string, MalttyCommand][]
   readonly order?: readonly string[]
-}): [string, KiddCommand][] {
+}): [string, MalttyCommand][] {
   const { entries, order } = params
 
   if (!order || order.length === 0) {
@@ -138,7 +138,7 @@ function sortEntries(params: {
 
   const ordered = validOrder
     .filter((name) => entryMap.has(name))
-    .map((name): [string, KiddCommand] => [name, entryMap.get(name) as KiddCommand])
+    .map((name): [string, MalttyCommand] => [name, entryMap.get(name) as MalttyCommand])
 
   const remaining = entries
     .filter(([name]) => !orderedSet.has(name))
@@ -151,7 +151,7 @@ function sortEntries(params: {
  * Validate the order array by filtering out unknown and duplicate names.
  *
  * Logs warnings for invalid entries so developers see the mismatch
- * during `kidd commands` introspection, matching the runtime behaviour.
+ * during `maltty commands` introspection, matching the runtime behaviour.
  *
  * @private
  * @param params - The order array and available command names.

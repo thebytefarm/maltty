@@ -29,9 +29,9 @@ describe('createDotDirectory()', () => {
   const DIR_NAME = '.myapp'
 
   beforeEach(() => {
-    tmpDir = mkdtempSync(join(tmpdir(), 'kidd-dotdir-client-'))
+    tmpDir = mkdtempSync(join(tmpdir(), 'maltty-dotdir-client-'))
     mkdirSync(join(tmpDir, '.git'), { recursive: true })
-    globalHome = mkdtempSync(join(tmpdir(), 'kidd-dotdir-client-global-'))
+    globalHome = mkdtempSync(join(tmpdir(), 'maltty-dotdir-client-global-'))
   })
 
   afterEach(() => {

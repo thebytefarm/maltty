@@ -1,7 +1,7 @@
 import Module from 'node:module'
 
-import { toError } from '@kidd-cli/utils/fp'
-import { hasTag } from '@kidd-cli/utils/tag'
+import { toError } from '@maltty/utils/fp'
+import { hasTag } from '@maltty/utils/tag'
 import type { createJiti } from 'jiti'
 
 import type { StoryEntry } from './types.js'
@@ -76,7 +76,7 @@ export function createStoryImporter(): readonly [Error, null] | readonly [null, 
 /**
  * Attempt to resolve the `jiti` package at runtime.
  *
- * `jiti` is an optional peer dependency of `@kidd-cli/core`, but the stories
+ * `jiti` is an optional peer dependency of `@maltty/core`, but the stories
  * subsystem cannot function without it. Returns a Result tuple so callers can
  * surface a helpful message instead of crashing with a cryptic import error.
  *
@@ -132,7 +132,7 @@ const TSX_EXTENSIONS: readonly string[] = ['.tsx', '.ts', '.jsx']
  *
  * @private
  */
-const PATCHED_FN_NAME = '__kidd_ts_resolve'
+const PATCHED_FN_NAME = '__maltty_ts_resolve'
 
 /**
  * Patch `Module._resolveFilename` so that ESM-style `.js` / `.jsx` specifiers

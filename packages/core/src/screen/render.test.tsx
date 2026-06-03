@@ -71,7 +71,7 @@ describe('render() helper', () => {
     expect(instance).toHaveProperty('unmount')
   })
 
-  it('should wrap node in KiddProvider with ScreenContext', async () => {
+  it('should wrap node in MalttyProvider with ScreenContext', async () => {
     vi.clearAllMocks()
     const { render } = await import('./render.js')
     const ctx = makeContext({ config: { debug: true } })
@@ -108,7 +108,7 @@ describe('renderToString() helper', () => {
     expect(result).toBe('rendered-output')
   })
 
-  it('should wrap node in KiddProvider with ScreenContext', async () => {
+  it('should wrap node in MalttyProvider with ScreenContext', async () => {
     vi.clearAllMocks()
     const { renderToString } = await import('./render.js')
     const ctx = makeContext({ config: { theme: 'dark' } })

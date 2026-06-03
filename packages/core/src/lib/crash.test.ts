@@ -45,7 +45,7 @@ describe('exitOnError()', () => {
 
     expect(clack.log.error).toHaveBeenCalledWith('unexpected failure')
     expect(writeFileSync).toHaveBeenCalledWith(
-      expect.stringContaining('kidd-crash-'),
+      expect.stringContaining('maltty-crash-'),
       expect.stringContaining('unexpected failure'),
       'utf8'
     )
@@ -57,7 +57,7 @@ describe('exitOnError()', () => {
 
     expect(clack.log.error).toHaveBeenCalledWith('string error')
     expect(writeFileSync).toHaveBeenCalledWith(
-      expect.stringContaining('kidd-crash-'),
+      expect.stringContaining('maltty-crash-'),
       expect.stringContaining('string error'),
       'utf8'
     )
@@ -85,7 +85,7 @@ describe('exitOnError()', () => {
     exitOnError(error)
 
     expect(writeFileSync).toHaveBeenCalledWith(
-      expect.stringContaining('kidd-crash-'),
+      expect.stringContaining('maltty-crash-'),
       expect.stringContaining('Cause: root cause'),
       'utf8'
     )

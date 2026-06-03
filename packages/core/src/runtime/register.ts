@@ -1,4 +1,4 @@
-import { hasTag } from '@kidd-cli/utils/tag'
+import { hasTag } from '@maltty/utils/tag'
 import { match } from 'ts-pattern'
 import type { Argv } from 'yargs'
 

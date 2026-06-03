@@ -12,8 +12,8 @@ import { lstat, readdir } from 'node:fs/promises'
 import { homedir } from 'node:os'
 import { join } from 'node:path'
 
-import { err, ok } from '@kidd-cli/utils/fp'
-import type { ResultAsync } from '@kidd-cli/utils/fp'
+import { err, ok } from '@maltty/utils/fp'
+import type { ResultAsync } from '@maltty/utils/fp'
 import { match } from 'ts-pattern'
 
 // ---------------------------------------------------------------------------

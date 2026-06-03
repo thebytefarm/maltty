@@ -4,10 +4,10 @@ import { jsonParse, jsonStringify } from './json.js'
 
 describe(jsonParse, () => {
   it('should parse a valid JSON object string', () => {
-    const [error, value] = jsonParse('{"name":"kidd","version":1}')
+    const [error, value] = jsonParse('{"name":"maltty","version":1}')
 
     expect(error).toBeNull()
-    expect(value).toEqual({ name: 'kidd', version: 1 })
+    expect(value).toEqual({ name: 'maltty', version: 1 })
   })
 
   it('should parse a valid JSON array string', () => {

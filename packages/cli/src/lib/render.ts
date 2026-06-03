@@ -1,9 +1,9 @@
 import { readdir, readFile } from 'node:fs/promises'
 import { join, relative } from 'node:path'
 
-import { attemptAsync, ok, toError } from '@kidd-cli/utils/fp'
-import type { ResultAsync } from '@kidd-cli/utils/fp'
-import { path } from '@kidd-cli/utils/node'
+import { attemptAsync, ok, toError } from '@maltty/utils/fp'
+import type { ResultAsync } from '@maltty/utils/fp'
+import { path } from '@maltty/utils/node'
 import { Liquid } from 'liquidjs'
 
 import type { GenerateError, RenderedFile, RenderTemplateParams } from './types.js'

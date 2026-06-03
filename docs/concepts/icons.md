@@ -1,8 +1,8 @@
 # Icons
 
-The icons system provides Nerd Font glyph resolution with automatic emoji fallback, font detection, interactive installation prompts, and categorized icon definitions for kidd CLIs.
+The icons system provides Nerd Font glyph resolution with automatic emoji fallback, font detection, interactive installation prompts, and categorized icon definitions for maltty CLIs.
 
-Icons is a sub-export of the `@kidd-cli/core` package (`@kidd-cli/core/icons`), not a separate package. It ships as middleware that decorates `ctx.icons` with methods for resolving icon names to glyphs, checking font availability, and triggering installation.
+Icons is a sub-export of the `@maltty/core` package (`@maltty/core/icons`), not a separate package. It ships as middleware that decorates `ctx.icons` with methods for resolving icon names to glyphs, checking font availability, and triggering installation.
 
 ## Key Concepts
 
@@ -62,11 +62,11 @@ When `forceSetup` is enabled, the install prompt is shown regardless of whether 
 
 ### Module Augmentation
 
-Importing `@kidd-cli/core/icons` automatically augments the `CommandContext` interface with `readonly icons: IconsContext`. No manual type augmentation or casting is needed -- once the middleware is registered, `ctx.icons` is fully typed in all command handlers.
+Importing `@maltty/core/icons` automatically augments the `CommandContext` interface with `readonly icons: IconsContext`. No manual type augmentation or casting is needed -- once the middleware is registered, `ctx.icons` is fully typed in all command handlers.
 
 ```ts
 // This import triggers the module augmentation:
-import { icons } from '@kidd-cli/core/icons'
+import { icons } from '@maltty/core/icons'
 
 // After adding icons() to middleware, ctx.icons is typed automatically:
 export default command({
@@ -80,8 +80,8 @@ export default command({
 ## Adding the Middleware
 
 ```ts
-import { cli } from '@kidd-cli/core'
-import { icons } from '@kidd-cli/core/icons'
+import { cli } from '@maltty/core'
+import { icons } from '@maltty/core/icons'
 
 cli({
   name: 'my-app',
@@ -276,7 +276,7 @@ The following tables list every built-in icon with its name, Nerd Font glyph cod
 ### Using icons in a git status command
 
 ```ts
-import { command } from '@kidd-cli/core'
+import { command } from '@maltty/core'
 
 export default command({
   name: 'status',
@@ -381,6 +381,6 @@ When the font install fails, a warning is logged and the middleware falls back t
 
 ## References
 
-- [Core Reference](../reference/kidd.md)
+- [Core Reference](../reference/maltty.md)
 - [Context](./context.md)
 - [Lifecycle](./lifecycle.md)

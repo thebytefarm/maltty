@@ -4,7 +4,7 @@ export { compose } from './compose.js'
 export { autoload } from './autoload.js'
 export { decorateContext } from './context/decorate.js'
 export { middleware } from './middleware.js'
-export { defineConfig } from '@kidd-cli/config'
+export { defineConfig } from '@maltty/config'
 export { render, renderToString, screen, useScreenContext } from './screen/index.js'
 export type { ScreenDef, ScreenExit } from './screen/index.js'
 export type {

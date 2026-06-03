@@ -1,5 +1,5 @@
 import * as clack from '@clack/prompts'
-import { createWritableCapture } from '@kidd-cli/core/test'
+import { createWritableCapture } from '@maltty/core/test'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { createLog } from './log.js'

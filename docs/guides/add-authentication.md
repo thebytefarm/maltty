@@ -1,21 +1,21 @@
 # Add Authentication
 
-Add credential resolution, interactive login, and authenticated HTTP requests to a kidd CLI.
+Add credential resolution, interactive login, and authenticated HTTP requests to a maltty CLI.
 
 ## Prerequisites
 
-- An existing kidd CLI project
-- `@kidd-cli/core` installed (`pnpm add @kidd-cli/core`)
+- An existing maltty CLI project
+- `@maltty/core` installed (`pnpm add @maltty/core`)
 
 ## Steps
 
 ### 1. Register the auth middleware
 
-Import `auth` from `@kidd-cli/core/auth` and add it to the `middleware` array in `cli()`.
+Import `auth` from `@maltty/core/auth` and add it to the `middleware` array in `cli()`.
 
 ```ts
-import { cli } from '@kidd-cli/core'
-import { auth } from '@kidd-cli/core/auth'
+import { cli } from '@maltty/core'
+import { auth } from '@maltty/core/auth'
 
 cli({
   name: 'my-app',
@@ -43,7 +43,7 @@ The `strategies` array defines which credential sources to try. Order matters --
 Create a command that calls `ctx.auth.login()` to run the interactive strategies and persist the credential.
 
 ```ts
-import { command } from '@kidd-cli/core'
+import { command } from '@maltty/core'
 
 export default command({
   description: 'Authenticate with the service',
@@ -64,7 +64,7 @@ export default command({
 Create a command that calls `ctx.auth.logout()` to remove the stored credential from disk.
 
 ```ts
-import { command } from '@kidd-cli/core'
+import { command } from '@maltty/core'
 
 export default command({
   description: 'Log out of the service',
@@ -89,7 +89,7 @@ Commands that need a credential should reject unauthenticated requests early. Th
 Check `ctx.auth.authenticated()` at the top of the handler.
 
 ```ts
-import { command } from '@kidd-cli/core'
+import { command } from '@maltty/core'
 
 export default command({
   description: 'Display the authenticated user',
@@ -108,7 +108,7 @@ export default command({
 Write a middleware that checks for a credential and short-circuits before the handler runs. This keeps handlers focused on business logic.
 
 ```ts
-import { middleware } from '@kidd-cli/core'
+import { middleware } from '@maltty/core'
 
 const requireAuth = middleware((ctx, next) => {
   if (!ctx.auth.authenticated()) {
@@ -124,7 +124,7 @@ export default requireAuth
 Apply it per-command via the `middleware` array:
 
 ```ts
-import { command } from '@kidd-cli/core'
+import { command } from '@maltty/core'
 import requireAuth from '../middleware/require-auth.js'
 
 export default command({
@@ -139,8 +139,8 @@ export default command({
 Apply it globally by adding it to the root `middleware` array after `auth()`:
 
 ```ts
-import { cli } from '@kidd-cli/core'
-import { auth } from '@kidd-cli/core/auth'
+import { cli } from '@maltty/core'
+import { auth } from '@maltty/core/auth'
 import requireAuth from './middleware/require-auth.js'
 
 cli({
@@ -171,13 +171,13 @@ When applied globally, every command (including `login`) must pass the check. Ex
 For authenticated API requests, register the `http()` middleware after `auth()`. It reads `ctx.auth.credential()` automatically and injects the correct HTTP headers.
 
 ```ts
-import { cli } from '@kidd-cli/core'
-import { auth } from '@kidd-cli/core/auth'
-import { http } from '@kidd-cli/core/http'
+import { cli } from '@maltty/core'
+import { auth } from '@maltty/core/auth'
+import { http } from '@maltty/core/http'
 
-import type { HttpClient } from '@kidd-cli/core/http'
+import type { HttpClient } from '@maltty/core/http'
 
-declare module '@kidd-cli/core' {
+declare module '@maltty/core' {
   interface CommandContext {
     readonly api: HttpClient
   }
@@ -213,7 +213,7 @@ The `namespace` option determines the context property name. With `namespace: 'a
 Use the typed HTTP client to make requests. Auth headers are injected automatically.
 
 ```ts
-import { command } from '@kidd-cli/core'
+import { command } from '@maltty/core'
 import { z } from 'zod'
 
 interface Repo {
@@ -393,5 +393,5 @@ MY_APP_TOKEN=ghp_abc123 my-app repos
 ## References
 
 - [Authentication Concepts](../concepts/authentication.md)
-- [Core Reference](../reference/kidd.md)
+- [Core Reference](../reference/maltty.md)
 - [Context](../concepts/context.md)

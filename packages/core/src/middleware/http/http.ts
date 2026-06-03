@@ -1,4 +1,4 @@
-import { isFunction } from '@kidd-cli/utils/fp'
+import { isFunction } from '@maltty/utils/fp'
 
 import { decorateContext } from '@/context/decorate.js'
 import type { CommandContext } from '@/context/types.js'

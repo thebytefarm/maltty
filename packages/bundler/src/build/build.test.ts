@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 const mockFsExists = vi.fn()
 
-vi.mock(import('@kidd-cli/utils/node'), () => ({
+vi.mock(import('@maltty/utils/node'), () => ({
   fs: { exists: mockFsExists },
 }))
 

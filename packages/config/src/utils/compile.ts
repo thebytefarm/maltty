@@ -23,6 +23,6 @@ export const compileTargets = [
 export type CompileTargetEntry = (typeof compileTargets)[number]
 
 /**
- * Supported cross-compilation targets for `kidd compile`.
+ * Supported cross-compilation targets for `maltty compile`.
  */
 export type CompileTarget = CompileTargetEntry['target']

@@ -4,23 +4,23 @@ The central API surface threaded through every handler and middleware. Provides 
 
 ## Properties
 
-| Property  | Type                                   | Description                                                                  |
-| --------- | -------------------------------------- | ---------------------------------------------------------------------------- |
-| `args`    | `DeepReadonly<Merge<KiddArgs, TArgs>>` | Parsed and validated command args                                            |
-| `colors`  | `Colors`                               | Color formatting utilities (picocolors)                                      |
-| `config`  | `ConfigHandle`                         | Lazy config handle with `load()` method (when config middleware registered)  |
-| `format`  | `Format`                               | Pure string formatters (no I/O)                                              |
-| `log`     | `Log`                                  | Logging methods (info, success, error, warn, etc.)                           |
-| `prompts` | `Prompts`                              | Interactive prompts (confirm, text, select, etc.)                            |
-| `spinner` | `Spinner`                              | Spinner for long-running operations (start, stop, message)                   |
-| `store`   | `Store`                                | Typed in-memory key-value store                                              |
-| `fail`    | `(message, options?) => never`         | Throw a user-facing error                                                    |
-| `meta`    | `Meta`                                 | CLI metadata                                                                 |
-| `auth`    | `AuthContext`                          | Auth credential and login (when `@kidd-cli/core/auth` middleware registered) |
+| Property  | Type                                     | Description                                                                 |
+| --------- | ---------------------------------------- | --------------------------------------------------------------------------- |
+| `args`    | `DeepReadonly<Merge<MalttyArgs, TArgs>>` | Parsed and validated command args                                           |
+| `colors`  | `Colors`                                 | Color formatting utilities (picocolors)                                     |
+| `config`  | `ConfigHandle`                           | Lazy config handle with `load()` method (when config middleware registered) |
+| `format`  | `Format`                                 | Pure string formatters (no I/O)                                             |
+| `log`     | `Log`                                    | Logging methods (info, success, error, warn, etc.)                          |
+| `prompts` | `Prompts`                                | Interactive prompts (confirm, text, select, etc.)                           |
+| `spinner` | `Spinner`                                | Spinner for long-running operations (start, stop, message)                  |
+| `store`   | `Store`                                  | Typed in-memory key-value store                                             |
+| `fail`    | `(message, options?) => never`           | Throw a user-facing error                                                   |
+| `meta`    | `Meta`                                   | CLI metadata                                                                |
+| `auth`    | `AuthContext`                            | Auth credential and login (when `@maltty/core/auth` middleware registered)  |
 
 ## `ctx.args`
 
-Deeply readonly parsed args for the matched command. The type is a merge of `KiddArgs` (global augmentation) and the command's own args definition.
+Deeply readonly parsed args for the matched command. The type is a merge of `MalttyArgs` (global augmentation) and the command's own args definition.
 
 ```ts
 const deploy = command({
@@ -35,13 +35,13 @@ const deploy = command({
 
 ## `ctx.config`
 
-A `ConfigHandle` decorated by the `config()` middleware from `@kidd-cli/core/config`. Only present when the config middleware is registered. Config loads lazily by default -- call `ctx.config.load()` to read and validate the config file, which returns a `Result` tuple.
+A `ConfigHandle` decorated by the `config()` middleware from `@maltty/core/config`. Only present when the config middleware is registered. Config loads lazily by default -- call `ctx.config.load()` to read and validate the config file, which returns a `Result` tuple.
 
-Use `ConfigType` with module augmentation on `@kidd-cli/core/config` to derive `ConfigRegistry` from your Zod schema:
+Use `ConfigType` with module augmentation on `@maltty/core/config` to derive `ConfigRegistry` from your Zod schema:
 
 ```ts
 // src/config.ts
-import type { ConfigType } from '@kidd-cli/core/config'
+import type { ConfigType } from '@maltty/core/config'
 import { z } from 'zod'
 
 export const configSchema = z.object({
@@ -49,7 +49,7 @@ export const configSchema = z.object({
   org: z.string().min(1),
 })
 
-declare module '@kidd-cli/core/config' {
+declare module '@maltty/core/config' {
   interface ConfigRegistry extends ConfigType<typeof configSchema> {}
 }
 ```
@@ -57,8 +57,8 @@ declare module '@kidd-cli/core/config' {
 Then register the config middleware:
 
 ```ts
-import { cli } from '@kidd-cli/core'
-import { config } from '@kidd-cli/core/config'
+import { cli } from '@maltty/core'
+import { config } from '@maltty/core/config'
 import { configSchema } from './config.js'
 
 cli({
@@ -93,7 +93,7 @@ result.config.apiUrl // string
 result.layers // ConfigLayer[]
 ```
 
-Run `kidd add config` to scaffold this setup in an existing project, or pass `--config` to `kidd init` when creating a new project.
+Run `maltty add config` to scaffold this setup in an existing project, or pass `--config` to `maltty init` when creating a new project.
 
 ## `ctx.log`
 
@@ -246,7 +246,7 @@ Deeply readonly CLI metadata.
 
 ## `ctx.auth`
 
-Auth context decorated by the `auth()` middleware from `@kidd-cli/core/auth`. Only present when the auth middleware is registered.
+Auth context decorated by the `auth()` middleware from `@maltty/core/auth`. Only present when the auth middleware is registered.
 
 | Property          | Type                                     | Description                                     |
 | ----------------- | ---------------------------------------- | ----------------------------------------------- |
@@ -270,33 +270,33 @@ See [Authentication](./authentication.md) for the full auth system reference.
 
 ## Module Augmentation
 
-kidd exposes empty interfaces that consumers extend via TypeScript declaration merging. This adds project-wide type safety without threading generics through every handler.
+maltty exposes empty interfaces that consumers extend via TypeScript declaration merging. This adds project-wide type safety without threading generics through every handler.
 
-For `ConfigRegistry`, use the `ConfigType` utility to derive the type from your Zod schema (see [`ctx.config`](#ctxconfig) above). Note that config augmentation targets `@kidd-cli/core/config`, while other interfaces target `@kidd-cli/core`:
+For `ConfigRegistry`, use the `ConfigType` utility to derive the type from your Zod schema (see [`ctx.config`](#ctxconfig) above). Note that config augmentation targets `@maltty/core/config`, while other interfaces target `@maltty/core`:
 
 ```ts
-declare module '@kidd-cli/core' {
-  interface KiddArgs {
+declare module '@maltty/core' {
+  interface MalttyArgs {
     verbose: boolean
   }
 
-  interface KiddStore {
+  interface MalttyStore {
     token: string
   }
 }
 
 // Config augmentation uses a separate module
-declare module '@kidd-cli/core/config' {
+declare module '@maltty/core/config' {
   interface ConfigRegistry extends ConfigType<typeof configSchema> {}
 }
 ```
 
-| Interface        | Module                  | Affects             | Description                                                                                      |
-| ---------------- | ----------------------- | ------------------- | ------------------------------------------------------------------------------------------------ |
-| `KiddArgs`       | `@kidd-cli/core`        | `ctx.args`          | Global args merged into every command's args                                                     |
-| `ConfigRegistry` | `@kidd-cli/core/config` | `ctx.config.load()` | Typed config returned by `load()` result                                                         |
-| `KiddStore`      | `@kidd-cli/core`        | `ctx.store`         | Global store keys merged into the store type                                                     |
-| `StoreMap`       | `@kidd-cli/core`        | `ctx.store`         | The store's full key-value shape -- extend this to register typed keys (merges with `KiddStore`) |
+| Interface        | Module                | Affects             | Description                                                                                        |
+| ---------------- | --------------------- | ------------------- | -------------------------------------------------------------------------------------------------- |
+| `MalttyArgs`     | `@maltty/core`        | `ctx.args`          | Global args merged into every command's args                                                       |
+| `ConfigRegistry` | `@maltty/core/config` | `ctx.config.load()` | Typed config returned by `load()` result                                                           |
+| `MalttyStore`    | `@maltty/core`        | `ctx.store`         | Global store keys merged into the store type                                                       |
+| `StoreMap`       | `@maltty/core`        | `ctx.store`         | The store's full key-value shape -- extend this to register typed keys (merges with `MalttyStore`) |
 
 ## Context in screen commands
 
@@ -312,7 +312,7 @@ See [Screens](./screens.md) for details.
 
 ## References
 
-- [Core Reference](../reference/kidd.md)
+- [Core Reference](../reference/maltty.md)
 - [Lifecycle](./lifecycle.md)
 - [Configuration](./configuration.md)
 - [Authentication](./authentication.md)

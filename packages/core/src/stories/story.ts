@@ -1,4 +1,4 @@
-import { withTag } from '@kidd-cli/utils/tag'
+import { withTag } from '@maltty/utils/tag'
 import type { ComponentType } from 'react'
 
 import type { StoriesGroupDef, Story, StoryDef, StoryGroup } from './types.js'

@@ -8,7 +8,7 @@ import { createAutoloadPlugin } from '../autoloader/autoload-plugin.js'
 import { ALWAYS_BUNDLE, NODE_BUILTINS, SHEBANG, STUB_PACKAGES } from '../constants.js'
 import type { ResolvedBundlerConfig } from '../types.js'
 
-const TAG_MODULE_PATH = createRequire(import.meta.url).resolve('@kidd-cli/utils/tag')
+const TAG_MODULE_PATH = createRequire(import.meta.url).resolve('@maltty/utils/tag')
 
 /**
  * Convert a resolved bundler config to a tsdown InlineConfig for production builds.
@@ -86,7 +86,7 @@ export function toTsdownWatchConfig(params: {
  * `bun build --compile` never encounters unresolvable bare imports. Only
  * Node.js builtins and explicit user externals are kept external.
  *
- * In normal (non-compile) mode, only `@kidd-cli/*` packages are force-bundled
+ * In normal (non-compile) mode, only `@maltty/*` packages are force-bundled
  * and everything else in `node_modules` is left external by tsdown's default.
  *
  * @private

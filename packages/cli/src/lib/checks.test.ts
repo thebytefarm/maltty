@@ -1,7 +1,7 @@
 import { access, mkdir, readFile, writeFile } from 'node:fs/promises'
 
-import type { LoadConfigResult } from '@kidd-cli/config/utils'
-import type { Manifest } from '@kidd-cli/utils/manifest'
+import type { LoadConfigResult } from '@maltty/config/utils'
+import type { Manifest } from '@maltty/utils/manifest'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import type { CheckContext, RawPackageJson } from './checks.js'
@@ -33,7 +33,7 @@ function makeContext(overrides: Partial<CheckContext> = {}): CheckContext {
 function makeConfigResult(overrides: Partial<LoadConfigResult> = {}): LoadConfigResult {
   return {
     config: {} as LoadConfigResult['config'],
-    configFile: '/project/kidd.config.ts',
+    configFile: '/project/maltty.config.ts',
     ...overrides,
   }
 }
@@ -90,13 +90,13 @@ describe(readRawPackageJson, () => {
 
   it('should return parsed package.json data', async () => {
     mockedReadFile.mockResolvedValue(
-      JSON.stringify({ dependencies: { '@kidd-cli/core': '1.0.0' }, type: 'module' })
+      JSON.stringify({ dependencies: { '@maltty/core': '1.0.0' }, type: 'module' })
     )
 
     const [error, result] = await readRawPackageJson('/project')
 
     expect(error).toBeNull()
-    expect(result).toMatchObject({ dependencies: { '@kidd-cli/core': '1.0.0' }, type: 'module' })
+    expect(result).toMatchObject({ dependencies: { '@maltty/core': '1.0.0' }, type: 'module' })
   })
 
   it('should return error when file read fails', async () => {
@@ -123,25 +123,25 @@ describe('diagnostic checks', () => {
     vi.clearAllMocks()
   })
 
-  describe('kidd.config', () => {
+  describe('maltty.config', () => {
     it('should pass when configResult has configFile', async () => {
       const context = makeContext({
-        configResult: makeConfigResult({ configFile: '/project/kidd.config.ts' }),
+        configResult: makeConfigResult({ configFile: '/project/maltty.config.ts' }),
       })
 
-      const result = await findCheck('kidd.config').run(context)
+      const result = await findCheck('maltty.config').run(context)
 
       expect(result.status).toBe('pass')
-      expect(result.name).toBe('kidd.config')
+      expect(result.name).toBe('maltty.config')
     })
 
     it('should fail when no configResult', async () => {
       const context = makeContext()
 
-      const result = await findCheck('kidd.config').run(context)
+      const result = await findCheck('maltty.config').run(context)
 
       expect(result.status).toBe('fail')
-      expect(result.name).toBe('kidd.config')
+      expect(result.name).toBe('maltty.config')
     })
   })
 
@@ -227,35 +227,35 @@ describe('diagnostic checks', () => {
     })
   })
 
-  describe('kidd dependency', () => {
-    it('should pass when kidd is in dependencies', async () => {
+  describe('maltty dependency', () => {
+    it('should pass when maltty is in dependencies', async () => {
       const context = makeContext({
-        rawPackageJson: { dependencies: { '@kidd-cli/core': '1.0.0' } },
+        rawPackageJson: { dependencies: { '@maltty/core': '1.0.0' } },
       })
 
-      const result = await findCheck('@kidd-cli/core dependency').run(context)
+      const result = await findCheck('@maltty/core dependency').run(context)
 
       expect(result.status).toBe('pass')
       expect(result.message).toContain('dependencies')
     })
 
-    it('should pass when kidd is in devDependencies', async () => {
+    it('should pass when maltty is in devDependencies', async () => {
       const context = makeContext({
-        rawPackageJson: { devDependencies: { '@kidd-cli/core': '^1.0.0' } },
+        rawPackageJson: { devDependencies: { '@maltty/core': '^1.0.0' } },
       })
 
-      const result = await findCheck('@kidd-cli/core dependency').run(context)
+      const result = await findCheck('@maltty/core dependency').run(context)
 
       expect(result.status).toBe('pass')
       expect(result.message).toContain('devDependencies')
     })
 
-    it('should fail when kidd not found', async () => {
+    it('should fail when maltty not found', async () => {
       const context = makeContext({
         rawPackageJson: { dependencies: { express: '4.0.0' } },
       })
 
-      const result = await findCheck('@kidd-cli/core dependency').run(context)
+      const result = await findCheck('@maltty/core dependency').run(context)
 
       expect(result.status).toBe('fail')
     })
@@ -263,7 +263,7 @@ describe('diagnostic checks', () => {
     it('should fail when no rawPackageJson', async () => {
       const context = makeContext()
 
-      const result = await findCheck('@kidd-cli/core dependency').run(context)
+      const result = await findCheck('@maltty/core dependency').run(context)
 
       expect(result.status).toBe('fail')
     })
@@ -371,20 +371,20 @@ describe('fix functions', () => {
     })
   })
 
-  describe('kidd dependency fix', () => {
-    it('should add kidd to dependencies', async () => {
+  describe('maltty dependency fix', () => {
+    it('should add maltty to dependencies', async () => {
       mockedReadFile.mockResolvedValue(JSON.stringify({ name: 'test' }))
       mockedWriteFile.mockResolvedValue(undefined)
       const context = makeContext()
 
-      const { fix } = findCheck('@kidd-cli/core dependency')
+      const { fix } = findCheck('@maltty/core dependency')
       if (!fix) {
         expect.unreachable('fix should be defined')
       }
       const result = await fix(context)
 
       expect(result.fixed).toBeTruthy()
-      expect(result.name).toBe('@kidd-cli/core dependency')
+      expect(result.name).toBe('@maltty/core dependency')
       expect(mockedWriteFile).toHaveBeenCalledTimes(1)
     })
   })

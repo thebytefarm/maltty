@@ -1,4 +1,4 @@
-import type { Tagged } from '@kidd-cli/utils/tag'
+import type { Tagged } from '@maltty/utils/tag'
 
 import type { CommandContext } from '../context/types.js'
 import type { AnyRecord, IsAny, UnionToIntersection } from './utility.js'

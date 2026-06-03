@@ -1,7 +1,7 @@
 import { extname } from 'node:path'
 
-import { attempt, err, match, ok } from '@kidd-cli/utils/fp'
-import { jsonStringify } from '@kidd-cli/utils/json'
+import { attempt, err, match, ok } from '@maltty/utils/fp'
+import { jsonStringify } from '@maltty/utils/json'
 import { stringify as yamlStringify } from 'yaml'
 
 import type { ConfigFormat, ConfigOperationResult, ConfigWriteFormat } from './types.js'

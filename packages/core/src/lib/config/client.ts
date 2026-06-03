@@ -1,8 +1,8 @@
 import { mkdir, writeFile } from 'node:fs/promises'
 import { dirname, extname, isAbsolute, join } from 'node:path'
 
-import { attemptAsync, err, match, ok } from '@kidd-cli/utils/fp'
-import { validate } from '@kidd-cli/utils/validate'
+import { attemptAsync, err, match, ok } from '@maltty/utils/fp'
+import { validate } from '@maltty/utils/validate'
 import { loadConfig as c12LoadConfig } from 'c12'
 import type { ZodTypeAny, output } from 'zod'
 

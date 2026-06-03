@@ -3,14 +3,14 @@ import type { ReactNode } from 'react'
 import React from 'react'
 
 import type { CommandContext } from '../context/types.js'
-import { KiddProvider } from './provider.js'
+import { MalttyProvider } from './provider.js'
 import { toScreenContext } from './screen.js'
 
 /**
- * Render a React element as a live Ink terminal application with the kidd
+ * Render a React element as a live Ink terminal application with the maltty
  * screen context injected.
  *
- * Wraps the provided node in a {@link KiddProvider} that supplies the
+ * Wraps the provided node in a {@link MalttyProvider} that supplies the
  * screen context (React-backed `log`, `spinner`, `store`, and any
  * middleware-decorated properties). Returns the raw Ink {@link Instance}
  * so callers have full lifecycle control — `waitUntilExit()`, `unmount()`,
@@ -28,13 +28,13 @@ export async function render(
 ): Promise<Instance> {
   const { render: inkRender } = await import('ink')
   const screenCtx = toScreenContext(ctx)
-  return inkRender(<KiddProvider value={screenCtx}>{node}</KiddProvider>, options)
+  return inkRender(<MalttyProvider value={screenCtx}>{node}</MalttyProvider>, options)
 }
 
 /**
- * Render a React element to a string with the kidd screen context injected.
+ * Render a React element to a string with the maltty screen context injected.
  *
- * Wraps the provided node in a {@link KiddProvider} and delegates to Ink's
+ * Wraps the provided node in a {@link MalttyProvider} and delegates to Ink's
  * `renderToString`. Useful for generating documentation, writing output to
  * files, testing, or scenarios where rendered output is needed as a string
  * without a persistent terminal session.
@@ -51,5 +51,5 @@ export async function renderToString(
 ): Promise<string> {
   const { renderToString: inkRenderToString } = await import('ink')
   const screenCtx = toScreenContext(ctx)
-  return inkRenderToString(<KiddProvider value={screenCtx}>{node}</KiddProvider>, options)
+  return inkRenderToString(<MalttyProvider value={screenCtx}>{node}</MalttyProvider>, options)
 }

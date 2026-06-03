@@ -1,22 +1,22 @@
 {
-  "name": "@kidd-cli/config",
+  "name": "@maltty/config",
   "version": "0.4.1",
-  "description": "Build-time configuration for kidd CLIs",
+  "description": "Build-time configuration for maltty CLIs",
   "keywords": [
     "cli",
     "config",
     "configuration",
-    "kidd",
+    "maltty",
     "typescript"
   ],
-  "homepage": "https://github.com/joggrdocs/kidd/tree/main/packages/config",
+  "homepage": "https://github.com/thebytefarm/maltty/tree/main/packages/config",
   "bugs": {
-    "url": "https://github.com/joggrdocs/kidd/issues"
+    "url": "https://github.com/thebytefarm/maltty/issues"
   },
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/joggrdocs/kidd.git",
+    "url": "https://github.com/thebytefarm/maltty.git",
     "directory": "packages/config"
   },
   "files": [
@@ -42,7 +42,7 @@
     "test:watch": "vitest"
   },
   "dependencies": {
-    "@kidd-cli/utils": "workspace:*",
+    "@maltty/utils": "workspace:*",
     "c12": "4.0.0-beta.4",
     "es-toolkit": "catalog:",
     "zod": "catalog:"

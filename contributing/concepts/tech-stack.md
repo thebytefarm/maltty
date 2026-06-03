@@ -1,6 +1,6 @@
 # Tech Stack
 
-Complete reference of tools and libraries used in the kidd CLI framework.
+Complete reference of tools and libraries used in the maltty CLI framework.
 
 ## Core Dependencies
 

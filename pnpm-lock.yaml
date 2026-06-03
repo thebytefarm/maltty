@@ -57,7 +57,7 @@ importers:
       '@clack/prompts':
         specifier: ^1.2.0
         version: 1.2.0
-      '@kidd-cli/cli':
+      '@maltty/cli':
         specifier: workspace:*
         version: link:packages/cli
       '@types/node':
@@ -111,7 +111,7 @@ importers:
 
   examples/advanced:
     dependencies:
-      '@kidd-cli/core':
+      '@maltty/core':
         specifier: workspace:*
         version: link:../../packages/core
       ts-pattern:
@@ -121,7 +121,7 @@ importers:
         specifier: 'catalog:'
         version: 4.3.6
     devDependencies:
-      '@kidd-cli/cli':
+      '@maltty/cli':
         specifier: workspace:*
         version: link:../../packages/cli
       tsdown:
@@ -136,14 +136,14 @@ importers:
 
   examples/authenticated-service:
     dependencies:
-      '@kidd-cli/core':
+      '@maltty/core':
         specifier: workspace:*
         version: link:../../packages/core
       zod:
         specifier: 'catalog:'
         version: 4.3.6
     devDependencies:
-      '@kidd-cli/cli':
+      '@maltty/cli':
         specifier: workspace:*
         version: link:../../packages/cli
       '@types/node':
@@ -161,14 +161,14 @@ importers:
 
   examples/diagnostic-output:
     dependencies:
-      '@kidd-cli/core':
+      '@maltty/core':
         specifier: workspace:*
         version: link:../../packages/core
       zod:
         specifier: 'catalog:'
         version: 4.3.6
     devDependencies:
-      '@kidd-cli/cli':
+      '@maltty/cli':
         specifier: workspace:*
         version: link:../../packages/cli
       tsdown:
@@ -183,7 +183,7 @@ importers:
 
   examples/icons:
     dependencies:
-      '@kidd-cli/core':
+      '@maltty/core':
         specifier: workspace:*
         version: link:../../packages/core
       ts-pattern:
@@ -193,7 +193,7 @@ importers:
         specifier: 'catalog:'
         version: 4.3.6
     devDependencies:
-      '@kidd-cli/cli':
+      '@maltty/cli':
         specifier: workspace:*
         version: link:../../packages/cli
       tsdown:
@@ -208,7 +208,7 @@ importers:
 
   examples/simple:
     dependencies:
-      '@kidd-cli/core':
+      '@maltty/core':
         specifier: workspace:*
         version: link:../../packages/core
       ts-pattern:
@@ -218,7 +218,7 @@ importers:
         specifier: 'catalog:'
         version: 4.3.6
     devDependencies:
-      '@kidd-cli/cli':
+      '@maltty/cli':
         specifier: workspace:*
         version: link:../../packages/cli
       tsdown:
@@ -236,7 +236,7 @@ importers:
       '@inkjs/ui':
         specifier: ^2.0.0
         version: 2.0.0(ink@7.0.0(@types/react@19.2.14)(react@19.2.5))
-      '@kidd-cli/core':
+      '@maltty/core':
         specifier: workspace:*
         version: link:../../packages/core
       ink:
@@ -252,7 +252,7 @@ importers:
         specifier: 'catalog:'
         version: 4.3.6
     devDependencies:
-      '@kidd-cli/cli':
+      '@maltty/cli':
         specifier: workspace:*
         version: link:../../packages/cli
       '@types/react':
@@ -270,10 +270,10 @@ importers:
 
   packages/bundler:
     dependencies:
-      '@kidd-cli/config':
+      '@maltty/config':
         specifier: workspace:*
         version: link:../config
-      '@kidd-cli/utils':
+      '@maltty/utils':
         specifier: workspace:*
         version: link:../utils
       es-toolkit:
@@ -301,16 +301,16 @@ importers:
 
   packages/cli:
     dependencies:
-      '@kidd-cli/bundler':
+      '@maltty/bundler':
         specifier: workspace:*
         version: link:../bundler
-      '@kidd-cli/config':
+      '@maltty/config':
         specifier: workspace:*
         version: link:../config
-      '@kidd-cli/core':
+      '@maltty/core':
         specifier: workspace:*
         version: link:../core
-      '@kidd-cli/utils':
+      '@maltty/utils':
         specifier: workspace:*
         version: link:../utils
       fs-extra:
@@ -353,7 +353,7 @@ importers:
 
   packages/config:
     dependencies:
-      '@kidd-cli/utils':
+      '@maltty/utils':
         specifier: workspace:*
         version: link:../utils
       c12:
@@ -384,10 +384,10 @@ importers:
       '@clack/prompts':
         specifier: ^1.2.0
         version: 1.2.0
-      '@kidd-cli/config':
+      '@maltty/config':
         specifier: workspace:*
         version: link:../config
-      '@kidd-cli/utils':
+      '@maltty/utils':
         specifier: workspace:*
         version: link:../utils
       '@pinojs/redact':

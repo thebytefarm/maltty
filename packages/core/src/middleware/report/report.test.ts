@@ -1,4 +1,4 @@
-import { createWritableCapture, runMiddleware } from '@kidd-cli/core/test'
+import { createWritableCapture, runMiddleware } from '@maltty/core/test'
 import { describe, expect, it } from 'vitest'
 
 import { createReport, report } from './report.js'

@@ -1,4 +1,4 @@
-import { readManifest } from '@kidd-cli/utils/manifest'
+import { readManifest } from '@maltty/utils/manifest'
 import { isNil, noop } from 'es-toolkit'
 import { match, P } from 'ts-pattern'
 
@@ -19,7 +19,7 @@ import type {
 import { resolveConfig } from './utils/resolve-config.js'
 
 /**
- * Create a bundler instance for a kidd CLI project.
+ * Create a bundler instance for a maltty CLI project.
  *
  * Reads the project manifest once, resolves config, and returns methods
  * that share the resolved state. Lifecycle hooks fire at phase boundaries.

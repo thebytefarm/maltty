@@ -1,7 +1,7 @@
 import { existsSync } from 'node:fs'
 import { dirname, join, resolve } from 'node:path'
 
-import { attempt } from '@kidd-cli/utils/fp'
+import { attempt } from '@maltty/utils/fp'
 
 /**
  * Walk up the directory tree to find the nearest git project root.

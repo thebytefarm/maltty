@@ -1,4 +1,4 @@
-import { attemptAsync } from '@kidd-cli/utils/fp'
+import { attemptAsync } from '@maltty/utils/fp'
 
 import { TOKEN_VAR_SUFFIX } from './constants.js'
 import type { BearerCredential } from './types.js'

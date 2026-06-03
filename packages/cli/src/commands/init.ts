@@ -1,10 +1,10 @@
 import { createRequire } from 'node:module'
 import { dirname, join } from 'node:path'
 
-import { command } from '@kidd-cli/core'
-import type { Command, CommandContext } from '@kidd-cli/core'
-import { attempt } from '@kidd-cli/utils/fp'
-import { readManifest } from '@kidd-cli/utils/manifest'
+import { command } from '@maltty/core'
+import type { Command, CommandContext } from '@maltty/core'
+import { attempt } from '@maltty/utils/fp'
+import { readManifest } from '@maltty/utils/manifest'
 import { z } from 'zod'
 
 import { renderTemplate } from '../lib/render.js'
@@ -25,7 +25,7 @@ type InitArgs = z.infer<typeof options>
 
 const initCommand: Command = command({
   options,
-  description: 'Scaffold a new kidd CLI project',
+  description: 'Scaffold a new maltty CLI project',
   handler: async (ctx: CommandContext<InitArgs>) => {
     const projectName = await resolveProjectName(ctx)
     const projectDescription = await resolveDescription(ctx)
@@ -41,7 +41,7 @@ const initCommand: Command = command({
       return ctx.fail(versionsError.message)
     }
 
-    const coreVersion = await resolveDependencyVersion('@kidd-cli/core')
+    const coreVersion = await resolveDependencyVersion('@maltty/core')
     const cliVersion = await resolveSelfVersion()
 
     const templateDir = join(import.meta.dirname, '..', 'lib', 'templates', 'project')
@@ -126,9 +126,9 @@ async function resolveDescription(ctx: CommandContext<InitArgs>): Promise<string
     return ctx.args.description
   }
   return ctx.prompts.text({
-    defaultValue: 'A CLI built with kidd',
+    defaultValue: 'A CLI built with maltty',
     message: 'Description',
-    placeholder: 'A CLI built with kidd',
+    placeholder: 'A CLI built with maltty',
   })
 }
 
@@ -245,7 +245,7 @@ async function resolveSelfVersion(): Promise<string> {
  * package root from the resolved path, and reads its `package.json`.
  * Returns `'0.0.0'` when resolution fails for any reason.
  *
- * @param packageName - The npm package name to resolve (e.g. `'@kidd-cli/core'`).
+ * @param packageName - The npm package name to resolve (e.g. `'@maltty/core'`).
  * @returns The package version string, or `'0.0.0'` on failure.
  * @private
  */

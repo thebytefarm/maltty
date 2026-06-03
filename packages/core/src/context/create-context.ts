@@ -3,7 +3,7 @@ import type { Colors } from 'picocolors/types'
 
 import { createDotDirectory } from '@/lib/dotdir/index.js'
 import { createLog } from '@/lib/log.js'
-import type { AnyRecord, KiddStore, Merge } from '@/types/index.js'
+import type { AnyRecord, MalttyStore, Merge } from '@/types/index.js'
 
 import { createContextError } from './error.js'
 import { createContextFormat } from './format.js'
@@ -74,7 +74,7 @@ export function createContext<TArgs extends AnyRecord>(
     })
   const ctxStatus: Status = resolveStatus(options, dc, commonDefaults)
   const ctxFormat: Format = createContextFormat()
-  const ctxStore: Store<Merge<KiddStore, StoreMap>> = createMemoryStore()
+  const ctxStore: Store<Merge<MalttyStore, StoreMap>> = createMemoryStore()
   const ctxPrompts: Prompts =
     options.prompts ??
     createContextPrompts({

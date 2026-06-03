@@ -1,22 +1,22 @@
 {
-  "name": "@kidd-cli/bundler",
+  "name": "@maltty/bundler",
   "version": "0.9.1",
-  "description": "Programmatic bundler for kidd CLI tools powered by tsdown",
+  "description": "Programmatic bundler for maltty CLI tools powered by tsdown",
   "keywords": [
     "bundler",
     "cli",
-    "kidd",
+    "maltty",
     "tsdown",
     "typescript"
   ],
-  "homepage": "https://github.com/joggrdocs/kidd/tree/main/packages/bundler",
+  "homepage": "https://github.com/thebytefarm/maltty/tree/main/packages/bundler",
   "bugs": {
-    "url": "https://github.com/joggrdocs/kidd/issues"
+    "url": "https://github.com/thebytefarm/maltty/issues"
   },
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/joggrdocs/kidd.git",
+    "url": "https://github.com/thebytefarm/maltty.git",
     "directory": "packages/bundler"
   },
   "files": [
@@ -40,8 +40,8 @@
     "test:watch": "vitest"
   },
   "dependencies": {
-    "@kidd-cli/config": "workspace:*",
-    "@kidd-cli/utils": "workspace:*",
+    "@maltty/config": "workspace:*",
+    "@maltty/utils": "workspace:*",
     "es-toolkit": "catalog:",
     "ts-pattern": "catalog:",
     "tsdown": "catalog:",

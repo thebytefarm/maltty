@@ -5,8 +5,8 @@ Resolve credentials from multiple sources and store them in the context for down
 ## Usage
 
 ```ts
-import { cli } from '@kidd-cli/core'
-import { auth } from '@kidd-cli/core/auth'
+import { cli } from '@maltty/core'
+import { auth } from '@maltty/core/auth'
 
 cli({
   name: 'my-app',
@@ -245,7 +245,7 @@ The `env`, `dotenv`, `token`, `oauth`, and `device-code` strategies always produ
 Augment `CommandContext` to get typed access to `ctx.auth`:
 
 ```ts
-declare module '@kidd-cli/core' {
+declare module '@maltty/core' {
   interface CommandContext {
     readonly auth: AuthContext
   }

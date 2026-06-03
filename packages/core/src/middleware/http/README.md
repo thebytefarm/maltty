@@ -2,13 +2,13 @@
 
 Typed HTTP client middleware that decorates the context with a namespaced `HttpClient`.
 
-The standalone `http()` middleware is fully decoupled from auth. For automatic credential header injection, use `auth({ http: { ... } })` from `@kidd-cli/core/auth`.
+The standalone `http()` middleware is fully decoupled from auth. For automatic credential header injection, use `auth({ http: { ... } })` from `@maltty/core/auth`.
 
 ## Usage
 
 ```ts
-import { cli } from '@kidd-cli/core'
-import { http } from '@kidd-cli/core/http'
+import { cli } from '@maltty/core'
+import { http } from '@maltty/core/http'
 
 cli({
   name: 'my-app',
@@ -54,9 +54,9 @@ Headers are merged in priority order: per-request > `headers` option.
 Augment the `Context` interface so TypeScript knows about the namespace property:
 
 ```ts
-import type { HttpClient } from '@kidd-cli/core/http'
+import type { HttpClient } from '@maltty/core/http'
 
-declare module '@kidd-cli/core' {
+declare module '@maltty/core' {
   interface CommandContext {
     readonly github: HttpClient
   }
@@ -123,7 +123,7 @@ Per-request options passed to any client method:
 For automatic credential injection, use the `http` option on `auth()` instead of the standalone `http()` middleware:
 
 ```ts
-import { auth } from '@kidd-cli/core/auth'
+import { auth } from '@maltty/core/auth'
 
 cli({
   name: 'my-app',
@@ -146,7 +146,7 @@ cli({
 Use `createHttpClient` outside the middleware pipeline for scripts or tests:
 
 ```ts
-import { createHttpClient } from '@kidd-cli/core/http'
+import { createHttpClient } from '@maltty/core/http'
 
 const client = createHttpClient({
   baseUrl: 'https://api.github.com',

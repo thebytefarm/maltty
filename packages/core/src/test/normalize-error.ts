@@ -1,4 +1,4 @@
-import { toError } from '@kidd-cli/utils'
+import { toError } from '@maltty/utils'
 import { match } from 'ts-pattern'
 
 import { isContextError } from '@/context/error.js'

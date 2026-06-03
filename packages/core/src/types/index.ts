@@ -40,7 +40,7 @@ export type {
   CliOptions,
   DirsConfig,
   HelpOptions,
-  KiddArgs,
-  KiddStore,
+  MalttyArgs,
+  MalttyStore,
   ResolvedDirs,
 } from './cli.js'

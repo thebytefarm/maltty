@@ -1,19 +1,24 @@
 import { describe, expect, it } from 'vitest'
 
-import { KiddConfigSchema, validateConfig } from './schema.js'
+import { MalttyConfigSchema, validateConfig } from './schema.js'
 
-describe('KiddConfigSchema schema', () => {
+describe('MalttyConfigSchema schema', () => {
   it('should accept an empty object', () => {
-    const result = KiddConfigSchema.safeParse({})
+    const result = MalttyConfigSchema.safeParse({})
 
     expect(result.success).toBeTruthy()
   })
 
   it('should accept a fully populated config', () => {
-    const result = KiddConfigSchema.safeParse({
+    const result = MalttyConfigSchema.safeParse({
       build: { external: ['pg'], minify: true, out: './dist', sourcemap: false, target: 'node20' },
       commands: './commands',
-      compile: { autoloadDotenv: true, name: 'my-cli', out: './bin', targets: ['linux-x64', 'darwin-arm64'] },
+      compile: {
+        autoloadDotenv: true,
+        name: 'my-cli',
+        out: './bin',
+        targets: ['linux-x64', 'darwin-arm64'],
+      },
       entry: './src/index.ts',
       include: ['assets/**'],
     })
@@ -22,19 +27,19 @@ describe('KiddConfigSchema schema', () => {
   })
 
   it('should reject root-level outDir', () => {
-    const result = KiddConfigSchema.safeParse({ outDir: './dist' })
+    const result = MalttyConfigSchema.safeParse({ outDir: './dist' })
 
     expect(result.success).toBeFalsy()
   })
 
   it('should reject unknown top-level keys', () => {
-    const result = KiddConfigSchema.safeParse({ unknown: true })
+    const result = MalttyConfigSchema.safeParse({ unknown: true })
 
     expect(result.success).toBeFalsy()
   })
 
   it('should reject unknown build option keys', () => {
-    const result = KiddConfigSchema.safeParse({
+    const result = MalttyConfigSchema.safeParse({
       build: { unknown: true },
     })
 
@@ -42,7 +47,7 @@ describe('KiddConfigSchema schema', () => {
   })
 
   it('should reject invalid compile targets', () => {
-    const result = KiddConfigSchema.safeParse({
+    const result = MalttyConfigSchema.safeParse({
       compile: { targets: ['invalid-target'] },
     })
 
@@ -50,13 +55,13 @@ describe('KiddConfigSchema schema', () => {
   })
 
   it('should accept compile: true (boolean shorthand)', () => {
-    const result = KiddConfigSchema.safeParse({ compile: true })
+    const result = MalttyConfigSchema.safeParse({ compile: true })
 
     expect(result.success).toBeTruthy()
   })
 
   it('should accept compile: false (boolean shorthand)', () => {
-    const result = KiddConfigSchema.safeParse({ compile: false })
+    const result = MalttyConfigSchema.safeParse({ compile: false })
 
     expect(result.success).toBeTruthy()
   })
@@ -89,7 +94,7 @@ describe(validateConfig, () => {
 
     expect(error).toBeInstanceOf(Error)
     if (error) {
-      expect(error.message).toContain('Invalid kidd config')
+      expect(error.message).toContain('Invalid maltty config')
     }
   })
 

@@ -2,7 +2,7 @@ import type { Dirent } from 'node:fs'
 import { readdir } from 'node:fs/promises'
 import { resolve } from 'node:path'
 
-import { hasTag, withTag } from '@kidd-cli/utils/tag'
+import { hasTag, withTag } from '@maltty/utils/tag'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { autoload } from './autoload.js'
@@ -254,8 +254,8 @@ describe('autoload()', () => {
     expect(result).toEqual({})
   })
 
-  it('should log import errors when KIDD_DEBUG is enabled', async () => {
-    process.env.KIDD_DEBUG = 'true'
+  it('should log import errors when MALTTY_DEBUG is enabled', async () => {
+    process.env.MALTTY_DEBUG = 'true'
     const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => undefined)
 
     mockedReaddir.mockResolvedValue([makeDirent('broken.ts', true)] as unknown as Dirent[])
@@ -268,11 +268,11 @@ describe('autoload()', () => {
 
     expect(result).toEqual({})
     expect(warnSpy).toHaveBeenCalledWith(
-      expect.stringContaining('[kidd] failed to import command from'),
+      expect.stringContaining('[maltty] failed to import command from'),
       expect.any(Error)
     )
 
-    delete process.env.KIDD_DEBUG
+    delete process.env.MALTTY_DEBUG
     warnSpy.mockRestore()
   })
 

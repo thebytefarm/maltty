@@ -1,5 +1,5 @@
-import type { BuildOptions, CompileOptions, CompileTarget, KiddConfig } from '@kidd-cli/config'
-import type { ResultAsync, Result } from '@kidd-cli/utils/fp'
+import type { BuildOptions, CompileOptions, CompileTarget, MalttyConfig } from '@maltty/config'
+import type { ResultAsync, Result } from '@maltty/utils/fp'
 
 // Resolved config types (all fields required, paths absolute)
 
@@ -95,7 +95,7 @@ export interface BundlerLifecycle {
  * Parameters for creating a bundler instance.
  */
 export interface CreateBundlerParams extends BundlerLifecycle {
-  readonly config: KiddConfig
+  readonly config: MalttyConfig
   readonly cwd: string
 }
 
@@ -186,6 +186,6 @@ export interface ScanResult {
   readonly dirs: readonly ScannedDir[]
 }
 
-// Re-exports from @kidd-cli/config for convenience
+// Re-exports from @maltty/config for convenience
 
-export type { BuildOptions, CompileOptions, CompileTarget, KiddConfig }
+export type { BuildOptions, CompileOptions, CompileTarget, MalttyConfig }

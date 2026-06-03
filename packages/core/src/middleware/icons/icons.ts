@@ -25,7 +25,7 @@ import type { IconsOptions } from './types.js'
  *
  * @example
  * ```ts
- * import { icons } from '@kidd-cli/core/icons'
+ * import { icons } from '@maltty/core/icons'
  *
  * cli({
  *   middleware: [

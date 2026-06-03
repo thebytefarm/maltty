@@ -1,5 +1,5 @@
-import type { Tagged } from '@kidd-cli/utils/tag'
-import { TAG, hasTag, withTag } from '@kidd-cli/utils/tag'
+import type { Tagged } from '@maltty/utils/tag'
+import { TAG, hasTag, withTag } from '@maltty/utils/tag'
 
 /**
  * Default process exit code for error conditions.

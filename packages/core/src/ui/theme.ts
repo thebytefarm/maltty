@@ -6,7 +6,7 @@ import { match } from 'ts-pattern'
 // ---------------------------------------------------------------------------
 
 /**
- * Color palette used by kidd UI components.
+ * Color palette used by maltty UI components.
  */
 export const colors: Readonly<{
   readonly primary: 'cyan'
@@ -52,7 +52,7 @@ export function resolveVariantColor(variant: Variant): ThemeColor {
 // ---------------------------------------------------------------------------
 
 /**
- * Symbol set used by kidd UI components for indicators and status icons.
+ * Symbol set used by maltty UI components for indicators and status icons.
  */
 export const symbols: Readonly<{
   readonly radioOn: string

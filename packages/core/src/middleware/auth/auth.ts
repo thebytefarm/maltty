@@ -1,6 +1,6 @@
 import { join } from 'node:path'
 
-import { P, isNil, match } from '@kidd-cli/utils/fp'
+import { P, isNil, match } from '@maltty/utils/fp'
 
 import { decorateContext } from '@/context/decorate.js'
 import type { CommandContext } from '@/context/types.js'

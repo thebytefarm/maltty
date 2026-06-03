@@ -65,10 +65,10 @@ export interface ReportEnv {
 /**
  * Augments the base {@link CommandContext} with an optional `report` property.
  *
- * When a consumer imports `@kidd-cli/core/report`, this declaration merges
+ * When a consumer imports `@maltty/core/report`, this declaration merges
  * `report` onto `CommandContext` so that `ctx.report` is typed without manual casting.
  */
-declare module '@kidd-cli/core' {
+declare module '@maltty/core' {
   interface CommandContext {
     readonly report: Report
   }

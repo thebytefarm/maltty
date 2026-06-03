@@ -1,12 +1,12 @@
 # Build a CLI
 
-Define commands, middleware, configuration, and use kidd's sub-exports to build a complete CLI tool.
+Define commands, middleware, configuration, and use maltty's sub-exports to build a complete CLI tool.
 
 ## Prerequisites
 
 - Node.js 24+
 - Bun 1.3+ (required if compiling to standalone binaries)
-- `@kidd-cli/core` installed (`pnpm add @kidd-cli/core`)
+- `@maltty/core` installed (`pnpm add @maltty/core`)
 
 Declare runtime constraints in your CLI's `package.json` so consumers get clear errors on incompatible runtimes:
 
@@ -26,7 +26,7 @@ Declare runtime constraints in your CLI's `package.json` so consumers get clear 
 Commands accept a description, typed arguments via Zod, and a handler function.
 
 ```ts
-import { command } from '@kidd-cli/core'
+import { command } from '@maltty/core'
 import { z } from 'zod'
 
 const deploy = command({
@@ -46,7 +46,7 @@ const deploy = command({
 `cli()` registers commands, parses arguments, runs middleware, and invokes the matched handler.
 
 ```ts
-import { cli } from '@kidd-cli/core'
+import { cli } from '@maltty/core'
 
 cli({
   name: 'my-app',
@@ -65,7 +65,7 @@ Middleware wraps command execution with pre/post logic. It receives the context 
 **Root middleware** runs for every command:
 
 ```ts
-import { middleware } from '@kidd-cli/core'
+import { middleware } from '@maltty/core'
 
 const timing = middleware(async (ctx, next) => {
   const start = Date.now()
@@ -170,7 +170,7 @@ const generate = command({
 Dynamically discover commands at runtime:
 
 ```ts
-import { autoload } from '@kidd-cli/core'
+import { autoload } from '@maltty/core'
 
 cli({
   name: 'my-app',
@@ -188,13 +188,13 @@ Scaffold config setup with the CLI, or create the files manually.
 **Scaffold with the CLI:**
 
 ```bash
-kidd add config
+maltty add config
 ```
 
 This creates `src/config.ts` with a Zod schema and `ConfigType` module augmentation. You can also include config setup when creating a new project:
 
 ```bash
-kidd init --config
+maltty init --config
 ```
 
 **Manual setup:**
@@ -203,7 +203,7 @@ Create a config schema file with `ConfigType` to derive `ConfigRegistry` from yo
 
 ```ts
 // src/config.ts
-import type { ConfigType } from '@kidd-cli/core/config'
+import type { ConfigType } from '@maltty/core/config'
 import { z } from 'zod'
 
 export const configSchema = z.object({
@@ -211,7 +211,7 @@ export const configSchema = z.object({
   region: z.string().default('us-east-1'),
 })
 
-declare module '@kidd-cli/core/config' {
+declare module '@maltty/core/config' {
   interface ConfigRegistry extends ConfigType<typeof configSchema> {}
 }
 ```
@@ -219,8 +219,8 @@ declare module '@kidd-cli/core/config' {
 Register the config middleware in `cli()`:
 
 ```ts
-import { cli } from '@kidd-cli/core'
-import { config } from '@kidd-cli/core/config'
+import { cli } from '@maltty/core'
+import { config } from '@maltty/core/config'
 import { configSchema } from './config.js'
 
 cli({
@@ -258,7 +258,7 @@ config({ schema: configSchema, eager: true })
 For loading config outside the `cli()` bootstrap, use `createConfigClient`:
 
 ```ts
-import { createConfigClient } from '@kidd-cli/core/config'
+import { createConfigClient } from '@maltty/core/config'
 
 const config = createConfigClient({ name: 'my-app', schema: MySchema })
 const [error, result] = await config.load()
@@ -266,7 +266,7 @@ const [error, result] = await config.load()
 
 ### 8. Use sub-exports
 
-kidd exposes focused utilities through sub-exports.
+maltty exposes focused utilities through sub-exports.
 
 **Log** -- structured terminal output is available on every context:
 
@@ -281,7 +281,7 @@ ctx.log.outro('Done')
 **Store** -- file-backed JSON store for persistent data (separate from the in-memory `ctx.store` used for middleware-to-handler data flow):
 
 ```ts
-import { createStore } from '@kidd-cli/core/store'
+import { createStore } from '@maltty/core/store'
 
 const store = createStore({ dirName: '.my-app' })
 const settings = store.load('settings.json')
@@ -290,7 +290,7 @@ const settings = store.load('settings.json')
 **Project** -- git root resolution, submodule detection, path utilities:
 
 ```ts
-import { findProjectRoot, isInSubmodule, resolvePath } from '@kidd-cli/core/project'
+import { findProjectRoot, isInSubmodule, resolvePath } from '@maltty/core/project'
 
 const root = findProjectRoot()
 const inSubmodule = isInSubmodule()
@@ -304,7 +304,7 @@ const appDir = resolvePath({ dirName: '.my-app' })
 For interactive terminal UIs, use `screen()` instead of `command()`. Screen commands render a React component using Ink.
 
 ```tsx
-import { Box, screen, Text, useApp } from '@kidd-cli/core/ui'
+import { Box, screen, Text, useApp } from '@maltty/core/ui'
 import React from 'react'
 import { z } from 'zod'
 
@@ -357,7 +357,7 @@ npx my-app deploy --env staging --dry-run
 
 **Issue:** `config.load()` returns a parse error.
 
-**Fix:** Confirm the config file is named `kidd.config.ts` (or `.js`, `.json`, `.yaml`) and is in the project root.
+**Fix:** Confirm the config file is named `maltty.config.ts` (or `.js`, `.json`, `.yaml`) and is in the project root.
 
 ## Resources
 
@@ -367,5 +367,5 @@ npx my-app deploy --env staging --dry-run
 
 ## References
 
-- [Core Reference](../reference/kidd.md)
+- [Core Reference](../reference/maltty.md)
 - [Screens](../concepts/screens.md)

@@ -16,7 +16,7 @@ const mockSpinnerInstance = vi.hoisted(() => ({
 const mockLoadConfig = vi.hoisted(() => vi.fn())
 const mockAutoload = vi.hoisted(() => vi.fn())
 
-vi.mock(import('@kidd-cli/config/utils'), () => ({
+vi.mock(import('@maltty/config/utils'), () => ({
   loadConfig: mockLoadConfig,
 }))
 
@@ -108,14 +108,14 @@ describe('dirs', () => {
     setArgv('info')
     await runTestCli({
       commands,
-      dirs: { global: '.joggr', local: '.joggr' },
-      name: 'jog',
+      dirs: { global: '.maltty', local: '.maltty' },
+      name: 'maltty',
       version: '1.0.0',
     })
 
     expect(handler).toHaveBeenCalledTimes(1)
     const ctx = handler.mock.calls[0]![0] as CommandContext
-    expect(ctx.meta.dirs).toEqual({ global: '.joggr', local: '.joggr' })
+    expect(ctx.meta.dirs).toEqual({ global: '.maltty', local: '.maltty' })
   })
 
   it('should allow partial dirs override for global only', async () => {
@@ -218,8 +218,8 @@ describe('version resolution', () => {
     vi.unstubAllGlobals()
   })
 
-  it('should fall back to __KIDD_VERSION__ when version is omitted', async () => {
-    vi.stubGlobal('__KIDD_VERSION__', '5.0.0')
+  it('should fall back to __MALTTY_VERSION__ when version is omitted', async () => {
+    vi.stubGlobal('__MALTTY_VERSION__', '5.0.0')
 
     const handler = vi.fn()
     const commands: CommandMap = {
@@ -240,8 +240,8 @@ describe('version resolution', () => {
     expect(ctx.meta.version).toBe('5.0.0')
   })
 
-  it('should prefer explicit version over __KIDD_VERSION__', async () => {
-    vi.stubGlobal('__KIDD_VERSION__', '5.0.0')
+  it('should prefer explicit version over __MALTTY_VERSION__', async () => {
+    vi.stubGlobal('__MALTTY_VERSION__', '5.0.0')
 
     const handler = vi.fn()
     const commands: CommandMap = {
@@ -263,8 +263,8 @@ describe('version resolution', () => {
     expect(ctx.meta.version).toBe('9.9.9')
   })
 
-  it('should error when neither version nor __KIDD_VERSION__ is available', async () => {
-    vi.stubGlobal('__KIDD_VERSION__', undefined)
+  it('should error when neither version nor __MALTTY_VERSION__ is available', async () => {
+    vi.stubGlobal('__MALTTY_VERSION__', undefined)
 
     setArgv('info')
     await runTestCli({
@@ -278,7 +278,7 @@ describe('version resolution', () => {
   })
 
   it('should error when explicit version is an empty string', async () => {
-    vi.stubGlobal('__KIDD_VERSION__', '5.0.0')
+    vi.stubGlobal('__MALTTY_VERSION__', '5.0.0')
 
     setArgv('info')
     await runTestCli({
@@ -293,7 +293,7 @@ describe('version resolution', () => {
   })
 
   it('should error when explicit version is whitespace only', async () => {
-    vi.stubGlobal('__KIDD_VERSION__', '5.0.0')
+    vi.stubGlobal('__MALTTY_VERSION__', '5.0.0')
 
     setArgv('info')
     await runTestCli({
@@ -307,8 +307,8 @@ describe('version resolution', () => {
     expect(lifecycle.getExitSpy()).toHaveBeenCalled()
   })
 
-  it('should error when __KIDD_VERSION__ is an empty string and no explicit version', async () => {
-    vi.stubGlobal('__KIDD_VERSION__', '')
+  it('should error when __MALTTY_VERSION__ is an empty string and no explicit version', async () => {
+    vi.stubGlobal('__MALTTY_VERSION__', '')
 
     setArgv('info')
     await runTestCli({
@@ -323,7 +323,7 @@ describe('version resolution', () => {
 })
 
 describe('config-based autoloading', () => {
-  it('should autoload from kidd.config.ts commands field when commands is omitted', async () => {
+  it('should autoload from maltty.config.ts commands field when commands is omitted', async () => {
     const handler = vi.fn()
     const fakeCommands: CommandMap = {
       greet: command({ description: 'Greet', handler }),
@@ -333,7 +333,7 @@ describe('config-based autoloading', () => {
       null,
       {
         config: { commands: './custom/commands' },
-        configFile: '/fake/kidd.config.ts',
+        configFile: '/fake/maltty.config.ts',
       },
     ])
     mockAutoload.mockResolvedValue(fakeCommands)
@@ -356,7 +356,7 @@ describe('config-based autoloading', () => {
       null,
       {
         config: {},
-        configFile: '/fake/kidd.config.ts',
+        configFile: '/fake/maltty.config.ts',
       },
     ])
     mockAutoload.mockResolvedValue(fakeCommands)

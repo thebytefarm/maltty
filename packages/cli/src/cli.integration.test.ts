@@ -3,7 +3,7 @@ import { join } from 'node:path'
 
 import { describe, expect, it } from 'vitest'
 
-const CLI_BIN = join(import.meta.dirname, '..', 'bin', 'kidd.js')
+const CLI_BIN = join(import.meta.dirname, '..', 'bin', 'maltty.js')
 
 const EXPECTED_COMMANDS = ['add', 'build', 'commands', 'dev', 'doctor', 'init', 'run', 'stories']
 
@@ -25,12 +25,12 @@ function runCli(args: readonly string[]): Promise<string> {
   })
 }
 
-describe('kidd CLI integration', () => {
+describe('maltty CLI integration', () => {
   it('should display all commands in --help output', async () => {
     const output = await runCli(['--help'])
 
     EXPECTED_COMMANDS.map((cmd) =>
-      expect(output, `missing command: ${cmd}`).toContain(`kidd ${cmd}`)
+      expect(output, `missing command: ${cmd}`).toContain(`maltty ${cmd}`)
     )
   })
 })

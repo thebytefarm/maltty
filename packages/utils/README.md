@@ -1,11 +1,11 @@
-# @kidd-cli/utils
+# @maltty/utils
 
-Shared utilities for the kidd ecosystem. Provides functional programming helpers, filesystem operations, JSON handling, validation, and more.
+Shared utilities for the maltty ecosystem. Provides functional programming helpers, filesystem operations, JSON handling, validation, and more.
 
 ## Installation
 
 ```bash
-pnpm add @kidd-cli/utils
+pnpm add @maltty/utils
 ```
 
 ## Usage
@@ -13,8 +13,8 @@ pnpm add @kidd-cli/utils
 ### Result tuples
 
 ```ts
-import { ok, err } from '@kidd-cli/utils'
-import type { Result } from '@kidd-cli/utils'
+import { ok, err } from '@maltty/utils'
+import type { Result } from '@maltty/utils'
 
 function divide(a: number, b: number): Result<number> {
   if (b === 0) return err(new Error('Division by zero'))
@@ -27,7 +27,7 @@ const [error, value] = divide(10, 2)
 ### Validation
 
 ```ts
-import { validate } from '@kidd-cli/utils'
+import { validate } from '@maltty/utils'
 import { z } from 'zod'
 
 const schema = z.object({ name: z.string(), port: z.number() })
@@ -37,7 +37,7 @@ const [error, config] = validate(schema, input)
 ### JSON
 
 ```ts
-import { jsonParse, jsonStringify } from '@kidd-cli/utils/json'
+import { jsonParse, jsonStringify } from '@maltty/utils/json'
 
 const [parseError, data] = jsonParse(rawString)
 const [stringifyError, json] = jsonStringify(data, { pretty: true })
@@ -46,32 +46,32 @@ const [stringifyError, json] = jsonStringify(data, { pretty: true })
 ### Filesystem
 
 ```ts
-import { fileExists } from '@kidd-cli/utils/fs'
+import { fileExists } from '@maltty/utils/fs'
 
 const exists = await fileExists('/path/to/file')
 ```
 
 ### FP utilities
 
-The `@kidd-cli/utils/fp` subpath re-exports all of `es-toolkit` and `ts-pattern` alongside kidd's Result helpers and predicates.
+The `@maltty/utils/fp` subpath re-exports all of `es-toolkit` and `ts-pattern` alongside maltty's Result helpers and predicates.
 
 ```ts
-import { match, P, isString, pipe } from '@kidd-cli/utils/fp'
+import { match, P, isString, pipe } from '@maltty/utils/fp'
 ```
 
 ## Subpath exports
 
-| Export                     | Description                               |
-| -------------------------- | ----------------------------------------- |
-| `@kidd-cli/utils`          | Core exports (Result, validate, fs, etc.) |
-| `@kidd-cli/utils/fp`       | es-toolkit + ts-pattern + Result helpers  |
-| `@kidd-cli/utils/fs`       | Filesystem utilities                      |
-| `@kidd-cli/utils/json`     | JSON parse/stringify with Result tuples   |
-| `@kidd-cli/utils/manifest` | package.json reader                       |
-| `@kidd-cli/utils/redact`   | Sensitive data redaction                  |
-| `@kidd-cli/utils/validate` | Zod schema validation                     |
-| `@kidd-cli/utils/tag`      | Runtime type tagging                      |
+| Export                   | Description                               |
+| ------------------------ | ----------------------------------------- |
+| `@maltty/utils`          | Core exports (Result, validate, fs, etc.) |
+| `@maltty/utils/fp`       | es-toolkit + ts-pattern + Result helpers  |
+| `@maltty/utils/fs`       | Filesystem utilities                      |
+| `@maltty/utils/json`     | JSON parse/stringify with Result tuples   |
+| `@maltty/utils/manifest` | package.json reader                       |
+| `@maltty/utils/redact`   | Sensitive data redaction                  |
+| `@maltty/utils/validate` | Zod schema validation                     |
+| `@maltty/utils/tag`      | Runtime type tagging                      |
 
 ## License
 
-MIT -- [GitHub](https://github.com/joggrdocs/kidd)
+MIT -- [GitHub](https://github.com/thebytefarm/maltty)

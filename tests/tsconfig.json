@@ -4,8 +4,8 @@
     "noEmit": true,
     "paths": {
       "@/*": ["../packages/core/src/*"],
-      "@kidd-cli/core": ["../packages/core/src/index.ts"],
-      "@kidd-cli/core/test": ["../packages/core/src/test/index.ts"]
+      "@maltty/core": ["../packages/core/src/index.ts"],
+      "@maltty/core/test": ["../packages/core/src/test/index.ts"]
     }
   },
   "include": ["./**/*.ts"]

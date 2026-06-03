@@ -1,5 +1,5 @@
-import { cli } from '@kidd-cli/core'
-import { report } from '@kidd-cli/core/report'
+import { cli } from '@maltty/core'
+import { report } from '@maltty/core/report'
 
 cli({
   description: 'TUI demo — handler and screen modes with fullscreen support',

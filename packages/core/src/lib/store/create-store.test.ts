@@ -29,7 +29,7 @@ describe('createStore()', () => {
 
   beforeEach(() => {
     // Create a temp directory that simulates a git repo with a .git directory
-    tmpDir = mkdtempSync(join(tmpdir(), 'kidd-store-'))
+    tmpDir = mkdtempSync(join(tmpdir(), 'maltty-store-'))
 
     // Create .git directory so findProjectRoot detects this as a project root
     mkdirSync(join(tmpDir, '.git'), { recursive: true })
@@ -38,7 +38,7 @@ describe('createStore()', () => {
     mkdirSync(join(tmpDir, DIR_NAME), { recursive: true })
 
     // Create a separate directory for the global home
-    globalHome = mkdtempSync(join(tmpdir(), 'kidd-store-global-'))
+    globalHome = mkdtempSync(join(tmpdir(), 'maltty-store-global-'))
     globalDir = join(globalHome, DIR_NAME)
     mkdirSync(globalDir, { recursive: true })
   })
@@ -63,7 +63,7 @@ describe('createStore()', () => {
 
     it('returns null when not in a git repo', () => {
       // Create a directory with no .git anywhere in its ancestry
-      const noGitDir = mkdtempSync(join(tmpdir(), 'kidd-store-nogit-'))
+      const noGitDir = mkdtempSync(join(tmpdir(), 'maltty-store-nogit-'))
       try {
         const store = createStore({ dirName: DIR_NAME })
 
@@ -109,7 +109,7 @@ describe('createStore()', () => {
     })
 
     it("source='local': returns null when no local dir (not in git repo)", () => {
-      const noGitDir = mkdtempSync(join(tmpdir(), 'kidd-store-nogit-'))
+      const noGitDir = mkdtempSync(join(tmpdir(), 'maltty-store-nogit-'))
       try {
         const store = createStore({ dirName: DIR_NAME })
 
@@ -299,7 +299,7 @@ describe('createStore()', () => {
     })
 
     it("source='local': returns null when no local dir (not in git repo)", () => {
-      const noGitDir = mkdtempSync(join(tmpdir(), 'kidd-store-nogit-'))
+      const noGitDir = mkdtempSync(join(tmpdir(), 'maltty-store-nogit-'))
       try {
         const store = createStore({ dirName: DIR_NAME })
 
@@ -426,7 +426,7 @@ describe('createStore()', () => {
     })
 
     it("source='local': should return error when no local dir found", () => {
-      const noGitDir = mkdtempSync(join(tmpdir(), 'kidd-store-nogit-'))
+      const noGitDir = mkdtempSync(join(tmpdir(), 'maltty-store-nogit-'))
       try {
         const store = createStore({ dirName: DIR_NAME })
 
@@ -517,7 +517,7 @@ describe('createStore()', () => {
     })
 
     it('should return error when local dir not found', () => {
-      const noGitDir = mkdtempSync(join(tmpdir(), 'kidd-store-nogit-'))
+      const noGitDir = mkdtempSync(join(tmpdir(), 'maltty-store-nogit-'))
       try {
         const store = createStore({ dirName: DIR_NAME })
 

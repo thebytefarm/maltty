@@ -1,4 +1,4 @@
-import { middleware } from '@kidd-cli/core'
+import { middleware } from '@maltty/core'
 
 /**
  * Middleware that sends anonymized usage telemetry.

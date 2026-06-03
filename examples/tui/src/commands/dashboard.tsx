@@ -7,7 +7,7 @@ import {
   useApp,
   useFullScreen,
   useInput,
-} from '@kidd-cli/core/ui'
+} from '@maltty/core/ui'
 import React, { useState } from 'react'
 import { match } from 'ts-pattern'
 

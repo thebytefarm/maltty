@@ -45,7 +45,7 @@ export function createReport(options?: { readonly output?: NodeJS.WritableStream
  *
  * @example
  * ```ts
- * import { report } from '@kidd-cli/core/report'
+ * import { report } from '@maltty/core/report'
  *
  * cli({
  *   middleware: [

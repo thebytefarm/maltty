@@ -4,7 +4,7 @@ import type { IncomingMessage, Server, ServerResponse } from 'node:http'
 import type { Socket } from 'node:net'
 import { platform } from 'node:os'
 
-import { attempt, match } from '@kidd-cli/utils/fp'
+import { attempt, match } from '@maltty/utils/fp'
 
 // ---------------------------------------------------------------------------
 // Constants

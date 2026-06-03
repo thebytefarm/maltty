@@ -5,7 +5,7 @@ Ship a feature end-to-end: branch, code, test, changeset, PR, and merge.
 ## Prerequisites
 
 - Local environment set up (see [Getting Started](./getting-started.md))
-- Familiarity with relevant [standards](https://github.com/joggrdocs/kidd/blob/main/contributing/README.md)
+- Familiarity with relevant [standards](https://github.com/thebytefarm/maltty/blob/main/contributing/README.md)
 
 ## Steps
 
@@ -75,7 +75,7 @@ Lefthook runs git hooks automatically:
 
 ### 6. Add a changeset
 
-If the change affects published packages (`@kidd-cli/core`, `@kidd-cli/*`), create a changeset:
+If the change affects published packages (`@maltty/core`, `@maltty/*`), create a changeset:
 
 ```bash
 pnpm changeset
@@ -85,7 +85,7 @@ Follow the prompts to select the package, semver bump type (patch, minor, major)
 
 **When to add a changeset:**
 
-- New features, bug fixes, or breaking changes to `@kidd-cli/core` or `@kidd-cli/*` packages
+- New features, bug fixes, or breaking changes to `@maltty/core` or `@maltty/*` packages
 
 **When to skip:**
 

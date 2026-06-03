@@ -1,9 +1,9 @@
 import { existsSync, lstatSync, mkdirSync, readFileSync, unlinkSync, writeFileSync } from 'node:fs'
 import { resolve, sep } from 'node:path'
 
-import { attempt } from '@kidd-cli/utils/fp'
-import type { Result } from '@kidd-cli/utils/fp'
-import { jsonParse, jsonStringify } from '@kidd-cli/utils/json'
+import { attempt } from '@maltty/utils/fp'
+import type { Result } from '@maltty/utils/fp'
+import { jsonParse, jsonStringify } from '@maltty/utils/json'
 
 import type {
   AccessOptions,

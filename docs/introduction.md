@@ -1,14 +1,14 @@
 # Introduction
 
-kidd is an opinionated CLI framework for Node.js. It gives you typed commands, middleware pipelines, configuration loading, authentication, and terminal UI out of the box -- so you can focus on what your CLI does, not how it's wired together.
+maltty is an opinionated CLI framework for Node.js. It gives you typed commands, middleware pipelines, configuration loading, authentication, and terminal UI out of the box -- so you can focus on what your CLI does, not how it's wired together.
 
 ## Prerequisites
 
-- **Node.js 24+** -- kidd targets the current LTS release
-- **pnpm** (recommended) -- any package manager works, but kidd tooling assumes pnpm
-- **TypeScript** -- kidd relies on Zod inference and module augmentation, so TypeScript is required
+- **Node.js 24+** -- maltty targets the current LTS release
+- **pnpm** (recommended) -- any package manager works, but maltty tooling assumes pnpm
+- **TypeScript** -- maltty relies on Zod inference and module augmentation, so TypeScript is required
 
-## Why kidd?
+## Why maltty?
 
 - **Convention over configuration** -- sensible defaults for commands, config discovery, and project layout
 - **End-to-end type safety** -- Zod schemas for args and config, module augmentation for global types, typed context in every handler
@@ -18,7 +18,7 @@ kidd is an opinionated CLI framework for Node.js. It gives you typed commands, m
 
 ## Project structure
 
-A typical kidd project looks like this:
+A typical maltty project looks like this:
 
 ```
 my-cli/
@@ -30,12 +30,12 @@ my-cli/
 │   │   └── status.ts     # Command definition
 │   └── middleware/
 │       └── require-auth.ts
-├── kidd.config.ts        # Build configuration
+├── maltty.config.ts        # Build configuration
 ├── package.json
 └── tsconfig.json
 ```
 
-Commands live in `src/commands/`, middleware in `src/middleware/`, and the entrypoint ties them together with a single `cli()` call. The build configuration in `kidd.config.ts` controls how `@kidd-cli/cli` bundles your project for distribution.
+Commands live in `src/commands/`, middleware in `src/middleware/`, and the entrypoint ties them together with a single `cli()` call. The build configuration in `maltty.config.ts` controls how `@maltty/cli` bundles your project for distribution.
 
 ## Feature matrix
 
@@ -52,27 +52,27 @@ Commands live in `src/commands/`, middleware in `src/middleware/`, and the entry
 
 ## Sub-exports
 
-The `@kidd-cli/core` package exposes focused sub-exports so you only import what you need:
+The `@maltty/core` package exposes focused sub-exports so you only import what you need:
 
-| Export                   | Purpose                                            |
-| ------------------------ | -------------------------------------------------- |
-| `@kidd-cli/core`         | Commands, middleware, context, module augmentation |
-| `@kidd-cli/core/auth`    | Auth middleware and credential strategies          |
-| `@kidd-cli/core/http`    | HTTP client middleware                             |
-| `@kidd-cli/core/icons`   | Nerd Font icon middleware                          |
-| `@kidd-cli/core/config`  | Config client for loading outside cli()            |
-| `@kidd-cli/core/logger`  | Standalone terminal logger                         |
-| `@kidd-cli/core/store`   | File-backed JSON store                             |
-| `@kidd-cli/core/project` | Git root resolution and path utilities             |
-| `@kidd-cli/core/format`  | Standalone format functions                        |
-| `@kidd-cli/core/test`    | Test utilities for commands and middleware         |
+| Export                 | Purpose                                            |
+| ---------------------- | -------------------------------------------------- |
+| `@maltty/core`         | Commands, middleware, context, module augmentation |
+| `@maltty/core/auth`    | Auth middleware and credential strategies          |
+| `@maltty/core/http`    | HTTP client middleware                             |
+| `@maltty/core/icons`   | Nerd Font icon middleware                          |
+| `@maltty/core/config`  | Config client for loading outside cli()            |
+| `@maltty/core/logger`  | Standalone terminal logger                         |
+| `@maltty/core/store`   | File-backed JSON store                             |
+| `@maltty/core/project` | Git root resolution and path utilities             |
+| `@maltty/core/format`  | Standalone format functions                        |
+| `@maltty/core/test`    | Test utilities for commands and middleware         |
 
 ## Packages
 
 | Package                             | Description                                                  |
 | ----------------------------------- | ------------------------------------------------------------ |
-| [`@kidd-cli/core`](/reference/kidd) | Commands, middleware, config, context, auth, HTTP, and icons |
-| [`@kidd-cli/cli`](/reference/cli)   | Scaffolding, building, diagnostics, and code generation      |
+| [`@maltty/core`](/reference/maltty) | Commands, middleware, config, context, auth, HTTP, and icons |
+| [`@maltty/cli`](/reference/cli)     | Scaffolding, building, diagnostics, and code generation      |
 
 ## Next steps
 

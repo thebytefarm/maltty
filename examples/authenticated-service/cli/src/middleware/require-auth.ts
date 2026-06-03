@@ -1,4 +1,4 @@
-import { middleware } from '@kidd-cli/core'
+import { middleware } from '@maltty/core'
 
 /**
  * Middleware that enforces authentication on a command.

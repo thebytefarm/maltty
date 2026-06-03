@@ -10,12 +10,12 @@ import type { Middleware } from './middleware.js'
 /**
  * Global args merged into every ctx.args.
  */
-export interface KiddArgs {}
+export interface MalttyArgs {}
 
 /**
  * Global store keys merged into every ctx.store.
  */
-export interface KiddStore {}
+export interface MalttyStore {}
 
 /**
  * Directory name overrides for file-backed stores (auth, config).
@@ -81,9 +81,9 @@ export interface CliOptions {
   /**
    * CLI version. Enables `--version` flag.
    *
-   * When omitted, falls back to the compile-time `__KIDD_VERSION__` constant
-   * injected by the kidd bundler. An error is raised at startup if neither
-   * an explicit version nor `__KIDD_VERSION__` is available.
+   * When omitted, falls back to the compile-time `__MALTTY_VERSION__` constant
+   * injected by the maltty bundler. An error is raised at startup if neither
+   * an explicit version nor `__MALTTY_VERSION__` is available.
    */
   readonly version?: string
   /**
@@ -95,7 +95,7 @@ export interface CliOptions {
    */
   readonly middleware?: Middleware[]
   /**
-   * Override the commands source. When omitted, `cli()` loads `kidd.config.ts`
+   * Override the commands source. When omitted, `cli()` loads `maltty.config.ts`
    * and autoloads from its `commands` field (falling back to `'./commands'`).
    *
    * Accepts a directory path string, a static {@link CommandMap}, a

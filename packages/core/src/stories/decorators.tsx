@@ -3,7 +3,7 @@ import type { ComponentType, ReactElement } from 'react'
 import React from 'react'
 
 import type { ScreenContext } from '../context/types.js'
-import { KiddProvider } from '../screen/provider.js'
+import { MalttyProvider } from '../screen/provider.js'
 import { FullScreen } from '../ui/layout/fullscreen.js'
 import type { Decorator } from './types.js'
 
@@ -24,11 +24,11 @@ export interface LayoutOptions {
 // ---------------------------------------------------------------------------
 
 /**
- * Wrap a story component in a {@link KiddProvider} with the given screen context.
+ * Wrap a story component in a {@link MalttyProvider} with the given screen context.
  * Required for components that use `useScreenContext()`.
  *
  * @param ctx - The screen context to provide.
- * @returns A decorator that wraps the story in a KiddProvider.
+ * @returns A decorator that wraps the story in a MalttyProvider.
  */
 export function withContext(ctx: ScreenContext): Decorator {
   return (
@@ -39,9 +39,9 @@ export function withContext(ctx: ScreenContext): Decorator {
      */
     function ContextWrapper(props: Record<string, unknown>): ReactElement {
       return (
-        <KiddProvider value={ctx}>
+        <MalttyProvider value={ctx}>
           <StoryComponent {...props} />
-        </KiddProvider>
+        </MalttyProvider>
       )
     }
     return ContextWrapper

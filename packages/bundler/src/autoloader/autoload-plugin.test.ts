@@ -16,7 +16,7 @@ beforeEach(() => {
 
 describe('createAutoloadPlugin', () => {
   describe('transform hook', () => {
-    it('should return null for non-kidd dist files', () => {
+    it('should return null for non-maltty dist files', () => {
       const plugin = createAutoloadPlugin({
         commandsDir: '/project/commands',
         tagModulePath: '/project/tag.js',
@@ -34,7 +34,7 @@ describe('createAutoloadPlugin', () => {
       })
 
       const code = 'const x = 1\n//#endregion\n'
-      const result = plugin.transform(code, '/node_modules/kidd/dist/index.js')
+      const result = plugin.transform(code, '/node_modules/maltty/dist/index.js')
 
       expect(result).toBeNull()
     })
@@ -46,12 +46,12 @@ describe('createAutoloadPlugin', () => {
       })
 
       const code = 'const x = 1\n//#region src/autoload.ts\nsome content'
-      const result = plugin.transform(code, '/node_modules/kidd/dist/index.js')
+      const result = plugin.transform(code, '/node_modules/maltty/dist/index.js')
 
       expect(result).toBeNull()
     })
 
-    it('should replace region with static import when markers found in kidd dist', () => {
+    it('should replace region with static import when markers found in maltty dist', () => {
       const plugin = createAutoloadPlugin({
         commandsDir: '/project/commands',
         tagModulePath: '/project/tag.js',
@@ -65,12 +65,12 @@ describe('createAutoloadPlugin', () => {
         'const after = 2',
       ].join('\n')
 
-      const result = plugin.transform(code, '/node_modules/kidd/dist/index.js')
+      const result = plugin.transform(code, '/node_modules/maltty/dist/index.js')
 
       expect(result).toContain('const before = 1')
       expect(result).toContain('const after = 2')
       expect(result).toContain('//#region src/autoload.ts (static)')
-      expect(result).toContain("await import('virtual:kidd-static-commands')")
+      expect(result).toContain("await import('virtual:maltty-static-commands')")
       expect(result).toContain('return mod.autoload()')
       expect(result).not.toContain('async function autoload() { return {} }')
     })
@@ -83,9 +83,9 @@ describe('createAutoloadPlugin', () => {
         tagModulePath: '/project/tag.js',
       })
 
-      const result = plugin.resolveId('virtual:kidd-static-commands')
+      const result = plugin.resolveId('virtual:maltty-static-commands')
 
-      expect(result).toBe('\0virtual:kidd-static-commands')
+      expect(result).toBe('\0virtual:maltty-static-commands')
     })
 
     it('should return null for non-virtual module IDs', () => {
@@ -122,7 +122,7 @@ describe('createAutoloadPlugin', () => {
         tagModulePath: '/project/tag.js',
       })
 
-      const result = await plugin.load('\0virtual:kidd-static-commands')
+      const result = await plugin.load('\0virtual:maltty-static-commands')
 
       expect(result).toBe('generated code')
       expect(mockScanCommandsDir).toHaveBeenCalledOnce()
@@ -139,7 +139,7 @@ describe('createAutoloadPlugin', () => {
         tagModulePath: '/project/tag.js',
       })
 
-      await plugin.load('\0virtual:kidd-static-commands')
+      await plugin.load('\0virtual:maltty-static-commands')
 
       expect(mockScanCommandsDir).toHaveBeenCalledWith('/project/commands')
       expect(mockGenerateStaticAutoloader).toHaveBeenCalledWith({

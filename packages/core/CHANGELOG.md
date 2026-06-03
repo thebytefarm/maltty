@@ -1,4 +1,4 @@
-# kidd
+# maltty
 
 ## 0.24.0
 
@@ -6,26 +6,26 @@
 
 - f8290a2: Fix Windows compatibility and remove unused submodule support.
 
-  - `@kidd-cli/bundler` —
+  - `@maltty/bundler` —
     - Emit `file://` URL specifiers for autoload imports so Windows paths don't trigger PARSE_ERROR (`Invalid escape sequence`) when their backslashes are interpreted as escape sequences inside generated string literals.
     - Append `.exe` to compiled binary names for Windows targets so `CompiledBinary.path` matches the file bun actually produces on disk. Without this, fs operations on the recorded path failed on Windows and `clean()` had to enumerate both variants.
-  - `@kidd-cli/cli` — normalize template paths to forward slashes in `renderTemplate`, so the `gitignore` → `.gitignore` rename and the `--no-example`/`--no-config` filters in `kidd init` work on Windows (where `path.relative()` returns native `\` separators).
-  - `@kidd-cli/utils` —
-    - `proc.exec` and `proc.spawn` now pass `shell: true` on Windows so npm/pnpm-installed `.cmd` shims (e.g. `tsx`) can be launched. Without this, Node's `CreateProcess` fails with `ENOENT` because it can only execute native `.exe` files. Affects `kidd run --engine=tsx` on Windows.
-    - New `path` namespace exported from `@kidd-cli/utils/node`: `toImportUrl(p)` (filesystem path → `file://` URL specifier) and `toPosixPath(p)` (native path → forward-slash form). Centralizes the cross-platform path helpers used by the autoloader, the bundler, and the CLI's template renderer.
-  - `@kidd-cli/core` (**breaking**) — remove unused git submodule detection. Drops `isInSubmodule`, `getParentRepoRoot`, and the `ProjectRoot` type from `@kidd-cli/core`. `findProjectRoot()` now returns `string | null` (the project root path) instead of `ProjectRoot | null`. The submodule code was inherited from a project skeleton, had no internal callers, and was silently disabled on Windows.
+  - `@maltty/cli` — normalize template paths to forward slashes in `renderTemplate`, so the `gitignore` → `.gitignore` rename and the `--no-example`/`--no-config` filters in `maltty init` work on Windows (where `path.relative()` returns native `\` separators).
+  - `@maltty/utils` —
+    - `proc.exec` and `proc.spawn` now pass `shell: true` on Windows so npm/pnpm-installed `.cmd` shims (e.g. `tsx`) can be launched. Without this, Node's `CreateProcess` fails with `ENOENT` because it can only execute native `.exe` files. Affects `maltty run --engine=tsx` on Windows.
+    - New `path` namespace exported from `@maltty/utils/node`: `toImportUrl(p)` (filesystem path → `file://` URL specifier) and `toPosixPath(p)` (native path → forward-slash form). Centralizes the cross-platform path helpers used by the autoloader, the bundler, and the CLI's template renderer.
+  - `@maltty/core` (**breaking**) — remove unused git submodule detection. Drops `isInSubmodule`, `getParentRepoRoot`, and the `ProjectRoot` type from `@maltty/core`. `findProjectRoot()` now returns `string | null` (the project root path) instead of `ProjectRoot | null`. The submodule code was inherited from a project skeleton, had no internal callers, and was silently disabled on Windows.
 
 ### Patch Changes
 
 - Updated dependencies [f8290a2]
-  - @kidd-cli/utils@0.4.2
-  - @kidd-cli/config@0.4.1
+  - @maltty/utils@0.4.2
+  - @maltty/config@0.4.1
 
 ## 0.23.3
 
 ### Patch Changes
 
-- ba12e4f: Forward `--verbose` from the `build` command into `bundler.build()` so the underlying tsdown error message is shown on bundle failure (previously only compile failures honored the flag). Also accept `DEBUG` as an alias for the `KIDD_DEBUG` environment variable; `KIDD_DEBUG` continues to take precedence when both are set.
+- ba12e4f: Forward `--verbose` from the `build` command into `bundler.build()` so the underlying tsdown error message is shown on bundle failure (previously only compile failures honored the flag). Also accept `DEBUG` as an alias for the `MALTTY_DEBUG` environment variable; `MALTTY_DEBUG` continues to take precedence when both are set.
 
 ## 0.23.2
 
@@ -45,18 +45,18 @@
 ### Patch Changes
 
 - Updated dependencies [55071fa]
-  - @kidd-cli/config@0.4.0
+  - @maltty/config@0.4.0
 
 ## 0.23.0
 
 ### Minor Changes
 
-- 03d59ca: Extract config loading from core runtime into an opt-in middleware (`@kidd-cli/core/config`) with support for layered resolution (global > project > local). Config is no longer baked into `CommandContext` — it is added via module augmentation when the middleware is imported, keeping builds lean for CLIs that don't need config.
+- 03d59ca: Extract config loading from core runtime into an opt-in middleware (`@maltty/core/config`) with support for layered resolution (global > project > local). Config is no longer baked into `CommandContext` — it is added via module augmentation when the middleware is imported, keeping builds lean for CLIs that don't need config.
 
   **Breaking:** `ctx.config` is no longer available by default. Use the config middleware:
 
   ```ts
-  import { config } from "@kidd-cli/core/config";
+  import { config } from "@maltty/core/config";
 
   cli({
     middleware: [config({ schema: mySchema, layers: true })],
@@ -71,20 +71,20 @@
 
 ### Patch Changes
 
-- 1aee09e: fix(cli): bundle @kidd-cli/\* deps so published CLI is self-contained
+- 1aee09e: fix(cli): bundle @maltty/\* deps so published CLI is self-contained
 
   The published CLI had bare imports to workspace packages whose npm exports maps
   were stale (renamed subpaths like `./loader` → `./utils`, `./fs` → `./node`).
   Commands silently disappeared because the autoloader swallowed import errors.
 
-  - Bundle all `@kidd-cli/*` packages into CLI dist via `deps.alwaysBundle`
-  - Add `KIDD_DEBUG` env var support to surface autoload import failures
+  - Bundle all `@maltty/*` packages into CLI dist via `deps.alwaysBundle`
+  - Add `MALTTY_DEBUG` env var support to surface autoload import failures
   - Add integration test asserting all commands appear in `--help` output
   - Republish all packages to sync npm exports maps with source
 
 - Updated dependencies [1aee09e]
-  - @kidd-cli/config@0.3.1
-  - @kidd-cli/utils@0.4.1
+  - @maltty/config@0.3.1
+  - @maltty/utils@0.4.1
 
 ## 0.22.0
 
@@ -98,7 +98,7 @@
 
   Fixes #148
 
-- c904d99: feat(core): export `render()` and `renderToString()` helpers that wrap Ink's render methods with kidd's `KiddProvider` (screen context, output store, screen-backed log/spinner/report). Enables full lifecycle control from normal `command()` handlers.
+- c904d99: feat(core): export `render()` and `renderToString()` helpers that wrap Ink's render methods with maltty's `MalttyProvider` (screen context, output store, screen-backed log/spinner/report). Enables full lifecycle control from normal `command()` handlers.
 
   Fixes #147
 
@@ -114,8 +114,8 @@
 ### Patch Changes
 
 - Updated dependencies [221aa01]
-  - @kidd-cli/config@0.3.0
-  - @kidd-cli/utils@0.4.0
+  - @maltty/config@0.3.0
+  - @maltty/utils@0.4.0
 
 ## 0.20.0
 
@@ -146,19 +146,19 @@
 ### Patch Changes
 
 - Updated dependencies [991a8f1]
-  - @kidd-cli/config@0.2.0
+  - @maltty/config@0.2.0
 
 ## 0.18.0
 
 ### Minor Changes
 
-- c9ca207: Remove dead and internal-only exports from public API surface. Drops 3 unused sub-entrypoints from `@kidd-cli/core` (`./format`, `./store`, `./project`), deletes the dead `@kidd-cli/utils/redact` module (source + tests), removes the `jsonc-parser` dead dependency from core, and trims `@kidd-cli/bundler` to only externally consumed exports.
+- c9ca207: Remove dead and internal-only exports from public API surface. Drops 3 unused sub-entrypoints from `@maltty/core` (`./format`, `./store`, `./project`), deletes the dead `@maltty/utils/redact` module (source + tests), removes the `jsonc-parser` dead dependency from core, and trims `@maltty/bundler` to only externally consumed exports.
 
 ### Patch Changes
 
 - Updated dependencies [c9ca207]
-  - @kidd-cli/utils@0.3.0
-  - @kidd-cli/config@0.1.8
+  - @maltty/utils@0.3.0
+  - @maltty/config@0.1.8
 
 ## 0.17.0
 
@@ -168,7 +168,7 @@
 
   Introduces `DisplayConfig` — a per-CLI configuration object that injects defaults into all clack-backed APIs (`ctx.log`, `ctx.prompts`, `ctx.status`). Only `aliases` and `messages` are applied globally via `updateSettings()`; everything else is merged per-call so method-level options always win.
 
-  Also widens all kidd interfaces to match the full `@clack/prompts` API surface:
+  Also widens all maltty interfaces to match the full `@clack/prompts` API surface:
 
   - **Prompts**: `ConfirmOptions.vertical`, `PasswordOptions.clearOnError`, `GroupMultiSelectOptions.cursorAt`/`groupSpacing`, `AutocompleteOptions.initialUserInput`, `SelectKeyOptions.caseSensitive`, `PathOptions.validate` accepts `string | undefined`
   - **Spinner**: `cancel()`, `error()`, `clear()`, `isCancelled`
@@ -180,9 +180,9 @@
 
   Add `strict` option to `CliOptions`, `CommandDef`, and `ScreenDef` to control whether yargs rejects unknown flags. Defaults to `true` (existing behavior). Per-command `strict: false` overrides the CLI-level setting.
 
-  feat(cli): add `kidd run` command
+  feat(cli): add `maltty run` command
 
-  New command to run the current kidd CLI project with three engine modes:
+  New command to run the current maltty CLI project with three engine modes:
 
   - `node` (default) — builds first, then runs `node dist/index.mjs`
   - `tsx` — runs the source entry file directly via `tsx`
@@ -207,8 +207,8 @@
 
 - ddc5140: Add `-h` alias for `--help` and `-v` alias for `--version`
 - Updated dependencies [687e8a1]
-  - @kidd-cli/utils@0.2.0
-  - @kidd-cli/config@0.1.7
+  - @maltty/utils@0.2.0
+  - @maltty/config@0.1.7
 
 ## 0.16.0
 
@@ -225,7 +225,7 @@
 
   This means the same `ctx.log.info()`, `ctx.spinner.start()`, and `ctx.report.check()` API works identically in both `command()` and `screen()` contexts — no separate rendering logic needed.
 
-  #### New Exports from `@kidd-cli/core/ui`
+  #### New Exports from `@maltty/core/ui`
 
   | Export             | Description                                                                               |
   | ------------------ | ----------------------------------------------------------------------------------------- |
@@ -243,7 +243,7 @@
     useApp,
     useOutputStore,
     useScreenContext,
-  } from "@kidd-cli/core/ui";
+  } from "@maltty/core/ui";
   import { useEffect, useRef } from "react";
 
   function MyScreen(): ReactElement {
@@ -289,11 +289,11 @@
 
   #### `--out` Option
 
-  Render stories to stdout with `kidd stories --out`. Supports `Group/Variant` filter format to target a specific story (e.g. `kidd stories --out "StatusBadge/Error"`). Useful for CI snapshots and scripted output.
+  Render stories to stdout with `maltty stories --out`. Supports `Group/Variant` filter format to target a specific story (e.g. `maltty stories --out "StatusBadge/Error"`). Useful for CI snapshots and scripted output.
 
   #### `--check` Flag
 
-  Validate stories for common issues with `kidd stories --check`. Enforces a maximum of 6 editable fields per story and runs prop validation against the Zod schema. Reports diagnostics using the new screen-backed `ctx.report` interface.
+  Validate stories for common issues with `maltty stories --check`. Enforces a maximum of 6 editable fields per story and runs prop validation against the Zod schema. Reports diagnostics using the new screen-backed `ctx.report` interface.
 
   #### Sidebar Improvements
 
@@ -316,7 +316,7 @@
 
 ### Minor Changes
 
-- d270f4b: Add Storybook-like TUI component browser for kidd screens. Define stories alongside components using `story()` and `stories()` factories with Zod schema introspection, then run `kidd stories` to get a fullscreen viewer with sidebar navigation, live preview, interactive props editor, and hot reload via file watcher.
+- d270f4b: Add Storybook-like TUI component browser for maltty screens. Define stories alongside components using `story()` and `stories()` factories with Zod schema introspection, then run `maltty stories` to get a fullscreen viewer with sidebar navigation, live preview, interactive props editor, and hot reload via file watcher.
 
 ## 0.14.0
 
@@ -332,7 +332,7 @@
 
 - 10799c2: Clear the alternate screen buffer before leaving fullscreen mode to prevent lingering content
 - a53ee68: Add fullscreen mode for screens via alternate screen buffer. New `fullscreen` option on `ScreenDef`, `<FullScreen>` component, `useFullScreen` hook, and `useTerminalSize` hook.
-- adb2879: Replace `useConfig()`, `useMeta()`, and `useStore()` screen hooks with a single `useCommandContext()` hook that returns a `ScreenContext`. The `ScreenContext` type exposes data properties (`args`, `config`, `meta`, `store`) and middleware-decorated properties (`auth`, `http`, etc.) while omitting imperative I/O properties (`log`, `spinner`, `prompts`, `fail`, `colors`, `format`) that conflict with Ink's rendering model. Remove internal `KiddProvider`, `KiddProviderProps`, `ScreenRenderProps`, `render`, `Instance`, and `RenderOptions` from the public UI exports.
+- adb2879: Replace `useConfig()`, `useMeta()`, and `useStore()` screen hooks with a single `useCommandContext()` hook that returns a `ScreenContext`. The `ScreenContext` type exposes data properties (`args`, `config`, `meta`, `store`) and middleware-decorated properties (`auth`, `http`, etc.) while omitting imperative I/O properties (`log`, `spinner`, `prompts`, `fail`, `colors`, `format`) that conflict with Ink's rendering model. Remove internal `MalttyProvider`, `MalttyProviderProps`, `ScreenRenderProps`, `render`, `Instance`, and `RenderOptions` from the public UI exports.
 
 ## 0.12.0
 
@@ -348,7 +348,7 @@
 ### Minor Changes
 
 - 9cd2217: Move logger, spinner, and prompts off base Context into a `logger()` middleware (`ctx.log`). Extract diagnostics into a `report()` middleware (`ctx.report`).
-- 9e4abdc: Add `screen()` factory for building React/Ink TUI commands. Screens receive parsed args as component props; runtime context is available via `useConfig()`, `useMeta()`, and `useStore()` hooks through a `KiddProvider`. Export all Ink primitives and `@inkjs/ui` components from `@kidd-cli/core/ui`. Add `.tsx`/`.jsx` support to the bundler command scanner.
+- 9e4abdc: Add `screen()` factory for building React/Ink TUI commands. Screens receive parsed args as component props; runtime context is available via `useConfig()`, `useMeta()`, and `useStore()` hooks through a `MalttyProvider`. Export all Ink primitives and `@inkjs/ui` components from `@maltty/core/ui`. Add `.tsx`/`.jsx` support to the bundler command scanner.
 
 ## 0.10.0
 
@@ -370,7 +370,7 @@
 
   The `isCommandFile` and `findIndexEntry` functions used `extname()` to check
   file extensions, but `extname('build.d.ts')` returns `'.ts'`, causing `.d.ts`
-  declaration files to pass the filter. When `@kidd-cli/cli` is installed under
+  declaration files to pass the filter. When `@maltty/cli` is installed under
   `node_modules` and its `dist/commands/` directory contains `.d.ts` files, the
   runtime autoloader attempts to `import()` them, triggering a Node 24 type
   stripping error for files under `node_modules`.
@@ -379,7 +379,7 @@
 
 ### Patch Changes
 
-- e6a1b85: Fix `packages/cli` bin field pointing to `.mjs` instead of `.js` (tsdown with `fixedExtension: false` and `"type":"module"` outputs `.js`). Add `setArgv` and `runTestCli` to the public `@kidd-cli/core/test` entry point.
+- e6a1b85: Fix `packages/cli` bin field pointing to `.mjs` instead of `.js` (tsdown with `fixedExtension: false` and `"type":"module"` outputs `.js`). Add `setArgv` and `runTestCli` to the public `@maltty/core/test` entry point.
 
 ## 0.8.0
 
@@ -415,15 +415,15 @@
   - Add 80+ tests for runtime/args (zod, parser, register)
 
 - Updated dependencies [0d0c61f]
-  - @kidd-cli/utils@0.1.5
-  - @kidd-cli/config@0.1.6
+  - @maltty/utils@0.1.5
+  - @maltty/config@0.1.6
 
 ## 0.7.0
 
 ### Minor Changes
 
 - be28e1c: Add `name` and `aliases` fields to command definitions. The `name` field overrides filename-derived names in the autoloader, and `aliases` registers alternative command names via yargs' native alias support.
-- 25b015e: Add `@kidd-cli/core/test` export with test utilities for handler, middleware, and integration testing. Includes `createTestContext`, `runHandler`, `runMiddleware`, `runCommand`, `mockPrompts`, `setupTestLifecycle`, `createWritableCapture`, `stripAnsi`, and `normalizeError`. Also extends `createContext` to accept optional `prompts` and `spinner` overrides for dependency injection.
+- 25b015e: Add `@maltty/core/test` export with test utilities for handler, middleware, and integration testing. Includes `createTestContext`, `runHandler`, `runMiddleware`, `runCommand`, `mockPrompts`, `setupTestLifecycle`, `createWritableCapture`, `stripAnsi`, and `normalizeError`. Also extends `createContext` to accept optional `prompts` and `spinner` overrides for dependency injection.
 
 ## 0.6.0
 
@@ -451,7 +451,7 @@
 ### Patch Changes
 
 - Updated dependencies [5f46e63]
-  - @kidd-cli/config@0.1.5
+  - @maltty/config@0.1.5
 
 ## 0.5.0
 
@@ -460,16 +460,16 @@
 - a7dff7d: Add icons middleware with Nerd Font detection and interactive installation
 - 6d8889a: Add `ConfigType` utility type and `CliConfig` augmentation interface for typed `ctx.config`.
 
-  **@kidd-cli/core:**
+  **@maltty/core:**
 
   - Add `ConfigType<TSchema>` utility type to derive `CliConfig` from a Zod schema
-  - Rename `KiddConfig` augmentation interface to `CliConfig` to avoid confusion with the build config type in `@kidd-cli/config`
-  - Export `CliConfig` and `ConfigType` from `@kidd-cli/core`
+  - Rename `MalttyConfig` augmentation interface to `CliConfig` to avoid confusion with the build config type in `@maltty/config`
+  - Export `CliConfig` and `ConfigType` from `@maltty/core`
 
-  **@kidd-cli/cli:**
+  **@maltty/cli:**
 
-  - Add `--config` flag to `kidd init` to scaffold config schema setup during project creation
-  - Add `kidd add config` command to scaffold config into existing projects
+  - Add `--config` flag to `maltty init` to scaffold config schema setup during project creation
+  - Add `maltty add config` command to scaffold config into existing projects
   - Scaffolded config includes Zod schema with `ConfigType` module augmentation wiring
 
 - 70deba8: Redesign output API: replace `ctx.output` with `ctx.format` and add styled logger methods.
@@ -511,7 +511,7 @@
 
 - 9f1b155: Auto-detect CLI version from package.json at build time
 
-  The kidd bundler now reads the `version` field from the project's `package.json` during build and injects it as a compile-time constant (`__KIDD_VERSION__`). At runtime, `cli()` no longer requires an explicit `version` option — it falls back to the injected constant automatically. Explicit `version` still takes precedence when provided. The build command output now displays the detected version.
+  The maltty bundler now reads the `version` field from the project's `package.json` during build and injects it as a compile-time constant (`__MALTTY_VERSION__`). At runtime, `cli()` no longer requires an explicit `version` option — it falls back to the injected constant automatically. Explicit `version` still takes precedence when provided. The build command output now displays the detected version.
 
 - 2f7137b: Add customizable help header/footer and clean exit on no-command
 
@@ -529,8 +529,8 @@
 
 - 97b92b7: upgrade dependencies across all packages
 - Updated dependencies [97b92b7]
-  - @kidd-cli/utils@0.1.4
-  - @kidd-cli/config@0.1.4
+  - @maltty/utils@0.1.4
+  - @maltty/config@0.1.4
 
 ## 0.3.0
 
@@ -548,8 +548,8 @@
 
 - 6a538bc: upgrade dependencies across all packages
 - Updated dependencies [6a538bc]
-  - @kidd-cli/utils@0.1.3
-  - @kidd-cli/config@0.1.3
+  - @maltty/utils@0.1.3
+  - @maltty/config@0.1.3
 
 ## 0.2.0
 
@@ -606,7 +606,7 @@
 
   New `device-code` resolver added for headless/browserless environments (RFC 8628).
 
-  **Breaking change:** Remove `lib/output` and `lib/prompts` sub-exports. The `Spinner` interface is now inlined in `context/types.ts` and prompts use `@clack/prompts` directly. Consumers importing from `@kidd-cli/core/lib/output` or `@kidd-cli/core/lib/prompts` must update to use `@clack/prompts` directly.
+  **Breaking change:** Remove `lib/output` and `lib/prompts` sub-exports. The `Spinner` interface is now inlined in `context/types.ts` and prompts use `@clack/prompts` directly. Consumers importing from `@maltty/core/lib/output` or `@maltty/core/lib/prompts` must update to use `@clack/prompts` directly.
 
   **Breaking change:** Export `MiddlewareEnv` type from main entry point.
 
@@ -631,8 +631,8 @@
   Remove redundant `existsSync` check in `loadFromPath` to eliminate a TOCTOU race condition, matching the pattern already used in the dotenv resolver.
 
 - Updated dependencies [f48ad38]
-  - @kidd-cli/utils@0.1.2
-  - @kidd-cli/config@0.1.2
+  - @maltty/utils@0.1.2
+  - @maltty/config@0.1.2
 
 ## 0.1.2
 
@@ -644,12 +644,12 @@
 
 ### Patch Changes
 
-- 02a4303: Rename `kidd` to `@kidd-cli/core` and `kidd-cli` to `@kidd-cli/cli` to comply with npm's package naming policy. All imports, docs, and references updated.
+- 02a4303: Rename `maltty` to `@maltty/core` and `maltty` to `@maltty/cli` to comply with npm's package naming policy. All imports, docs, and references updated.
 - d8064fa: Add repository metadata and configure npm trusted publishing with OIDC
 - Updated dependencies [02a4303]
 - Updated dependencies [d8064fa]
-  - @kidd-cli/config@0.1.1
-  - @kidd-cli/utils@0.1.1
+  - @maltty/config@0.1.1
+  - @maltty/utils@0.1.1
 
 ## 0.1.0
 
@@ -660,5 +660,5 @@
 ### Patch Changes
 
 - Updated dependencies [be8b790]
-  - @kidd-cli/utils@0.1.0
-  - @kidd-cli/config@0.1.0
+  - @maltty/utils@0.1.0
+  - @maltty/config@0.1.0

@@ -1,4 +1,4 @@
-import { hasTag } from '@kidd-cli/utils/tag'
+import { hasTag } from '@maltty/utils/tag'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { z } from 'zod'
 
@@ -170,7 +170,7 @@ describe('screen() render function', () => {
     expect(providerChildren.props).toMatchObject(args)
   })
 
-  it('should wrap component in KiddProvider with a ScreenContext', async () => {
+  it('should wrap component in MalttyProvider with a ScreenContext', async () => {
     const { screen } = await import('./screen.js')
     const cmd = screen({ render: StubComponent })
     const ctx = makeContext({ config: { debug: true } })

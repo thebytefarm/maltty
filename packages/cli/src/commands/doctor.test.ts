@@ -1,13 +1,13 @@
-import type { CommandContext } from '@kidd-cli/core'
+import type { CommandContext } from '@maltty/core'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import type { CheckContext, CheckResult, DiagnosticCheck, FixResult } from '../lib/checks.js'
 
-vi.mock(import('@kidd-cli/config/utils'), () => ({
+vi.mock(import('@maltty/config/utils'), () => ({
   loadConfig: vi.fn(),
 }))
 
-vi.mock(import('@kidd-cli/utils/manifest'), () => ({
+vi.mock(import('@maltty/utils/manifest'), () => ({
   readManifest: vi.fn(),
 }))
 
@@ -17,7 +17,7 @@ vi.mock(import('../lib/checks.js'), () => ({
   readRawPackageJson: vi.fn(),
 }))
 
-vi.mock(import('@kidd-cli/core'), () => ({
+vi.mock(import('@maltty/core'), () => ({
   command: vi.fn((def) => def),
 }))
 
@@ -34,8 +34,8 @@ vi.mock(import('picocolors'), () => {
   } as never
 })
 
-const { loadConfig } = await import('@kidd-cli/config/utils')
-const { readManifest } = await import('@kidd-cli/utils/manifest')
+const { loadConfig } = await import('@maltty/config/utils')
+const { readManifest } = await import('@maltty/utils/manifest')
 const { CHECKS, createCheckContext, readRawPackageJson } = await import('../lib/checks.js')
 
 const mockedLoadConfig = vi.mocked(loadConfig)
@@ -66,7 +66,7 @@ function makeContext(argOverrides: Record<string, unknown> = {}): CommandContext
       success: vi.fn(),
       warn: vi.fn(),
     },
-    meta: { command: ['doctor'], name: 'kidd', version: '0.0.0' },
+    meta: { command: ['doctor'], name: 'maltty', version: '0.0.0' },
     prompts: {
       confirm: vi.fn(),
       multiselect: vi.fn(),
@@ -152,13 +152,13 @@ describe('doctor command', () => {
 
   it('should call fail when checks have failures', async () => {
     const failResult = makeCheckResult({
-      hint: 'Run kidd init',
+      hint: 'Run maltty init',
       message: 'Not found',
-      name: 'kidd.config',
+      name: 'maltty.config',
       status: 'fail',
     })
 
-    mockedChecks.push({ name: 'kidd.config', run: vi.fn().mockResolvedValue(failResult) })
+    mockedChecks.push({ name: 'maltty.config', run: vi.fn().mockResolvedValue(failResult) })
 
     const context: CheckContext = {
       configError: null,

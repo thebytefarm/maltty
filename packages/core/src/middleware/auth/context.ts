@@ -1,5 +1,5 @@
-import { ok } from '@kidd-cli/utils/fp'
-import type { ResultAsync, Result } from '@kidd-cli/utils/fp'
+import { ok } from '@maltty/utils/fp'
+import type { ResultAsync, Result } from '@maltty/utils/fp'
 
 import type { Prompts } from '@/context/types.js'
 import { createStore } from '@/lib/store/create-store.js'

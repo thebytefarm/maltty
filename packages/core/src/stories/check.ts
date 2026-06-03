@@ -1,4 +1,4 @@
-import { hasTag } from '@kidd-cli/utils/tag'
+import { hasTag } from '@maltty/utils/tag'
 import { P, match } from 'ts-pattern'
 
 import type { Story, StoryEntry, StoryGroup } from './types.js'

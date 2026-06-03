@@ -1,4 +1,4 @@
-import { attemptAsync, isPlainObject, match } from '@kidd-cli/utils/fp'
+import { attemptAsync, isPlainObject, match } from '@maltty/utils/fp'
 
 import type { Prompts } from '@/context/types.js'
 

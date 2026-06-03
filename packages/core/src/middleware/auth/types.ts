@@ -1,4 +1,4 @@
-import type { ResultAsync } from '@kidd-cli/utils/fp'
+import type { ResultAsync } from '@maltty/utils/fp'
 
 import type { DirsConfig } from '@/types/index.js'
 
@@ -275,10 +275,10 @@ export interface AuthOptions {
 /**
  * Augments the base {@link CommandContext} with an optional `auth` property.
  *
- * When a consumer imports `kidd/auth`, this declaration merges `auth`
+ * When a consumer imports `maltty/auth`, this declaration merges `auth`
  * onto `CommandContext` so that `ctx.auth` is typed without manual casting.
  */
-declare module '@kidd-cli/core' {
+declare module '@maltty/core' {
   interface CommandContext {
     readonly auth: AuthContext
   }

@@ -1,17 +1,17 @@
-import type { ResultAsync } from '@kidd-cli/utils'
-import { err, ok, toError } from '@kidd-cli/utils/fp'
-import type { Tagged } from '@kidd-cli/utils/tag'
-import { withTag } from '@kidd-cli/utils/tag'
+import type { ResultAsync } from '@maltty/utils'
+import { err, ok, toError } from '@maltty/utils/fp'
+import type { Tagged } from '@maltty/utils/tag'
+import { withTag } from '@maltty/utils/tag'
 import { loadConfig as c12LoadConfig } from 'c12'
 import { attemptAsync } from 'es-toolkit'
 
-import type { KiddConfig } from '../types.js'
+import type { MalttyConfig } from '../types.js'
 import { validateConfig } from './schema.js'
 
-export { KiddConfigSchema, validateConfig } from './schema.js'
+export { MalttyConfigSchema, validateConfig } from './schema.js'
 
 /**
- * Options for loading a kidd build config.
+ * Options for loading a maltty build config.
  */
 export interface LoadConfigOptions {
   /**
@@ -21,21 +21,21 @@ export interface LoadConfigOptions {
   /**
    * Default values merged under the loaded config.
    */
-  readonly defaults?: Partial<KiddConfig>
+  readonly defaults?: Partial<MalttyConfig>
   /**
    * Override values merged over the loaded config.
    */
-  readonly overrides?: Partial<KiddConfig>
+  readonly overrides?: Partial<MalttyConfig>
 }
 
 /**
- * Successful result of loading a kidd build config.
+ * Successful result of loading a maltty build config.
  */
 export interface LoadConfigResult {
   /**
    * The validated and tagged build config.
    */
-  readonly config: Tagged<KiddConfig, 'KiddConfig'>
+  readonly config: Tagged<MalttyConfig, 'MalttyConfig'>
   /**
    * Path to the resolved config file, or `undefined` when none was found.
    */
@@ -43,9 +43,9 @@ export interface LoadConfigResult {
 }
 
 /**
- * Load and validate a `kidd.config.ts` file using c12.
+ * Load and validate a `maltty.config.ts` file using c12.
  *
- * Searches for a config file named `kidd` (e.g. `kidd.config.ts`, `kidd.config.mts`)
+ * Searches for a config file named `maltty` (e.g. `maltty.config.ts`, `maltty.config.mts`)
  * in the given working directory, validates it against the build config schema,
  * and returns a tagged config object.
  *
@@ -61,17 +61,17 @@ export async function loadConfig(
     c12LoadConfig({
       cwd,
       defaults,
-      name: 'kidd',
+      name: 'maltty',
       overrides,
     })
   )
 
   if (loadError) {
-    return err(`Failed to load kidd config: ${toError(loadError).message}`)
+    return err(`Failed to load maltty config: ${toError(loadError).message}`)
   }
 
   if (!loaded) {
-    return err('Failed to load kidd config: no configuration was returned')
+    return err('Failed to load maltty config: no configuration was returned')
   }
 
   const [validateError, config] = validateConfig(loaded.config)
@@ -80,7 +80,7 @@ export async function loadConfig(
   }
 
   return ok({
-    config: withTag(config, 'KiddConfig'),
+    config: withTag(config, 'MalttyConfig'),
     configFile: loaded.configFile,
   })
 }

@@ -3,29 +3,29 @@ import { createContext, useContext } from 'react'
 
 import type { ScreenContext } from '../context/types.js'
 
-const KiddContext = createContext<ScreenContext | null>(null)
+const MalttyContext = createContext<ScreenContext | null>(null)
 
 /**
- * Props for the {@link KiddProvider} component.
+ * Props for the {@link MalttyProvider} component.
  *
  * @private
  */
-export interface KiddProviderProps {
+export interface MalttyProviderProps {
   readonly children: ReactNode
   readonly value: ScreenContext
 }
 
 /**
- * Provider that injects the kidd screen context into the React tree.
- * Screens rendered by the kidd runtime are automatically wrapped in
+ * Provider that injects the maltty screen context into the React tree.
+ * Screens rendered by the maltty runtime are automatically wrapped in
  * this provider.
  *
  * @private
  * @param props - Provider props containing the context value and children.
- * @returns A React element wrapping children with the kidd context.
+ * @returns A React element wrapping children with the maltty context.
  */
-export function KiddProvider({ children, value }: KiddProviderProps): ReactElement {
-  return <KiddContext.Provider value={value}>{children}</KiddContext.Provider>
+export function MalttyProvider({ children, value }: MalttyProviderProps): ReactElement {
+  return <MalttyContext.Provider value={value}>{children}</MalttyContext.Provider>
 }
 
 // ---------------------------------------------------------------------------
@@ -46,7 +46,7 @@ export function KiddProvider({ children, value }: KiddProviderProps): ReactEleme
  * @returns The current screen context.
  */
 export function useScreenContext<TContext extends ScreenContext = ScreenContext>(): TContext {
-  const ctx = useContext(KiddContext)
+  const ctx = useContext(MalttyContext)
   if (!ctx) {
     throw new Error('useScreenContext must be used inside a screen() component')
   }

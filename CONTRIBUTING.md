@@ -1,6 +1,6 @@
-# Contributing to kidd
+# Contributing to maltty
 
-Thanks for your interest in contributing to kidd! This document covers the basics you need to get started.
+Thanks for your interest in contributing to maltty! This document covers the basics you need to get started.
 
 For a more detailed walkthrough, see the [Getting Started Guide](contributing/guides/getting-started.md).
 
@@ -130,7 +130,7 @@ For in-depth standards, architecture concepts, and step-by-step guides, see the 
 
 ## Reporting Issues
 
-Use [GitHub Issues](https://github.com/joggrdocs/kidd/issues) to report bugs or suggest features. When filing a bug, include:
+Use [GitHub Issues](https://github.com/thebytefarm/maltty/issues) to report bugs or suggest features. When filing a bug, include:
 
 - Steps to reproduce
 - Expected vs actual behavior

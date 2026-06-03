@@ -57,10 +57,10 @@ export type FiguresFactory = (options?: FiguresOptions) => Middleware
 /**
  * Augments the base {@link CommandContext} with an optional `figures` property.
  *
- * When a consumer imports `@kidd-cli/core/figures`, this declaration merges
+ * When a consumer imports `@maltty/core/figures`, this declaration merges
  * `figures` onto `CommandContext` so that `ctx.figures` is typed without manual casting.
  */
-declare module '@kidd-cli/core' {
+declare module '@maltty/core' {
   interface CommandContext {
     readonly figures: FiguresContext
   }

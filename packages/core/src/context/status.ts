@@ -88,7 +88,7 @@ export function createContextStatus(options?: CreateContextStatusOptions): Statu
     },
 
     async tasks(tasks: readonly TaskDef[]): Promise<void> {
-      // Accepted exception: kidd's TaskDef.task returns `Promise<string | void>`,
+      // Accepted exception: maltty's TaskDef.task returns `Promise<string | void>`,
       // Clack expects separate `Promise<string> | Promise<void>`. The cast bridges this.
       await clack.tasks(
         tasks.map((t) => ({

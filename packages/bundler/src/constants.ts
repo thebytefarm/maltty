@@ -41,18 +41,18 @@ export const DEFAULT_SOURCEMAP = true
 export const DEFAULT_CLEAN = true
 
 /**
- * File extensions produced by kidd builds that are safe to remove during clean.
+ * File extensions produced by maltty builds that are safe to remove during clean.
  */
 export const BUILD_ARTIFACT_EXTENSIONS: readonly string[] = ['.js', '.mjs', '.js.map', '.mjs.map']
 
 /**
  * Packages that must always be bundled into the output.
  *
- * The `@kidd-cli/core` framework and its internal `@kidd-cli/*` packages must be inlined
+ * The `@maltty/core` framework and its internal `@maltty/*` packages must be inlined
  * so the autoload plugin can intercept and replace the runtime autoloader
  * with a static version for compiled binaries.
  */
-export const ALWAYS_BUNDLE: RegExp[] = [/^@?kidd/]
+export const ALWAYS_BUNDLE: RegExp[] = [/^@?maltty/]
 
 /**
  * Packages that are optional or conditional dependencies of bundled libraries

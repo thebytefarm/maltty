@@ -1,6 +1,6 @@
 import process from 'node:process'
 
-import { hasTag } from '@kidd-cli/utils/tag'
+import { hasTag } from '@maltty/utils/tag'
 import { Box, Text, useApp } from 'ink'
 import type { ComponentType, ReactElement } from 'react'
 import { useEffect, useMemo, useState } from 'react'

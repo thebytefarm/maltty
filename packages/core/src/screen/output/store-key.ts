@@ -10,7 +10,7 @@ import type { OutputStore } from './types.js'
  *
  * @private
  */
-const OUTPUT_STORE_KEY: unique symbol = Symbol('kidd.outputStore')
+const OUTPUT_STORE_KEY: unique symbol = Symbol('maltty.outputStore')
 
 // ---------------------------------------------------------------------------
 // Exports

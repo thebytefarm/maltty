@@ -22,7 +22,7 @@ import type { FiguresEnv, FiguresOptions } from './types.js'
  *
  * @example
  * ```ts
- * import { figures } from '@kidd-cli/core/figures'
+ * import { figures } from '@maltty/core/figures'
  *
  * cli({
  *   middleware: [

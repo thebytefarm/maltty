@@ -1,25 +1,25 @@
 {
-  "name": "@kidd-cli/cli",
+  "name": "@maltty/cli",
   "version": "0.11.9",
-  "description": "DX companion CLI for the kidd framework",
+  "description": "DX companion CLI for the maltty framework",
   "keywords": [
     "cli",
     "codegen",
-    "kidd",
+    "maltty",
     "scaffolding"
   ],
-  "homepage": "https://github.com/joggrdocs/kidd/tree/main/packages/cli",
+  "homepage": "https://github.com/thebytefarm/maltty/tree/main/packages/cli",
   "bugs": {
-    "url": "https://github.com/joggrdocs/kidd/issues"
+    "url": "https://github.com/thebytefarm/maltty/issues"
   },
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/joggrdocs/kidd.git",
+    "url": "https://github.com/thebytefarm/maltty.git",
     "directory": "packages/cli"
   },
   "bin": {
-    "kidd": "./bin/kidd.js"
+    "maltty": "./bin/maltty.js"
   },
   "files": [
     "bin",
@@ -36,10 +36,10 @@
     "test:watch": "vitest"
   },
   "dependencies": {
-    "@kidd-cli/bundler": "workspace:*",
-    "@kidd-cli/config": "workspace:*",
-    "@kidd-cli/core": "workspace:*",
-    "@kidd-cli/utils": "workspace:*",
+    "@maltty/bundler": "workspace:*",
+    "@maltty/config": "workspace:*",
+    "@maltty/core": "workspace:*",
+    "@maltty/utils": "workspace:*",
     "fs-extra": "^11.3.4",
     "ink": "^7.0.0",
     "liquidjs": "catalog:",

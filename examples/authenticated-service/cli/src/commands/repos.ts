@@ -1,4 +1,4 @@
-import { command } from '@kidd-cli/core'
+import { command } from '@maltty/core'
 import { z } from 'zod'
 
 import requireAuth from '../middleware/require-auth.js'

@@ -1,4 +1,4 @@
-import type { ResultAsync, Result } from '@kidd-cli/utils/fp'
+import type { ResultAsync, Result } from '@maltty/utils/fp'
 
 import type { CommandContext, DisplayConfig, Log, Prompts, Status } from '@/context/types.js'
 import type { ArgsDef, Middleware, ResolvedDirs, ScreenRenderFn } from '@/types/index.js'

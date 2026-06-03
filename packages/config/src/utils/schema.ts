@@ -1,8 +1,8 @@
-import type { Result } from '@kidd-cli/utils'
-import { validate } from '@kidd-cli/utils/validate'
+import type { Result } from '@maltty/utils'
+import { validate } from '@maltty/utils/validate'
 import { z } from 'zod'
 
-import type { KiddConfig } from '../types.js'
+import type { MalttyConfig } from '../types.js'
 import type { CompileTarget } from './compile.js'
 import { compileTargets } from './compile.js'
 
@@ -47,9 +47,9 @@ const CompileOptionsSchema = z
   .strict()
 
 /**
- * Zod schema validating the {@link KiddConfig} shape.
+ * Zod schema validating the {@link MalttyConfig} shape.
  */
-export const KiddConfigSchema: z.ZodType<KiddConfig> = z
+export const MalttyConfigSchema: z.ZodType<MalttyConfig> = z
   .object({
     build: BuildOptionsSchema.optional(),
     commands: z.string().optional(),
@@ -60,15 +60,15 @@ export const KiddConfigSchema: z.ZodType<KiddConfig> = z
   .strict()
 
 /**
- * Validate arbitrary data against the {@link KiddConfigSchema}.
+ * Validate arbitrary data against the {@link MalttyConfigSchema}.
  *
  * @param data - The unknown value to validate.
- * @returns A Result tuple - `[null, KiddConfig]` on success or `[Error, null]` on failure.
+ * @returns A Result tuple - `[null, MalttyConfig]` on success or `[Error, null]` on failure.
  */
-export function validateConfig(data: unknown): Result<KiddConfig, Error> {
+export function validateConfig(data: unknown): Result<MalttyConfig, Error> {
   return validate({
-    schema: KiddConfigSchema,
+    schema: MalttyConfigSchema,
     params: data,
-    createError: ({ message }) => new Error(`Invalid kidd config:\n  ${message}`),
+    createError: ({ message }) => new Error(`Invalid maltty config:\n  ${message}`),
   })
 }

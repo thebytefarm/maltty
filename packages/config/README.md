@@ -1,21 +1,21 @@
-# @kidd-cli/config
+# @maltty/config
 
-Build-time configuration management for kidd CLIs. Provides Zod-validated schemas for `kidd.config.ts` and a config loader powered by c12.
+Build-time configuration management for maltty CLIs. Provides Zod-validated schemas for `maltty.config.ts` and a config loader powered by c12.
 
 ## Installation
 
 ```bash
-pnpm add @kidd-cli/config
+pnpm add @maltty/config
 ```
 
 ## Usage
 
 ### Define a config
 
-Create a `kidd.config.ts` in your project root:
+Create a `maltty.config.ts` in your project root:
 
 ```ts
-import { defineConfig } from '@kidd-cli/config'
+import { defineConfig } from '@maltty/config'
 
 export default defineConfig({
   entry: './src/index.ts',
@@ -36,7 +36,7 @@ export default defineConfig({
 ### Load a config
 
 ```ts
-import { loadConfig } from '@kidd-cli/config/loader'
+import { loadConfig } from '@maltty/config/loader'
 
 const [error, result] = await loadConfig()
 if (error) {
@@ -58,11 +58,11 @@ if (error) {
 
 ## Subpath exports
 
-| Export                    | Description              |
-| ------------------------- | ------------------------ |
-| `@kidd-cli/config`        | `defineConfig` and types |
-| `@kidd-cli/config/loader` | Config file loader       |
+| Export                  | Description              |
+| ----------------------- | ------------------------ |
+| `@maltty/config`        | `defineConfig` and types |
+| `@maltty/config/loader` | Config file loader       |
 
 ## License
 
-MIT -- [GitHub](https://github.com/joggrdocs/kidd)
+MIT -- [GitHub](https://github.com/thebytefarm/maltty)

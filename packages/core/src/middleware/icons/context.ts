@@ -1,5 +1,5 @@
-import { ok } from '@kidd-cli/utils/fp'
-import type { ResultAsync } from '@kidd-cli/utils/fp'
+import { ok } from '@maltty/utils/fp'
+import type { ResultAsync } from '@maltty/utils/fp'
 
 import type { CommandContext } from '@/context/types.js'
 

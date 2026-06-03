@@ -1,4 +1,4 @@
-import type { CommandContext } from '@kidd-cli/core'
+import type { CommandContext } from '@maltty/core'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 vi.mock(import('../../lib/detect.js'), () => ({
@@ -13,14 +13,14 @@ vi.mock(import('../../lib/write.js'), () => ({
   writeFiles: vi.fn(),
 }))
 
-vi.mock(import('@kidd-cli/utils/manifest'), () => ({
+vi.mock(import('@maltty/utils/manifest'), () => ({
   readManifest: vi.fn(),
 }))
 
 const { detectProject } = await import('../../lib/detect.js')
 const { renderTemplate } = await import('../../lib/render.js')
 const { writeFiles } = await import('../../lib/write.js')
-const { readManifest } = await import('@kidd-cli/utils/manifest')
+const { readManifest } = await import('@maltty/utils/manifest')
 const mockedDetectProject = vi.mocked(detectProject)
 const mockedRenderTemplate = vi.mocked(renderTemplate)
 const mockedWriteFiles = vi.mocked(writeFiles)
@@ -57,7 +57,7 @@ function makeContext(): CommandContext {
       text: vi.fn(),
     },
     status: { spinner: { message: vi.fn(), start: vi.fn(), stop: vi.fn() } },
-    meta: { command: ['add', 'config'], name: 'kidd', version: '0.0.0' },
+    meta: { command: ['add', 'config'], name: 'maltty', version: '0.0.0' },
     store: { clear: vi.fn(), delete: vi.fn(), get: vi.fn(), has: vi.fn(), set: vi.fn() },
   } as unknown as CommandContext
 }
@@ -74,18 +74,18 @@ describe('add config', () => {
     await expect(mod.default.handler!(ctx)).rejects.toThrow('detect failed')
   })
 
-  it('should fail when not in a kidd project', async () => {
+  it('should fail when not in a maltty project', async () => {
     const ctx = makeContext()
     mockedDetectProject.mockResolvedValue([null, null])
 
-    await expect(mod.default.handler!(ctx)).rejects.toThrow('Not in a kidd project')
+    await expect(mod.default.handler!(ctx)).rejects.toThrow('Not in a maltty project')
   })
 
   it('should resolve project name from package.json', async () => {
     const ctx = makeContext()
     mockedDetectProject.mockResolvedValue([
       null,
-      { commandsDir: null, hasKiddDep: true, rootDir: '/project' },
+      { commandsDir: null, hasMalttyDep: true, rootDir: '/project' },
     ])
     mockedReadManifest.mockResolvedValue([null, { name: 'my-cool-app', version: '1.0.0' }] as never)
     mockedRenderTemplate.mockResolvedValue([null, [{ content: 'code', relativePath: 'config.ts' }]])
@@ -104,7 +104,7 @@ describe('add config', () => {
     const ctx = makeContext()
     mockedDetectProject.mockResolvedValue([
       null,
-      { commandsDir: null, hasKiddDep: true, rootDir: '/project' },
+      { commandsDir: null, hasMalttyDep: true, rootDir: '/project' },
     ])
     mockedReadManifest.mockResolvedValue([new Error('no manifest'), null] as never)
     mockedRenderTemplate.mockResolvedValue([null, [{ content: 'code', relativePath: 'config.ts' }]])
@@ -123,7 +123,7 @@ describe('add config', () => {
     const ctx = makeContext()
     mockedDetectProject.mockResolvedValue([
       null,
-      { commandsDir: null, hasKiddDep: true, rootDir: '/project' },
+      { commandsDir: null, hasMalttyDep: true, rootDir: '/project' },
     ])
     mockedReadManifest.mockResolvedValue([null, { version: '1.0.0' }] as never)
     mockedRenderTemplate.mockResolvedValue([null, [{ content: 'code', relativePath: 'config.ts' }]])
@@ -142,7 +142,7 @@ describe('add config', () => {
     const ctx = makeContext()
     mockedDetectProject.mockResolvedValue([
       null,
-      { commandsDir: null, hasKiddDep: true, rootDir: '/project' },
+      { commandsDir: null, hasMalttyDep: true, rootDir: '/project' },
     ])
     mockedReadManifest.mockResolvedValue([null, { name: 'app', version: '1.0.0' }] as never)
     mockedRenderTemplate.mockResolvedValue([new Error('render failed'), null])
@@ -155,7 +155,7 @@ describe('add config', () => {
     const ctx = makeContext()
     mockedDetectProject.mockResolvedValue([
       null,
-      { commandsDir: null, hasKiddDep: true, rootDir: '/project' },
+      { commandsDir: null, hasMalttyDep: true, rootDir: '/project' },
     ])
     mockedReadManifest.mockResolvedValue([null, { name: 'app', version: '1.0.0' }] as never)
     mockedRenderTemplate.mockResolvedValue([null, [{ content: 'code', relativePath: 'config.ts' }]])
@@ -169,7 +169,7 @@ describe('add config', () => {
     const ctx = makeContext()
     mockedDetectProject.mockResolvedValue([
       null,
-      { commandsDir: null, hasKiddDep: true, rootDir: '/project' },
+      { commandsDir: null, hasMalttyDep: true, rootDir: '/project' },
     ])
     mockedReadManifest.mockResolvedValue([null, { name: 'app', version: '1.0.0' }] as never)
     mockedRenderTemplate.mockResolvedValue([null, [{ content: 'code', relativePath: 'config.ts' }]])
@@ -186,7 +186,7 @@ describe('add config', () => {
     const ctx = makeContext()
     mockedDetectProject.mockResolvedValue([
       null,
-      { commandsDir: null, hasKiddDep: true, rootDir: '/project' },
+      { commandsDir: null, hasMalttyDep: true, rootDir: '/project' },
     ])
     mockedReadManifest.mockResolvedValue([null, { name: 'app', version: '1.0.0' }] as never)
     mockedRenderTemplate.mockResolvedValue([null, [{ content: 'code', relativePath: 'config.ts' }]])
@@ -201,7 +201,7 @@ describe('add config', () => {
     const ctx = makeContext()
     mockedDetectProject.mockResolvedValue([
       null,
-      { commandsDir: null, hasKiddDep: true, rootDir: '/project' },
+      { commandsDir: null, hasMalttyDep: true, rootDir: '/project' },
     ])
     mockedReadManifest.mockResolvedValue([null, { name: 'app', version: '1.0.0' }] as never)
     mockedRenderTemplate.mockResolvedValue([null, [{ content: 'code', relativePath: 'config.ts' }]])

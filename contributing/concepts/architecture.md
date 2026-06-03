@@ -1,10 +1,10 @@
 # Architecture
 
-High-level overview of how kidd is structured, its design philosophy, and how data flows through the system.
+High-level overview of how maltty is structured, its design philosophy, and how data flows through the system.
 
 ## Overview
 
-kidd is a CLI framework for building composable, type-safe command-line tools. It provides a modular architecture with commands, middleware, context, and config layers that combine to build CLIs with full type inference and a rich terminal UI.
+maltty is a CLI framework for building composable, type-safe command-line tools. It provides a modular architecture with commands, middleware, context, and config layers that combine to build CLIs with full type inference and a rich terminal UI.
 
 The codebase follows a functional, immutable, composition-first design. There are no classes, no `let`, no `throw` statements, and no loops. Errors are returned as `Result` tuples. Side effects (process exit, terminal output) are pushed to the outermost edges.
 
@@ -19,13 +19,13 @@ packages/
 └── bundler/         # tsdown bundling and binary compilation (internal)
 ```
 
-| Package             | Purpose                                                       |
-| ------------------- | ------------------------------------------------------------- |
-| `@kidd-cli/core`    | Core framework: `cli()`, `command()`, `middleware()`, context |
-| `@kidd-cli/cli`     | DX companion CLI: scaffolding, dev mode, build, compile       |
-| `@kidd-cli/config`  | Configuration loading, validation, and schema (internal)      |
-| `@kidd-cli/utils`   | Shared functional utilities (internal)                        |
-| `@kidd-cli/bundler` | tsdown bundling and binary compilation (internal)             |
+| Package           | Purpose                                                       |
+| ----------------- | ------------------------------------------------------------- |
+| `@maltty/core`    | Core framework: `cli()`, `command()`, `middleware()`, context |
+| `@maltty/cli`     | DX companion CLI: scaffolding, dev mode, build, compile       |
+| `@maltty/config`  | Configuration loading, validation, and schema (internal)      |
+| `@maltty/utils`   | Shared functional utilities (internal)                        |
+| `@maltty/bundler` | tsdown bundling and binary compilation (internal)             |
 
 ## Layers
 
@@ -94,7 +94,7 @@ flowchart TB
 
 **Package:** `packages/cli`
 
-The CLI binary entrypoint. Calls `cli()` from `@kidd-cli/core` with the CLI name, version, commands, and middleware. This is the only layer that reads `package.json` for version and calls `process.exit`.
+The CLI binary entrypoint. Calls `cli()` from `@maltty/core` with the CLI name, version, commands, and middleware. This is the only layer that reads `package.json` for version and calls `process.exit`.
 
 ### Core Layer
 
@@ -152,14 +152,14 @@ All data properties (`args`, `config`, `meta`) are deeply readonly at the type l
 Consumers extend the context type system via declaration merging without threading generics:
 
 ```ts
-declare module '@kidd-cli/core' {
-  interface KiddArgs {
+declare module '@maltty/core' {
+  interface MalttyArgs {
     verbose: boolean
   }
   interface CliConfig {
     apiUrl: string
   }
-  interface KiddStore {
+  interface MalttyStore {
     auth: AuthState
   }
 }
@@ -300,7 +300,7 @@ Config is validated against a Zod schema and errors are returned as discriminate
 
 ## Error Handling
 
-kidd uses two error strategies depending on the layer:
+maltty uses two error strategies depending on the layer:
 
 | Layer        | Strategy                            | Type                               |
 | ------------ | ----------------------------------- | ---------------------------------- |
@@ -321,7 +321,7 @@ if (error) return [error, null]
 1. **Immutable by default** -- All context properties are deeply readonly; only `ctx.store` is mutable (for middleware data flow)
 2. **Factories over classes** -- All components are factory functions returning plain objects
 3. **Result tuples over throw** -- Expected failures use `Result<T, E>`; `ContextError` is the only thrown type at the CLI boundary
-4. **Module augmentation** -- `KiddArgs`, `CliConfig`, `KiddStore` interfaces allow typed extensions without generics threading
+4. **Module augmentation** -- `MalttyArgs`, `CliConfig`, `MalttyStore` interfaces allow typed extensions without generics threading
 5. **Discriminated unions** -- Domain types use `type` fields or symbol-based tags for exhaustive pattern matching via `ts-pattern`
 6. **Lazy subcommand loading** -- Commands accept `Promise<CommandMap>` from `autoload()` for deferred imports
 7. **Zod at boundaries** -- Runtime config, args, and external data validated with Zod schemas
@@ -447,8 +447,8 @@ export const loadConfig = (path: string) => {
 
 **Convention:**
 
-- Scope: `@kidd-cli/`
-- Name: Lowercase, single word or hyphenated (e.g., `@kidd-cli/core`, `@kidd-cli/cli`)
+- Scope: `@maltty/`
+- Name: Lowercase, single word or hyphenated (e.g., `@maltty/core`, `@maltty/cli`)
 
 ### Package Structure
 

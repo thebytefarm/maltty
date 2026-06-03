@@ -1,9 +1,9 @@
-import { cli } from '@kidd-cli/core'
-import { auth, createAuthHeaders } from '@kidd-cli/core/auth'
-import type { HttpClient } from '@kidd-cli/core/http'
-import { http } from '@kidd-cli/core/http'
+import { cli } from '@maltty/core'
+import { auth, createAuthHeaders } from '@maltty/core/auth'
+import type { HttpClient } from '@maltty/core/http'
+import { http } from '@maltty/core/http'
 
-declare module '@kidd-cli/core' {
+declare module '@maltty/core' {
   interface CommandContext {
     readonly api: HttpClient
   }

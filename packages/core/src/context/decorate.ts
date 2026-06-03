@@ -7,7 +7,7 @@ import type { CommandContext } from './types.js'
  * Pair with module augmentation on CommandContext for type safety:
  *
  * ```ts
- * declare module '@kidd-cli/core' {
+ * declare module '@maltty/core' {
  *   interface CommandContext {
  *     readonly github: HttpClient
  *   }

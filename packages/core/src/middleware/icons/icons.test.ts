@@ -1,4 +1,4 @@
-import { hasTag } from '@kidd-cli/utils/tag'
+import { hasTag } from '@maltty/utils/tag'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { icons } from './icons.js'

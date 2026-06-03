@@ -1,6 +1,6 @@
 # Add a CLI Command
 
-Add a new command to the kidd CLI end-to-end: handler, registration, and verification.
+Add a new command to the maltty CLI end-to-end: handler, registration, and verification.
 
 ## Prerequisites
 
@@ -16,7 +16,7 @@ Create a new file in the commands directory. The filename becomes the command na
 **With Zod args:**
 
 ```ts
-import { command } from '@kidd-cli/core'
+import { command } from '@maltty/core'
 import { z } from 'zod'
 
 export default command({
@@ -39,7 +39,7 @@ export default command({
 **Without args:**
 
 ```ts
-import { command } from '@kidd-cli/core'
+import { command } from '@maltty/core'
 
 export default command({
   description: 'List available scripts',
@@ -54,7 +54,7 @@ export default command({
 Commands can be hidden from `--help` output or marked as deprecated. Both `hidden` and `deprecated` accept a static value or a function (`Resolvable<T>`), resolved at registration time.
 
 ```ts
-import { command } from '@kidd-cli/core'
+import { command } from '@maltty/core'
 
 // Hidden from help, still executable via `mycli debug`
 export default command({
@@ -104,7 +104,7 @@ commands/
 ```
 
 ```ts
-import { command, autoload } from '@kidd-cli/core'
+import { command, autoload } from '@maltty/core'
 
 export default command({
   description: 'Auth commands',
@@ -118,7 +118,7 @@ Commands that need React/Ink UI use a `render` function instead of `handler`. Th
 
 ```tsx
 import { render } from 'ink'
-import { command } from '@kidd-cli/core'
+import { command } from '@maltty/core'
 
 import { StatusView } from './_components/StatusView.js'
 
@@ -173,14 +173,14 @@ After completing all steps:
 
 1. Run `pnpm typecheck` and confirm no errors
 2. Run `pnpm test` and confirm all tests pass
-3. Run `pnpm kidd <name> --help` and confirm the command appears
+3. Run `pnpm maltty <name> --help` and confirm the command appears
 4. Run the command and verify the expected behavior
 
 ## Troubleshooting
 
 ### Command not appearing in help
 
-**Issue:** The new command does not show up in `kidd --help`.
+**Issue:** The new command does not show up in `maltty --help`.
 
 **Fix:** Ensure the file is in the commands directory, has a `.ts` or `.js` extension, does not start with `_` or `.`, and exports a default `Command` created by the `command()` factory.
 
@@ -194,7 +194,7 @@ After completing all steps:
 
 **Issue:** Properties on `ctx` are missing or mistyped.
 
-**Fix:** Verify the command uses `command()` from `@kidd-cli/core` (not a custom wrapper). Check that module augmentation interfaces (`KiddArgs`, `CliConfig`, `KiddStore`) are correctly declared if using typed store keys or global args.
+**Fix:** Verify the command uses `command()` from `@maltty/core` (not a custom wrapper). Check that module augmentation interfaces (`MalttyArgs`, `CliConfig`, `MalttyStore`) are correctly declared if using typed store keys or global args.
 
 ## References
 

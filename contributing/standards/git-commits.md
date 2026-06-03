@@ -50,7 +50,7 @@ Scopes identify what part of the codebase changed. Use directory-style paths for
 
 | Scope           | Description               |
 | --------------- | ------------------------- |
-| `packages/core` | The core kidd package     |
+| `packages/core` | The core maltty package   |
 | `packages/cli`  | The CLI companion package |
 | `deps`          | Dependency updates        |
 | `ci`            | CI/CD workflow changes    |

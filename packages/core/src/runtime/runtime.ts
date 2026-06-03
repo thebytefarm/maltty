@@ -1,5 +1,5 @@
-import { attemptAsync, err, ok } from '@kidd-cli/utils/fp'
-import type { ResultAsync } from '@kidd-cli/utils/fp'
+import { attemptAsync, err, ok } from '@maltty/utils/fp'
+import type { ResultAsync } from '@maltty/utils/fp'
 
 import { createContext } from '@/context/index.js'
 import type { CommandContext } from '@/context/types.js'

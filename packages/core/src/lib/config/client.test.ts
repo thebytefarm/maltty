@@ -22,7 +22,7 @@ const validConfig: TestConfig = {
 }
 
 function createTmpDir(): string {
-  const dir = realpathSync(mkdtempSync(join(tmpdir(), 'kidd-config-')))
+  const dir = realpathSync(mkdtempSync(join(tmpdir(), 'maltty-config-')))
   mkdirSync(join(dir, '.git'), { recursive: true })
   return dir
 }
