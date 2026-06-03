@@ -101,7 +101,7 @@ describe('build operation', () => {
     expect(output).toHaveProperty('version', undefined)
   })
 
-  it('should inject __KIDD_VERSION__ define when version is available', async () => {
+  it('should inject __MALTTY_VERSION__ define when version is available', async () => {
     mockTsdownBuild.mockResolvedValueOnce([])
     mockFsExists.mockImplementation((p: string) => Promise.resolve(p.endsWith('index.mjs')))
 
@@ -109,7 +109,7 @@ describe('build operation', () => {
     await build({ resolved: versionResolved, compile: false })
 
     expect(mockTsdownBuild).toHaveBeenCalledWith(
-      expect.objectContaining({ define: { __KIDD_VERSION__: '"4.0.0"' } })
+      expect.objectContaining({ define: { __MALTTY_VERSION__: '"4.0.0"' } })
     )
   })
 })

@@ -69,7 +69,7 @@ describe('watch operation', () => {
     await watch({ resolved: versionResolved })
 
     expect(mockTsdownBuild).toHaveBeenCalledWith(
-      expect.objectContaining({ define: { __KIDD_VERSION__: '"2.0.0"' } })
+      expect.objectContaining({ define: { __MALTTY_VERSION__: '"2.0.0"' } })
     )
   })
 })
