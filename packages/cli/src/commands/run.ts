@@ -4,9 +4,9 @@ import { createBundler, DEFAULT_ENTRY, normalizeCompileOptions } from '@maltty/b
 import type { BuildOutput, Bundler, CompileOutput, CompiledBinary } from '@maltty/bundler'
 import type { CompileTarget, MalttyConfig } from '@maltty/config'
 import { compileTargets, loadConfig } from '@maltty/config/utils'
-import { command } from '@maltty/core'
-import type { Command, CommandContext } from '@maltty/core'
 import { process as proc } from '@maltty/utils/node'
+import { command } from 'maltty'
+import type { Command, CommandContext } from 'maltty'
 import { match } from 'ts-pattern'
 import { z } from 'zod'
 

@@ -48,7 +48,7 @@ export const BUILD_ARTIFACT_EXTENSIONS: readonly string[] = ['.js', '.mjs', '.js
 /**
  * Packages that must always be bundled into the output.
  *
- * The `@maltty/core` framework and its internal `@maltty/*` packages must be inlined
+ * The `maltty` framework and its internal `@maltty/*` packages must be inlined
  * so the autoload plugin can intercept and replace the runtime autoloader
  * with a static version for compiled binaries.
  */

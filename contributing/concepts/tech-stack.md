@@ -31,7 +31,7 @@ Complete reference of tools and libraries used in the maltty CLI framework.
 
 | Tool                                   | Purpose              | Usage                                                                  | Documentation                                    |
 | -------------------------------------- | -------------------- | ---------------------------------------------------------------------- | ------------------------------------------------ |
-| [yargs](https://yargs.js.org)          | CLI argument parsing | Used in `packages/core` for argv parsing and command routing.          | [GitHub](https://github.com/yargs/yargs)         |
+| [yargs](https://yargs.js.org)          | CLI argument parsing | Used in `packages/maltty` for argv parsing and command routing.        | [GitHub](https://github.com/yargs/yargs)         |
 | [@clack/prompts](https://www.clack.cc) | CLI prompts & output | Used for interactive prompts, spinners, and formatted terminal output. | [GitHub](https://github.com/bombshell-dev/clack) |
 
 ### Testing

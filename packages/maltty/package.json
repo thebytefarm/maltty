@@ -1,0 +1,133 @@
+{
+  "name": "maltty",
+  "version": "0.24.0",
+  "description": "An opinionated CLI framework for Node.js",
+  "keywords": [
+    "cli",
+    "command",
+    "framework",
+    "typescript",
+    "yargs",
+    "zod"
+  ],
+  "homepage": "https://github.com/thebytefarm/maltty/tree/main/packages/maltty",
+  "bugs": {
+    "url": "https://github.com/thebytefarm/maltty/issues"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/thebytefarm/maltty.git",
+    "directory": "packages/maltty"
+  },
+  "files": [
+    "dist"
+  ],
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./config": {
+      "types": "./dist/middleware/config.d.ts",
+      "default": "./dist/middleware/config.js"
+    },
+    "./auth": {
+      "types": "./dist/middleware/auth.d.ts",
+      "default": "./dist/middleware/auth.js"
+    },
+    "./http": {
+      "types": "./dist/middleware/http.d.ts",
+      "default": "./dist/middleware/http.js"
+    },
+    "./figures": {
+      "types": "./dist/middleware/figures.d.ts",
+      "default": "./dist/middleware/figures.js"
+    },
+    "./icons": {
+      "types": "./dist/middleware/icons.d.ts",
+      "default": "./dist/middleware/icons.js"
+    },
+    "./report": {
+      "types": "./dist/middleware/report.d.ts",
+      "default": "./dist/middleware/report.js"
+    },
+    "./test": {
+      "types": "./dist/test/index.d.ts",
+      "default": "./dist/test/index.js"
+    },
+    "./ui": {
+      "types": "./dist/ui/index.d.ts",
+      "default": "./dist/ui/index.js"
+    },
+    "./stories": {
+      "types": "./dist/stories/index.d.ts",
+      "default": "./dist/stories/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsdown",
+    "typecheck": "tsgo --noEmit",
+    "lint": "oxlint --ignore-pattern node_modules",
+    "lint:fix": "oxlint --fix --ignore-pattern node_modules",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "@clack/prompts": "^1.2.0",
+    "@maltty/config": "workspace:*",
+    "@maltty/utils": "workspace:*",
+    "@pinojs/redact": "^0.4.0",
+    "c12": "4.0.0-beta.4",
+    "dotenv": "^17.4.2",
+    "es-toolkit": "catalog:",
+    "figures": "^6.1.0",
+    "liquidjs": "catalog:",
+    "picocolors": "^1.1.1",
+    "ts-pattern": "catalog:",
+    "yaml": "catalog:",
+    "yargs": "^18.0.0",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "@types/react": "^19.2.14",
+    "@types/yargs": "^17.0.35",
+    "ink": "^7.0.0",
+    "react": "^19.2.5",
+    "tsdown": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "catalog:"
+  },
+  "peerDependencies": {
+    "ink": ">=5.0.0",
+    "jiti": ">=2.0.0",
+    "pino": ">=9.0.0",
+    "react": ">=18.0.0",
+    "vitest": ">=2.0.0"
+  },
+  "peerDependenciesMeta": {
+    "jiti": {
+      "optional": true
+    },
+    "pino": {
+      "optional": true
+    },
+    "vitest": {
+      "optional": true
+    },
+    "ink": {
+      "optional": true
+    },
+    "react": {
+      "optional": true
+    }
+  },
+  "engines": {
+    "bun": ">=1.3",
+    "node": ">=24"
+  }
+}

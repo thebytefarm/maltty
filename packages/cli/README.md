@@ -67,7 +67,7 @@ maltty stories --include "src/components/**/*.stories.tsx"
 The CLI reads from `maltty.config.ts` in your project root:
 
 ```ts
-import { defineConfig } from '@maltty/core'
+import { defineConfig } from 'maltty/config'
 
 export default defineConfig({
   entry: './src/index.ts',

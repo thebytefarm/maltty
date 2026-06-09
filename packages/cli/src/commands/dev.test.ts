@@ -1,4 +1,4 @@
-import type { CommandContext } from '@maltty/core'
+import type { CommandContext } from 'maltty'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 const mockWatch = vi.fn()
@@ -15,7 +15,7 @@ vi.mock(import('@maltty/config/utils'), () => ({
   loadConfig: vi.fn(),
 }))
 
-vi.mock(import('@maltty/core'), () => ({
+vi.mock(import('maltty'), () => ({
   command: vi.fn((def) => def),
 }))
 

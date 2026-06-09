@@ -1,6 +1,6 @@
-import type { Command } from '@maltty/core'
-import { StoriesScreen } from '@maltty/core/stories'
-import { screen } from '@maltty/core/ui'
+import type { Command } from 'maltty'
+import { StoriesScreen } from 'maltty/stories'
+import { screen } from 'maltty/ui'
 import { z } from 'zod'
 
 /**

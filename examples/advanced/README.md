@@ -75,7 +75,7 @@ Config values are loaded lazily via `ctx.config.load()` and accessible on the re
 The `http()` middleware is decoupled from auth and uses a `headers` function to dynamically inject config values. Since config is loaded lazily, load it inside the headers callback:
 
 ```ts
-import { http } from '@maltty/core/http'
+import { http } from 'maltty/http'
 
 http({
   baseUrl: 'https://api.acme.dev',

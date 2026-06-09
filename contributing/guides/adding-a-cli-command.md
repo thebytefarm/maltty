@@ -16,7 +16,7 @@ Create a new file in the commands directory. The filename becomes the command na
 **With Zod args:**
 
 ```ts
-import { command } from '@maltty/core'
+import { command } from 'maltty'
 import { z } from 'zod'
 
 export default command({
@@ -39,7 +39,7 @@ export default command({
 **Without args:**
 
 ```ts
-import { command } from '@maltty/core'
+import { command } from 'maltty'
 
 export default command({
   description: 'List available scripts',
@@ -54,7 +54,7 @@ export default command({
 Commands can be hidden from `--help` output or marked as deprecated. Both `hidden` and `deprecated` accept a static value or a function (`Resolvable<T>`), resolved at registration time.
 
 ```ts
-import { command } from '@maltty/core'
+import { command } from 'maltty'
 
 // Hidden from help, still executable via `mycli debug`
 export default command({
@@ -104,7 +104,7 @@ commands/
 ```
 
 ```ts
-import { command, autoload } from '@maltty/core'
+import { command, autoload } from 'maltty'
 
 export default command({
   description: 'Auth commands',
@@ -118,7 +118,7 @@ Commands that need React/Ink UI use a `render` function instead of `handler`. Th
 
 ```tsx
 import { render } from 'ink'
-import { command } from '@maltty/core'
+import { command } from 'maltty'
 
 import { StatusView } from './_components/StatusView.js'
 
@@ -145,7 +145,7 @@ No manual registration is needed.
 
 ### 3. Add lib functions if needed
 
-If the command needs new shared logic, add it to `packages/core/src/lib/`. Follow existing patterns:
+If the command needs new shared logic, add it to `packages/maltty/src/lib/`. Follow existing patterns:
 
 - Return `Result` tuples for operations that can fail
 - Use Zod for runtime validation at boundaries
@@ -194,7 +194,7 @@ After completing all steps:
 
 **Issue:** Properties on `ctx` are missing or mistyped.
 
-**Fix:** Verify the command uses `command()` from `@maltty/core` (not a custom wrapper). Check that module augmentation interfaces (`MalttyArgs`, `CliConfig`, `MalttyStore`) are correctly declared if using typed store keys or global args.
+**Fix:** Verify the command uses `command()` from `maltty` (not a custom wrapper). Check that module augmentation interfaces (`MalttyArgs`, `CliConfig`, `MalttyStore`) are correctly declared if using typed store keys or global args.
 
 ## References
 

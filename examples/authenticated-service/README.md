@@ -90,11 +90,11 @@ Open `ui/index.html` in a browser. Select a token, connect, and use the buttons 
 The CLI uses the `auth()` middleware for credential management and `http()` with `createAuthHeaders()` for authenticated API calls:
 
 ```ts
-import { auth, createAuthHeaders } from '@maltty/core/auth'
-import type { HttpClient } from '@maltty/core/http'
-import { http } from '@maltty/core/http'
+import { auth, createAuthHeaders } from 'maltty/auth'
+import type { HttpClient } from 'maltty/http'
+import { http } from 'maltty/http'
 
-declare module '@maltty/core' {
+declare module 'maltty' {
   interface Context {
     readonly api: HttpClient
   }

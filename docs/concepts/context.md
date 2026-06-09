@@ -16,7 +16,7 @@ The central API surface threaded through every handler and middleware. Provides 
 | `store`   | `Store`                                  | Typed in-memory key-value store                                             |
 | `fail`    | `(message, options?) => never`           | Throw a user-facing error                                                   |
 | `meta`    | `Meta`                                   | CLI metadata                                                                |
-| `auth`    | `AuthContext`                            | Auth credential and login (when `@maltty/core/auth` middleware registered)  |
+| `auth`    | `AuthContext`                            | Auth credential and login (when `maltty/auth` middleware registered)        |
 
 ## `ctx.args`
 
@@ -35,13 +35,13 @@ const deploy = command({
 
 ## `ctx.config`
 
-A `ConfigHandle` decorated by the `config()` middleware from `@maltty/core/config`. Only present when the config middleware is registered. Config loads lazily by default -- call `ctx.config.load()` to read and validate the config file, which returns a `Result` tuple.
+A `ConfigHandle` decorated by the `config()` middleware from `maltty/config`. Only present when the config middleware is registered. Config loads lazily by default -- call `ctx.config.load()` to read and validate the config file, which returns a `Result` tuple.
 
-Use `ConfigType` with module augmentation on `@maltty/core/config` to derive `ConfigRegistry` from your Zod schema:
+Use `ConfigType` with module augmentation on `maltty/config` to derive `ConfigRegistry` from your Zod schema:
 
 ```ts
 // src/config.ts
-import type { ConfigType } from '@maltty/core/config'
+import type { ConfigType } from 'maltty/config'
 import { z } from 'zod'
 
 export const configSchema = z.object({
@@ -49,7 +49,7 @@ export const configSchema = z.object({
   org: z.string().min(1),
 })
 
-declare module '@maltty/core/config' {
+declare module 'maltty/config' {
   interface ConfigRegistry extends ConfigType<typeof configSchema> {}
 }
 ```
@@ -57,8 +57,8 @@ declare module '@maltty/core/config' {
 Then register the config middleware:
 
 ```ts
-import { cli } from '@maltty/core'
-import { config } from '@maltty/core/config'
+import { cli } from 'maltty'
+import { config } from 'maltty/config'
 import { configSchema } from './config.js'
 
 cli({
@@ -246,7 +246,7 @@ Deeply readonly CLI metadata.
 
 ## `ctx.auth`
 
-Auth context decorated by the `auth()` middleware from `@maltty/core/auth`. Only present when the auth middleware is registered.
+Auth context decorated by the `auth()` middleware from `maltty/auth`. Only present when the auth middleware is registered.
 
 | Property          | Type                                     | Description                                     |
 | ----------------- | ---------------------------------------- | ----------------------------------------------- |
@@ -272,10 +272,10 @@ See [Authentication](./authentication.md) for the full auth system reference.
 
 maltty exposes empty interfaces that consumers extend via TypeScript declaration merging. This adds project-wide type safety without threading generics through every handler.
 
-For `ConfigRegistry`, use the `ConfigType` utility to derive the type from your Zod schema (see [`ctx.config`](#ctxconfig) above). Note that config augmentation targets `@maltty/core/config`, while other interfaces target `@maltty/core`:
+For `ConfigRegistry`, use the `ConfigType` utility to derive the type from your Zod schema (see [`ctx.config`](#ctxconfig) above). Note that config augmentation targets `maltty/config`, while other interfaces target `maltty`:
 
 ```ts
-declare module '@maltty/core' {
+declare module 'maltty' {
   interface MalttyArgs {
     verbose: boolean
   }
@@ -286,17 +286,17 @@ declare module '@maltty/core' {
 }
 
 // Config augmentation uses a separate module
-declare module '@maltty/core/config' {
+declare module 'maltty/config' {
   interface ConfigRegistry extends ConfigType<typeof configSchema> {}
 }
 ```
 
-| Interface        | Module                | Affects             | Description                                                                                        |
-| ---------------- | --------------------- | ------------------- | -------------------------------------------------------------------------------------------------- |
-| `MalttyArgs`     | `@maltty/core`        | `ctx.args`          | Global args merged into every command's args                                                       |
-| `ConfigRegistry` | `@maltty/core/config` | `ctx.config.load()` | Typed config returned by `load()` result                                                           |
-| `MalttyStore`    | `@maltty/core`        | `ctx.store`         | Global store keys merged into the store type                                                       |
-| `StoreMap`       | `@maltty/core`        | `ctx.store`         | The store's full key-value shape -- extend this to register typed keys (merges with `MalttyStore`) |
+| Interface        | Module          | Affects             | Description                                                                                        |
+| ---------------- | --------------- | ------------------- | -------------------------------------------------------------------------------------------------- |
+| `MalttyArgs`     | `maltty`        | `ctx.args`          | Global args merged into every command's args                                                       |
+| `ConfigRegistry` | `maltty/config` | `ctx.config.load()` | Typed config returned by `load()` result                                                           |
+| `MalttyStore`    | `maltty`        | `ctx.store`         | Global store keys merged into the store type                                                       |
+| `StoreMap`       | `maltty`        | `ctx.store`         | The store's full key-value shape -- extend this to register typed keys (merges with `MalttyStore`) |
 
 ## Context in screen commands
 

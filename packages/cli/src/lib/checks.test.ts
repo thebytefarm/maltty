@@ -90,13 +90,13 @@ describe(readRawPackageJson, () => {
 
   it('should return parsed package.json data', async () => {
     mockedReadFile.mockResolvedValue(
-      JSON.stringify({ dependencies: { '@maltty/core': '1.0.0' }, type: 'module' })
+      JSON.stringify({ dependencies: { maltty: '1.0.0' }, type: 'module' })
     )
 
     const [error, result] = await readRawPackageJson('/project')
 
     expect(error).toBeNull()
-    expect(result).toMatchObject({ dependencies: { '@maltty/core': '1.0.0' }, type: 'module' })
+    expect(result).toMatchObject({ dependencies: { maltty: '1.0.0' }, type: 'module' })
   })
 
   it('should return error when file read fails', async () => {
@@ -230,10 +230,10 @@ describe('diagnostic checks', () => {
   describe('maltty dependency', () => {
     it('should pass when maltty is in dependencies', async () => {
       const context = makeContext({
-        rawPackageJson: { dependencies: { '@maltty/core': '1.0.0' } },
+        rawPackageJson: { dependencies: { maltty: '1.0.0' } },
       })
 
-      const result = await findCheck('@maltty/core dependency').run(context)
+      const result = await findCheck('maltty dependency').run(context)
 
       expect(result.status).toBe('pass')
       expect(result.message).toContain('dependencies')
@@ -241,10 +241,10 @@ describe('diagnostic checks', () => {
 
     it('should pass when maltty is in devDependencies', async () => {
       const context = makeContext({
-        rawPackageJson: { devDependencies: { '@maltty/core': '^1.0.0' } },
+        rawPackageJson: { devDependencies: { maltty: '^1.0.0' } },
       })
 
-      const result = await findCheck('@maltty/core dependency').run(context)
+      const result = await findCheck('maltty dependency').run(context)
 
       expect(result.status).toBe('pass')
       expect(result.message).toContain('devDependencies')
@@ -255,7 +255,7 @@ describe('diagnostic checks', () => {
         rawPackageJson: { dependencies: { express: '4.0.0' } },
       })
 
-      const result = await findCheck('@maltty/core dependency').run(context)
+      const result = await findCheck('maltty dependency').run(context)
 
       expect(result.status).toBe('fail')
     })
@@ -263,7 +263,7 @@ describe('diagnostic checks', () => {
     it('should fail when no rawPackageJson', async () => {
       const context = makeContext()
 
-      const result = await findCheck('@maltty/core dependency').run(context)
+      const result = await findCheck('maltty dependency').run(context)
 
       expect(result.status).toBe('fail')
     })
@@ -377,14 +377,14 @@ describe('fix functions', () => {
       mockedWriteFile.mockResolvedValue(undefined)
       const context = makeContext()
 
-      const { fix } = findCheck('@maltty/core dependency')
+      const { fix } = findCheck('maltty dependency')
       if (!fix) {
         expect.unreachable('fix should be defined')
       }
       const result = await fix(context)
 
       expect(result.fixed).toBeTruthy()
-      expect(result.name).toBe('@maltty/core dependency')
+      expect(result.name).toBe('maltty dependency')
       expect(mockedWriteFile).toHaveBeenCalledTimes(1)
     })
   })

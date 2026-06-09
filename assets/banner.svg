@@ -25,34 +25,19 @@
   <circle cx="20" cy="18" r="6" fill="#f38ba8" />
   <circle cx="40" cy="18" r="6" fill="#f9e2af" />
   <circle cx="60" cy="18" r="6" fill="#a6e3a1" />
-  <text class="text dim" font-size="12" x="419" y="22" text-anchor="middle">kidd</text>
+  <text class="text dim" font-size="12" x="419" y="22" text-anchor="middle">maltty</text>
 
-  <!-- Braille art logo (centered) -->
-  <g transform="translate(419.0, 48)">
-    <text class="text brand" font-size="7" y="7" text-anchor="middle" xml:space="preserve">⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣀⣤⣤⣤⣤⣴⣶⣶⣤⣤⣤⣤⣄⣀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣠⣤⣤⠤⠤⠄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀</text>
-    <text class="text brand" font-size="7" y="17" text-anchor="middle" xml:space="preserve">⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣤⣶⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣶⣤⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠰⠶⣶⣤⣤⣤⣄⣀⣀⣀⣠⣤⣤⣤⣴⣶⠖⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣤⣶⣿⡿⠛⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀</text>
-    <text class="text brand" font-size="7" y="27" text-anchor="middle" xml:space="preserve">⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣦⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠻⣿⣿⣿⣿⣿⣿⣿⡿⠋⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣾⣿⣿⡿⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀</text>
-    <text class="text brand" font-size="7" y="37" text-anchor="middle" xml:space="preserve">⠀⠀⠀⠀⠀⠀⠀⠀⣴⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⣿⣿⣿⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣾⣿⣿⡿⠋⠀⠀⠰⢶⣶⣶⣶⣶⣶⣤⣶⣶⣶⠶⢶⣶⣶⣶⣦⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣄⣀⠀⠀⠀⠀⠀⠀⠀⠶⣶⣶⣶⣶⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣀⡀⠀⠀⠀⠀⠀⠀⠀⠀</text>
-    <text class="text brand" font-size="7" y="47" text-anchor="middle" xml:space="preserve">⠀⠀⠀⠀⠀⠀⠀⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⣿⣿⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⢀⣤⣿⣿⣿⠟⠁⠀⠀⠀⠀⠀⠈⣿⣿⣿⣿⣿⣿⠋⠀⠀⠀⠀⠉⠙⢻⣿⣿⣿⣿⣿⣿⠛⠉⠉⠛⠿⣿⣿⣿⣿⣦⣄⠀⠀⠀⠀⠀⠀⠈⠉⠛⣿⣿⣿⣿⣿⣿⡟⠋⠉⠙⠻⢿⣿⣿⣿⣷⣤⡀⠀⠀⠀⠀⠀</text>
-    <text class="text brand" font-size="7" y="57" text-anchor="middle" xml:space="preserve">⠀⠀⠀⠀⠀⠀⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⣿⣿⣿⡏⠀⠀⠀⠀⠀⠀⠀⣴⣿⣿⣿⡟⠁⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⣿⣿⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⣿⣿⣿⡏⠀⠀⠀⠀⠀⠈⠛⣿⣿⣿⣿⣧⡀⠀⠀⠀⠀⠀⠀⠀⢸⣿⣿⣿⣿⣿⠁⠀⠀⠀⠀⠀⠙⢻⣿⣿⣿⣿⣄⠀⠀⠀⠀</text>
-    <text class="text brand" font-size="7" y="67" text-anchor="middle" xml:space="preserve">⠀⠀⠀⠀⢀⣤⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠏⠀⠈⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣦⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⣿⣿⣿⡇⠀⠀⠀⠀⠀⢠⣾⣿⣿⡟⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⣿⣿⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⢹⣿⣿⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠘⣿⣿⣿⣿⣿⡄⠀⠀⠀⠀⠀⠀⠈⣿⣿⣿⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⢻⣿⣿⣿⣿⣧⠀⠀⠀</text>
-    <text class="text brand" font-size="7" y="77" text-anchor="middle" xml:space="preserve">⠀⠀⠀⢠⣿⣿⣿⣿⣿⣿⣿⣿⣿⠃⠀⠉⠙⠛⠛⠛⠛⠋⠀⠀⠀⠀⠀⠉⠛⠛⠛⠛⠛⠉⢡⠈⣿⣿⣿⣿⣿⣿⣿⣿⣿⣧⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⣿⣿⡿⠁⠀⠀⠀⠀⣴⣿⣿⣿⠟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⣿⣿⣿⡟⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⣿⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠘⣿⣿⣿⣿⣿⡄⠀⠀⠀⠀⠀⠀⣿⣿⣿⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⢻⣿⣿⣿⣿⣧⠀⠀</text>
-    <text class="text brand" font-size="7" y="87" text-anchor="middle" xml:space="preserve">⠀⠀⠀⢸⣿⣿⣿⣿⣿⣿⣿⣿⡟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⡿⠁⣀⣼⠸⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⣿⣿⣧⠀⠀⠀⣠⣾⣿⡿⠟⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢹⣿⣿⣿⣿⠇⠀⠀⠀⠀⠀⠀⠀⠀⢿⣿⣿⣿⣿⠇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⢻⣿⣿⣿⣿⡀⠀⠀⠀⠀⠸⣿⣿⣿⣿⡿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⣿⣿⣿⣿⣇⠀</text>
-    <text class="text brand" font-size="7" y="97" text-anchor="middle" xml:space="preserve">⠀⠀⠀⢸⣿⣿⣿⣿⠿⠿⠟⠋⣀⣤⣴⠶⠶⠶⠶⠶⠶⣤⣤⣀⠀⠀⠀⠀⠀⢀⣴⡟⠁⣀⢠⣤⠶⠈⠛⠿⠿⢿⣿⣿⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠸⣿⣿⣿⣿⣀⣠⣾⠿⠛⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⣿⣿⣷⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⣿⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢾⣿⣿⣿⣿⡇⠀⠀⠀⠀⠀⣿⣿⣿⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠰⣿⣿⣿⣿⣿⠀</text>
-    <text class="text brand" font-size="7" y="107" text-anchor="middle" xml:space="preserve">⠀⣠⣶⣿⣿⣿⣿⣇⠀⠀⠀⣾⢫⣴⣶⣶⣿⡿⣿⣿⣶⣶⣬⠹⣷⣴⣶⠶⠿⠛⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣿⣿⣿⣿⣷⣦⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⣿⣿⣿⣯⣀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⣿⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⣿⣿⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⣿⣿⣿⣇⠀⠀⠀⠀⠀⢻⣿⣿⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⣿⣿⣿⡀</text>
-    <text class="text brand" font-size="7" y="117" text-anchor="middle" xml:space="preserve">⣸⣿⣿⣿⣿⣿⣿⣿⡇⠀⠀⣿⠸⣿⣿⣿⡏⠀⢤⣿⣿⣿⣿⢡⡿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣿⣿⣿⣿⣿⣿⣿⣷⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢰⣿⣿⣿⣿⠉⠙⢿⣿⣿⣦⣄⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠸⣿⣿⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⣿⣿⣿⣿⠀⠀⠀⠀⠀⢸⣿⣿⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⣿⣿⣿⡇</text>
-    <text class="text brand" font-size="7" y="127" text-anchor="middle" xml:space="preserve">⢹⣿⣿⣿⣿⣿⣿⣿⡇⠀⠀⠸⣧⠻⣿⣿⡿⠆⠀⣹⣿⣿⢃⡾⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⣿⣿⣿⣿⣿⣿⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⣿⣿⠀⠀⠀⠙⢿⣿⣿⣿⣦⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢰⣿⣿⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⣿⣿⣿⣿⠀⠀⠀⠀⠀⢸⣿⣿⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⣿⣿⣿⡇</text>
-    <text class="text brand" font-size="7" y="137" text-anchor="middle" xml:space="preserve">⠀⠻⣿⣿⣿⣿⣿⠟⠀⠀⠀⠀⠘⢷⣝⠿⣿⣧⣾⣿⠟⣡⡞⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⢿⣿⣿⣿⣿⠟⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⣿⣿⠀⠀⠀⠀⠀⠹⣿⣿⣿⣿⣦⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⣿⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⣿⣿⣿⣿⠀⠀⠀⠀⠀⢸⣿⣿⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⣿⣿⣿⡇</text>
-    <text class="text brand" font-size="7" y="147" text-anchor="middle" xml:space="preserve">⠀⠀⣸⣿⣿⣿⣇⠀⠀⠀⠀⠀⠀⠀⠙⠳⢦⣬⣥⡶⠟⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣿⣿⣿⣯⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⣿⣿⠀⠀⠀⠀⠀⠀⠈⢿⣿⣿⣿⣿⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⣿⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣾⣿⣿⣿⣿⡇⠀⠀⠀⠀⠀⢸⣿⣿⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢰⣿⣿⣿⣿⣿⠀</text>
-    <text class="text brand" font-size="7" y="157" text-anchor="middle" xml:space="preserve">⢀⣾⣿⣿⣿⣿⣿⣷⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣼⣿⣿⣿⣿⣿⣿⣆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⢻⣿⣿⣿⣿⡀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⣿⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⣿⣿⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⢰⣿⣿⣿⣿⡿⠀⠀⠀⠀⠀⠀⢸⣿⣿⣿⡏⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣾⣿⣿⣿⣿⠇⠀</text>
-    <text class="text brand" font-size="7" y="167" text-anchor="middle" xml:space="preserve">⢸⣿⣿⣿⣿⣿⣿⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⣿⣿⣿⣿⣿⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⣿⣿⡀⠀⠀⠀⠀⠀⠀⠀⠀⢻⣿⣿⡿⠁⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⢀⣿⣿⣿⣿⡿⠃⠀⠀⠀⠀⠀⠀⢸⣿⣿⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⣸⣿⣿⣿⣿⠟⠀⠀</text>
-    <text class="text brand" font-size="7" y="177" text-anchor="middle" xml:space="preserve">⠘⣿⣿⣿⣿⣿⣿⣿⠏⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⢿⣿⣿⣿⣿⣿⣿⠏⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣿⣿⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⢻⣿⣧⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⣿⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⢠⣾⣿⣿⣿⠛⠁⠀⠀⠀⠀⠀⠀⠀⢸⣿⣿⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⣴⣿⣿⣿⡟⠋⠀⠀⠀</text>
-    <text class="text brand" font-size="7" y="187" text-anchor="middle" xml:space="preserve">⠀⠈⢻⣿⣿⣿⡟⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠹⣿⣿⣿⣿⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⣿⣿⣿⣇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢻⣿⣧⠀⠀⠀⠀⠀⠀⠀⠀⣸⣿⣿⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⣿⣿⣿⡇⠀⠀⠀⠀⠀⢀⣴⣿⣿⣿⣿⠟⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⣿⣿⣿⠀⠀⠀⠀⠀⠀⣠⣾⣿⣿⣿⡿⠃⠀⠀⠀⠀</text>
-    <text class="text brand" font-size="7" y="197" text-anchor="middle" xml:space="preserve">⠀⣴⣿⣿⣿⣿⣷⣤⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣾⣿⣿⣿⣿⣦⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣾⣿⣿⣿⣿⣿⣄⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠹⣿⣦⠀⠀⠀⠀⠀⠀⠀⣿⣿⣿⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⢀⣿⣿⣿⣿⣿⣧⣀⣀⣠⣴⣾⣿⣿⣿⡿⠟⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⣸⣿⣿⣿⣿⣿⣄⣀⣀⣤⣶⣿⣿⣿⣿⠿⠋⠀⠀⠀⠀⠀⠀</text>
-    <text class="text brand" font-size="7" y="207" text-anchor="middle" xml:space="preserve">⢸⣿⣿⣿⣿⣿⣿⣿⣷⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢰⣿⣿⣿⣿⣿⣿⣿⣷⠀⠀⠀⠀⠀⠀⢀⡤⠶⠿⠿⠿⠿⠿⠿⠿⠿⣿⣿⣷⣶⣤⡀⠀⠀⠀⠀⠀⠘⢿⣷⣄⠀⠀⣤⡤⠾⠿⠿⠟⠛⠿⠿⣶⣄⠀⠀⣠⡶⠾⠿⠿⠿⠿⠿⠿⠿⠿⠿⠿⠟⠛⠛⠉⠉⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⠶⠿⠿⠿⠿⠿⠿⠿⠿⠿⠿⠿⠛⠛⠋⠉⠁⠀⠀⠀⠀⠀⠀⠀⠀</text>
-    <text class="text brand" font-size="7" y="217" text-anchor="middle" xml:space="preserve">⠸⣿⣿⣿⣿⣿⣿⣿⡟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠸⣿⣿⣿⣿⣿⣿⣿⡟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⠻⢷⣤⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀</text>
-    <text class="text brand" font-size="7" y="227" text-anchor="middle" xml:space="preserve">⠀⠙⠿⣿⣿⣿⡿⠟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⠿⣿⣿⣿⡿⠟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠉⠛⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀</text>
-  </g>
+  <!-- Maltty logo (icon + wordmark, centered) -->
+  <svg x="59" y="60" width="720" height="184" viewBox="0 0 2347 600">
+    <path d="M607.49 489.13V211.739H582.277V186.522H506.639V161.304H531.852V136.087H607.49V161.304H632.703V186.522H657.916V489.13H607.49ZM783.981 489.13V211.739H758.768V186.522H657.916V161.304H683.129V136.087H783.981V161.304H809.194V186.522H834.407V489.13H783.981ZM431 489.13V136.087H481.426V186.522H506.639V211.739H481.426V489.13H431Z" fill="#CF9E36"/>
+    <path d="M935.103 438.696V337.826H960.316V312.609H1010.74V287.391H1136.81V262.174H1162.02V211.739H1136.81V186.522H1010.74V211.739H985.529V236.957H935.103V186.522H960.316V161.304H1010.74V136.087H1136.81V161.304H1187.23V211.739H1212.44V438.696H1237.66V489.13H1187.23V463.913H1162.02V438.696H1136.81V413.478H1162.02V312.609H1136.81V337.826H1010.74V363.043H985.529V438.696H1136.81V463.913H1111.59V489.13H985.529V463.913H960.316V438.696H935.103Z" fill="#CF9E36"/>
+    <path d="M1288.29 489.13V438.696H1363.93V60.4348H1288.29V10H1363.93V35.2174H1389.14V60.4348H1414.36V438.696H1489.99V489.13H1288.29Z" fill="#CF9E36"/>
+    <path d="M1590.77 438.696V186.522H1540.34V136.087H1590.77V60.4348H1641.19V136.087H1742.05V186.522H1641.19V438.696H1742.05V489.13H1641.19V463.913H1615.98V438.696H1590.77Z" fill="#CF9E36"/>
+    <path d="M1842.82 438.696V186.522H1792.39V136.087H1842.82V60.4348H1893.25V136.087H1994.1V186.522H1893.25V438.696H1994.1V489.13H1893.25V463.913H1868.03V438.696H1842.82Z" fill="#CF9E36"/>
+    <path d="M2120.08 438.696V363.043H2094.87V287.391H2069.66V211.739H2044.45V136.087H2094.87V211.739H2120.08V287.391H2145.3V363.043H2170.51V438.696H2220.94V363.043H2246.15V287.391H2271.36V211.739H2296.57V136.087H2347V211.739H2321.79V287.391H2296.57V363.043H2271.36V438.696H2246.15V489.13H2220.94V539.565H2195.72V564.783H2170.51V590H2069.66V539.565H2170.51V489.13H2145.3V438.696H2120.08Z" fill="#CF9E36"/>
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M100.188 0H128.813V28.5714H143.125V85.7143H128.813V114.286H100.188V85.7143H85.875V28.5714H100.188V0ZM14.3125 85.7143H42.9375V114.286H71.5625V142.857H100.188V228.571H71.5625V200H42.9375V171.429H14.3125V85.7143ZM186.063 85.7143H214.688V171.429H186.063V200H157.438V228.571H128.813V142.857H157.438V114.286H186.063V85.7143ZM0 200H28.625V228.571H57.25V257.143H100.188V342.857H71.5625V314.286H42.9375V300H14.3125V271.429H0V200ZM200.375 200H229V271.429H214.688V300H186.063V314.286H157.438V342.857H128.813V257.143H171.75V228.571H200.375V200ZM14.3125 328.571H42.9375V357.143H71.5625V371.429H100.188V457.143H71.5625V428.571H42.9375V400H14.3125V328.571ZM186.063 328.571H214.688V400H186.063V428.571H157.438V457.143H128.813V371.429H157.438V357.143H186.063V328.571Z" fill="#CF9E36"/>
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M100.188 471.429H128.813V557.143H114.5V571.429H100.188V585.714H85.875V600H42.9375V571.429H71.5625V557.143H85.875V542.857H100.188V471.429Z" fill="#4B692F"/>
+  </svg>
 
   <text class="text dim" font-size="12" x="419" y="294" text-anchor="middle">an opinionated CLI framework for Node.js</text>
   <line x1="16" y1="306" x2="822" y2="306" stroke="#313244" stroke-width="1" />
@@ -60,7 +45,7 @@
 
   <rect x="4" y="314" width="80" height="24" rx="4" ry="4" fill="#181825" />
   <text class="tab" x="18" y="330">terminal</text>
-  <text class="code" x="18" y="358"><tspan class="prompt">~</tspan><tspan class="dim"> $ </tspan><tspan class="tx">kidd dev</tspan></text>
+  <text class="code" x="18" y="358"><tspan class="prompt">~</tspan><tspan class="dim"> $ </tspan><tspan class="tx">maltty dev</tspan></text>
   <text class="code" x="18" y="386"><tspan class="dim">Starting </tspan><tspan class="brand">my-cli</tspan><tspan class="dim">...</tspan></text>
   <text class="code" x="18" y="402" xml:space="preserve"><tspan class="st">  ✓</tspan><tspan class="tx"> Loaded config</tspan></text>
   <text class="code" x="18" y="418" xml:space="preserve"><tspan class="st">  ✓</tspan><tspan class="tx"> Registered 3 commands</tspan></text>
@@ -72,7 +57,7 @@
   <text class="tab" x="437" y="330">deploy.ts</text>
   <line x1="457" y1="342" x2="457" y2="548" stroke="#313244" stroke-width="1" />
   <text class="ln" x="451" y="358">1</text>
-  <text class="code" x="467" y="358" xml:space="preserve"><tspan class="kw">import</tspan><tspan class="op"> { </tspan><tspan class="fn">command</tspan><tspan class="op">, </tspan><tspan class="fn">z</tspan><tspan class="op"> } </tspan><tspan class="kw">from</tspan><tspan class="st"> 'kidd'</tspan></text>
+  <text class="code" x="467" y="358" xml:space="preserve"><tspan class="kw">import</tspan><tspan class="op"> { </tspan><tspan class="fn">command</tspan><tspan class="op">, </tspan><tspan class="fn">z</tspan><tspan class="op"> } </tspan><tspan class="kw">from</tspan><tspan class="st"> 'maltty'</tspan></text>
   <text class="ln" x="451" y="374">2</text>
   <text class="ln" x="451" y="390">3</text>
   <text class="code" x="467" y="390" xml:space="preserve"><tspan class="kw">export default </tspan><tspan class="fn">command</tspan><tspan class="op">({</tspan></text>

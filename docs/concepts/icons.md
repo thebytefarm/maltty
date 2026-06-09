@@ -2,7 +2,7 @@
 
 The icons system provides Nerd Font glyph resolution with automatic emoji fallback, font detection, interactive installation prompts, and categorized icon definitions for maltty CLIs.
 
-Icons is a sub-export of the `@maltty/core` package (`@maltty/core/icons`), not a separate package. It ships as middleware that decorates `ctx.icons` with methods for resolving icon names to glyphs, checking font availability, and triggering installation.
+Icons is a sub-export of the `maltty` package (`maltty/icons`), not a separate package. It ships as middleware that decorates `ctx.icons` with methods for resolving icon names to glyphs, checking font availability, and triggering installation.
 
 ## Key Concepts
 
@@ -62,11 +62,11 @@ When `forceSetup` is enabled, the install prompt is shown regardless of whether 
 
 ### Module Augmentation
 
-Importing `@maltty/core/icons` automatically augments the `CommandContext` interface with `readonly icons: IconsContext`. No manual type augmentation or casting is needed -- once the middleware is registered, `ctx.icons` is fully typed in all command handlers.
+Importing `maltty/icons` automatically augments the `CommandContext` interface with `readonly icons: IconsContext`. No manual type augmentation or casting is needed -- once the middleware is registered, `ctx.icons` is fully typed in all command handlers.
 
 ```ts
 // This import triggers the module augmentation:
-import { icons } from '@maltty/core/icons'
+import { icons } from 'maltty/icons'
 
 // After adding icons() to middleware, ctx.icons is typed automatically:
 export default command({
@@ -80,8 +80,8 @@ export default command({
 ## Adding the Middleware
 
 ```ts
-import { cli } from '@maltty/core'
-import { icons } from '@maltty/core/icons'
+import { cli } from 'maltty'
+import { icons } from 'maltty/icons'
 
 cli({
   name: 'my-app',
@@ -276,7 +276,7 @@ The following tables list every built-in icon with its name, Nerd Font glyph cod
 ### Using icons in a git status command
 
 ```ts
-import { command } from '@maltty/core'
+import { command } from 'maltty'
 
 export default command({
   name: 'status',

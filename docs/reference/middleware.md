@@ -2,10 +2,10 @@
 
 Define middleware that wraps command execution with pre/post logic.
 
-Import from `@maltty/core`.
+Import from `maltty`.
 
 ```ts
-import { middleware } from '@maltty/core'
+import { middleware } from 'maltty'
 
 const timing = middleware(async (ctx, next) => {
   const start = Date.now()
@@ -58,11 +58,11 @@ Root middleware wraps command middleware, which wraps the handler (onion model).
 Add a typed, immutable property to a context instance at runtime. Used by middleware authors to extend `ctx` with custom properties.
 
 ```ts
-import { decorateContext, middleware } from '@maltty/core'
+import { decorateContext, middleware } from 'maltty'
 
-import type { HttpClient } from '@maltty/core/http'
+import type { HttpClient } from 'maltty/http'
 
-declare module '@maltty/core' {
+declare module 'maltty' {
   interface Context {
     readonly github: HttpClient
   }

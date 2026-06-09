@@ -1,4 +1,4 @@
-import type { CommandContext } from '@maltty/core'
+import type { CommandContext } from 'maltty'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 const mockFsExists = vi.fn()
@@ -11,13 +11,13 @@ vi.mock(import('@maltty/config/utils'), () => ({
   loadConfig: vi.fn(),
 }))
 
-vi.mock(import('@maltty/core'), () => ({
+vi.mock(import('maltty'), () => ({
   autoload: vi.fn(),
   command: vi.fn((def) => def),
 }))
 
 const { loadConfig } = await import('@maltty/config/utils')
-const { autoload } = await import('@maltty/core')
+const { autoload } = await import('maltty')
 const mockedLoadConfig = vi.mocked(loadConfig)
 const mockedAutoload = vi.mocked(autoload)
 

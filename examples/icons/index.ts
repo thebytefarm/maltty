@@ -1,5 +1,5 @@
-import { cli } from '@maltty/core'
-import { icons } from '@maltty/core/icons'
+import { cli } from 'maltty'
+import { icons } from 'maltty/icons'
 
 cli({
   description: 'Icons middleware demo CLI',

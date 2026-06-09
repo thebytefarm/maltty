@@ -1,6 +1,6 @@
 # Core
 
-API reference for `@maltty/core`. The runtime framework for building CLI applications with typed commands, middleware pipelines, and terminal UI.
+API reference for `maltty`. The runtime framework for building CLI applications with typed commands, middleware pipelines, and terminal UI.
 
 ## JavaScript API
 

@@ -1,4 +1,4 @@
-import type { CommandContext } from '@maltty/core'
+import type { CommandContext } from 'maltty'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 vi.mock(import('@maltty/utils/manifest'), () => ({

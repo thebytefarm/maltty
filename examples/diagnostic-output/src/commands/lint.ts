@@ -1,4 +1,4 @@
-import { command } from '@maltty/core'
+import { command } from 'maltty'
 
 /**
  * Simulated lint findings for demonstration.

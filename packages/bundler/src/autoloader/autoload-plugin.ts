@@ -21,7 +21,7 @@ interface CreateAutoloadPluginParams {
  * Create a rolldown plugin that replaces the runtime autoloader with a static version.
  *
  * Uses a three-hook approach to break the circular dependency between maltty's
- * dist and user command files (which `import { command } from '@maltty/core'`):
+ * dist and user command files (which `import { command } from 'maltty'`):
  *
  * 1. `transform` — detects maltty's pre-bundled dist and replaces the autoloader
  *    region with a dynamic `import()` to a virtual module

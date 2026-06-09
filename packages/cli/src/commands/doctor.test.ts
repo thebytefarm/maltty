@@ -1,4 +1,4 @@
-import type { CommandContext } from '@maltty/core'
+import type { CommandContext } from 'maltty'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import type { CheckContext, CheckResult, DiagnosticCheck, FixResult } from '../lib/checks.js'
@@ -17,7 +17,7 @@ vi.mock(import('../lib/checks.js'), () => ({
   readRawPackageJson: vi.fn(),
 }))
 
-vi.mock(import('@maltty/core'), () => ({
+vi.mock(import('maltty'), () => ({
   command: vi.fn((def) => def),
 }))
 

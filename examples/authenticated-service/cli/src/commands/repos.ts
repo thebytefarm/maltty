@@ -1,4 +1,4 @@
-import { command } from '@maltty/core'
+import { command } from 'maltty'
 import { z } from 'zod'
 
 import requireAuth from '../middleware/require-auth.js'

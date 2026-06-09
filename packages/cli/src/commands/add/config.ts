@@ -1,8 +1,8 @@
 import { join } from 'node:path'
 
-import { command } from '@maltty/core'
-import type { Command, CommandContext } from '@maltty/core'
 import { readManifest } from '@maltty/utils/manifest'
+import { command } from 'maltty'
+import type { Command, CommandContext } from 'maltty'
 
 import { detectProject } from '../../lib/detect.js'
 import { renderTemplate } from '../../lib/render.js'

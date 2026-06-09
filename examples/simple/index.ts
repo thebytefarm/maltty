@@ -1,4 +1,4 @@
-import { cli } from '@maltty/core'
+import { cli } from 'maltty'
 
 cli({
   description: 'A simple task management CLI',

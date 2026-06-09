@@ -46,7 +46,7 @@ Supported compile targets: `darwin-arm64`, `darwin-x64`, `linux-x64`, `linux-arm
 Build options can also be configured in `maltty.config.ts`:
 
 ```ts
-import { defineConfig } from '@maltty/core'
+import { defineConfig } from 'maltty/config'
 
 export default defineConfig({
   entry: './index.ts',
@@ -127,14 +127,14 @@ This generates:
 
 ```ts
 // src/config.ts
-import type { ConfigType } from '@maltty/core'
+import type { ConfigType } from 'maltty'
 import { z } from 'zod'
 
 export const configSchema = z.object({
   // Add your config fields here
 })
 
-declare module '@maltty/core' {
+declare module 'maltty' {
   interface CliConfig extends ConfigType<typeof configSchema> {}
 }
 ```

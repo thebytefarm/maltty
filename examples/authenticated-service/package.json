@@ -11,7 +11,7 @@
     "typecheck": "tsgo --noEmit"
   },
   "dependencies": {
-    "@maltty/core": "workspace:*",
+    "maltty": "workspace:*",
     "zod": "catalog:"
   },
   "devDependencies": {

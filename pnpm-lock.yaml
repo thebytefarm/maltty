@@ -108,9 +108,9 @@ importers:
 
   examples/advanced:
     dependencies:
-      '@maltty/core':
+      maltty:
         specifier: workspace:*
-        version: link:../../packages/core
+        version: link:../../packages/maltty
       ts-pattern:
         specifier: 'catalog:'
         version: 5.9.0
@@ -133,9 +133,9 @@ importers:
 
   examples/authenticated-service:
     dependencies:
-      '@maltty/core':
+      maltty:
         specifier: workspace:*
-        version: link:../../packages/core
+        version: link:../../packages/maltty
       zod:
         specifier: 'catalog:'
         version: 4.3.6
@@ -158,9 +158,9 @@ importers:
 
   examples/diagnostic-output:
     dependencies:
-      '@maltty/core':
+      maltty:
         specifier: workspace:*
-        version: link:../../packages/core
+        version: link:../../packages/maltty
       zod:
         specifier: 'catalog:'
         version: 4.3.6
@@ -180,9 +180,9 @@ importers:
 
   examples/icons:
     dependencies:
-      '@maltty/core':
+      maltty:
         specifier: workspace:*
-        version: link:../../packages/core
+        version: link:../../packages/maltty
       ts-pattern:
         specifier: 'catalog:'
         version: 5.9.0
@@ -205,9 +205,9 @@ importers:
 
   examples/simple:
     dependencies:
-      '@maltty/core':
+      maltty:
         specifier: workspace:*
-        version: link:../../packages/core
+        version: link:../../packages/maltty
       ts-pattern:
         specifier: 'catalog:'
         version: 5.9.0
@@ -233,12 +233,12 @@ importers:
       '@inkjs/ui':
         specifier: ^2.0.0
         version: 2.0.0(ink@7.0.0(@types/react@19.2.14)(react@19.2.5))
-      '@maltty/core':
-        specifier: workspace:*
-        version: link:../../packages/core
       ink:
         specifier: ^7.0.0
         version: 7.0.0(@types/react@19.2.14)(react@19.2.5)
+      maltty:
+        specifier: workspace:*
+        version: link:../../packages/maltty
       react:
         specifier: ^19.2.5
         version: 19.2.5
@@ -304,9 +304,6 @@ importers:
       '@maltty/config':
         specifier: workspace:*
         version: link:../config
-      '@maltty/core':
-        specifier: workspace:*
-        version: link:../core
       '@maltty/utils':
         specifier: workspace:*
         version: link:../utils
@@ -319,6 +316,9 @@ importers:
       liquidjs:
         specifier: ^10.25.7
         version: 10.25.7
+      maltty:
+        specifier: workspace:*
+        version: link:../maltty
       picocolors:
         specifier: ^1.1.1
         version: 1.1.1
@@ -376,7 +376,7 @@ importers:
         specifier: 'catalog:'
         version: 4.1.5(@types/node@25.6.0)(@vitest/coverage-v8@4.1.5)(jsdom@26.1.0)(vite@8.0.10(@types/node@25.6.0)(esbuild@0.27.7)(jiti@2.6.1)(tsx@4.21.0)(yaml@2.8.3))
 
-  packages/core:
+  packages/maltty:
     dependencies:
       '@clack/prompts':
         specifier: ^1.2.0
@@ -934,12 +934,6 @@ packages:
 
   '@manypkg/get-packages@1.1.3':
     resolution: {integrity: sha512-fo+QhuU3qE/2TQMQmbVMqaQ6EWbMhi4ABWP+O4AM1NqPBuy0OrApV5LO6BrrgnhtAHS2NH6RrVk9OL181tTi8A==}
-
-  '@napi-rs/wasm-runtime@1.1.3':
-    resolution: {integrity: sha512-xK9sGVbJWYb08+mTJt3/YV24WxvxpXcXtP6B172paPZ+Ts69Re9dAr7lKwJoeIx8OoeuimEiRZ7umkiUVClmmQ==}
-    peerDependencies:
-      '@emnapi/core': ^1.7.1
-      '@emnapi/runtime': ^1.7.1
 
   '@napi-rs/wasm-runtime@1.1.4':
     resolution: {integrity: sha512-3NQNNgA1YSlJb/kMH1ildASP9HW7/7kYnRI2szWJaofaS1hWmbGI4H+d3+22aGzXXN9IJ+n+GiFVcGipJP18ow==}
@@ -3678,17 +3672,17 @@ snapshots:
       globby: 11.1.0
       read-yaml-file: 1.1.0
 
-  '@napi-rs/wasm-runtime@1.1.3(@emnapi/core@1.9.2)(@emnapi/runtime@1.9.2)':
-    dependencies:
-      '@emnapi/core': 1.9.2
-      '@emnapi/runtime': 1.9.2
-      '@tybys/wasm-util': 0.10.1
-    optional: true
-
   '@napi-rs/wasm-runtime@1.1.4(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)':
     dependencies:
       '@emnapi/core': 1.10.0
       '@emnapi/runtime': 1.10.0
+      '@tybys/wasm-util': 0.10.1
+    optional: true
+
+  '@napi-rs/wasm-runtime@1.1.4(@emnapi/core@1.9.2)(@emnapi/runtime@1.9.2)':
+    dependencies:
+      '@emnapi/core': 1.9.2
+      '@emnapi/runtime': 1.9.2
       '@tybys/wasm-util': 0.10.1
     optional: true
 
@@ -3904,7 +3898,7 @@ snapshots:
     dependencies:
       '@emnapi/core': 1.9.2
       '@emnapi/runtime': 1.9.2
-      '@napi-rs/wasm-runtime': 1.1.3(@emnapi/core@1.9.2)(@emnapi/runtime@1.9.2)
+      '@napi-rs/wasm-runtime': 1.1.4(@emnapi/core@1.9.2)(@emnapi/runtime@1.9.2)
     optional: true
 
   '@rolldown/binding-wasm32-wasi@1.0.0-rc.17':

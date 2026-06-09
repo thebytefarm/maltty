@@ -38,11 +38,11 @@
   "dependencies": {
     "@maltty/bundler": "workspace:*",
     "@maltty/config": "workspace:*",
-    "@maltty/core": "workspace:*",
     "@maltty/utils": "workspace:*",
     "fs-extra": "^11.3.4",
     "ink": "^7.0.0",
     "liquidjs": "catalog:",
+    "maltty": "workspace:*",
     "picocolors": "^1.1.1",
     "react": "^19.2.5",
     "tsdown": "catalog:",

@@ -4,7 +4,7 @@ Overview of the CLI system -- commands, middleware, the context object, autoload
 
 ## Overview
 
-maltty uses [yargs](https://yargs.js.org) for command routing and [`@clack/prompts`](https://www.clack.cc) for styled terminal output. The CLI entry point is in `packages/cli/src/`, which registers all commands and attaches middleware. Each command is implemented using the `command()` factory from `@maltty/core`.
+maltty uses [yargs](https://yargs.js.org) for command routing and [`@clack/prompts`](https://www.clack.cc) for styled terminal output. The CLI entry point is in `packages/cli/src/`, which registers all commands and attaches middleware. Each command is implemented using the `command()` factory from `maltty`.
 
 ## Commands
 
@@ -25,7 +25,7 @@ Commands are created with the `command()` factory. Each command defines a descri
 ### With Zod args
 
 ```ts
-import { command } from '@maltty/core'
+import { command } from 'maltty'
 import { z } from 'zod'
 
 export default command({
@@ -43,7 +43,7 @@ export default command({
 ### Without args
 
 ```ts
-import { command } from '@maltty/core'
+import { command } from 'maltty'
 
 export default command({
   description: 'List available scripts',
@@ -87,7 +87,7 @@ export default command({
 ### With subcommands
 
 ```ts
-import { command, autoload } from '@maltty/core'
+import { command, autoload } from 'maltty'
 
 export default command({
   description: 'Auth commands',
@@ -128,7 +128,7 @@ ctx.store.delete('startTime')
 Consumers register typed keys via module augmentation:
 
 ```ts
-declare module '@maltty/core' {
+declare module 'maltty' {
   interface MalttyStore {
     auth: AuthState
   }
@@ -198,7 +198,7 @@ Middleware wraps command execution with pre/post logic. Created with the `middle
 Declared on `cli({ middleware: [...] })`. Runs for every command invocation:
 
 ```ts
-import { middleware } from '@maltty/core'
+import { middleware } from 'maltty'
 
 export default middleware(async (ctx, next) => {
   ctx.store.set('startTime', Date.now())
@@ -289,7 +289,7 @@ This design means:
 The `cli()` function wires everything together:
 
 ```ts
-import { cli, autoload } from '@maltty/core'
+import { cli, autoload } from 'maltty'
 
 cli({
   name: 'my-tool',

@@ -10,7 +10,7 @@
     "typecheck": "tsgo --noEmit"
   },
   "dependencies": {
-    "@maltty/core": "workspace:*",
+    "maltty": "workspace:*",
     "ts-pattern": "catalog:",
     "zod": "catalog:"
   },

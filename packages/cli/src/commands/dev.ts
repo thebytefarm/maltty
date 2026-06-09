@@ -1,7 +1,7 @@
 import { createBundler } from '@maltty/bundler'
 import { loadConfig } from '@maltty/config/utils'
-import { command } from '@maltty/core'
-import type { Command, CommandContext } from '@maltty/core'
+import { command } from 'maltty'
+import type { Command, CommandContext } from 'maltty'
 
 import { extractConfig } from '../lib/config-helpers.js'
 

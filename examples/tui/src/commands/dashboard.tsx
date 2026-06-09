@@ -1,13 +1,4 @@
-import {
-  Box,
-  screen,
-  Select,
-  Text,
-  TextInput,
-  useApp,
-  useFullScreen,
-  useInput,
-} from '@maltty/core/ui'
+import { Box, screen, Select, Text, TextInput, useApp, useFullScreen, useInput } from 'maltty/ui'
 import React, { useState } from 'react'
 import { match } from 'ts-pattern'
 

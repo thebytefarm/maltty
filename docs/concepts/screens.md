@@ -4,10 +4,10 @@ maltty supports two command authoring models: handler-based commands for sequent
 
 ## Defining a screen
 
-Use `screen()` from `@maltty/core/ui` to define a screen command. It takes a render component and optional options, just like `command()` takes a handler:
+Use `screen()` from `maltty/ui` to define a screen command. It takes a render component and optional options, just like `command()` takes a handler:
 
 ```ts
-import { screen } from '@maltty/core/ui'
+import { screen } from 'maltty/ui'
 import { z } from 'zod'
 
 export default screen({
@@ -31,7 +31,7 @@ Screen commands support two exit modes:
 ### Basic example (auto exit)
 
 ```tsx
-import { Box, screen, Spinner, Text, useApp } from '@maltty/core/ui'
+import { Box, screen, Spinner, Text, useApp } from 'maltty/ui'
 import React, { useEffect, useState } from 'react'
 import { z } from 'zod'
 
@@ -69,7 +69,7 @@ export default screen({
 ### Interactive example (manual exit)
 
 ```tsx
-import { Box, screen, Select, Text, useApp, useInput } from '@maltty/core/ui'
+import { Box, screen, Select, Text, useApp, useInput } from 'maltty/ui'
 import React, { useState } from 'react'
 
 function Dashboard(): React.ReactElement {
@@ -113,7 +113,7 @@ These hooks are only available inside components rendered by `screen()`. They th
 See the [screen() reference](../reference/screen.md) for the full hooks and components API.
 
 ```tsx
-import { Text, useConfig, useMeta } from '@maltty/core/ui'
+import { Text, useConfig, useMeta } from 'maltty/ui'
 import React from 'react'
 
 function Status(): React.ReactElement {
@@ -150,11 +150,11 @@ This means middleware like `auth()`, `report()`, or custom middleware will not r
 - Use `.ts` extension for handler-only commands.
 - Command-private components go in a `_components/` subdirectory (leading underscore prevents autoloader from treating them as commands).
 - Name React components with PascalCase.
-- Import all Ink primitives from `@maltty/core/ui`, never directly from `ink` or `@inkjs/ui`.
+- Import all Ink primitives from `maltty/ui`, never directly from `ink` or `@inkjs/ui`.
 
 ## Developing components with stories
 
-maltty includes a Storybook-like TUI for developing and previewing screen components in isolation. Define `.stories.tsx` files alongside your components with `story()` or `stories()` from `@maltty/core/stories`, then run `maltty stories` to browse them with live preview and an interactive props editor.
+maltty includes a Storybook-like TUI for developing and previewing screen components in isolation. Define `.stories.tsx` files alongside your components with `story()` or `stories()` from `maltty/stories`, then run `maltty stories` to browse them with live preview and an interactive props editor.
 
 ## References
 

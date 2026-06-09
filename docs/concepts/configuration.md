@@ -17,7 +17,7 @@ Config files are named `.<name>.jsonc`, `.<name>.json`, or `.<name>.yaml`, where
 Type-safe helper for `maltty.config.ts`. Used by the `@maltty/cli` build system.
 
 ```ts
-import { defineConfig } from '@maltty/core'
+import { defineConfig } from 'maltty/config'
 
 export default defineConfig({
   entry: './index.ts',
@@ -37,15 +37,15 @@ export default defineConfig({
 
 ## Config Middleware
 
-Configuration is purely opt-in via the `config()` middleware from `@maltty/core/config`. Register it in the middleware array to make `ctx.config` available in handlers.
+Configuration is purely opt-in via the `config()` middleware from `maltty/config`. Register it in the middleware array to make `ctx.config` available in handlers.
 
 ### Lazy loading (default)
 
 By default, config is loaded lazily -- nothing is read from disk until the handler calls `ctx.config.load()`:
 
 ```ts
-import { cli } from '@maltty/core'
-import { config } from '@maltty/core/config'
+import { cli } from 'maltty'
+import { config } from 'maltty/config'
 import { configSchema } from './config.js'
 
 cli({
@@ -112,11 +112,11 @@ result.layers // ConfigLayer[]
 
 ## Typing `ctx.config`
 
-The Zod schema validates config at runtime, but TypeScript cannot automatically propagate the schema type to `ctx.config` in command handlers (commands are defined in separate files and dynamically imported). Use `ConfigType` with module augmentation on `@maltty/core/config` to get compile-time safety:
+The Zod schema validates config at runtime, but TypeScript cannot automatically propagate the schema type to `ctx.config` in command handlers (commands are defined in separate files and dynamically imported). Use `ConfigType` with module augmentation on `maltty/config` to get compile-time safety:
 
 ```ts
 // src/config.ts
-import type { ConfigType } from '@maltty/core/config'
+import type { ConfigType } from 'maltty/config'
 import { z } from 'zod'
 
 export const configSchema = z.object({
@@ -124,7 +124,7 @@ export const configSchema = z.object({
   org: z.string().min(1),
 })
 
-declare module '@maltty/core/config' {
+declare module 'maltty/config' {
   interface ConfigRegistry extends ConfigType<typeof configSchema> {}
 }
 ```
@@ -141,7 +141,7 @@ You can scaffold this setup automatically:
 The `createConfigClient` factory (from `maltty/config`) provides a standalone API for loading, finding, and writing config files outside of the `cli()` bootstrap.
 
 ```ts
-import { createConfigClient } from '@maltty/core/config'
+import { createConfigClient } from 'maltty/config'
 
 const config = createConfigClient({
   name: 'my-app',
@@ -291,7 +291,7 @@ const setupCommand = command({
 Use different config file names for different environments:
 
 ```ts
-import { config } from '@maltty/core/config'
+import { config } from 'maltty/config'
 
 cli({
   name: 'my-app',

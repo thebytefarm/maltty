@@ -53,7 +53,7 @@ export function generateStaticAutoloader(params: GenerateStaticAutoloaderParams)
  * Returns an empty imports string (no prepended imports needed) and a
  * replacement autoloader region that uses dynamic `import()` calls inside
  * the async `autoload()` function. This avoids circular dependency issues:
- * command files import `command` from `@maltty/core`, so static imports would be
+ * command files import `command` from `maltty`, so static imports would be
  * hoisted above maltty's own initialization code, causing `TAG` to be
  * accessed before initialization.
  *

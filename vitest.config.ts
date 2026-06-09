@@ -75,7 +75,7 @@ export default defineConfig({
       'packages/bundler',
       'packages/cli',
       'packages/config',
-      'packages/core',
+      'packages/maltty',
       'packages/utils',
       {
         test: {

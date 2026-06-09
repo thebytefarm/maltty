@@ -2,7 +2,7 @@
 
 ## Overview
 
-Standards for React/Ink components used in maltty CLI commands. Commands can use `screen()` from `@maltty/core/ui` to build interactive terminal UIs with React components. These rules govern file conventions, component structure, colocation, and when to choose screen mode over handler mode.
+Standards for React/Ink components used in maltty CLI commands. Commands can use `screen()` from `maltty/ui` to build interactive terminal UIs with React components. These rules govern file conventions, component structure, colocation, and when to choose screen mode over handler mode.
 
 ## Rules
 
@@ -131,7 +131,7 @@ Use `screen()` when the command needs React state, hooks, dynamic updates, or co
 #### Correct -- screen mode
 
 ```tsx
-import { screen, Box, Text, useApp } from '@maltty/core/ui'
+import { screen, Box, Text, useApp } from 'maltty/ui'
 
 function Dashboard(): React.ReactElement {
   const { exit } = useApp()
@@ -152,7 +152,7 @@ export default screen({
 #### Correct -- handler mode
 
 ```ts
-import { command } from '@maltty/core'
+import { command } from 'maltty'
 
 export default command({
   description: 'Deploy the application',
@@ -169,7 +169,7 @@ export default command({
 The `screen()` factory handles Ink rendering, the `MalttyProvider`, and exit behavior. The component receives parsed args as props. Runtime context (config, meta, store) is available via hooks.
 
 ```tsx
-import { screen, useConfig, useMeta } from '@maltty/core/ui'
+import { screen, useConfig, useMeta } from 'maltty/ui'
 
 function StatusView({ env }: { readonly env: string }): React.ReactElement {
   const config = useConfig()
@@ -239,14 +239,14 @@ function Dashboard(props: DashboardProps): React.ReactElement {
 }
 ```
 
-### Use Ink Primitives from `@maltty/core/ui`
+### Use Ink Primitives from `maltty/ui`
 
-Import all Ink primitives and `@inkjs/ui` components from `@maltty/core/ui`. Do not import from `ink` or `@inkjs/ui` directly.
+Import all Ink primitives and `@inkjs/ui` components from `maltty/ui`. Do not import from `ink` or `@inkjs/ui` directly.
 
 #### Correct
 
 ```tsx
-import { Box, Text, Spinner, useApp } from '@maltty/core/ui'
+import { Box, Text, Spinner, useApp } from 'maltty/ui'
 
 function StatusRow(props: StatusRowProps): React.ReactElement {
   return (

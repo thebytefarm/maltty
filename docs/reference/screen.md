@@ -2,7 +2,7 @@
 
 Define a command that renders a React/Ink terminal UI instead of running a handler.
 
-Import from `@maltty/core/ui`.
+Import from `maltty/ui`.
 
 ## ScreenDef
 
@@ -88,7 +88,7 @@ Wraps screen components automatically. Not typically instantiated directly.
 
 ## Types
 
-Exported from `@maltty/core/ui`:
+Exported from `maltty/ui`:
 
 | Type                  | Description                                  |
 | --------------------- | -------------------------------------------- |

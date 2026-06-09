@@ -10,7 +10,7 @@ import type { GenerateError, ProjectInfo } from './types.js'
 /**
  * Detect whether the given directory contains a maltty-based CLI project.
  *
- * Looks for a `package.json` with `@maltty/core` listed in `dependencies` or
+ * Looks for a `package.json` with `maltty` listed in `dependencies` or
  * `devDependencies`, and checks for a `src/commands/` directory.
  *
  * @param cwd - The directory to inspect.
@@ -30,7 +30,7 @@ export async function detectProject(cwd: string): ResultAsync<ProjectInfo | null
 
   const deps = pkg.dependencies ?? {}
   const devDeps = pkg.devDependencies ?? {}
-  const hasMalttyDep = '@maltty/core' in deps || '@maltty/core' in devDeps
+  const hasMalttyDep = 'maltty' in deps || 'maltty' in devDeps
 
   if (!hasMalttyDep) {
     return ok(null)

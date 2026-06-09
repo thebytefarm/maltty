@@ -1,10 +1,10 @@
 import { createRequire } from 'node:module'
 import { dirname, join } from 'node:path'
 
-import { command } from '@maltty/core'
-import type { Command, CommandContext } from '@maltty/core'
 import { attempt } from '@maltty/utils/fp'
 import { readManifest } from '@maltty/utils/manifest'
+import { command } from 'maltty'
+import type { Command, CommandContext } from 'maltty'
 import { z } from 'zod'
 
 import { renderTemplate } from '../lib/render.js'
@@ -41,7 +41,7 @@ const initCommand: Command = command({
       return ctx.fail(versionsError.message)
     }
 
-    const coreVersion = await resolveDependencyVersion('@maltty/core')
+    const coreVersion = await resolveDependencyVersion('maltty')
     const cliVersion = await resolveSelfVersion()
 
     const templateDir = join(import.meta.dirname, '..', 'lib', 'templates', 'project')
@@ -245,7 +245,7 @@ async function resolveSelfVersion(): Promise<string> {
  * package root from the resolved path, and reads its `package.json`.
  * Returns `'0.0.0'` when resolution fails for any reason.
  *
- * @param packageName - The npm package name to resolve (e.g. `'@maltty/core'`).
+ * @param packageName - The npm package name to resolve (e.g. `'maltty'`).
  * @returns The package version string, or `'0.0.0'` on failure.
  * @private
  */

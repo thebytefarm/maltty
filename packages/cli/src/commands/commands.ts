@@ -1,9 +1,9 @@
 import { join } from 'node:path'
 
 import { loadConfig } from '@maltty/config/utils'
-import { autoload, command } from '@maltty/core'
-import type { Command as MalttyCommand, CommandContext } from '@maltty/core'
 import { fs } from '@maltty/utils/node'
+import { autoload, command } from 'maltty'
+import type { Command as MalttyCommand, CommandContext } from 'maltty'
 
 import { extractConfig } from '../lib/config-helpers.js'
 

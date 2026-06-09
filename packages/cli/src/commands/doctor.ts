@@ -1,8 +1,8 @@
 import { loadConfig } from '@maltty/config/utils'
-import { command } from '@maltty/core'
-import type { Command, CommandContext } from '@maltty/core'
 import { match } from '@maltty/utils/fp'
 import { readManifest } from '@maltty/utils/manifest'
+import { command } from 'maltty'
+import type { Command, CommandContext } from 'maltty'
 import pc from 'picocolors'
 import { z } from 'zod'
 

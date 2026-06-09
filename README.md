@@ -1,23 +1,9 @@
-<!--
-  RENAME IN FLIGHT — formerly known as `kidd` / `@kidd-cli/*`.
-  - npm packages renamed to `@maltty/*` (binary: `maltty`)
-  - Logo / banner SVGs still show the old name and will be replaced once the new artwork lands
-  - GitHub repo move to `thebytefarm/maltty` is pending
--->
-
-> [!IMPORTANT]
-> **Rename in flight: `kidd` → `maltty`**
->
-> This framework was previously published as `@kidd-cli/*` with the `kidd` binary. It is being renamed end-to-end to `maltty` (`@maltty/*`, binary `maltty`). Logos and the GitHub repo URL will be updated next.
->
-> If you are landing here from a search for `kidd`, you are in the right place.
-
 <div align="center">
   <img src="assets/banner.svg" alt="maltty" width="90%" />
   <p><strong>An opinionated CLI framework for Node.js. Convention over configuration, end-to-end type safety.</strong></p>
 
 <a href="https://github.com/thebytefarm/maltty/actions/workflows/ci.yml"><img src="https://github.com/thebytefarm/maltty/actions/workflows/ci.yml/badge.svg?branch=main" alt="CI" /></a>
-<a href="https://www.npmjs.com/package/@maltty/core"><img src="https://img.shields.io/npm/v/@maltty/core" alt="npm version" /></a>
+<a href="https://www.npmjs.com/package/maltty"><img src="https://img.shields.io/npm/v/maltty" alt="npm version" /></a>
 <a href="https://github.com/thebytefarm/maltty/blob/main/LICENSE"><img src="https://img.shields.io/github/license/thebytefarm/maltty" alt="License" /></a>
 
 <a href="https://maltty.dev">📖 Documentation</a> &nbsp;&nbsp;&nbsp;·&nbsp;&nbsp;&nbsp; <a href="https://github.com/thebytefarm/maltty/issues">🐛 Issues</a>
@@ -27,7 +13,7 @@
 ## Features
 
 - 🧰 **Batteries included** — Config, auth, prompts, logging, output, and middleware built in
-- 📁 **File-system autoloading** — Drop a file in `commands/`, get a command
+- 📁 **File-system auto-loading** — Drop a file in `commands/`, get a command
 - ⚡ **Build and compile** — Bundle your command tree or produce cross-platform standalone binaries
 - 🚀 **Two files to a full CLI** — Define a schema, write a handler, done
 - 🛠️ **Developer experience** — Scaffolding, hot reload, route inspection, and diagnostics out of the box
@@ -35,7 +21,7 @@
 ## Install
 
 ```bash
-npm install @maltty/core
+npm install maltty
 ```
 
 ## Usage
@@ -44,7 +30,7 @@ npm install @maltty/core
 
 ```ts
 // index.ts
-import { cli } from '@maltty/core'
+import { cli } from 'maltty'
 import { z } from 'zod'
 
 await cli({
@@ -63,7 +49,7 @@ await cli({
 
 ```ts
 // commands/deploy.ts
-import { command } from '@maltty/core'
+import { command } from 'maltty'
 import { z } from 'zod'
 
 export default command({
@@ -82,7 +68,7 @@ export default command({
 
 ```tsx
 // commands/dashboard.tsx
-import { screen, Box, Text, useScreenContext } from '@maltty/core/ui'
+import { screen, Box, Text, useScreenContext } from 'maltty/ui'
 import { z } from 'zod'
 
 function Dashboard({ env }: { env: string }) {

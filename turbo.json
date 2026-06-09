@@ -33,7 +33,7 @@
         "@maltty/bundler#build",
         "@maltty/cli#build",
         "@maltty/config#build",
-        "@maltty/core#build",
+        "maltty#build",
         "@maltty/utils#build"
       ]
     }

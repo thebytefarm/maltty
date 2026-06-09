@@ -44,7 +44,7 @@ describe('detectProject()', () => {
     mockedAccess.mockResolvedValueOnce(undefined).mockResolvedValueOnce(undefined)
     mockedReadFile.mockResolvedValue(
       JSON.stringify({
-        dependencies: { '@maltty/core': 'workspace:*' },
+        dependencies: { maltty: 'workspace:*' },
       })
     )
 
@@ -61,7 +61,7 @@ describe('detectProject()', () => {
     mockedAccess.mockResolvedValueOnce(undefined).mockRejectedValueOnce(new Error('ENOENT'))
     mockedReadFile.mockResolvedValue(
       JSON.stringify({
-        devDependencies: { '@maltty/core': '^1.0.0' },
+        devDependencies: { maltty: '^1.0.0' },
       })
     )
 
@@ -77,7 +77,7 @@ describe('detectProject()', () => {
     mockedAccess.mockResolvedValueOnce(undefined).mockRejectedValueOnce(new Error('ENOENT'))
     mockedReadFile.mockResolvedValue(
       JSON.stringify({
-        dependencies: { '@maltty/core': 'workspace:*' },
+        dependencies: { maltty: 'workspace:*' },
       })
     )
 

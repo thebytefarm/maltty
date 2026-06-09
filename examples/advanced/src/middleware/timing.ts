@@ -1,4 +1,4 @@
-import { middleware } from '@maltty/core'
+import { middleware } from 'maltty'
 
 const MS_PER_SECOND = 1000
 

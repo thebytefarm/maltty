@@ -1,6 +1,6 @@
 import { sep } from 'node:path'
 
-import { command } from '@maltty/core'
+import { command } from 'maltty'
 import { match } from 'ts-pattern'
 
 /**

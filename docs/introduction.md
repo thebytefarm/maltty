@@ -52,27 +52,27 @@ Commands live in `src/commands/`, middleware in `src/middleware/`, and the entry
 
 ## Sub-exports
 
-The `@maltty/core` package exposes focused sub-exports so you only import what you need:
+The `maltty` package exposes focused sub-exports so you only import what you need:
 
-| Export                 | Purpose                                            |
-| ---------------------- | -------------------------------------------------- |
-| `@maltty/core`         | Commands, middleware, context, module augmentation |
-| `@maltty/core/auth`    | Auth middleware and credential strategies          |
-| `@maltty/core/http`    | HTTP client middleware                             |
-| `@maltty/core/icons`   | Nerd Font icon middleware                          |
-| `@maltty/core/config`  | Config client for loading outside cli()            |
-| `@maltty/core/logger`  | Standalone terminal logger                         |
-| `@maltty/core/store`   | File-backed JSON store                             |
-| `@maltty/core/project` | Git root resolution and path utilities             |
-| `@maltty/core/format`  | Standalone format functions                        |
-| `@maltty/core/test`    | Test utilities for commands and middleware         |
+| Export           | Purpose                                            |
+| ---------------- | -------------------------------------------------- |
+| `maltty`         | Commands, middleware, context, module augmentation |
+| `maltty/auth`    | Auth middleware and credential strategies          |
+| `maltty/http`    | HTTP client middleware                             |
+| `maltty/icons`   | Nerd Font icon middleware                          |
+| `maltty/config`  | Config client for loading outside cli()            |
+| `maltty/logger`  | Standalone terminal logger                         |
+| `maltty/store`   | File-backed JSON store                             |
+| `maltty/project` | Git root resolution and path utilities             |
+| `maltty/format`  | Standalone format functions                        |
+| `maltty/test`    | Test utilities for commands and middleware         |
 
 ## Packages
 
-| Package                             | Description                                                  |
-| ----------------------------------- | ------------------------------------------------------------ |
-| [`@maltty/core`](/reference/maltty) | Commands, middleware, config, context, auth, HTTP, and icons |
-| [`@maltty/cli`](/reference/cli)     | Scaffolding, building, diagnostics, and code generation      |
+| Package                         | Description                                                  |
+| ------------------------------- | ------------------------------------------------------------ |
+| [`maltty`](/reference/maltty)   | Commands, middleware, config, context, auth, HTTP, and icons |
+| [`@maltty/cli`](/reference/cli) | Scaffolding, building, diagnostics, and code generation      |
 
 ## Next steps
 

@@ -1,4 +1,4 @@
-import { middleware } from '@maltty/core'
+import { middleware } from 'maltty'
 
 /**
  * Middleware that sends anonymized usage telemetry.

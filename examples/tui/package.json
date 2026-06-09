@@ -11,8 +11,8 @@
   },
   "dependencies": {
     "@inkjs/ui": "^2.0.0",
-    "@maltty/core": "workspace:*",
     "ink": "^7.0.0",
+    "maltty": "workspace:*",
     "react": "^19.2.5",
     "ts-pattern": "catalog:",
     "zod": "catalog:"

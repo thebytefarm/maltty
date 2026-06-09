@@ -21,7 +21,7 @@ packages/
 
 | Package           | Purpose                                                       |
 | ----------------- | ------------------------------------------------------------- |
-| `@maltty/core`    | Core framework: `cli()`, `command()`, `middleware()`, context |
+| `maltty`          | Core framework: `cli()`, `command()`, `middleware()`, context |
 | `@maltty/cli`     | DX companion CLI: scaffolding, dev mode, build, compile       |
 | `@maltty/config`  | Configuration loading, validation, and schema (internal)      |
 | `@maltty/utils`   | Shared functional utilities (internal)                        |
@@ -94,11 +94,11 @@ flowchart TB
 
 **Package:** `packages/cli`
 
-The CLI binary entrypoint. Calls `cli()` from `@maltty/core` with the CLI name, version, commands, and middleware. This is the only layer that reads `package.json` for version and calls `process.exit`.
+The CLI binary entrypoint. Calls `cli()` from `maltty` with the CLI name, version, commands, and middleware. This is the only layer that reads `package.json` for version and calls `process.exit`.
 
 ### Core Layer
 
-**Package:** `packages/core/src/`
+**Package:** `packages/maltty/src/`
 
 The framework primitives:
 
@@ -112,7 +112,7 @@ The framework primitives:
 
 ### Lib Layer
 
-**Package:** `packages/core/src/lib/`
+**Package:** `packages/maltty/src/lib/`
 
 Shared utilities consumed by the core and extension layers:
 
@@ -152,7 +152,7 @@ All data properties (`args`, `config`, `meta`) are deeply readonly at the type l
 Consumers extend the context type system via declaration merging without threading generics:
 
 ```ts
-declare module '@maltty/core' {
+declare module 'maltty' {
   interface MalttyArgs {
     verbose: boolean
   }
@@ -384,7 +384,7 @@ All packages in this monorepo follow strict conventions to ensure consistency, t
 **Example Structure:**
 
 ```
-packages/core/
+packages/maltty/
 ├── src/
 │   ├── cli.ts
 │   ├── cli.test.ts        # Unit test (colocated)
@@ -448,7 +448,7 @@ export const loadConfig = (path: string) => {
 **Convention:**
 
 - Scope: `@maltty/`
-- Name: Lowercase, single word or hyphenated (e.g., `@maltty/core`, `@maltty/cli`)
+- Name: Lowercase, single word or hyphenated (e.g., `maltty`, `@maltty/cli`)
 
 ### Package Structure
 

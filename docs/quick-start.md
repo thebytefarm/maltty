@@ -5,14 +5,14 @@ Get a working CLI in under 5 minutes.
 ## Install
 
 ```bash
-pnpm add @maltty/core zod
+pnpm add maltty zod
 ```
 
 ## Create a command
 
 ```ts
 // src/commands/greet.ts
-import { command } from '@maltty/core'
+import { command } from 'maltty'
 import { z } from 'zod'
 
 export default command({
@@ -30,7 +30,7 @@ export default command({
 
 ```ts
 // src/index.ts
-import { cli } from '@maltty/core'
+import { cli } from 'maltty'
 import greet from './commands/greet.js'
 
 cli({
@@ -52,7 +52,7 @@ Middleware wraps every command in an onion model -- each middleware can run logi
 
 ```ts
 // src/middleware/timing.ts
-import { middleware } from '@maltty/core'
+import { middleware } from 'maltty'
 
 export const timing = middleware(async (ctx, next) => {
   const start = Date.now()
@@ -65,7 +65,7 @@ Update the bootstrap to register it:
 
 ```ts
 // src/index.ts
-import { cli } from '@maltty/core'
+import { cli } from 'maltty'
 import greet from './commands/greet.js'
 import { timing } from './middleware/timing.js'
 
@@ -85,14 +85,14 @@ maltty discovers and validates configuration files using Zod. Define a config sc
 
 ```ts
 // src/config.ts
-import type { ConfigType } from '@maltty/core/config'
+import type { ConfigType } from 'maltty/config'
 import { z } from 'zod'
 
 export const configSchema = z.object({
   greeting: z.string().default('Hello'),
 })
 
-declare module '@maltty/core/config' {
+declare module 'maltty/config' {
   interface ConfigRegistry extends ConfigType<typeof configSchema> {}
 }
 ```
@@ -101,8 +101,8 @@ Register the `config()` middleware in `cli()`:
 
 ```ts
 // src/index.ts
-import { cli } from '@maltty/core'
-import { config } from '@maltty/core/config'
+import { cli } from 'maltty'
+import { config } from 'maltty/config'
 import greet from './commands/greet.js'
 import { timing } from './middleware/timing.js'
 import { configSchema } from './config.js'
@@ -119,7 +119,7 @@ Now update the command to load config lazily via the handle:
 
 ```ts
 // src/commands/greet.ts
-import { command } from '@maltty/core'
+import { command } from 'maltty'
 import { z } from 'zod'
 
 export default command({

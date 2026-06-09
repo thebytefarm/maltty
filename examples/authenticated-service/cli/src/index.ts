@@ -1,9 +1,9 @@
-import { cli } from '@maltty/core'
-import { auth, createAuthHeaders } from '@maltty/core/auth'
-import type { HttpClient } from '@maltty/core/http'
-import { http } from '@maltty/core/http'
+import { cli } from 'maltty'
+import { auth, createAuthHeaders } from 'maltty/auth'
+import type { HttpClient } from 'maltty/http'
+import { http } from 'maltty/http'
 
-declare module '@maltty/core' {
+declare module 'maltty' {
   interface CommandContext {
     readonly api: HttpClient
   }

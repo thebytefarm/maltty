@@ -268,7 +268,7 @@ async function checkMalttyDependency(context: CheckContext): Promise<CheckResult
     return checkResult({
       hint: 'Run "pnpm init" to create a package.json first',
       message: 'No package.json found',
-      name: '@maltty/core dependency',
+      name: 'maltty dependency',
       status: 'fail',
     })
   }
@@ -276,26 +276,26 @@ async function checkMalttyDependency(context: CheckContext): Promise<CheckResult
   const deps = context.rawPackageJson.dependencies ?? {}
   const devDeps = context.rawPackageJson.devDependencies ?? {}
 
-  if ('@maltty/core' in deps) {
+  if ('maltty' in deps) {
     return checkResult({
       message: 'Found in dependencies',
-      name: '@maltty/core dependency',
+      name: 'maltty dependency',
       status: 'pass',
     })
   }
 
-  if ('@maltty/core' in devDeps) {
+  if ('maltty' in devDeps) {
     return checkResult({
       message: 'Found in devDependencies',
-      name: '@maltty/core dependency',
+      name: 'maltty dependency',
       status: 'pass',
     })
   }
 
   return checkResult({
-    hint: 'Run "pnpm add @maltty/core" or use --fix to add it (fixable with --fix)',
+    hint: 'Run "pnpm add maltty" or use --fix to add it (fixable with --fix)',
     message: 'Not found in dependencies or devDependencies',
-    name: '@maltty/core dependency',
+    name: 'maltty dependency',
     status: 'fail',
   })
 }
@@ -433,7 +433,7 @@ async function fixMalttyDependency(context: CheckContext): Promise<FixResult> {
     const deps = pkg.dependencies ?? {}
     return {
       ...pkg,
-      dependencies: { ...deps, '@maltty/core': 'latest' },
+      dependencies: { ...deps, maltty: 'latest' },
     }
   })
 
@@ -441,14 +441,14 @@ async function fixMalttyDependency(context: CheckContext): Promise<FixResult> {
     return fixResult({
       fixed: false,
       message: updateError.message,
-      name: '@maltty/core dependency',
+      name: 'maltty dependency',
     })
   }
 
   return fixResult({
     fixed: true,
-    message: 'Added "@maltty/core": "latest" to dependencies',
-    name: '@maltty/core dependency',
+    message: 'Added "maltty": "latest" to dependencies',
+    name: 'maltty dependency',
   })
 }
 
@@ -473,7 +473,7 @@ async function fixEntryPoint(context: CheckContext): Promise<FixResult> {
     })
   }
 
-  const content = `import { create } from '@maltty/core'\n`
+  const content = `import { create } from 'maltty'\n`
   const [writeError] = await fs.write(absolutePath, content)
   if (writeError) {
     return fixResult({
@@ -519,7 +519,7 @@ export const CHECKS: readonly DiagnosticCheck[] = [
   { name: 'package.json', run: checkPackageJson },
   { name: 'package version', run: checkPackageVersion },
   { fix: fixModuleType, name: 'module type', run: checkModuleType },
-  { fix: fixMalttyDependency, name: '@maltty/core dependency', run: checkMalttyDependency },
+  { fix: fixMalttyDependency, name: 'maltty dependency', run: checkMalttyDependency },
   { fix: fixEntryPoint, name: 'entry point', run: checkEntryPoint },
   { fix: fixCommandsDirectory, name: 'commands directory', run: checkCommandsDirectory },
   { name: 'tsconfig.json', run: checkTsconfig },

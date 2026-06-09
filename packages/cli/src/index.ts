@@ -1,4 +1,4 @@
-import { cli } from '@maltty/core'
+import { cli } from 'maltty'
 
 import { readCLIManifest } from './manifest.js'
 

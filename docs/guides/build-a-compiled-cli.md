@@ -4,7 +4,7 @@ Bundle and compile a maltty CLI into standalone binaries using `@maltty/bundler`
 
 ## Prerequisites
 
-- An existing maltty CLI project with `@maltty/core`
+- An existing maltty CLI project with `maltty`
 - Node.js 24+
 - Bun 1.3+ installed (required for the compile step)
 - `@maltty/bundler` installed (`pnpm add -D @maltty/bundler`)

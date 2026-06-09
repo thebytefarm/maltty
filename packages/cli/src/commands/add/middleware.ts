@@ -1,7 +1,7 @@
 import { join } from 'node:path'
 
-import { command } from '@maltty/core'
-import type { Command, CommandContext } from '@maltty/core'
+import { command } from 'maltty'
+import type { Command, CommandContext } from 'maltty'
 import { z } from 'zod'
 
 import { detectProject } from '../../lib/detect.js'
