@@ -147,7 +147,7 @@ reviews:
         - Internal links must be relative
 
         **Cite:** contributing/standards/documentation/ files
-    - path: 'packages/core/**/*.ts'
+    - path: 'packages/maltty/**/*.ts'
       instructions: |
         Critical CLI framework code - extra scrutiny:
         - Verify factory function patterns for all modules

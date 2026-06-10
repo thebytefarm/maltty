@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "maltty dev",
     "build": "maltty build",
-    "stories": "maltty stories --cwd ../../packages/core",
+    "stories": "maltty stories --cwd ../../packages/maltty",
     "typecheck": "tsgo --noEmit"
   },
   "dependencies": {

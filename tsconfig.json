@@ -4,7 +4,7 @@
     { "path": "packages/bundler" },
     { "path": "packages/cli" },
     { "path": "packages/config" },
-    { "path": "packages/core" },
+    { "path": "packages/maltty" },
     { "path": "packages/utils" }
   ]
 }

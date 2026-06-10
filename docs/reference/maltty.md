@@ -14,9 +14,9 @@ API reference for `maltty`. The runtime framework for building CLI applications 
 
 ## Core types
 
-| Reference               | Description                                                 |
-| ----------------------- | ----------------------------------------------------------- |
-| [Context](./context.md) | The central object threaded through handlers and middleware |
+| Reference                         | Description                                                 |
+| --------------------------------- | ----------------------------------------------------------- |
+| [Context](../concepts/context.md) | The central object threaded through handlers and middleware |
 
 ## Resources
 
