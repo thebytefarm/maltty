@@ -151,3 +151,8 @@ vite.config.ts.timestamp-*
 
 # bun
 *.bun-build
+
+# ciderpress
+.ciderpress/content
+.ciderpress/dist
+.ciderpress/cache
