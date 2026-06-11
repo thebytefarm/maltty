@@ -1,18 +1,74 @@
+import { BUILT_IN_THEMES, defineTheme } from '@ciderpress/theme'
 import { defineConfig } from 'ciderpress/config'
+
+// ─────────────────────────────────────────────────────────────────────────────
+//  Custom maltty theme — extends midnight with the maltty palette across every
+//  brand-related token slot. Uses ciderpress's `defineTheme` so the full
+//  token tree is emitted as CSS at build time (rc.3+ feature).
+//
+//  Built on top of midnight's dark variant so we inherit terminal, syntax,
+//  tint, and scrollbar tokens without redefining them.
+// ─────────────────────────────────────────────────────────────────────────────
+
+const midnightDark = BUILT_IN_THEMES.midnight.variants.dark
+
+const malttyTheme = defineTheme({
+  name: 'maltty',
+  defaultVariant: 'dark',
+  variants: {
+    dark: {
+      ...midnightDark,
+      colors: {
+        ...midnightDark.colors,
+        brand: {
+          primary: '#CF9E36',
+          hover: '#E4BC5C',
+          active: '#A57B26',
+          fg: '#0E0E10',
+          soft: 'rgba(207, 158, 54, 0.16)',
+          onBrand: '#0E0E10',
+          light: '#E4BC5C',
+          lighter: '#F3DC9A',
+        },
+        surface: {
+          ...midnightDark.colors.surface,
+          bg: '#0E0E10',
+          bgAlt: '#15151A',
+          bgElv: '#1C1C22',
+          bgSoft: '#0A0A0C',
+          homeBg: '#0A0A0C',
+        },
+        text: {
+          ...midnightDark.colors.text,
+          text1: '#F1ECDC',
+          text2: '#B8B2A0',
+          text3: '#7A7568',
+        },
+        border: {
+          ...midnightDark.colors.border,
+          border: 'rgba(207, 158, 54, 0.14)',
+          divider: 'rgba(207, 158, 54, 0.08)',
+        },
+        button: {
+          ...midnightDark.colors.button,
+          brand: {
+            bg: '#CF9E36',
+            hoverBg: '#E4BC5C',
+            activeBg: '#A57B26',
+            text: '#0E0E10',
+          },
+        },
+      },
+    },
+  },
+})
 
 export default defineConfig({
   title: 'maltty',
   description: 'An opinionated CLI framework',
   tagline: 'Built on yargs and Zod. Convention over configuration, end-to-end type safety.',
-  theme: {
-    name: 'amber',
-    colors: {
-      brand: '#CF9E36',
-      brandDark: '#A57B26',
-      brandLight: '#E4BC5C',
-      brandSoft: '#F3DC9A',
-    },
-  },
+  themes: [malttyTheme],
+  theme: { name: 'maltty' },
   logo: '/logo.svg',
   loader: 'apple',
   actions: [
