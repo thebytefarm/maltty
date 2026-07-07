@@ -12,14 +12,14 @@ Old packages (`@kidd-cli/*`, `@maltty/core`) will be deprecated on npm with a po
 
 ## Package renames
 
-| Old                 | New              | Role                  |
-| ------------------- | ---------------- | --------------------- |
-| `@kidd-cli/core`    | `maltty`         | Framework runtime     |
-| `@maltty/core`      | `maltty`         | Framework runtime     |
-| `@kidd-cli/cli`     | `@maltty/cli`    | DX tool (`maltty` bin)|
-| `@kidd-cli/config`  | `@maltty/config` | Build-time config     |
-| `@kidd-cli/utils`   | `@maltty/utils`  | Shared utilities      |
-| `@kidd-cli/bundler` | `@maltty/bundler`| Bundler plugin        |
+| Old                 | New               | Role                   |
+| ------------------- | ----------------- | ---------------------- |
+| `@kidd-cli/core`    | `maltty`          | Framework runtime      |
+| `@maltty/core`      | `maltty`          | Framework runtime      |
+| `@kidd-cli/cli`     | `@maltty/cli`     | DX tool (`maltty` bin) |
+| `@kidd-cli/config`  | `@maltty/config`  | Build-time config      |
+| `@kidd-cli/utils`   | `@maltty/utils`   | Shared utilities       |
+| `@kidd-cli/bundler` | `@maltty/bundler` | Bundler plugin         |
 
 ```diff
 - import { command, cli } from '@maltty/core'
@@ -63,20 +63,20 @@ export default defineConfig({
 
 ## Env vars
 
-| Old              | New                |
-| ---------------- | ------------------ |
-| `KIDD_PUBLIC_*`  | `MALTTY_PUBLIC_*`  |
-| `KIDD_DEBUG`     | `MALTTY_DEBUG`     |
-| `KIDD_VERSION`   | `MALTTY_VERSION`   |
+| Old             | New               |
+| --------------- | ----------------- |
+| `KIDD_PUBLIC_*` | `MALTTY_PUBLIC_*` |
+| `KIDD_DEBUG`    | `MALTTY_DEBUG`    |
+| `KIDD_VERSION`  | `MALTTY_VERSION`  |
 
 ## Public API types
 
 `Kidd*` → `Maltty*`:
 
-| Old                  | New                    |
-| -------------------- | ---------------------- |
-| `KiddArgs`           | `MalttyArgs`           |
-| `KiddStore`          | `MalttyStore`          |
-| `KiddProvider`       | `MalttyProvider`       |
-| `KiddProviderProps`  | `MalttyProviderProps`  |
-| `KiddContext`        | `MalttyContext`        |
+| Old                 | New                   |
+| ------------------- | --------------------- |
+| `KiddArgs`          | `MalttyArgs`          |
+| `KiddStore`         | `MalttyStore`         |
+| `KiddProvider`      | `MalttyProvider`      |
+| `KiddProviderProps` | `MalttyProviderProps` |
+| `KiddContext`       | `MalttyContext`       |

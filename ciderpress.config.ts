@@ -2,12 +2,10 @@ import { BUILT_IN_THEMES, defineTheme } from '@ciderpress/theme'
 import { defineConfig } from 'ciderpress/config'
 
 // ─────────────────────────────────────────────────────────────────────────────
-//  Custom maltty theme — extends midnight with the maltty palette across every
-//  brand-related token slot. Uses ciderpress's `defineTheme` so the full
-//  token tree is emitted as CSS at build time (rc.3+ feature).
-//
-//  Built on top of midnight's dark variant so we inherit terminal, syntax,
-//  tint, and scrollbar tokens without redefining them.
+//  Custom maltty theme, built on midnight's dark variant.
+//  Overrides every brand token slot with the maltty palette via `defineTheme`.
+//  Emits the full token tree as CSS at build time (rc.3+ feature).
+//  Inherits terminal, syntax, tint, and scrollbar tokens from midnight.
 // ─────────────────────────────────────────────────────────────────────────────
 
 const midnightDark = BUILT_IN_THEMES.midnight.variants.dark

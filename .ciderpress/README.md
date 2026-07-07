@@ -3,12 +3,12 @@
 This directory is managed by ciderpress. It contains the
 materialized documentation site — synced content, build artifacts, and static assets.
 
-| Directory   | Description                                    |
-| ----------- | ---------------------------------------------- |
-| `content/`  | Synced markdown pages and generated config     |
-| `public/`   | Static assets (logos, icons, banners)           |
-| `dist/`     | Build output                                   |
-| `cache/`    | Build cache                                    |
+| Directory  | Description                                |
+| ---------- | ------------------------------------------ |
+| `content/` | Synced markdown pages and generated config |
+| `public/`  | Static assets (logos, icons, banners)      |
+| `dist/`    | Build output                               |
+| `cache/`   | Build cache                                |
 
 ## Commands
 

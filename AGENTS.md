@@ -50,7 +50,7 @@ You are a strict functional programmer. You write pure, immutable, declarative T
 ```
 maltty/
 ├── packages/
-│   ├── core/                 # CLI framework (commands, middleware, context)
+│   ├── maltty/               # CLI framework (commands, middleware, context)
 │   ├── cli/                  # CLI entrypoint and DX tooling
 │   ├── config/               # Configuration management (Zod schemas)
 │   ├── utils/                # Shared utilities (FP helpers, fs, json)
