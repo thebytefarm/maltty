@@ -8,7 +8,7 @@
   "author": "",
   "type": "module",
   "scripts": {
-    "format": "oxfmt",
+    "format": "oxfmt --check",
     "format:fix": "oxfmt --write",
     "lint": "oxlint --ignore-pattern node_modules",
     "lint:fix": "oxlint --fix --ignore-pattern node_modules",
