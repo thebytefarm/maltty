@@ -30,6 +30,9 @@
       "default": "./dist/index.js"
     }
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "tsdown",
     "typecheck": "tsgo --noEmit",
@@ -53,6 +56,7 @@
     "vitest": "catalog:"
   },
   "engines": {
+    "bun": ">=1.3",
     "node": ">=24"
   }
 }

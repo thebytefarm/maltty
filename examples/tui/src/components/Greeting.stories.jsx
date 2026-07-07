@@ -1,4 +1,4 @@
-import { story } from '@maltty/core/stories'
+import { story } from 'maltty/stories'
 import { z } from 'zod'
 
 import { Greeting } from './Greeting'

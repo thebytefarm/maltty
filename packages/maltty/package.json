@@ -67,6 +67,9 @@
       "default": "./dist/stories/index.js"
     }
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "tsdown",
     "typecheck": "tsgo --noEmit",

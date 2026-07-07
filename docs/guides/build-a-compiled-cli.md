@@ -29,7 +29,7 @@ The bundler reads from a `maltty.config.ts` (or `.js`, `.json`, `.yaml`) file in
 
 ```ts
 // maltty.config.ts
-import { defineConfig } from '@maltty/config'
+import { defineConfig } from 'maltty/config'
 
 export default defineConfig({
   entry: './src/index.ts',
@@ -54,7 +54,7 @@ Call `build()` with your config and working directory. It resolves defaults, rea
 
 ```ts
 import { build } from '@maltty/bundler'
-import { defineConfig } from '@maltty/config'
+import { defineConfig } from 'maltty/config'
 
 const config = defineConfig({
   entry: './src/index.ts',
@@ -86,7 +86,7 @@ Use `watch()` during development. The returned promise resolves only when tsdown
 
 ```ts
 import { watch } from '@maltty/bundler'
-import { defineConfig } from '@maltty/config'
+import { defineConfig } from 'maltty/config'
 
 const config = defineConfig({
   entry: './src/index.ts',
@@ -115,7 +115,7 @@ After a successful build, call `compile()` to produce self-contained executables
 
 ```ts
 import { build, compile } from '@maltty/bundler'
-import { defineConfig } from '@maltty/config'
+import { defineConfig } from 'maltty/config'
 
 const config = defineConfig({
   entry: './src/index.ts',
@@ -231,7 +231,7 @@ A typical release script builds for all default targets and logs each binary pat
 ```ts
 // scripts/release.ts
 import { build, compile } from '@maltty/bundler'
-import { defineConfig } from '@maltty/config'
+import { defineConfig } from 'maltty/config'
 
 const config = defineConfig({
   entry: './src/index.ts',

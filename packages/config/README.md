@@ -36,7 +36,7 @@ export default defineConfig({
 ### Load a config
 
 ```ts
-import { loadConfig } from '@maltty/config/loader'
+import { loadConfig } from '@maltty/config/utils'
 
 const [error, result] = await loadConfig()
 if (error) {
@@ -58,10 +58,10 @@ if (error) {
 
 ## Subpath exports
 
-| Export                  | Description              |
-| ----------------------- | ------------------------ |
-| `@maltty/config`        | `defineConfig` and types |
-| `@maltty/config/loader` | Config file loader       |
+| Export                 | Description                      |
+| ---------------------- | -------------------------------- |
+| `@maltty/config`       | `defineConfig` and types         |
+| `@maltty/config/utils` | `loadConfig` and compile helpers |
 
 ## License
 
