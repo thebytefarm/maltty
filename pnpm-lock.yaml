@@ -15,9 +15,6 @@ catalogs:
     es-toolkit:
       specifier: ^1.49.0
       version: 1.49.0
-    liquidjs:
-      specifier: ^10.27.1
-      version: 10.27.1
     ts-pattern:
       specifier: ^5.9.0
       version: 5.9.0
@@ -36,9 +33,6 @@ catalogs:
     yaml:
       specifier: ^2.9.0
       version: 2.9.0
-    zod:
-      specifier: ^4.4.3
-      version: 4.4.3
 
 overrides:
   fast-xml-parser: ^5.7.1
@@ -114,7 +108,7 @@ importers:
         specifier: ^2.10.4
         version: 2.10.4
       vite:
-        specifier: ^8.1.3
+        specifier: ^8.0.10
         version: 8.1.3(@types/node@26.1.0)(esbuild@0.28.1)(jiti@2.7.0)(tsx@4.23.0)(yaml@2.9.0)
       vitest:
         specifier: 'catalog:'
@@ -132,7 +126,7 @@ importers:
         specifier: 'catalog:'
         version: 5.9.0
       zod:
-        specifier: 'catalog:'
+        specifier: ^4.4.3
         version: 4.4.3
     devDependencies:
       '@maltty/cli':
@@ -154,7 +148,7 @@ importers:
         specifier: workspace:*
         version: link:../../packages/maltty
       zod:
-        specifier: 'catalog:'
+        specifier: ^4.4.3
         version: 4.4.3
     devDependencies:
       '@maltty/cli':
@@ -179,7 +173,7 @@ importers:
         specifier: workspace:*
         version: link:../../packages/maltty
       zod:
-        specifier: 'catalog:'
+        specifier: ^4.4.3
         version: 4.4.3
     devDependencies:
       '@maltty/cli':
@@ -204,7 +198,7 @@ importers:
         specifier: 'catalog:'
         version: 5.9.0
       zod:
-        specifier: 'catalog:'
+        specifier: ^4.4.3
         version: 4.4.3
     devDependencies:
       '@maltty/cli':
@@ -229,7 +223,7 @@ importers:
         specifier: 'catalog:'
         version: 5.9.0
       zod:
-        specifier: 'catalog:'
+        specifier: ^4.4.3
         version: 4.4.3
     devDependencies:
       '@maltty/cli':
@@ -263,7 +257,7 @@ importers:
         specifier: 'catalog:'
         version: 5.9.0
       zod:
-        specifier: 'catalog:'
+        specifier: ^4.4.3
         version: 4.4.3
     devDependencies:
       '@maltty/cli':
@@ -300,7 +294,7 @@ importers:
         specifier: 'catalog:'
         version: 0.22.3(@typescript/native-preview@7.0.0-dev.20260707.2)(tsx@4.23.0)(typescript@6.0.3)(unrun@0.2.35)
       zod:
-        specifier: 'catalog:'
+        specifier: ^4.4.3
         version: 4.4.3
     devDependencies:
       '@types/node':
@@ -331,7 +325,7 @@ importers:
         specifier: ^7.1.0
         version: 7.1.0(@types/react@19.2.17)(react@19.2.7)
       liquidjs:
-        specifier: 'catalog:'
+        specifier: ^10.26.0
         version: 10.27.1
       maltty:
         specifier: workspace:*
@@ -349,7 +343,7 @@ importers:
         specifier: 'catalog:'
         version: 2.9.0
       zod:
-        specifier: 'catalog:'
+        specifier: ^4.4.3
         version: 4.4.3
     devDependencies:
       '@types/fs-extra':
@@ -377,7 +371,7 @@ importers:
         specifier: 'catalog:'
         version: 1.49.0
       zod:
-        specifier: 'catalog:'
+        specifier: ^4.4.3
         version: 4.4.3
     devDependencies:
       '@types/node':
@@ -423,7 +417,7 @@ importers:
         specifier: '>=2.0.0'
         version: 2.7.0
       liquidjs:
-        specifier: 'catalog:'
+        specifier: ^10.26.0
         version: 10.27.1
       picocolors:
         specifier: ^1.1.1
@@ -441,7 +435,7 @@ importers:
         specifier: ^18.0.0
         version: 18.0.0
       zod:
-        specifier: 'catalog:'
+        specifier: ^4.4.3
         version: 4.4.3
     devDependencies:
       '@types/node':
@@ -481,7 +475,7 @@ importers:
         specifier: ^5.8.0
         version: 5.8.0
       zod:
-        specifier: 'catalog:'
+        specifier: ^4.4.3
         version: 4.4.3
     devDependencies:
       '@types/node':
