@@ -1,6 +1,6 @@
 {
   "name": "@maltty/cli",
-  "version": "0.11.9",
+  "version": "1.0.0-rc.0",
   "description": "DX companion CLI for the maltty framework",
   "keywords": [
     "cli",
