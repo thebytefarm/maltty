@@ -122,7 +122,8 @@ export default defineConfig({
         },
       ],
     },
-    showcase: { columns: 2, source: 'workspaces' },
+    // Landing sections: hero -> proof -> features -> cta (no showcase/split).
+    layout: ['hero', 'proof', 'features', 'cta'],
     cta: {
       title: 'Your first command in five minutes',
       subtitle:
