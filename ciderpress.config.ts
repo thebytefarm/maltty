@@ -367,11 +367,12 @@ export default defineConfig({
   },
   socials: [
     { icon: 'github', url: 'https://github.com/thebytefarm/maltty', label: 'GitHub' },
+    { icon: 'discord', url: 'https://discord.gg/dk6XfbMm48', label: 'Discord' },
     { icon: 'npm', url: 'https://www.npmjs.com/package/maltty', label: 'npm' },
   ],
   footer: {
     tagline: 'The batteries-included TypeScript CLI framework.',
-    copyright: { company: 'Zac Rosenbauer', year: 2026 },
+    copyright: { company: 'ByteFarm', year: 2026 },
     socials: true,
     columns: [
       {
@@ -388,6 +389,13 @@ export default defineConfig({
           { text: 'GitHub', href: 'https://github.com/thebytefarm/maltty' },
           { text: 'npm', href: 'https://www.npmjs.com/package/maltty' },
           { text: 'Contributing', href: '/contributing' },
+        ],
+      },
+      {
+        heading: 'ByteFarm',
+        links: [
+          { text: 'bytefarm.sh', href: 'https://bytefarm.sh' },
+          { text: 'Discord', href: 'https://discord.gg/dk6XfbMm48' },
         ],
       },
     ],
