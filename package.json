@@ -37,7 +37,8 @@
     "validate": "turbo run typecheck --filter='./packages/*' && turbo run test --filter='./packages/*' && pnpm lint && pnpm format",
     "changeset": "changeset",
     "version": "changeset version",
-    "release": "pnpm build && changeset publish"
+    "release": "pnpm build && changeset publish",
+    "release:initial": "changeset version && pnpm build && changeset publish"
   },
   "devDependencies": {
     "@changesets/cli": "^2.30.0",
