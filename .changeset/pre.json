@@ -14,8 +14,5 @@
     "maltty": "0.24.0",
     "@maltty/utils": "0.4.2"
   },
-  "changesets": [
-    "expose-lib-subpaths",
-    "kidd-to-maltty-rename"
-  ]
+  "changesets": []
 }

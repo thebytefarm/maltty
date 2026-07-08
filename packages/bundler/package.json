@@ -1,6 +1,6 @@
 {
   "name": "@maltty/bundler",
-  "version": "1.0.0-rc.0",
+  "version": "0.9.1",
   "description": "Programmatic bundler for maltty CLI tools powered by tsdown",
   "keywords": [
     "bundler",
