@@ -1,7 +1,7 @@
 import { join } from 'node:path'
 
-import { compileTargets } from '@kidd-cli/config/utils'
-import { fs } from '@kidd-cli/utils/node'
+import { compileTargets } from '@maltty/config/utils'
+import { fs } from '@maltty/utils/node'
 import { match } from 'ts-pattern'
 
 import { BUILD_ARTIFACT_EXTENSIONS } from '../constants.js'
@@ -16,7 +16,7 @@ interface CleanResult {
 }
 
 /**
- * Remove kidd build artifacts from the output directory.
+ * Remove maltty build artifacts from the output directory.
  *
  * Removes files matching known build artifact extensions (`.js`, `.mjs`,
  * `.js.map`, `.mjs.map`). When compile mode is active, also removes the

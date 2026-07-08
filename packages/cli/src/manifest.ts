@@ -1,8 +1,8 @@
 import { join } from 'node:path'
 
-import type { ResultAsync } from '@kidd-cli/utils/fp'
-import { err, ok } from '@kidd-cli/utils/fp'
-import { readManifest } from '@kidd-cli/utils/manifest'
+import type { ResultAsync } from '@maltty/utils/fp'
+import { err, ok } from '@maltty/utils/fp'
+import { readManifest } from '@maltty/utils/manifest'
 
 /**
  * Validated CLI manifest with all required fields guaranteed present.

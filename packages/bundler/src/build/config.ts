@@ -8,7 +8,7 @@ import { createAutoloadPlugin } from '../autoloader/autoload-plugin.js'
 import { ALWAYS_BUNDLE, NODE_BUILTINS, SHEBANG, STUB_PACKAGES } from '../constants.js'
 import type { ResolvedBundlerConfig } from '../types.js'
 
-const TAG_MODULE_PATH = createRequire(import.meta.url).resolve('@kidd-cli/utils/tag')
+const TAG_MODULE_PATH = createRequire(import.meta.url).resolve('@maltty/utils/tag')
 
 /**
  * Convert a resolved bundler config to a tsdown InlineConfig for production builds.
@@ -86,7 +86,7 @@ export function toTsdownWatchConfig(params: {
  * `bun build --compile` never encounters unresolvable bare imports. Only
  * Node.js builtins and explicit user externals are kept external.
  *
- * In normal (non-compile) mode, only `@kidd-cli/*` packages are force-bundled
+ * In normal (non-compile) mode, only `@maltty/*` packages are force-bundled
  * and everything else in `node_modules` is left external by tsdown's default.
  *
  * @private
@@ -122,9 +122,9 @@ function resolveAlwaysBundle(compile: boolean): RegExp[] {
  * Build the `define` map for tsdown/rolldown.
  *
  * Merges three sources (lowest to highest precedence):
- * 1. `KIDD_PUBLIC_*` env vars — prefixed with `process.env.` for rolldown replacement
- * 2. `__KIDD_VERSION__` — injected when a version string is available
- * 3. Explicit `define` from `kidd.config.ts` — user overrides win
+ * 1. `MALTTY_PUBLIC_*` env vars — prefixed with `process.env.` for rolldown replacement
+ * 2. `__MALTTY_VERSION__` — injected when a version string is available
+ * 3. Explicit `define` from `maltty.config.ts` — user overrides win
  *
  * @private
  * @param params - The version and user-defined constants.
@@ -141,7 +141,7 @@ function buildDefine(params: {
 
   const versionDefine = match(params.version)
     .with(undefined, () => ({}))
-    .otherwise((v) => ({ __KIDD_VERSION__: JSON.stringify(v) }))
+    .otherwise((v) => ({ __MALTTY_VERSION__: JSON.stringify(v) }))
 
   return {
     ...envDefines,
@@ -151,9 +151,9 @@ function buildDefine(params: {
 }
 
 /**
- * Resolve `KIDD_PUBLIC_*` environment variables into a define map.
+ * Resolve `MALTTY_PUBLIC_*` environment variables into a define map.
  *
- * Scans `process.env` for keys prefixed with `KIDD_PUBLIC_` and returns
+ * Scans `process.env` for keys prefixed with `MALTTY_PUBLIC_` and returns
  * clean key-value pairs with JSON-stringified values.
  *
  * @param env - The environment variables to scan (defaults to `process.env`).
@@ -164,7 +164,7 @@ export function resolveBuildVars(
 ): Record<string, string> {
   return Object.fromEntries(
     Object.entries(env)
-      .filter(([key]) => key.startsWith('KIDD_PUBLIC_'))
+      .filter(([key]) => key.startsWith('MALTTY_PUBLIC_'))
       .map(([key, value]) => [key, JSON.stringify(value ?? '')])
   )
 }
@@ -204,7 +204,7 @@ function createStubPlugin(packages: readonly string[]): Rolldown.Plugin {
   const STUB_PREFIX = '\0stub:'
 
   return {
-    name: 'kidd-stub-packages',
+    name: 'maltty-stub-packages',
     resolveId(source) {
       if (stubbed.has(source)) {
         return `${STUB_PREFIX}${source}`

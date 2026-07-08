@@ -1,4 +1,4 @@
-import { command } from '@kidd-cli/core'
+import { command } from 'maltty'
 
 export default command({
   description: 'Authenticate with the service',

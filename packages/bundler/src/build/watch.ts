@@ -1,4 +1,4 @@
-import { err, ok } from '@kidd-cli/utils/fp'
+import { err, ok } from '@maltty/utils/fp'
 import { attemptAsync } from 'es-toolkit'
 import { build as tsdownBuild } from 'tsdown'
 

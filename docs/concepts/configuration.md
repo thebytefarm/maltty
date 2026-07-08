@@ -1,6 +1,6 @@
 # Configuration
 
-The configuration system for kidd CLIs. Supports multiple file formats, automatic discovery, Zod schema validation, and a typed config client API.
+The configuration system for maltty CLIs. Supports multiple file formats, automatic discovery, Zod schema validation, and a typed config client API.
 
 ## Supported Formats
 
@@ -14,10 +14,10 @@ Config files are named `.<name>.jsonc`, `.<name>.json`, or `.<name>.yaml`, where
 
 ## `defineConfig()`
 
-Type-safe helper for `kidd.config.ts`. Used by the `@kidd-cli/cli` build system.
+Type-safe helper for `maltty.config.ts`. Used by the `@maltty/cli` build system.
 
 ```ts
-import { defineConfig } from '@kidd-cli/core'
+import { defineConfig } from 'maltty/config'
 
 export default defineConfig({
   entry: './index.ts',
@@ -37,15 +37,15 @@ export default defineConfig({
 
 ## Config Middleware
 
-Configuration is purely opt-in via the `config()` middleware from `@kidd-cli/core/config`. Register it in the middleware array to make `ctx.config` available in handlers.
+Configuration is purely opt-in via the `config()` middleware from `maltty/config`. Register it in the middleware array to make `ctx.config` available in handlers.
 
 ### Lazy loading (default)
 
 By default, config is loaded lazily -- nothing is read from disk until the handler calls `ctx.config.load()`:
 
 ```ts
-import { cli } from '@kidd-cli/core'
-import { config } from '@kidd-cli/core/config'
+import { cli } from 'maltty'
+import { config } from 'maltty/config'
 import { configSchema } from './config.js'
 
 cli({
@@ -112,11 +112,11 @@ result.layers // ConfigLayer[]
 
 ## Typing `ctx.config`
 
-The Zod schema validates config at runtime, but TypeScript cannot automatically propagate the schema type to `ctx.config` in command handlers (commands are defined in separate files and dynamically imported). Use `ConfigType` with module augmentation on `@kidd-cli/core/config` to get compile-time safety:
+The Zod schema validates config at runtime, but TypeScript cannot automatically propagate the schema type to `ctx.config` in command handlers (commands are defined in separate files and dynamically imported). Use `ConfigType` with module augmentation on `maltty/config` to get compile-time safety:
 
 ```ts
 // src/config.ts
-import type { ConfigType } from '@kidd-cli/core/config'
+import type { ConfigType } from 'maltty/config'
 import { z } from 'zod'
 
 export const configSchema = z.object({
@@ -124,7 +124,7 @@ export const configSchema = z.object({
   org: z.string().min(1),
 })
 
-declare module '@kidd-cli/core/config' {
+declare module 'maltty/config' {
   interface ConfigRegistry extends ConfigType<typeof configSchema> {}
 }
 ```
@@ -133,15 +133,15 @@ This keeps the schema as the single source of truth -- `ConfigRegistry` is alway
 
 You can scaffold this setup automatically:
 
-- **New projects:** `kidd init --config`
-- **Existing projects:** `kidd add config`
+- **New projects:** `maltty init --config`
+- **Existing projects:** `maltty add config`
 
 ## Config Client
 
-The `createConfigClient` factory (from `kidd/config`) provides a standalone API for loading, finding, and writing config files outside of the `cli()` bootstrap.
+The `createConfigClient` factory (from `maltty/config`) provides a standalone API for loading, finding, and writing config files outside of the `cli()` bootstrap.
 
 ```ts
-import { createConfigClient } from '@kidd-cli/core/config'
+import { createConfigClient } from 'maltty/config'
 
 const config = createConfigClient({
   name: 'my-app',
@@ -291,7 +291,7 @@ const setupCommand = command({
 Use different config file names for different environments:
 
 ```ts
-import { config } from '@kidd-cli/core/config'
+import { config } from 'maltty/config'
 
 cli({
   name: 'my-app',
@@ -328,6 +328,6 @@ cli({
 
 ## References
 
-- [Core Reference](../reference/kidd.md)
+- [Core Reference](../reference/maltty.md)
 - [Context](./context.md)
-- [@kidd-cli/cli Reference](../reference/cli.md)
+- [@maltty/cli Reference](../reference/cli.md)

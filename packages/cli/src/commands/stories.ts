@@ -1,10 +1,10 @@
-import type { Command } from '@kidd-cli/core'
-import { StoriesScreen } from '@kidd-cli/core/stories'
-import { screen } from '@kidd-cli/core/ui'
+import type { Command } from 'maltty'
+import { StoriesScreen } from 'maltty/stories'
+import { screen } from 'maltty/ui'
 import { z } from 'zod'
 
 /**
- * Options schema for the `kidd stories` command.
+ * Options schema for the `maltty stories` command.
  */
 const options = z.object({
   include: z.string().describe('Glob pattern for story files').optional(),

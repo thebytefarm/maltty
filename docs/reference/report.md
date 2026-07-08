@@ -2,7 +2,7 @@
 
 Structured reporting middleware. Decorates `ctx.report` with methods for writing checks, findings, and summaries.
 
-Import from `@kidd-cli/core/report`.
+Import from `maltty/report`.
 
 ## report(options?)
 
@@ -102,9 +102,9 @@ Middleware environment descriptor. Declares that `ctx.report` will be available 
 ## Module augmentation
 
 ```ts
-import type { Report } from '@kidd-cli/core/report'
+import type { Report } from 'maltty/report'
 
-declare module '@kidd-cli/core' {
+declare module 'maltty' {
   interface CommandContext {
     readonly report: Report
   }
@@ -114,4 +114,4 @@ declare module '@kidd-cli/core' {
 ## References
 
 - [Reporting](../concepts/reporting.md)
-- [Core](./kidd.md)
+- [Core](./maltty.md)

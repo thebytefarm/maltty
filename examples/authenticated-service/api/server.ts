@@ -2,7 +2,7 @@
  * Faux authenticated API server.
  *
  * A minimal HTTP server that validates bearer tokens and serves
- * user and repository data. Used to demonstrate the kidd auth
+ * user and repository data. Used to demonstrate the maltty auth
  * and http middleware in action.
  *
  * Start with: `pnpm api` or `npx tsx api/server.ts`

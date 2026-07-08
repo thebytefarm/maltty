@@ -1,73 +1,73 @@
-# @kidd-cli/cli
+# @maltty/cli
 
-DX companion CLI for the kidd framework. Provides scaffolding, build tooling, a dev server, and diagnostics for kidd-based CLI projects.
+DX companion CLI for the maltty framework. Provides scaffolding, build tooling, a dev server, and diagnostics for maltty-based CLI projects.
 
 ## Installation
 
 ```bash
-pnpm add -D @kidd-cli/cli
+pnpm add -D @maltty/cli
 ```
 
-This package installs the `kidd` binary.
+This package installs the `maltty` binary.
 
 ## Commands
 
-### `kidd init`
+### `maltty init`
 
-Scaffold a new kidd CLI project with a recommended directory structure, config file, and starter command.
-
-```bash
-kidd init
-```
-
-### `kidd build`
-
-Bundle your CLI using tsdown. Reads `kidd.config.ts` for entry point, output directory, and compile targets.
+Scaffold a new maltty CLI project with a recommended directory structure, config file, and starter command.
 
 ```bash
-kidd build
-kidd build --compile    # produce standalone binaries
+maltty init
 ```
 
-### `kidd dev`
+### `maltty build`
+
+Bundle your CLI using tsdown. Reads `maltty.config.ts` for entry point, output directory, and compile targets.
+
+```bash
+maltty build
+maltty build --compile    # produce standalone binaries
+```
+
+### `maltty dev`
 
 Start a dev server that watches for changes and rebuilds automatically.
 
 ```bash
-kidd dev
+maltty dev
 ```
 
-### `kidd commands`
+### `maltty commands`
 
 List all registered commands in the project.
 
 ```bash
-kidd commands
+maltty commands
 ```
 
-### `kidd doctor`
+### `maltty doctor`
 
 Run diagnostics to verify your project setup, dependencies, and configuration.
 
 ```bash
-kidd doctor
+maltty doctor
 ```
 
-### `kidd stories`
+### `maltty stories`
 
 Launch the stories viewer TUI for browsing and previewing component stories in the terminal. Discovers `.stories.tsx` files in the project and renders them with an interactive props editor.
 
 ```bash
-kidd stories
-kidd stories --include "src/components/**/*.stories.tsx"
+maltty stories
+maltty stories --include "src/components/**/*.stories.tsx"
 ```
 
 ## Configuration
 
-The CLI reads from `kidd.config.ts` in your project root:
+The CLI reads from `maltty.config.ts` in your project root:
 
 ```ts
-import { defineConfig } from '@kidd-cli/core'
+import { defineConfig } from 'maltty/config'
 
 export default defineConfig({
   entry: './src/index.ts',
@@ -85,4 +85,4 @@ export default defineConfig({
 
 ## License
 
-MIT -- [GitHub](https://github.com/joggrdocs/kidd)
+MIT -- [GitHub](https://github.com/thebytefarm/maltty)

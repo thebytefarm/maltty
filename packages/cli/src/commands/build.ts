@@ -1,11 +1,11 @@
 import { relative } from 'node:path'
 
-import { createBundler, normalizeCompileOptions } from '@kidd-cli/bundler'
-import type { CompiledBinary } from '@kidd-cli/bundler'
-import type { CompileTarget, KiddConfig } from '@kidd-cli/config'
-import { loadConfig } from '@kidd-cli/config/utils'
-import { command } from '@kidd-cli/core'
-import type { Command, CommandContext } from '@kidd-cli/core'
+import { createBundler, normalizeCompileOptions } from '@maltty/bundler'
+import type { CompiledBinary } from '@maltty/bundler'
+import type { CompileTarget, MalttyConfig } from '@maltty/config'
+import { loadConfig } from '@maltty/config/utils'
+import { command } from 'maltty'
+import type { Command, CommandContext } from 'maltty'
 import pc from 'picocolors'
 import { z } from 'zod'
 
@@ -24,16 +24,16 @@ const options = z.object({
 type BuildArgs = z.infer<typeof options>
 
 /**
- * Build a kidd CLI project for production.
+ * Build a maltty CLI project for production.
  *
- * Loads the project's `kidd.config.ts`, invokes the bundler, and reports
+ * Loads the project's `maltty.config.ts`, invokes the bundler, and reports
  * the output entry file and directory on success. When `--compile` or
  * `--targets` is provided (or `compile` is set in config), also compiles
  * to standalone binaries via Bun.
  */
 const buildCommand: Command = command({
   options,
-  description: 'Build a kidd CLI project for production',
+  description: 'Build a maltty CLI project for production',
   handler: async (ctx: CommandContext<BuildArgs>) => {
     const cwd = process.cwd()
     const startTime = Date.now()
@@ -131,10 +131,10 @@ export default buildCommand
  * @returns The config to hand to the bundler.
  */
 function resolveMergedConfig(params: {
-  readonly config: KiddConfig
+  readonly config: MalttyConfig
   readonly shouldCompile: boolean
   readonly targets: readonly string[] | undefined
-}): KiddConfig {
+}): MalttyConfig {
   if (params.shouldCompile) {
     return mergeCompileTargets({ config: params.config, targets: params.targets })
   }
@@ -156,7 +156,7 @@ function resolveMergedConfig(params: {
 function resolveCompileIntent(params: {
   readonly targets: readonly string[] | undefined
   readonly compileFlag: boolean | undefined
-  readonly configCompile: boolean | KiddConfig['compile']
+  readonly configCompile: boolean | MalttyConfig['compile']
 }): boolean {
   if (params.targets && params.targets.length > 0) {
     return true
@@ -185,9 +185,9 @@ function resolveCompileIntent(params: {
  * @returns A config with compile targets merged in.
  */
 function mergeCompileTargets(params: {
-  readonly config: KiddConfig
+  readonly config: MalttyConfig
   readonly targets: readonly string[] | undefined
-}): KiddConfig {
+}): MalttyConfig {
   if (!params.targets || params.targets.length === 0) {
     return params.config
   }
@@ -211,9 +211,9 @@ function mergeCompileTargets(params: {
  * @returns A config with the clean option merged in.
  */
 function mergeCleanOption(params: {
-  readonly config: KiddConfig
+  readonly config: MalttyConfig
   readonly clean: boolean | undefined
-}): KiddConfig {
+}): MalttyConfig {
   if (params.clean === undefined) {
     return params.config
   }
@@ -267,7 +267,7 @@ function formatVersionLine(version: string | undefined): string[] {
 /**
  * Format define constants into display lines.
  *
- * Omits `__KIDD_VERSION__` (already shown as `version`) and returns
+ * Omits `__MALTTY_VERSION__` (already shown as `version`) and returns
  * remaining entries as `define   key = value` lines.
  *
  * @private

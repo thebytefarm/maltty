@@ -1,7 +1,7 @@
 import type { CompileTarget } from './utils/compile.js'
 
 /**
- * Build options passed to tsdown during `kidd build`.
+ * Build options passed to tsdown during `maltty build`.
  */
 export interface BuildOptions {
   /**
@@ -21,13 +21,13 @@ export interface BuildOptions {
    */
   sourcemap?: boolean
   /**
-   * Additional external packages (beyond kidd's defaults).
+   * Additional external packages (beyond maltty's defaults).
    */
   external?: string[]
   /**
    * Clean build artifacts before building. Default: true.
    *
-   * When enabled, only files created by kidd are removed (`.js`, `.mjs`,
+   * When enabled, only files created by maltty are removed (`.js`, `.mjs`,
    * `.map` files). Foreign files in the output directory are preserved
    * and a warning is printed.
    */
@@ -39,13 +39,13 @@ export interface BuildOptions {
    * string values. Values should be JSON-stringified when embedding strings
    * (e.g. `JSON.stringify('my-value')`).
    *
-   * Merged with auto-resolved `KIDD_PUBLIC_*` env vars (explicit takes precedence).
+   * Merged with auto-resolved `MALTTY_PUBLIC_*` env vars (explicit takes precedence).
    */
   define?: Record<string, string>
 }
 
 /**
- * Binary compilation options for `kidd compile`.
+ * Binary compilation options for `maltty compile`.
  */
 export interface CompileOptions {
   /**
@@ -64,16 +64,16 @@ export interface CompileOptions {
    * Load `.env` files at runtime in the compiled binary. Default: false.
    *
    * When disabled, the compiled binary will not auto-load `.env` files from
-   * the working directory. Use the kidd auth dotenv strategy for explicit
+   * the working directory. Use the maltty auth dotenv strategy for explicit
    * `.env` loading instead.
    */
   readonly autoloadDotenv?: boolean
 }
 
 /**
- * Configuration for kidd.config.ts.
+ * Configuration for maltty.config.ts.
  */
-export interface KiddConfig {
+export interface MalttyConfig {
   /**
    * Entry point for the CLI. Default: './index.ts'.
    */
@@ -83,11 +83,11 @@ export interface KiddConfig {
    */
   commands?: string
   /**
-   * Build options for kidd build.
+   * Build options for maltty build.
    */
   build?: BuildOptions
   /**
-   * Binary compilation options for kidd build --compile.
+   * Binary compilation options for maltty build --compile.
    *
    * - `true` enables compilation with default options.
    * - An object provides explicit compile options (targets, output dir, name).

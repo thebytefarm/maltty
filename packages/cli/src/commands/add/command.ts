@@ -1,9 +1,9 @@
 import { join } from 'node:path'
 
-import { loadConfig } from '@kidd-cli/config/utils'
-import type { LoadConfigResult } from '@kidd-cli/config/utils'
-import { command } from '@kidd-cli/core'
-import type { Command, CommandContext } from '@kidd-cli/core'
+import { loadConfig } from '@maltty/config/utils'
+import type { LoadConfigResult } from '@maltty/config/utils'
+import { command } from 'maltty'
+import type { Command, CommandContext } from 'maltty'
 import { z } from 'zod'
 
 import { detectProject } from '../../lib/detect.js'
@@ -30,7 +30,7 @@ const addCommandCommand: Command = command({
       return ctx.fail(detectError.message)
     }
     if (!project) {
-      return ctx.fail('Not in a kidd project. Run `kidd init` first.')
+      return ctx.fail('Not in a maltty project. Run `maltty init` first.')
     }
 
     const [, configResult] = await loadConfig({ cwd: project.rootDir })
@@ -146,10 +146,10 @@ async function resolveIncludeArgs(ctx: CommandContext<AddCommandArgs>): Promise<
 }
 
 /**
- * Resolve the commands output directory from the kidd config.
+ * Resolve the commands output directory from the maltty config.
  *
- * Uses the `commands` field from `kidd.config.ts` when available,
- * falling back to the kidd default of `'commands'`.
+ * Uses the `commands` field from `maltty.config.ts` when available,
+ * falling back to the maltty default of `'commands'`.
  *
  * @param configResult - The loaded config result, or null when loading failed.
  * @param rootDir - The project root directory.

@@ -4,16 +4,16 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "kidd dev",
-    "build": "kidd build",
+    "dev": "maltty dev",
+    "build": "maltty build",
     "typecheck": "tsgo --noEmit"
   },
   "dependencies": {
-    "@kidd-cli/core": "workspace:*",
+    "maltty": "workspace:*",
     "zod": "catalog:"
   },
   "devDependencies": {
-    "@kidd-cli/cli": "workspace:*",
+    "@maltty/cli": "workspace:*",
     "tsdown": "catalog:",
     "tsx": "catalog:",
     "typescript": "catalog:"

@@ -93,7 +93,7 @@ import { groupBy, keyBy, chunk, uniqBy } from 'es-toolkit'
 
 // Group scripts by workspace
 const scriptsByWorkspace = groupBy(scripts, 'workspace')
-// { root: [...], packages/core: [...] }
+// { root: [...], packages/maltty: [...] }
 
 // Create name lookup
 const scriptsByName = keyBy(scripts, 'name')

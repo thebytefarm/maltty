@@ -1,13 +1,13 @@
 # Screens
 
-kidd supports two command authoring models: handler-based commands for sequential log-and-exit flows, and screen-based commands for interactive React/Ink terminal UIs. Screen commands replace the handler function with a React component that receives parsed args as props.
+maltty supports two command authoring models: handler-based commands for sequential log-and-exit flows, and screen-based commands for interactive React/Ink terminal UIs. Screen commands replace the handler function with a React component that receives parsed args as props.
 
 ## Defining a screen
 
-Use `screen()` from `@kidd-cli/core/ui` to define a screen command. It takes a render component and optional options, just like `command()` takes a handler:
+Use `screen()` from `maltty/ui` to define a screen command. It takes a render component and optional options, just like `command()` takes a handler:
 
 ```ts
-import { screen } from '@kidd-cli/core/ui'
+import { screen } from 'maltty/ui'
 import { z } from 'zod'
 
 export default screen({
@@ -31,7 +31,7 @@ Screen commands support two exit modes:
 ### Basic example (auto exit)
 
 ```tsx
-import { Box, screen, Spinner, Text, useApp } from '@kidd-cli/core/ui'
+import { Box, screen, Spinner, Text, useApp } from 'maltty/ui'
 import React, { useEffect, useState } from 'react'
 import { z } from 'zod'
 
@@ -69,7 +69,7 @@ export default screen({
 ### Interactive example (manual exit)
 
 ```tsx
-import { Box, screen, Select, Text, useApp, useInput } from '@kidd-cli/core/ui'
+import { Box, screen, Select, Text, useApp, useInput } from 'maltty/ui'
 import React, { useState } from 'react'
 
 function Dashboard(): React.ReactElement {
@@ -106,14 +106,14 @@ export default screen({
 
 Inside screen components, runtime context is accessed via hooks instead of the `ctx` object. Hooks like `useConfig()`, `useMeta()`, `useStore()`, and `useApp()` replace the corresponding `ctx` properties.
 
-These hooks are only available inside components rendered by `screen()`. They throw if used outside the KiddProvider.
+These hooks are only available inside components rendered by `screen()`. They throw if used outside the MalttyProvider.
 
 `ctx.log`, `ctx.prompts`, `ctx.status`, `ctx.colors`, and `ctx.format` are not available in screen components. Screen commands use React components and Ink primitives for all output.
 
 See the [screen() reference](../reference/screen.md) for the full hooks and components API.
 
 ```tsx
-import { Text, useConfig, useMeta } from '@kidd-cli/core/ui'
+import { Text, useConfig, useMeta } from 'maltty/ui'
 import React from 'react'
 
 function Status(): React.ReactElement {
@@ -150,11 +150,11 @@ This means middleware like `auth()`, `report()`, or custom middleware will not r
 - Use `.ts` extension for handler-only commands.
 - Command-private components go in a `_components/` subdirectory (leading underscore prevents autoloader from treating them as commands).
 - Name React components with PascalCase.
-- Import all Ink primitives from `@kidd-cli/core/ui`, never directly from `ink` or `@inkjs/ui`.
+- Import all Ink primitives from `maltty/ui`, never directly from `ink` or `@inkjs/ui`.
 
 ## Developing components with stories
 
-kidd includes a Storybook-like TUI for developing and previewing screen components in isolation. Define `.stories.tsx` files alongside your components with `story()` or `stories()` from `@kidd-cli/core/stories`, then run `kidd stories` to browse them with live preview and an interactive props editor.
+maltty includes a Storybook-like TUI for developing and previewing screen components in isolation. Define `.stories.tsx` files alongside your components with `story()` or `stories()` from `maltty/stories`, then run `maltty stories` to browse them with live preview and an interactive props editor.
 
 ## References
 
@@ -162,4 +162,4 @@ kidd includes a Storybook-like TUI for developing and previewing screen componen
 - [Lifecycle](./lifecycle.md)
 - [Build a CLI](../guides/build-a-cli.md)
 - [screen() Reference](../reference/screen.md)
-- [Core](../reference/kidd.md)
+- [Core](../reference/maltty.md)

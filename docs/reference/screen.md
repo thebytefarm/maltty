@@ -2,7 +2,7 @@
 
 Define a command that renders a React/Ink terminal UI instead of running a handler.
 
-Import from `@kidd-cli/core/ui`.
+Import from `maltty/ui`.
 
 ## ScreenDef
 
@@ -77,29 +77,29 @@ Re-exported from Ink:
 | `useCursor()`                | Show/hide terminal cursor                         |
 | `useIsScreenReaderEnabled()` | Detect screen reader                              |
 
-## KiddProvider
+## MalttyProvider
 
 Wraps screen components automatically. Not typically instantiated directly.
 
-| Prop       | Type               | Description                            |
-| ---------- | ------------------ | -------------------------------------- |
-| `children` | `ReactNode`        | React tree to wrap                     |
-| `value`    | `KiddContextValue` | Context containing config, meta, store |
+| Prop       | Type                 | Description                            |
+| ---------- | -------------------- | -------------------------------------- |
+| `children` | `ReactNode`          | React tree to wrap                     |
+| `value`    | `MalttyContextValue` | Context containing config, meta, store |
 
 ## Types
 
-Exported from `@kidd-cli/core/ui`:
+Exported from `maltty/ui`:
 
-| Type                | Description                                  |
-| ------------------- | -------------------------------------------- |
-| `ScreenDef`         | Definition object passed to `screen()`       |
-| `ScreenExit`        | `'auto' \| 'manual'`                         |
-| `ScreenRenderProps` | Internal props passed to the render function |
-| `KiddProviderProps` | Props for the KiddProvider component         |
-| `Option`            | Option type for Select/MultiSelect           |
+| Type                  | Description                                  |
+| --------------------- | -------------------------------------------- |
+| `ScreenDef`           | Definition object passed to `screen()`       |
+| `ScreenExit`          | `'auto' \| 'manual'`                         |
+| `ScreenRenderProps`   | Internal props passed to the render function |
+| `MalttyProviderProps` | Props for the MalttyProvider component       |
+| `Option`              | Option type for Select/MultiSelect           |
 
 ## References
 
 - [Screens](../concepts/screens.md)
 - [Build a CLI](../guides/build-a-cli.md)
-- [Core](./kidd.md)
+- [Core](./maltty.md)

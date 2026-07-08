@@ -25,7 +25,7 @@ describe('detectProject()', () => {
     expect(result).toBeNull()
   })
 
-  it('should return null when kidd is not in dependencies', async () => {
+  it('should return null when maltty is not in dependencies', async () => {
     mockedAccess.mockResolvedValue(undefined)
     mockedReadFile.mockResolvedValue(
       JSON.stringify({
@@ -40,11 +40,11 @@ describe('detectProject()', () => {
     expect(result).toBeNull()
   })
 
-  it('should detect kidd project with kidd in dependencies', async () => {
+  it('should detect maltty project with maltty in dependencies', async () => {
     mockedAccess.mockResolvedValueOnce(undefined).mockResolvedValueOnce(undefined)
     mockedReadFile.mockResolvedValue(
       JSON.stringify({
-        dependencies: { '@kidd-cli/core': 'workspace:*' },
+        dependencies: { maltty: 'workspace:*' },
       })
     )
 
@@ -53,15 +53,15 @@ describe('detectProject()', () => {
     expect(error).toBeNull()
     expect(result).not.toBeNull()
     expect(result!.rootDir).toBe('/my-project')
-    expect(result!.hasKiddDep).toBeTruthy()
+    expect(result!.hasMalttyDep).toBeTruthy()
     expect(result!.commandsDir).toBe('/my-project/src/commands')
   })
 
-  it('should detect kidd project with kidd in devDependencies', async () => {
+  it('should detect maltty project with maltty in devDependencies', async () => {
     mockedAccess.mockResolvedValueOnce(undefined).mockRejectedValueOnce(new Error('ENOENT'))
     mockedReadFile.mockResolvedValue(
       JSON.stringify({
-        devDependencies: { '@kidd-cli/core': '^1.0.0' },
+        devDependencies: { maltty: '^1.0.0' },
       })
     )
 
@@ -69,7 +69,7 @@ describe('detectProject()', () => {
 
     expect(error).toBeNull()
     expect(result).not.toBeNull()
-    expect(result!.hasKiddDep).toBeTruthy()
+    expect(result!.hasMalttyDep).toBeTruthy()
     expect(result!.commandsDir).toBeNull()
   })
 
@@ -77,7 +77,7 @@ describe('detectProject()', () => {
     mockedAccess.mockResolvedValueOnce(undefined).mockRejectedValueOnce(new Error('ENOENT'))
     mockedReadFile.mockResolvedValue(
       JSON.stringify({
-        dependencies: { '@kidd-cli/core': 'workspace:*' },
+        dependencies: { maltty: 'workspace:*' },
       })
     )
 

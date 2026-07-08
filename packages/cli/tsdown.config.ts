@@ -3,9 +3,9 @@ import { defineConfig } from 'tsdown'
 export default defineConfig({
   clean: true,
   deps: {
-    // Bundle @kidd-cli/* packages so the published CLI is self-contained and
+    // Bundle @maltty/* packages so the published CLI is self-contained and
     // Does not depend on workspace packages being published with correct exports.
-    alwaysBundle: [/^@kidd-cli\//],
+    alwaysBundle: [/^@maltty\//],
     // Keep packages with native bindings external — they cannot be inlined.
     neverBundle: ['tsdown', /^@rolldown\//, /^rolldown/],
   },

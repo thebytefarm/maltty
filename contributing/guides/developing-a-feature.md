@@ -5,7 +5,7 @@ Ship a feature end-to-end: branch, code, test, changeset, PR, and merge.
 ## Prerequisites
 
 - Local environment set up (see [Getting Started](./getting-started.md))
-- Familiarity with relevant [standards](https://github.com/joggrdocs/kidd/blob/main/contributing/README.md)
+- Familiarity with relevant [standards](https://github.com/thebytefarm/maltty/blob/main/contributing/README.md)
 
 ## Steps
 
@@ -60,7 +60,7 @@ pnpm test
 Use [Conventional Commits](https://www.conventionalcommits.org/) format:
 
 ```bash
-git commit -m "feat(packages/core): add parallel script execution"
+git commit -m "feat(packages/maltty): add parallel script execution"
 ```
 
 Format: `type(scope): description` -- see [Commit Standards](../standards/git-commits.md) for types, scopes, and examples.
@@ -75,7 +75,7 @@ Lefthook runs git hooks automatically:
 
 ### 6. Add a changeset
 
-If the change affects published packages (`@kidd-cli/core`, `@kidd-cli/*`), create a changeset:
+If the change affects published packages (`maltty`, `@maltty/*`), create a changeset:
 
 ```bash
 pnpm changeset
@@ -85,7 +85,7 @@ Follow the prompts to select the package, semver bump type (patch, minor, major)
 
 **When to add a changeset:**
 
-- New features, bug fixes, or breaking changes to `@kidd-cli/core` or `@kidd-cli/*` packages
+- New features, bug fixes, or breaking changes to `maltty` or `@maltty/*` packages
 
 **When to skip:**
 
@@ -133,7 +133,7 @@ CI runs: lint, format, typecheck, test.
 Respond to review comments within 24 hours. Make fixup commits and push:
 
 ```bash
-git commit -m "fix(packages/core): address review feedback"
+git commit -m "fix(packages/maltty): address review feedback"
 git push
 ```
 

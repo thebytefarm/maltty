@@ -2,10 +2,10 @@
 
 Define a command with typed options, positionals, and a handler function.
 
-Import from `@kidd-cli/core`.
+Import from `maltty`.
 
 ```ts
-import { command } from '@kidd-cli/core'
+import { command } from 'maltty'
 import { z } from 'zod'
 
 const deploy = command({
@@ -123,7 +123,7 @@ const generate = command({
 Dynamically discover commands from a directory at runtime.
 
 ```ts
-import { autoload } from '@kidd-cli/core'
+import { autoload } from 'maltty'
 
 cli({
   name: 'my-app',

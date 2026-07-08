@@ -1,7 +1,7 @@
 import { join } from 'node:path'
 
-import { command } from '@kidd-cli/core'
-import type { Command, CommandContext } from '@kidd-cli/core'
+import { command } from 'maltty'
+import type { Command, CommandContext } from 'maltty'
 import { z } from 'zod'
 
 import { detectProject } from '../../lib/detect.js'
@@ -25,7 +25,7 @@ const addMiddlewareCommand: Command = command({
       return ctx.fail(detectError.message)
     }
     if (!project) {
-      return ctx.fail('Not in a kidd project. Run `kidd init` first.')
+      return ctx.fail('Not in a maltty project. Run `maltty init` first.')
     }
 
     const middlewareName = await resolveMiddlewareName(ctx)

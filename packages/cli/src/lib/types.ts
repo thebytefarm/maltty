@@ -1,4 +1,4 @@
-import type { Result } from '@kidd-cli/utils/fp'
+import type { Result } from '@maltty/utils/fp'
 
 // ---------------------------------------------------------------------------
 // Errors
@@ -64,10 +64,10 @@ export interface WriteResult {
 // ---------------------------------------------------------------------------
 
 /**
- * Information about a detected kidd project in a directory.
+ * Information about a detected maltty project in a directory.
  */
 export interface ProjectInfo {
   readonly rootDir: string
   readonly commandsDir: string | null
-  readonly hasKiddDep: boolean
+  readonly hasMalttyDep: boolean
 }

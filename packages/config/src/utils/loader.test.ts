@@ -1,4 +1,4 @@
-import { TAG } from '@kidd-cli/utils/tag'
+import { TAG } from '@maltty/utils/tag'
 import { describe, expect, it, vi } from 'vitest'
 
 vi.mock(import('c12'), () => ({
@@ -13,7 +13,7 @@ describe(loadConfig, () => {
   it('should return a validated and tagged config on success', async () => {
     vi.mocked(c12LoadConfig).mockResolvedValueOnce({
       config: { entry: './src/index.ts' },
-      configFile: '/project/kidd.config.ts',
+      configFile: '/project/maltty.config.ts',
       cwd: '/project',
       layers: [],
     })
@@ -23,8 +23,8 @@ describe(loadConfig, () => {
     expect(error).toBeNull()
     expect(result).not.toBeNull()
     expect(result!.config.entry).toBe('./src/index.ts')
-    expect(result!.config[TAG]).toBe('KiddConfig')
-    expect(result!.configFile).toBe('/project/kidd.config.ts')
+    expect(result!.config[TAG]).toBe('MalttyConfig')
+    expect(result!.configFile).toBe('/project/maltty.config.ts')
   })
 
   it('should pass cwd, defaults, and overrides to c12', async () => {
@@ -44,7 +44,7 @@ describe(loadConfig, () => {
     expect(c12LoadConfig).toHaveBeenCalledWith({
       cwd: '/custom',
       defaults: { build: { out: './build' } },
-      name: 'kidd',
+      name: 'maltty',
       overrides: { entry: './main.ts' },
     })
   })
@@ -55,7 +55,7 @@ describe(loadConfig, () => {
     const [error, result] = await loadConfig()
 
     expect(error).toBeInstanceOf(Error)
-    expect(error!.message).toContain('Failed to load kidd config')
+    expect(error!.message).toContain('Failed to load maltty config')
     expect(error!.message).toContain('file not found')
     expect(result).toBeNull()
   })
@@ -63,7 +63,7 @@ describe(loadConfig, () => {
   it('should return error when config validation fails', async () => {
     vi.mocked(c12LoadConfig).mockResolvedValueOnce({
       config: { entry: 123 },
-      configFile: '/project/kidd.config.ts',
+      configFile: '/project/maltty.config.ts',
       cwd: '/project',
       layers: [],
     })
@@ -71,7 +71,7 @@ describe(loadConfig, () => {
     const [error, result] = await loadConfig()
 
     expect(error).toBeInstanceOf(Error)
-    expect(error!.message).toContain('Invalid kidd config')
+    expect(error!.message).toContain('Invalid maltty config')
     expect(result).toBeNull()
   })
 

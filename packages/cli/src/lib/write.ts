@@ -1,8 +1,8 @@
 import { dirname, join } from 'node:path'
 
-import { ok } from '@kidd-cli/utils/fp'
-import type { ResultAsync } from '@kidd-cli/utils/fp'
-import { fs } from '@kidd-cli/utils/node'
+import { ok } from '@maltty/utils/fp'
+import type { ResultAsync } from '@maltty/utils/fp'
+import { fs } from '@maltty/utils/node'
 
 import type { GenerateError, RenderedFile, WriteFilesParams, WriteResult } from './types.js'
 

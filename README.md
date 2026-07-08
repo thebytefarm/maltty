@@ -1,19 +1,19 @@
 <div align="center">
-  <img src="assets/banner.svg" alt="kidd" width="90%" />
+  <img src="assets/banner.svg" alt="maltty" width="90%" />
   <p><strong>An opinionated CLI framework for Node.js. Convention over configuration, end-to-end type safety.</strong></p>
 
-<a href="https://github.com/joggrdocs/kidd/actions/workflows/ci.yml"><img src="https://github.com/joggrdocs/kidd/actions/workflows/ci.yml/badge.svg?branch=main" alt="CI" /></a>
-<a href="https://www.npmjs.com/package/@kidd-cli/core"><img src="https://img.shields.io/npm/v/@kidd-cli/core" alt="npm version" /></a>
-<a href="https://github.com/joggrdocs/kidd/blob/main/LICENSE"><img src="https://img.shields.io/github/license/joggrdocs/kidd" alt="License" /></a>
+<a href="https://github.com/thebytefarm/maltty/actions/workflows/ci.yml"><img src="https://github.com/thebytefarm/maltty/actions/workflows/ci.yml/badge.svg?branch=main" alt="CI" /></a>
+<a href="https://www.npmjs.com/package/maltty"><img src="https://img.shields.io/npm/v/maltty" alt="npm version" /></a>
+<a href="https://github.com/thebytefarm/maltty/blob/main/LICENSE"><img src="https://img.shields.io/github/license/thebytefarm/maltty" alt="License" /></a>
 
-<a href="https://kidd.dev">📖 Documentation</a> &nbsp;&nbsp;&nbsp;·&nbsp;&nbsp;&nbsp; <a href="https://github.com/joggrdocs/kidd/issues">🐛 Issues</a>
+<a href="https://maltty.dev">📖 Documentation</a> &nbsp;&nbsp;&nbsp;·&nbsp;&nbsp;&nbsp; <a href="https://github.com/thebytefarm/maltty/issues">🐛 Issues</a>
 
 </div>
 
 ## Features
 
 - 🧰 **Batteries included** — Config, auth, prompts, logging, output, and middleware built in
-- 📁 **File-system autoloading** — Drop a file in `commands/`, get a command
+- 📁 **File-system auto-loading** — Drop a file in `commands/`, get a command
 - ⚡ **Build and compile** — Bundle your command tree or produce cross-platform standalone binaries
 - 🚀 **Two files to a full CLI** — Define a schema, write a handler, done
 - 🛠️ **Developer experience** — Scaffolding, hot reload, route inspection, and diagnostics out of the box
@@ -21,7 +21,7 @@
 ## Install
 
 ```bash
-npm install @kidd-cli/core
+npm install maltty
 ```
 
 ## Usage
@@ -30,7 +30,7 @@ npm install @kidd-cli/core
 
 ```ts
 // index.ts
-import { cli } from '@kidd-cli/core'
+import { cli } from 'maltty'
 import { z } from 'zod'
 
 await cli({
@@ -49,7 +49,7 @@ await cli({
 
 ```ts
 // commands/deploy.ts
-import { command } from '@kidd-cli/core'
+import { command } from 'maltty'
 import { z } from 'zod'
 
 export default command({
@@ -68,7 +68,7 @@ export default command({
 
 ```tsx
 // commands/dashboard.tsx
-import { screen, Box, Text, useScreenContext } from '@kidd-cli/core/ui'
+import { screen, Box, Text, useScreenContext } from 'maltty/ui'
 import { z } from 'zod'
 
 function Dashboard({ env }: { env: string }) {
@@ -93,9 +93,9 @@ export default screen({
 ### Run it
 
 ```bash
-kidd dev -- deploy --tag v1.2.3         # dev mode
-kidd build                              # bundle
-kidd compile                            # standalone binary
+maltty dev -- deploy --tag v1.2.3         # dev mode
+maltty build                              # bundle
+maltty compile                            # standalone binary
 ```
 
 ## License

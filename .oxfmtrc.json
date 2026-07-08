@@ -17,6 +17,7 @@
     "out",
     "coverage",
     ".claude",
+    ".ciderpress",
     "**/*.d.ts",
     "**/CHANGELOG.md"
   ]

@@ -1,4 +1,4 @@
-import { TAG } from '@kidd-cli/utils/tag'
+import { TAG } from '@maltty/utils/tag'
 import { describe, expect, it } from 'vitest'
 
 import { defineConfig } from './define-config.js'
@@ -8,13 +8,13 @@ describe(defineConfig, () => {
     const config = defineConfig({ entry: './src/index.ts' })
 
     expect(config.entry).toBe('./src/index.ts')
-    expect(config[TAG]).toBe('KiddConfig')
+    expect(config[TAG]).toBe('MalttyConfig')
   })
 
   it('should tag an empty config', () => {
     const config = defineConfig({})
 
-    expect(config[TAG]).toBe('KiddConfig')
+    expect(config[TAG]).toBe('MalttyConfig')
   })
 
   it('should preserve all config fields', () => {

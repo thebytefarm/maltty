@@ -14,4 +14,13 @@ catalog:
   typescript: ^6.0.2
   vitest: ^4.1.5
   yaml: ^2.8.3
-  zod: ^4.3.6
+  zod: ^4.4.3
+
+overrides:
+  fast-xml-parser: ^5.7.1
+  liquidjs: ^10.25.7
+  postcss: ^8.5.10
+  tar: ^7.5.13
+  uuid: ^14.0.0
+  vite: ^8.0.10
+  zod: ^4.4.3

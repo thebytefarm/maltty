@@ -4,18 +4,18 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "start": "tsx api/server.ts & API_PID=$!; kidd dev --cwd cli; kill $API_PID 2>/dev/null",
+    "start": "tsx api/server.ts & API_PID=$!; maltty dev --cwd cli; kill $API_PID 2>/dev/null",
     "api": "tsx api/server.ts",
-    "dev": "kidd dev --cwd cli",
-    "build": "kidd build --cwd cli",
+    "dev": "maltty dev --cwd cli",
+    "build": "maltty build --cwd cli",
     "typecheck": "tsgo --noEmit"
   },
   "dependencies": {
-    "@kidd-cli/core": "workspace:*",
+    "maltty": "workspace:*",
     "zod": "catalog:"
   },
   "devDependencies": {
-    "@kidd-cli/cli": "workspace:*",
+    "@maltty/cli": "workspace:*",
     "@types/node": "catalog:",
     "tsdown": "catalog:",
     "tsx": "catalog:",

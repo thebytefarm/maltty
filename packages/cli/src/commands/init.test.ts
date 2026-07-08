@@ -1,7 +1,7 @@
-import type { CommandContext } from '@kidd-cli/core'
+import type { CommandContext } from 'maltty'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-vi.mock(import('@kidd-cli/utils/manifest'), () => ({
+vi.mock(import('@maltty/utils/manifest'), () => ({
   readManifest: vi.fn(),
 }))
 
@@ -28,7 +28,7 @@ vi.mock(import('../lib/write.js'), () => ({
   writeFiles: vi.fn(),
 }))
 
-const { readManifest } = await import('@kidd-cli/utils/manifest')
+const { readManifest } = await import('@maltty/utils/manifest')
 const { readTemplateVersions } = await import('../lib/template-versions.js')
 const { renderTemplate } = await import('../lib/render.js')
 const { writeFiles } = await import('../lib/write.js')
@@ -73,7 +73,7 @@ function makeContext(argOverrides: Record<string, unknown> = {}): CommandContext
       text: vi.fn(),
     },
     status: { spinner: { message: vi.fn(), start: vi.fn(), stop: vi.fn() } },
-    meta: { command: ['init'], name: 'kidd', version: '0.0.0' },
+    meta: { command: ['init'], name: 'maltty', version: '0.0.0' },
     store: { clear: vi.fn(), delete: vi.fn(), get: vi.fn(), has: vi.fn(), set: vi.fn() },
   } as unknown as CommandContext
 }

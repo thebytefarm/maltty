@@ -1,12 +1,12 @@
 import { resolve } from 'node:path'
 
-import { createBundler, DEFAULT_ENTRY, normalizeCompileOptions } from '@kidd-cli/bundler'
-import type { BuildOutput, Bundler, CompileOutput, CompiledBinary } from '@kidd-cli/bundler'
-import type { CompileTarget, KiddConfig } from '@kidd-cli/config'
-import { compileTargets, loadConfig } from '@kidd-cli/config/utils'
-import { command } from '@kidd-cli/core'
-import type { Command, CommandContext } from '@kidd-cli/core'
-import { process as proc } from '@kidd-cli/utils/node'
+import { createBundler, DEFAULT_ENTRY, normalizeCompileOptions } from '@maltty/bundler'
+import type { BuildOutput, Bundler, CompileOutput, CompiledBinary } from '@maltty/bundler'
+import type { CompileTarget, MalttyConfig } from '@maltty/config'
+import { compileTargets, loadConfig } from '@maltty/config/utils'
+import { process as proc } from '@maltty/utils/node'
+import { command } from 'maltty'
+import type { Command, CommandContext } from 'maltty'
 import { match } from 'ts-pattern'
 import { z } from 'zod'
 
@@ -40,7 +40,7 @@ const options = z.object({
 type RunArgs = z.infer<typeof options>
 
 /**
- * Run the current kidd CLI project.
+ * Run the current maltty CLI project.
  *
  * Supports three engines:
  * - `node` (default) — builds first, then runs `node dist/index.js`
@@ -54,7 +54,7 @@ type RunArgs = z.infer<typeof options>
 const runCommand: Command = command({
   options,
   strict: false,
-  description: 'Run the current kidd CLI project',
+  description: 'Run the current maltty CLI project',
   handler: async (ctx: CommandContext<RunArgs>) => {
     const cwd = process.cwd()
 
@@ -130,7 +130,7 @@ async function runWithTsx(params: EngineParams): Promise<number> {
 /**
  * Build and compile the project, then execute the compiled binary.
  *
- * Requires compile targets to be configured in `kidd.config.ts` or
+ * Requires compile targets to be configured in `maltty.config.ts` or
  * provided via `--target`. Resolves the current platform's binary
  * from the compile output.
  *
@@ -148,7 +148,7 @@ async function runWithBinary(params: EngineParams): Promise<number> {
 
   if (!hasCompileTargets(configWithTarget)) {
     return params.ctx.fail(
-      'No compile targets configured. Set targets in kidd.config.ts or use --target.'
+      'No compile targets configured. Set targets in maltty.config.ts or use --target.'
     )
   }
 
@@ -182,7 +182,7 @@ async function runWithBinary(params: EngineParams): Promise<number> {
  */
 interface EngineParams {
   readonly args: RunArgs
-  readonly config: KiddConfig
+  readonly config: MalttyConfig
   readonly ctx: CommandContext<RunArgs>
   readonly cwd: string
   readonly passthroughArgs: readonly string[]
@@ -353,10 +353,10 @@ function resolveHostTarget(): string {
  * `false`, `undefined`, or an object with an explicitly empty `targets` array.
  *
  * @private
- * @param config - The kidd config to check.
+ * @param config - The maltty config to check.
  * @returns `true` when compilation is enabled.
  */
-function hasCompileTargets(config: KiddConfig): boolean {
+function hasCompileTargets(config: MalttyConfig): boolean {
   if (config.compile === true) {
     return true
   }
@@ -410,9 +410,9 @@ function validateTarget(params: {
  * @returns A config with the target override applied.
  */
 function applyTargetOverride(params: {
-  readonly config: KiddConfig
+  readonly config: MalttyConfig
   readonly target: CompileTarget | undefined
-}): KiddConfig {
+}): MalttyConfig {
   if (!params.target) {
     return params.config
   }
@@ -430,7 +430,7 @@ function applyTargetOverride(params: {
 
 /**
  * Extract passthrough arguments by sequentially walking argv tokens
- * and skipping known `kidd run` flags and their values.
+ * and skipping known `maltty run` flags and their values.
  *
  * Uses positional parsing: when a known flag that takes a value is
  * encountered (e.g. `--engine`), the next token is also skipped.
@@ -454,7 +454,7 @@ function extractPassthroughArgs(): readonly string[] {
 }
 
 /**
- * Known boolean flags for the `kidd run` command (no value follows).
+ * Known boolean flags for the `maltty run` command (no value follows).
  *
  * @private
  */
@@ -465,7 +465,7 @@ const KNOWN_BOOLEAN_FLAGS: ReadonlySet<string> = new Set([
 ])
 
 /**
- * Known value flags for the `kidd run` command (next token is consumed as value).
+ * Known value flags for the `maltty run` command (next token is consumed as value).
  *
  * @private
  */

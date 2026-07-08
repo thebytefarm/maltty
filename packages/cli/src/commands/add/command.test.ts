@@ -1,7 +1,7 @@
-import type { CommandContext } from '@kidd-cli/core'
+import type { CommandContext } from 'maltty'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-vi.mock(import('@kidd-cli/config/utils'), () => ({
+vi.mock(import('@maltty/config/utils'), () => ({
   loadConfig: vi.fn(),
 }))
 
@@ -17,7 +17,7 @@ vi.mock(import('../../lib/write.js'), () => ({
   writeFiles: vi.fn(),
 }))
 
-const { loadConfig } = await import('@kidd-cli/config/utils')
+const { loadConfig } = await import('@maltty/config/utils')
 const { detectProject } = await import('../../lib/detect.js')
 const { renderTemplate } = await import('../../lib/render.js')
 const { writeFiles } = await import('../../lib/write.js')
@@ -55,7 +55,7 @@ function makeContext(argOverrides: Record<string, unknown> = {}): CommandContext
       text: vi.fn(),
     },
     status: { spinner: { message: vi.fn(), start: vi.fn(), stop: vi.fn() } },
-    meta: { command: ['add', 'command'], name: 'kidd', version: '0.0.0' },
+    meta: { command: ['add', 'command'], name: 'maltty', version: '0.0.0' },
     store: { clear: vi.fn(), delete: vi.fn(), get: vi.fn(), has: vi.fn(), set: vi.fn() },
   } as unknown as CommandContext
 }
@@ -66,19 +66,19 @@ describe('add command', () => {
     mockedLoadConfig.mockResolvedValue([new Error('no config'), null])
   })
 
-  it('should use commands dir from kidd config', async () => {
+  it('should use commands dir from maltty config', async () => {
     const ctx = makeContext({ args: true, description: 'Deploy', name: 'deploy' })
     mockedDetectProject.mockResolvedValue([
       null,
       {
         commandsDir: '/project/src/commands',
-        hasKiddDep: true,
+        hasMalttyDep: true,
         rootDir: '/project',
       },
     ])
     mockedLoadConfig.mockResolvedValue([
       null,
-      { config: { commands: 'src/cmds' } as never, configFile: '/project/kidd.config.ts' },
+      { config: { commands: 'src/cmds' } as never, configFile: '/project/maltty.config.ts' },
     ])
     mockedRenderTemplate.mockResolvedValue([
       null,
@@ -100,7 +100,7 @@ describe('add command', () => {
       null,
       {
         commandsDir: null,
-        hasKiddDep: true,
+        hasMalttyDep: true,
         rootDir: '/project',
       },
     ])
@@ -124,7 +124,7 @@ describe('add command', () => {
       null,
       {
         commandsDir: '/project/src/commands',
-        hasKiddDep: true,
+        hasMalttyDep: true,
         rootDir: '/project',
       },
     ])
@@ -149,7 +149,7 @@ describe('add command', () => {
       null,
       {
         commandsDir: '/project/src/commands',
-        hasKiddDep: true,
+        hasMalttyDep: true,
         rootDir: '/project',
       },
     ])
@@ -169,12 +169,12 @@ describe('add command', () => {
     )
   })
 
-  it('should fail when not in a kidd project', async () => {
+  it('should fail when not in a maltty project', async () => {
     const ctx = makeContext({ name: 'deploy' })
     mockedDetectProject.mockResolvedValue([null, null])
 
     const mod = await import('./command.js')
-    await expect(mod.default.handler!(ctx)).rejects.toThrow('Not in a kidd project')
+    await expect(mod.default.handler!(ctx)).rejects.toThrow('Not in a maltty project')
   })
 
   it('should rename output file to match command name', async () => {
@@ -183,7 +183,7 @@ describe('add command', () => {
       null,
       {
         commandsDir: '/project/src/commands',
-        hasKiddDep: true,
+        hasMalttyDep: true,
         rootDir: '/project',
       },
     ])

@@ -1,19 +1,13 @@
 # Testing Your CLI
 
-kidd ships test utilities at `@kidd-cli/core/test` so you can test commands, middleware, and full CLI pipelines without mocking `@clack/prompts` or wiring up streams by hand.
+maltty ships test utilities at `maltty/test` so you can test commands, middleware, and full CLI pipelines without mocking `@clack/prompts` or wiring up streams by hand.
 
 ## Install
 
-The utilities live inside `@kidd-cli/core` -- no extra package required:
+The utilities live inside `maltty` -- no extra package required:
 
 ```ts
-import {
-  createTestContext,
-  runHandler,
-  runMiddleware,
-  runCommand,
-  mockPrompts,
-} from '@kidd-cli/core/test'
+import { createTestContext, runHandler, runMiddleware, runCommand, mockPrompts } from 'maltty/test'
 ```
 
 ## Unit Testing Commands
@@ -22,8 +16,8 @@ Use `runHandler` to execute a single command handler in isolation:
 
 ```ts
 import { describe, expect, it } from 'vitest'
-import { command } from '@kidd-cli/core'
-import { runHandler } from '@kidd-cli/core/test'
+import { command } from 'maltty'
+import { runHandler } from 'maltty/test'
 
 const greet = command({
   handler(ctx) {
@@ -58,8 +52,8 @@ Use `runMiddleware` to execute a middleware chain with a test context:
 
 ```ts
 import { describe, expect, it } from 'vitest'
-import { middleware, decorateContext } from '@kidd-cli/core'
-import { runMiddleware } from '@kidd-cli/core/test'
+import { middleware, decorateContext } from 'maltty'
+import { runMiddleware } from 'maltty/test'
 
 const loadUser = middleware(async (ctx, next) => {
   decorateContext(ctx, 'user', { id: 'u-1', name: 'Alice' })
@@ -80,8 +74,8 @@ Use `mockPrompts` to pre-program prompt responses without touching `@clack/promp
 
 ```ts
 import { describe, expect, it } from 'vitest'
-import { command } from '@kidd-cli/core'
-import { runHandler, mockPrompts } from '@kidd-cli/core/test'
+import { command } from 'maltty'
+import { runHandler, mockPrompts } from 'maltty/test'
 
 const deploy = command({
   async handler(ctx) {
@@ -124,7 +118,7 @@ const prompts = mockPrompts({
 Use `createTestContext` when you need a context without running a handler:
 
 ```ts
-import { createTestContext } from '@kidd-cli/core/test'
+import { createTestContext } from 'maltty/test'
 
 const { ctx, stdout } = createTestContext({
   args: { name: 'Alice', verbose: true },
@@ -141,8 +135,8 @@ Use `runCommand` to test the full CLI pipeline including arg parsing, middleware
 
 ```ts
 import { describe, expect, it } from 'vitest'
-import { command } from '@kidd-cli/core'
-import { runCommand } from '@kidd-cli/core/test'
+import { command } from 'maltty'
+import { runCommand } from 'maltty/test'
 
 const greet = command({
   options: { name: { type: 'string', required: true } },
@@ -168,8 +162,8 @@ Commands that depend on `ctx.auth` need the auth context decorated before the ha
 
 ```ts
 import { describe, expect, it } from 'vitest'
-import { command, decorateContext } from '@kidd-cli/core'
-import { createTestContext } from '@kidd-cli/core/test'
+import { command, decorateContext } from 'maltty'
+import { createTestContext } from 'maltty/test'
 
 const whoami = command({
   async handler(ctx) {
@@ -216,8 +210,8 @@ Commands that use `ctx.config` expect a `ConfigHandle` with a `load()` method. U
 
 ```ts
 import { describe, expect, it } from 'vitest'
-import { command, decorateContext } from '@kidd-cli/core'
-import { createTestContext } from '@kidd-cli/core/test'
+import { command, decorateContext } from 'maltty'
+import { createTestContext } from 'maltty/test'
 
 const status = command({
   async handler(ctx) {
@@ -250,8 +244,8 @@ Commands that use `ctx.icons` need the icons context decorated. Use `createTestC
 
 ```ts
 import { describe, expect, it } from 'vitest'
-import { command, decorateContext } from '@kidd-cli/core'
-import { createTestContext } from '@kidd-cli/core/test'
+import { command, decorateContext } from 'maltty'
+import { createTestContext } from 'maltty/test'
 
 const deploy = command({
   async handler(ctx) {
@@ -282,7 +276,7 @@ describe('deploy', () => {
 Use `setupTestLifecycle` to automatically save/restore `process.argv` and stub `process.exit` between tests:
 
 ```ts
-import { setupTestLifecycle } from '@kidd-cli/core/test'
+import { setupTestLifecycle } from 'maltty/test'
 
 const lifecycle = setupTestLifecycle()
 

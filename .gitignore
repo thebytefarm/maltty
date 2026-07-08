@@ -149,10 +149,10 @@ vite.config.ts.timestamp-*
 # vercel
 .vercel/
 
-# zpress
-.zpress/content/
-.zpress/dist/
-.zpress/cache/
-
 # bun
 *.bun-build
+
+# ciderpress
+.ciderpress/content
+.ciderpress/dist
+.ciderpress/cache

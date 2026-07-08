@@ -1,4 +1,4 @@
-import { Output, screen, useApp, useScreenContext } from '@kidd-cli/core/ui'
+import { Output, screen, useApp, useScreenContext } from 'maltty/ui'
 import type { ReactElement } from 'react'
 import React, { useEffect, useRef } from 'react'
 import { z } from 'zod'

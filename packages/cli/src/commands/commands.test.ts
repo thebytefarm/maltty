@@ -1,23 +1,23 @@
-import type { CommandContext } from '@kidd-cli/core'
+import type { CommandContext } from 'maltty'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 const mockFsExists = vi.fn()
 
-vi.mock(import('@kidd-cli/utils/node'), () => ({
+vi.mock(import('@maltty/utils/node'), () => ({
   fs: { exists: mockFsExists },
 }))
 
-vi.mock(import('@kidd-cli/config/utils'), () => ({
+vi.mock(import('@maltty/config/utils'), () => ({
   loadConfig: vi.fn(),
 }))
 
-vi.mock(import('@kidd-cli/core'), () => ({
+vi.mock(import('maltty'), () => ({
   autoload: vi.fn(),
   command: vi.fn((def) => def),
 }))
 
-const { loadConfig } = await import('@kidd-cli/config/utils')
-const { autoload } = await import('@kidd-cli/core')
+const { loadConfig } = await import('@maltty/config/utils')
+const { autoload } = await import('maltty')
 const mockedLoadConfig = vi.mocked(loadConfig)
 const mockedAutoload = vi.mocked(autoload)
 
@@ -42,7 +42,7 @@ function makeContext(): CommandContext {
       success: vi.fn(),
       warn: vi.fn(),
     },
-    meta: { command: ['commands'], name: 'kidd', version: '0.0.0' },
+    meta: { command: ['commands'], name: 'maltty', version: '0.0.0' },
     prompts: {
       confirm: vi.fn(),
       multiselect: vi.fn(),

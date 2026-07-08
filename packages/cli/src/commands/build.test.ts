@@ -1,10 +1,10 @@
-import type { CommandContext } from '@kidd-cli/core'
+import type { CommandContext } from 'maltty'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 const mockBuild = vi.fn()
 const mockCompile = vi.fn()
 
-vi.mock(import('@kidd-cli/bundler'), async (importOriginal) => {
+vi.mock(import('@maltty/bundler'), async (importOriginal) => {
   const actual = await importOriginal()
   return {
     ...actual,
@@ -16,16 +16,16 @@ vi.mock(import('@kidd-cli/bundler'), async (importOriginal) => {
   }
 })
 
-vi.mock(import('@kidd-cli/config/utils'), () => ({
+vi.mock(import('@maltty/config/utils'), () => ({
   loadConfig: vi.fn(),
 }))
 
-vi.mock(import('@kidd-cli/core'), () => ({
+vi.mock(import('maltty'), () => ({
   command: vi.fn((def) => def),
 }))
 
-const { createBundler } = await import('@kidd-cli/bundler')
-const { loadConfig } = await import('@kidd-cli/config/utils')
+const { createBundler } = await import('@maltty/bundler')
+const { loadConfig } = await import('@maltty/config/utils')
 
 const mockedCreateBundler = vi.mocked(createBundler)
 const mockedLoadConfig = vi.mocked(loadConfig)
@@ -55,7 +55,7 @@ function makeContext(argOverrides: Record<string, unknown> = {}): CommandContext
       success: vi.fn(),
       warn: vi.fn(),
     },
-    meta: { command: ['build'], name: 'kidd', version: '0.0.0' },
+    meta: { command: ['build'], name: 'maltty', version: '0.0.0' },
     prompts: {
       confirm: vi.fn(),
       multiselect: vi.fn(),
@@ -96,7 +96,7 @@ describe('build command', () => {
     vi.stubGlobal('process', { ...process, cwd: () => '/project' })
     mockedLoadConfig.mockResolvedValue([
       null,
-      { config: {}, configFile: '/project/kidd.config.ts' },
+      { config: {}, configFile: '/project/maltty.config.ts' },
     ] as never)
     mockedCreateBundler.mockResolvedValue({
       build: mockBuild,
@@ -153,7 +153,7 @@ describe('build command', () => {
       const ctx = makeContext()
       mockedLoadConfig.mockResolvedValue([
         null,
-        { config: { compile: true }, configFile: '/project/kidd.config.ts' },
+        { config: { compile: true }, configFile: '/project/maltty.config.ts' },
       ] as never)
       setupBuildSuccess()
       setupCompileSuccess()
@@ -170,7 +170,7 @@ describe('build command', () => {
         null,
         {
           config: { compile: { targets: ['linux-x64' as const] } },
-          configFile: '/project/kidd.config.ts',
+          configFile: '/project/maltty.config.ts',
         },
       ] as never)
       setupBuildSuccess()
@@ -190,7 +190,7 @@ describe('build command', () => {
         null,
         {
           config: { compile: { targets: ['linux-x64' as const] } },
-          configFile: '/project/kidd.config.ts',
+          configFile: '/project/maltty.config.ts',
         },
       ] as never)
       setupBuildSuccess()
@@ -211,7 +211,7 @@ describe('build command', () => {
         null,
         {
           config: { compile: { targets: ['windows-x64' as const] } },
-          configFile: '/project/kidd.config.ts',
+          configFile: '/project/maltty.config.ts',
         },
       ] as never)
       setupBuildSuccess()
@@ -248,7 +248,7 @@ describe('build command', () => {
       const ctx = makeContext({ compile: true })
       mockedLoadConfig.mockResolvedValue([
         null,
-        { config: { compile: true }, configFile: '/project/kidd.config.ts' },
+        { config: { compile: true }, configFile: '/project/maltty.config.ts' },
       ] as never)
       setupBuildSuccess()
       mockCompile.mockResolvedValue([
@@ -291,7 +291,7 @@ describe('build command', () => {
       const ctx = makeContext()
       mockedLoadConfig.mockResolvedValue([
         null,
-        { config: { entry: './src/main.ts' }, configFile: '/project/kidd.config.ts' },
+        { config: { entry: './src/main.ts' }, configFile: '/project/maltty.config.ts' },
       ] as never)
       setupBuildSuccess()
 

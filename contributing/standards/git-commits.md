@@ -25,8 +25,8 @@ Every commit message uses the format `type(scope): description`. The type indica
 #### Correct
 
 ```bash
-git commit -m "feat(packages/core): add workspace script discovery"
-git commit -m "fix(packages/core): resolve config loading from parent directories"
+git commit -m "feat(packages/maltty): add workspace script discovery"
+git commit -m "fix(packages/maltty): resolve config loading from parent directories"
 git commit -m "docs: add contributing guidelines"
 git commit -m "chore(deps): update zod to 3.24.0"
 ```
@@ -41,25 +41,25 @@ git commit -m "add script discovery"
 git commit -m "fix: fix bug"
 
 # Past tense
-git commit -m "feat(packages/core): added workspace support"
+git commit -m "feat(packages/maltty): added workspace support"
 ```
 
 ### Use Correct Scopes
 
 Scopes identify what part of the codebase changed. Use directory-style paths for packages and short labels for cross-cutting concerns.
 
-| Scope           | Description               |
-| --------------- | ------------------------- |
-| `packages/core` | The core kidd package     |
-| `packages/cli`  | The CLI companion package |
-| `deps`          | Dependency updates        |
-| `ci`            | CI/CD workflow changes    |
-| `repo`          | Workspace/monorepo config |
+| Scope             | Description               |
+| ----------------- | ------------------------- |
+| `packages/maltty` | The core maltty package   |
+| `packages/cli`    | The CLI companion package |
+| `deps`            | Dependency updates        |
+| `ci`              | CI/CD workflow changes    |
+| `repo`            | Workspace/monorepo config |
 
 #### Correct
 
 ```bash
-git commit -m "feat(packages/core): add parallel script execution"
+git commit -m "feat(packages/maltty): add parallel script execution"
 git commit -m "chore(deps): update typescript to 5.7.0"
 git commit -m "chore(ci): add security audit workflow"
 git commit -m "chore(repo): update turbo.json pipeline"
@@ -72,7 +72,7 @@ Breaking changes must include `!` after the scope and a `BREAKING CHANGE:` foote
 #### Correct
 
 ```bash
-git commit -m "feat(packages/core)!: change config schema
+git commit -m "feat(packages/maltty)!: change config schema
 
 BREAKING CHANGE: scripts field renamed from 'tasks' to 'scripts'"
 ```
@@ -84,7 +84,7 @@ Use the body to explain why the change was made and what problem it solves. Use 
 #### Correct
 
 ```bash
-git commit -m "refactor(packages/core): extract config resolution into lib/
+git commit -m "refactor(packages/maltty): extract config resolution into lib/
 
 Config loading logic was duplicated between init and run handlers.
 This extracts it into a shared module for consistency.
@@ -99,8 +99,8 @@ Each commit should represent one logical change, build and pass checks independe
 #### Correct
 
 ```bash
-git commit -m "feat(packages/core): add script tree display"
-git commit -m "test(packages/core): add script tree tests"
+git commit -m "feat(packages/maltty): add script tree display"
+git commit -m "test(packages/maltty): add script tree tests"
 git commit -m "docs: document script tree command"
 ```
 

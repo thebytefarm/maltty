@@ -20,7 +20,7 @@ type Result<T, E = Error> = readonly [E, null] | readonly [null, T]
 
 - Define domain-specific error interfaces with a descriptive `type` or `reason` field
 - Create type aliases for domain results (e.g., `type ConfigResult<T> = Result<T, ConfigError>`)
-- Use `ok()` and `fail()` constructors where available (e.g., `HandlerResult` in kidd package)
+- Use `ok()` and `fail()` constructors where available (e.g., `HandlerResult` in maltty package)
 - Wrap async operations that can reject with a try/catch that returns a Result tuple
 
 ## Chaining with Early Returns

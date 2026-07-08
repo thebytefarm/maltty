@@ -1,13 +1,13 @@
 # Build a Compiled CLI
 
-Bundle and compile a kidd CLI into standalone binaries using `@kidd-cli/bundler`.
+Bundle and compile a maltty CLI into standalone binaries using `@maltty/bundler`.
 
 ## Prerequisites
 
-- An existing kidd CLI project with `@kidd-cli/core`
+- An existing maltty CLI project with `maltty`
 - Node.js 24+
 - Bun 1.3+ installed (required for the compile step)
-- `@kidd-cli/bundler` installed (`pnpm add -D @kidd-cli/bundler`)
+- `@maltty/bundler` installed (`pnpm add -D @maltty/bundler`)
 
 ## Overview
 
@@ -23,13 +23,13 @@ The bundler package provides three operations you compose into a release pipelin
 
 ## Steps
 
-### 1. Create a kidd config file
+### 1. Create a maltty config file
 
-The bundler reads from a `kidd.config.ts` (or `.js`, `.json`, `.yaml`) file in your project root. All fields are optional -- defaults cover the common case.
+The bundler reads from a `maltty.config.ts` (or `.js`, `.json`, `.yaml`) file in your project root. All fields are optional -- defaults cover the common case.
 
 ```ts
-// kidd.config.ts
-import { defineConfig } from '@kidd-cli/config'
+// maltty.config.ts
+import { defineConfig } from 'maltty/config'
 
 export default defineConfig({
   entry: './src/index.ts',
@@ -53,8 +53,8 @@ export default defineConfig({
 Call `build()` with your config and working directory. It resolves defaults, reads your `package.json` version, and invokes tsdown.
 
 ```ts
-import { build } from '@kidd-cli/bundler'
-import { defineConfig } from '@kidd-cli/config'
+import { build } from '@maltty/bundler'
+import { defineConfig } from 'maltty/config'
 
 const config = defineConfig({
   entry: './src/index.ts',
@@ -85,8 +85,8 @@ console.log('Entry file:', output.entryFile)
 Use `watch()` during development. The returned promise resolves only when tsdown's watcher terminates (on process exit).
 
 ```ts
-import { watch } from '@kidd-cli/bundler'
-import { defineConfig } from '@kidd-cli/config'
+import { watch } from '@maltty/bundler'
+import { defineConfig } from 'maltty/config'
 
 const config = defineConfig({
   entry: './src/index.ts',
@@ -114,8 +114,8 @@ The optional `onSuccess` callback runs after each successful rebuild.
 After a successful build, call `compile()` to produce self-contained executables. This uses `bun build --compile` internally and requires Bun to be installed.
 
 ```ts
-import { build, compile } from '@kidd-cli/bundler'
-import { defineConfig } from '@kidd-cli/config'
+import { build, compile } from '@maltty/bundler'
+import { defineConfig } from 'maltty/config'
 
 const config = defineConfig({
   entry: './src/index.ts',
@@ -165,16 +165,16 @@ Each `CompiledBinary` has:
 
 ### 5. Use the autoload plugin
 
-When you pass a `commands` path in your config, the bundler automatically applies the `kidd-static-autoloader` rolldown plugin during build and watch. It replaces kidd's runtime autoloader with a static version that pre-resolves all command imports at build time.
+When you pass a `commands` path in your config, the bundler automatically applies the `maltty-static-autoloader` rolldown plugin during build and watch. It replaces maltty's runtime autoloader with a static version that pre-resolves all command imports at build time.
 
 You only need the plugin directly if you are constructing a custom tsdown config instead of using `build()` or `watch()`:
 
 ```ts
-import { createAutoloadPlugin } from '@kidd-cli/bundler'
+import { createAutoloadPlugin } from '@maltty/bundler'
 
 const plugin = createAutoloadPlugin({
   commandsDir: '/absolute/path/to/src/commands',
-  tagModulePath: '/absolute/path/to/kidd/dist/index.js',
+  tagModulePath: '/absolute/path/to/maltty/dist/index.js',
 })
 ```
 
@@ -182,7 +182,7 @@ Pass `plugin` into your tsdown `plugins` array. In most cases you should prefer 
 
 ## Configuration reference
 
-All fields in `kidd.config.ts` are optional. The following table lists every supported option with its default.
+All fields in `maltty.config.ts` are optional. The following table lists every supported option with its default.
 
 ### Top-level
 
@@ -230,8 +230,8 @@ A typical release script builds for all default targets and logs each binary pat
 
 ```ts
 // scripts/release.ts
-import { build, compile } from '@kidd-cli/bundler'
-import { defineConfig } from '@kidd-cli/config'
+import { build, compile } from '@maltty/bundler'
+import { defineConfig } from 'maltty/config'
 
 const config = defineConfig({
   entry: './src/index.ts',
@@ -277,7 +277,7 @@ bun run scripts/release.ts
 
 ```bash
 # Build only
-node -e "import('@kidd-cli/bundler').then(b => b.build({ config: {}, cwd: process.cwd() }))"
+node -e "import('@maltty/bundler').then(b => b.build({ config: {}, cwd: process.cwd() }))"
 
 # Test the compiled binary directly
 ./dist/bin/my-app --help

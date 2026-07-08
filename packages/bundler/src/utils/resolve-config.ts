@@ -1,6 +1,6 @@
 import { resolve } from 'node:path'
 
-import type { CompileOptions, KiddConfig } from '@kidd-cli/config'
+import type { CompileOptions, MalttyConfig } from '@maltty/config'
 
 import {
   DEFAULT_CLEAN,
@@ -36,14 +36,14 @@ export function normalizeCompileOptions(
 /**
  * Fill defaults and resolve relative paths against `cwd`.
  *
- * This is a pure function — the incoming config is already validated by `@kidd-cli/config`.
+ * This is a pure function — the incoming config is already validated by `@maltty/config`.
  * It only fills missing optional fields with defaults and resolves paths to absolute.
  *
  * @param params - The raw config and working directory.
  * @returns A fully resolved bundler configuration.
  */
 export function resolveConfig(params: {
-  readonly config: KiddConfig
+  readonly config: MalttyConfig
   readonly cwd: string
   readonly version: string | undefined
   readonly binaryName: string

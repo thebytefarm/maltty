@@ -1,4 +1,4 @@
-import { cli } from '@kidd-cli/core'
+import { cli } from 'maltty'
 
 import { readCLIManifest } from './manifest.js'
 
@@ -11,7 +11,7 @@ if (manifestError) {
 await cli({
   commands: `${import.meta.dirname}/commands`,
   description: manifest.description,
-  help: { header: `kidd v${manifest.version}` },
-  name: 'kidd',
+  help: { header: `maltty v${manifest.version}` },
+  name: 'maltty',
   version: manifest.version,
 })

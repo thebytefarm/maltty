@@ -1,6 +1,6 @@
 # Contributing
 
-Welcome to the kidd contributing docs. This directory contains standards, templates, and guides for working in this codebase.
+Welcome to the maltty contributing docs. This directory contains standards, templates, and guides for working in this codebase.
 
 ## How to Use
 

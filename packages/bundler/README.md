@@ -1,21 +1,21 @@
-# @kidd-cli/bundler
+# @maltty/bundler
 
-Programmatic bundler for kidd CLI tools powered by tsdown. Handles building, watching, compiling to standalone binaries, and static command autoloading.
+Programmatic bundler for maltty CLI tools powered by tsdown. Handles building, watching, compiling to standalone binaries, and static command autoloading.
 
 ## Installation
 
 ```bash
-pnpm add -D @kidd-cli/bundler
+pnpm add -D @maltty/bundler
 ```
 
 ## Usage
 
 ### Build
 
-Bundle a kidd CLI project. Resolves config from `kidd.config.ts`, injects `__KIDD_VERSION__`, and produces ESM output via tsdown.
+Bundle a maltty CLI project. Resolves config from `maltty.config.ts`, injects `__MALTTY_VERSION__`, and produces ESM output via tsdown.
 
 ```ts
-import { build } from '@kidd-cli/bundler'
+import { build } from '@maltty/bundler'
 
 const [error, output] = await build({ cwd: process.cwd() })
 if (error) {
@@ -30,7 +30,7 @@ if (error) {
 Start a watch-mode build for development:
 
 ```ts
-import { watch } from '@kidd-cli/bundler'
+import { watch } from '@maltty/bundler'
 
 await watch({ cwd: process.cwd() })
 ```
@@ -40,7 +40,7 @@ await watch({ cwd: process.cwd() })
 Compile the bundled output into self-contained executables using `bun build --compile`:
 
 ```ts
-import { compile } from '@kidd-cli/bundler'
+import { compile } from '@maltty/bundler'
 
 const [error, output] = await compile({
   cwd: process.cwd(),
@@ -55,11 +55,11 @@ Supported targets: `darwin-arm64`, `darwin-x64`, `linux-x64`, `linux-arm64`, `li
 A rolldown/tsdown plugin that replaces the runtime command autoloader with statically resolved imports at build time:
 
 ```ts
-import { createAutoloadPlugin } from '@kidd-cli/bundler'
+import { createAutoloadPlugin } from '@maltty/bundler'
 
 const plugin = createAutoloadPlugin({
   commandsDir: './src/commands',
-  tagModulePath: '@kidd-cli/utils/tag',
+  tagModulePath: '@maltty/utils/tag',
 })
 ```
 
@@ -67,14 +67,14 @@ const plugin = createAutoloadPlugin({
 
 | Export                     | Description                              |
 | -------------------------- | ---------------------------------------- |
-| `build`                    | Bundle a kidd CLI project                |
+| `build`                    | Bundle a maltty CLI project              |
 | `watch`                    | Watch-mode build                         |
 | `compile`                  | Compile to standalone binaries           |
 | `createAutoloadPlugin`     | tsdown plugin for static command loading |
 | `scanCommandsDir`          | Scan a directory for command files       |
 | `generateStaticAutoloader` | Generate static autoloader source code   |
-| `mapToBuildConfig`         | Map kidd config to tsdown InlineConfig   |
+| `mapToBuildConfig`         | Map maltty config to tsdown InlineConfig |
 
 ## License
 
-MIT -- [GitHub](https://github.com/joggrdocs/kidd)
+MIT -- [GitHub](https://github.com/thebytefarm/maltty)

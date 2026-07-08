@@ -3,7 +3,7 @@ import type { Rolldown } from 'tsdown'
 import { generateStaticAutoloader } from './generate-autoloader.js'
 import { scanCommandsDir } from './scan-commands.js'
 
-const VIRTUAL_MODULE_ID = 'virtual:kidd-static-commands'
+const VIRTUAL_MODULE_ID = 'virtual:maltty-static-commands'
 const RESOLVED_VIRTUAL_ID = `\0${VIRTUAL_MODULE_ID}`
 
 const AUTOLOADER_REGION_START = '//#region src/autoload.ts'
@@ -20,16 +20,16 @@ interface CreateAutoloadPluginParams {
 /**
  * Create a rolldown plugin that replaces the runtime autoloader with a static version.
  *
- * Uses a three-hook approach to break the circular dependency between kidd's
- * dist and user command files (which `import { command } from '@kidd-cli/core'`):
+ * Uses a three-hook approach to break the circular dependency between maltty's
+ * dist and user command files (which `import { command } from 'maltty'`):
  *
- * 1. `transform` — detects kidd's pre-bundled dist and replaces the autoloader
+ * 1. `transform` — detects maltty's pre-bundled dist and replaces the autoloader
  *    region with a dynamic `import()` to a virtual module
  * 2. `resolveId` — resolves the virtual module identifier
  * 3. `load` — scans the commands directory and generates a static autoloader
  *    module with all command imports pre-resolved
  *
- * The dynamic import ensures command files execute after kidd's code is fully
+ * The dynamic import ensures command files execute after maltty's code is fully
  * initialized, avoiding `ReferenceError` from accessing `TAG` before its
  * declaration.
  *
@@ -50,7 +50,7 @@ export function createAutoloadPlugin(params: CreateAutoloadPluginParams): Rolldo
         tagModulePath: params.tagModulePath,
       })
     },
-    name: 'kidd-static-autoloader',
+    name: 'maltty-static-autoloader',
     resolveId(source) {
       if (source === VIRTUAL_MODULE_ID) {
         return RESOLVED_VIRTUAL_ID

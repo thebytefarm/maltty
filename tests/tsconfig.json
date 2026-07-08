@@ -3,9 +3,9 @@
   "compilerOptions": {
     "noEmit": true,
     "paths": {
-      "@/*": ["../packages/core/src/*"],
-      "@kidd-cli/core": ["../packages/core/src/index.ts"],
-      "@kidd-cli/core/test": ["../packages/core/src/test/index.ts"]
+      "@/*": ["../packages/maltty/src/*"],
+      "maltty": ["../packages/maltty/src/index.ts"],
+      "maltty/test": ["../packages/maltty/src/test/index.ts"]
     }
   },
   "include": ["./**/*.ts"]

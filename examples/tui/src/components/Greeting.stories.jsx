@@ -1,4 +1,4 @@
-import { story } from '@kidd-cli/core/stories'
+import { story } from 'maltty/stories'
 import { z } from 'zod'
 
 import { Greeting } from './Greeting'

@@ -1,6 +1,6 @@
 # Examples
 
-Reference implementations demonstrating how to build CLIs with kidd.
+Reference implementations demonstrating how to build CLIs with maltty.
 
 ## Simple
 

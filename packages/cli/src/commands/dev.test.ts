@@ -1,9 +1,9 @@
-import type { CommandContext } from '@kidd-cli/core'
+import type { CommandContext } from 'maltty'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 const mockWatch = vi.fn()
 
-vi.mock(import('@kidd-cli/bundler'), () => ({
+vi.mock(import('@maltty/bundler'), () => ({
   createBundler: vi.fn(async () => ({
     build: vi.fn(),
     compile: vi.fn(),
@@ -11,16 +11,16 @@ vi.mock(import('@kidd-cli/bundler'), () => ({
   })),
 }))
 
-vi.mock(import('@kidd-cli/config/utils'), () => ({
+vi.mock(import('@maltty/config/utils'), () => ({
   loadConfig: vi.fn(),
 }))
 
-vi.mock(import('@kidd-cli/core'), () => ({
+vi.mock(import('maltty'), () => ({
   command: vi.fn((def) => def),
 }))
 
-const { createBundler } = await import('@kidd-cli/bundler')
-const { loadConfig } = await import('@kidd-cli/config/utils')
+const { createBundler } = await import('@maltty/bundler')
+const { loadConfig } = await import('@maltty/config/utils')
 const mockedCreateBundler = vi.mocked(createBundler)
 const mockedLoadConfig = vi.mocked(loadConfig)
 
@@ -43,7 +43,7 @@ function makeContext(): CommandContext {
       success: vi.fn(),
       warn: vi.fn(),
     },
-    meta: { command: ['dev'], name: 'kidd', version: '0.0.0' },
+    meta: { command: ['dev'], name: 'maltty', version: '0.0.0' },
     prompts: {
       confirm: vi.fn(),
       multiselect: vi.fn(),

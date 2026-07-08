@@ -22,7 +22,7 @@ Demonstrates the `ctx.report` styled output methods for displaying linting, test
 
 ```text
 examples/diagnostic-output/
-├── kidd.config.ts           # CLI build config
+├── maltty.config.ts           # CLI build config
 ├── src/
 │   ├── index.ts             # CLI entry point
 │   └── commands/

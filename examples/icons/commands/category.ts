@@ -1,4 +1,4 @@
-import { command } from '@kidd-cli/core'
+import { command } from 'maltty'
 import { z } from 'zod'
 
 const positionals = z.object({

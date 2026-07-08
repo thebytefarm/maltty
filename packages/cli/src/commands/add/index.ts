@@ -1,5 +1,5 @@
-import { command } from '@kidd-cli/core'
-import type { Command } from '@kidd-cli/core'
+import { command } from 'maltty'
+import type { Command } from 'maltty'
 
 const addCommand: Command = command({
   description: 'Add a command, middleware, or config to your project',

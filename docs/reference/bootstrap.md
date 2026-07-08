@@ -2,10 +2,10 @@
 
 Bootstrap and run a CLI application. Registers commands, parses arguments, loads config, runs middleware, and invokes the matched handler.
 
-Import from `@kidd-cli/core`.
+Import from `maltty`.
 
 ```ts
-import { cli } from '@kidd-cli/core'
+import { cli } from 'maltty'
 
 cli({
   name: 'my-app',
@@ -62,14 +62,14 @@ The `commands` field accepts several forms:
 | `Promise<CommandMap>` | Async-resolved command map                                         |
 | `string`              | Directory path -- triggers autoloading from that directory         |
 | `CommandsConfig`      | Structured config with optional `order` array for display ordering |
-| _(omitted)_           | Loads `kidd.config.ts` and autoloads from its `commands` field     |
+| _(omitted)_           | Loads `maltty.config.ts` and autoloads from its `commands` field   |
 
 ## defineConfig()
 
-Helper for defining a `kidd.config.ts` file with type checking:
+Helper for defining a `maltty.config.ts` file with type checking:
 
 ```ts
-import { defineConfig } from '@kidd-cli/core'
+import { defineConfig } from 'maltty/config'
 
 export default defineConfig({
   build: { out: 'dist' },
@@ -78,10 +78,10 @@ export default defineConfig({
 
 ## Module augmentation
 
-Extend kidd's interfaces via TypeScript declaration merging for project-wide type safety:
+Extend maltty's interfaces via TypeScript declaration merging for project-wide type safety:
 
 ```ts
-import type { ConfigType } from '@kidd-cli/core/config'
+import type { ConfigType } from 'maltty/config'
 import { z } from 'zod'
 
 export const configSchema = z.object({
@@ -89,41 +89,41 @@ export const configSchema = z.object({
   org: z.string().min(1),
 })
 
-declare module '@kidd-cli/core' {
-  interface KiddArgs {
+declare module 'maltty' {
+  interface MalttyArgs {
     verbose: boolean
   }
-  interface KiddStore {
+  interface MalttyStore {
     token: string
   }
 }
 
-declare module '@kidd-cli/core/config' {
+declare module 'maltty/config' {
   interface ConfigRegistry extends ConfigType<typeof configSchema> {}
 }
 ```
 
-| Interface        | Module                  | Affects             | Description                                                                                 |
-| ---------------- | ----------------------- | ------------------- | ------------------------------------------------------------------------------------------- |
-| `KiddArgs`       | `@kidd-cli/core`        | `ctx.args`          | Global args merged into every command's args                                                |
-| `ConfigRegistry` | `@kidd-cli/core/config` | `ctx.config.load()` | Typed config returned by `load()` result                                                    |
-| `KiddStore`      | `@kidd-cli/core`        | `ctx.store`         | Global store keys merged into the store type                                                |
-| `StoreMap`       | `@kidd-cli/core`        | `ctx.store`         | The store's full key-value shape -- extend to register typed keys (merges with `KiddStore`) |
+| Interface        | Module          | Affects             | Description                                                                                   |
+| ---------------- | --------------- | ------------------- | --------------------------------------------------------------------------------------------- |
+| `MalttyArgs`     | `maltty`        | `ctx.args`          | Global args merged into every command's args                                                  |
+| `ConfigRegistry` | `maltty/config` | `ctx.config.load()` | Typed config returned by `load()` result                                                      |
+| `MalttyStore`    | `maltty`        | `ctx.store`         | Global store keys merged into the store type                                                  |
+| `StoreMap`       | `maltty`        | `ctx.store`         | The store's full key-value shape -- extend to register typed keys (merges with `MalttyStore`) |
 
 ## Sub-exports
 
-| Export                   | Purpose                                                                                                                                               |
-| ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `@kidd-cli/core/config`  | Config loading and validation (`createConfigClient`)                                                                                                  |
-| `@kidd-cli/core/store`   | File-backed JSON store (`createStore`)                                                                                                                |
-| `@kidd-cli/core/project` | Git root resolution, path utilities (`findProjectRoot`, `isInSubmodule`, `getParentRepoRoot`, `resolvePath`, `resolveLocalPath`, `resolveGlobalPath`) |
-| `@kidd-cli/core/format`  | Standalone format functions (`formatCheck`, `formatFinding`, `formatCodeFrame`, `formatTally`, `formatDuration`)                                      |
-| `@kidd-cli/core/auth`    | Auth middleware, credential types, strategies (`auth`)                                                                                                |
-| `@kidd-cli/core/http`    | Typed HTTP client middleware (`http`, `createHttpClient`)                                                                                             |
-| `@kidd-cli/core/icons`   | Icon detection and font middleware (`icons`)                                                                                                          |
-| `@kidd-cli/core/report`  | Structured reporting middleware (`report`, `createReport`)                                                                                            |
-| `@kidd-cli/core/test`    | Test utilities (`createTestContext`, `runCommand`, `runMiddleware`, `runHandler`)                                                                     |
-| `@kidd-cli/core/ui`      | Screen commands and UI components (`screen`, `Box`, `Text`, `Select`, `useConfig`, `useMeta`, `useStore`)                                             |
+| Export           | Purpose                                                                                                                                               |
+| ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `maltty/config`  | Config loading and validation (`createConfigClient`)                                                                                                  |
+| `maltty/store`   | File-backed JSON store (`createStore`)                                                                                                                |
+| `maltty/project` | Git root resolution, path utilities (`findProjectRoot`, `isInSubmodule`, `getParentRepoRoot`, `resolvePath`, `resolveLocalPath`, `resolveGlobalPath`) |
+| `maltty/format`  | Standalone format functions (`formatCheck`, `formatFinding`, `formatCodeFrame`, `formatTally`, `formatDuration`)                                      |
+| `maltty/auth`    | Auth middleware, credential types, strategies (`auth`)                                                                                                |
+| `maltty/http`    | Typed HTTP client middleware (`http`, `createHttpClient`)                                                                                             |
+| `maltty/icons`   | Icon detection and font middleware (`icons`)                                                                                                          |
+| `maltty/report`  | Structured reporting middleware (`report`, `createReport`)                                                                                            |
+| `maltty/test`    | Test utilities (`createTestContext`, `runCommand`, `runMiddleware`, `runHandler`)                                                                     |
+| `maltty/ui`      | Screen commands and UI components (`screen`, `Box`, `Text`, `Select`, `useConfig`, `useMeta`, `useStore`)                                             |
 
 ## References
 

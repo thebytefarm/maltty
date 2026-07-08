@@ -3,5 +3,5 @@
   "compilerOptions": {
     "noEmit": true
   },
-  "include": ["index.ts", "kidd.config.ts", "commands"]
+  "include": ["index.ts", "maltty.config.ts", "commands"]
 }

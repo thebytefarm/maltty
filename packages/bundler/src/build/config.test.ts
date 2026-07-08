@@ -65,7 +65,7 @@ describe('build config mapping', () => {
     expect(result.config).toBeFalsy()
   })
 
-  it('should disable tsdown clean (kidd handles cleaning) and enable treeshake', () => {
+  it('should disable tsdown clean (maltty handles cleaning) and enable treeshake', () => {
     expect(result.clean).toBeFalsy()
     expect(result.treeshake).toBeTruthy()
   })
@@ -98,15 +98,15 @@ describe('build config mapping', () => {
     expect(neverBundle.neverBundle).toEqual(expect.arrayContaining(NODE_BUILTINS))
   })
 
-  it('should not include __KIDD_VERSION__ when version is undefined', () => {
+  it('should not include __MALTTY_VERSION__ when version is undefined', () => {
     const output = toTsdownBuildConfig({ config })
-    expect(output.define).not.toHaveProperty('__KIDD_VERSION__')
+    expect(output.define).not.toHaveProperty('__MALTTY_VERSION__')
   })
 
-  it('should set __KIDD_VERSION__ define when version is provided', () => {
+  it('should set __MALTTY_VERSION__ define when version is provided', () => {
     const configWithVersion = { ...config, version: '3.2.1' }
     const output = toTsdownBuildConfig({ config: configWithVersion })
-    expect(output.define).toMatchObject({ __KIDD_VERSION__: '"3.2.1"' })
+    expect(output.define).toMatchObject({ __MALTTY_VERSION__: '"3.2.1"' })
   })
 
   it('should merge user define into the define map', () => {
@@ -118,33 +118,33 @@ describe('build config mapping', () => {
     expect(output.define).toMatchObject({ __MY_KEY__: '"abc"' })
   })
 
-  it('should resolve KIDD_PUBLIC_* env vars into define map', () => {
-    process.env.KIDD_PUBLIC_TEST_KEY = 'test-value'
+  it('should resolve MALTTY_PUBLIC_* env vars into define map', () => {
+    process.env.MALTTY_PUBLIC_TEST_KEY = 'test-value'
 
     const output = toTsdownBuildConfig({ config })
     expect(output.define).toMatchObject({
-      'process.env.KIDD_PUBLIC_TEST_KEY': '"test-value"',
+      'process.env.MALTTY_PUBLIC_TEST_KEY': '"test-value"',
     })
 
-    delete process.env.KIDD_PUBLIC_TEST_KEY
+    delete process.env.MALTTY_PUBLIC_TEST_KEY
   })
 
-  it('should let user define override KIDD_PUBLIC_* env vars', () => {
-    process.env.KIDD_PUBLIC_TEST_KEY = 'env-value'
+  it('should let user define override MALTTY_PUBLIC_* env vars', () => {
+    process.env.MALTTY_PUBLIC_TEST_KEY = 'env-value'
 
     const configWithDefine = {
       ...config,
       build: {
         ...config.build,
-        define: { 'process.env.KIDD_PUBLIC_TEST_KEY': '"override"' },
+        define: { 'process.env.MALTTY_PUBLIC_TEST_KEY': '"override"' },
       },
     }
     const output = toTsdownBuildConfig({ config: configWithDefine })
     expect(output.define).toMatchObject({
-      'process.env.KIDD_PUBLIC_TEST_KEY': '"override"',
+      'process.env.MALTTY_PUBLIC_TEST_KEY': '"override"',
     })
 
-    delete process.env.KIDD_PUBLIC_TEST_KEY
+    delete process.env.MALTTY_PUBLIC_TEST_KEY
   })
 
   it('should bundle all deps and add stub plugin when compile is true', () => {
@@ -153,7 +153,7 @@ describe('build config mapping', () => {
     expect(deps.alwaysBundle).toStrictEqual([/./])
     const plugins = output.plugins as { name: string }[]
     const pluginNames = plugins.map((p) => p.name)
-    expect(pluginNames).toContain('kidd-stub-packages')
+    expect(pluginNames).toContain('maltty-stub-packages')
   })
 })
 
@@ -183,6 +183,6 @@ describe('watch config mapping', () => {
   it('should pass version define through to build config', () => {
     const configWithVersion = { ...config, version: '1.0.0' }
     const result = toTsdownWatchConfig({ config: configWithVersion })
-    expect(result.define).toMatchObject({ __KIDD_VERSION__: '"1.0.0"' })
+    expect(result.define).toMatchObject({ __MALTTY_VERSION__: '"1.0.0"' })
   })
 })

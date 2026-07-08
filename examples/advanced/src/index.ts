@@ -1,9 +1,9 @@
-import { cli } from '@kidd-cli/core'
-import type { DisplayConfig } from '@kidd-cli/core'
-import { config } from '@kidd-cli/core/config'
-import type { ConfigType } from '@kidd-cli/core/config'
-import { http } from '@kidd-cli/core/http'
-import type { HttpClient } from '@kidd-cli/core/http'
+import { cli } from 'maltty'
+import type { DisplayConfig } from 'maltty'
+import { config } from 'maltty/config'
+import type { ConfigType } from 'maltty/config'
+import { http } from 'maltty/http'
+import type { HttpClient } from 'maltty/http'
 import { z } from 'zod'
 
 import telemetry from './middleware/telemetry.js'
@@ -15,13 +15,13 @@ const configSchema = z.object({
   org: z.string().min(1),
 })
 
-declare module '@kidd-cli/core' {
+declare module 'maltty' {
   interface CommandContext {
     readonly api: HttpClient
   }
 }
 
-declare module '@kidd-cli/core/config' {
+declare module 'maltty/config' {
   interface ConfigRegistry extends ConfigType<typeof configSchema> {}
 }
 

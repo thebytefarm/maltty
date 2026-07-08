@@ -1,4 +1,4 @@
-import type { CompileTarget } from '@kidd-cli/config'
+import type { CompileTarget } from '@maltty/config'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 const mockProcessExec = vi.fn()
@@ -7,7 +7,7 @@ const mockFsExists = vi.fn()
 const mockFsList = vi.fn()
 const mockFsRemove = vi.fn()
 
-vi.mock(import('@kidd-cli/utils/node'), () => ({
+vi.mock(import('@maltty/utils/node'), () => ({
   fs: { exists: mockFsExists, list: mockFsList, remove: mockFsRemove },
   process: { exec: mockProcessExec, exists: mockProcessExists },
 }))

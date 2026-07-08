@@ -6,7 +6,7 @@ The central object threaded through every handler and middleware.
 
 | Property  | Type                                      | Description                                                 |
 | --------- | ----------------------------------------- | ----------------------------------------------------------- |
-| `args`    | `DeepReadonly<Merge<KiddArgs, TArgs>>`    | Parsed and validated command args                           |
+| `args`    | `DeepReadonly<Merge<MalttyArgs, TArgs>>`  | Parsed and validated command args                           |
 | `config`  | `DeepReadonly<Merge<CliConfig, TConfig>>` | Validated runtime config                                    |
 | `log`     | `Log`                                     | Logging methods                                             |
 | `prompts` | `Prompts`                                 | Interactive prompts                                         |

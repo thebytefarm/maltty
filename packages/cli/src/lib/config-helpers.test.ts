@@ -4,7 +4,7 @@ import { extractConfig } from './config-helpers.js'
 
 describe(extractConfig, () => {
   it('should return the config from a non-null result', () => {
-    const result = { config: { entry: './src/main.ts' }, configFile: '/project/kidd.config.ts' }
+    const result = { config: { entry: './src/main.ts' }, configFile: '/project/maltty.config.ts' }
 
     const config = extractConfig(result as never)
 

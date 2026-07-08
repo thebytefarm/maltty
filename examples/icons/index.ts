@@ -1,5 +1,5 @@
-import { cli } from '@kidd-cli/core'
-import { icons } from '@kidd-cli/core/icons'
+import { cli } from 'maltty'
+import { icons } from 'maltty/icons'
 
 cli({
   description: 'Icons middleware demo CLI',

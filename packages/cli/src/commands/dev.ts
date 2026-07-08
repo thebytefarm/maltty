@@ -1,18 +1,18 @@
-import { createBundler } from '@kidd-cli/bundler'
-import { loadConfig } from '@kidd-cli/config/utils'
-import { command } from '@kidd-cli/core'
-import type { Command, CommandContext } from '@kidd-cli/core'
+import { createBundler } from '@maltty/bundler'
+import { loadConfig } from '@maltty/config/utils'
+import { command } from 'maltty'
+import type { Command, CommandContext } from 'maltty'
 
 import { extractConfig } from '../lib/config-helpers.js'
 
 /**
- * Start a kidd CLI project in development mode with file watching.
+ * Start a maltty CLI project in development mode with file watching.
  *
- * Loads the project's `kidd.config.ts`, starts the bundler in watch mode, and
+ * Loads the project's `maltty.config.ts`, starts the bundler in watch mode, and
  * logs rebuild status on each successful build.
  */
 const devCommand: Command = command({
-  description: 'Start a kidd CLI project in development mode',
+  description: 'Start a maltty CLI project in development mode',
   handler: async (ctx: CommandContext) => {
     const cwd = process.cwd()
 
