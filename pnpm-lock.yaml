@@ -72,8 +72,8 @@ importers:
         specifier: 'catalog:'
         version: 4.1.5(vitest@4.1.5)
       ciderpress:
-        specifier: 1.0.0-rc.5
-        version: 1.0.0-rc.5(@rspack/core@2.1.3(@swc/helpers@0.5.23))(@rspress/core@2.0.16(@rspack/core@2.1.3(@swc/helpers@0.5.23))(@types/mdast@4.0.4)(@types/react@19.2.14)(micromark-util-types@2.0.2)(micromark@4.0.2))(@types/mdast@4.0.4)(@types/react@19.2.14)(chokidar@5.0.0)(dotenv@17.4.2)(giget@1.2.5)(jiti@2.7.0)(magicast@0.5.2)(micromark-util-types@2.0.2)(micromark@4.0.2)(openapi-types@12.1.3)(pino@10.3.1)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(vitest@4.1.5)
+        specifier: 1.0.0-rc.6
+        version: 1.0.0-rc.6(@rspack/core@2.1.3(@swc/helpers@0.5.23))(@rspress/core@2.0.16(@rspack/core@2.1.3(@swc/helpers@0.5.23))(@types/mdast@4.0.4)(@types/react@19.2.14)(micromark-util-types@2.0.2)(micromark@4.0.2))(@types/mdast@4.0.4)(@types/react@19.2.14)(chokidar@5.0.0)(dotenv@17.4.2)(giget@1.2.5)(jiti@2.7.0)(magicast@0.5.2)(micromark-util-types@2.0.2)(micromark@4.0.2)(openapi-types@12.1.3)(pino@10.3.1)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(vitest@4.1.5)
       eslint-plugin-functional:
         specifier: ^9.0.4
         version: 9.0.4(eslint@10.0.2(jiti@2.7.0))(typescript@6.0.2)
@@ -620,13 +620,13 @@ packages:
   '@changesets/write@0.4.0':
     resolution: {integrity: sha512-CdTLvIOPiCNuH71pyDu3rA+Q0n65cmAbXnwWH84rKGiFumFzkmHNT8KHTMEchcxN+Kl8I54xGUhJ7l3E7X396Q==}
 
-  '@ciderpress/cli@1.0.0-rc.5':
-    resolution: {integrity: sha512-mschitP5UsoyF97flzDYODktUf6yWLTXrTXSc7EmECSnygPyK0sax5LYOnKDLRzrqcnucVV/qB10FSn92BACXg==}
+  '@ciderpress/cli@1.0.0-rc.6':
+    resolution: {integrity: sha512-TBja9gp1nRZsOcpJTwz0IZ8mOUiml1KuSHHNIYIVDdG/+0HaViVVooYVvQRXtUxVXlXeekui+7kC6R6DNih8QA==}
     engines: {node: '>=24.0.0'}
     hasBin: true
 
-  '@ciderpress/config@1.0.0-rc.4':
-    resolution: {integrity: sha512-2T9mYqUe2+eyZtJoX/guJObgp2ZqvuFaS66Bw8Q/40kNCqgJMgtm9Gg5YFCY/WEatQWj8y7gAtZtMBGrPnTQFQ==}
+  '@ciderpress/config@1.0.0-rc.5':
+    resolution: {integrity: sha512-cefgm070JwmLpZhnsl2xwvrPrkR/5c366ZmzonOGsIUP6Ntua55KFhqElKvXFkgANGZ1XwDO0ukv9coCa/lmkA==}
     engines: {node: '>=24.0.0'}
     peerDependencies:
       react: ^19.2.5
@@ -634,16 +634,16 @@ packages:
       react:
         optional: true
 
-  '@ciderpress/templates@1.0.0-rc.3':
-    resolution: {integrity: sha512-IHdy1GS2JnKczzN4GPc/5XS+WRDiKfXGOW1muru4OlnV19BeCu0+JXgI6eo5AU+4N+PmTJ7A6ln4YKhL3wilAQ==}
+  '@ciderpress/templates@1.0.0-rc.4':
+    resolution: {integrity: sha512-fMrD89YNmvvjtudWTgbJIqdbwah04aFjBFs+TTas5jX0kBS7M5vdmobYFQs5OkTrbTpcf9a5QvCIw8Sq2lsXoQ==}
     engines: {node: '>=24.0.0'}
 
   '@ciderpress/theme@1.0.0-rc.3':
     resolution: {integrity: sha512-iOMwQCao3Mc+N+SFQ9c3N+KDgVVHMDWkuHUgKvW6X9hyKud1uEVCUrTaR/Z7plirggOYwadec/8g8kvQK0/wHQ==}
     engines: {node: '>=24.0.0'}
 
-  '@ciderpress/ui@1.0.0-rc.5':
-    resolution: {integrity: sha512-41Wxsb7SZ4P20/903BojXBpsdipp1xsE4oDAstHBHHx34HuRvxWCP23zZVo+1VeCL24XoBP8JS22E/uLAJ9Lgg==}
+  '@ciderpress/ui@1.0.0-rc.6':
+    resolution: {integrity: sha512-aNJJCtll90n4n1ZxAx03+/42w8icSlN5p1+HRRQxmJJmnY7baY2wujMe1uM9p4M76g39sL0ywJu6wP9yfoOjHw==}
     engines: {node: '>=24.0.0'}
     peerDependencies:
       '@rspress/core': ^2.0.15
@@ -2200,8 +2200,8 @@ packages:
     resolution: {integrity: sha512-+IxzY9BZOQd/XuYPRmrvEVjF/nqj5kgT4kEq7VofrDoM1MxoRjEWkrCC3EtLi59TVawxTAn+orJwFQcrqEN1+g==}
     engines: {node: '>=18'}
 
-  ciderpress@1.0.0-rc.5:
-    resolution: {integrity: sha512-6/jybQSSWR1sYIUWqeDVEJHbyvpgjAScC4XyrvRDC5zGh8PAkFfAUlFKyVERJgIvNmTvrckNDm6tUMN/EcyJtg==}
+  ciderpress@1.0.0-rc.6:
+    resolution: {integrity: sha512-WPP17TRQqaM7Fvy+kkUq9p6t027UZzs723JEIT6NIBw7Iq6Z08BPhXQ++YiF61iA45fzuXIYOQllHDU+f3N8Sg==}
     engines: {node: '>=24.0.0'}
     hasBin: true
     peerDependencies:
@@ -4928,13 +4928,13 @@ snapshots:
       human-id: 4.1.3
       prettier: 2.8.8
 
-  '@ciderpress/cli@1.0.0-rc.5(@rspack/core@2.1.3(@swc/helpers@0.5.23))(@types/mdast@4.0.4)(@types/react@19.2.14)(chokidar@5.0.0)(dotenv@17.4.2)(giget@1.2.5)(magicast@0.5.2)(micromark-util-types@2.0.2)(micromark@4.0.2)(openapi-types@12.1.3)(pino@10.3.1)(react-dom@19.2.7(react@19.2.7))(vitest@4.1.5)':
+  '@ciderpress/cli@1.0.0-rc.6(@rspack/core@2.1.3(@swc/helpers@0.5.23))(@types/mdast@4.0.4)(@types/react@19.2.14)(chokidar@5.0.0)(dotenv@17.4.2)(giget@1.2.5)(magicast@0.5.2)(micromark-util-types@2.0.2)(micromark@4.0.2)(openapi-types@12.1.3)(pino@10.3.1)(react-dom@19.2.7(react@19.2.7))(vitest@4.1.5)':
     dependencies:
       '@apidevtools/swagger-parser': 12.1.0(openapi-types@12.1.3)
-      '@ciderpress/config': 1.0.0-rc.4(chokidar@5.0.0)(dotenv@17.4.2)(giget@1.2.5)(jiti@2.7.0)(magicast@0.5.2)(react@19.2.7)
-      '@ciderpress/templates': 1.0.0-rc.3
+      '@ciderpress/config': 1.0.0-rc.5(chokidar@5.0.0)(dotenv@17.4.2)(giget@1.2.5)(jiti@2.7.0)(magicast@0.5.2)(react@19.2.7)
+      '@ciderpress/templates': 1.0.0-rc.4
       '@ciderpress/theme': 1.0.0-rc.3
-      '@ciderpress/ui': 1.0.0-rc.5(@rspress/core@2.0.16(@rspack/core@2.1.3(@swc/helpers@0.5.23))(@types/mdast@4.0.4)(@types/react@19.2.14)(micromark-util-types@2.0.2)(micromark@4.0.2))(chokidar@5.0.0)(dotenv@17.4.2)(giget@1.2.5)(jiti@2.7.0)(magicast@0.5.2)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+      '@ciderpress/ui': 1.0.0-rc.6(@rspress/core@2.0.16(@rspack/core@2.1.3(@swc/helpers@0.5.23))(@types/mdast@4.0.4)(@types/react@19.2.14)(micromark-util-types@2.0.2)(micromark@4.0.2))(chokidar@5.0.0)(dotenv@17.4.2)(giget@1.2.5)(jiti@2.7.0)(magicast@0.5.2)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       '@clack/prompts': 1.7.0
       '@kidd-cli/core': 0.24.0(chokidar@5.0.0)(giget@1.2.5)(ink@7.1.0(@types/react@19.2.14)(react@19.2.7))(jiti@2.7.0)(magicast@0.5.2)(pino@10.3.1)(react@19.2.7)(vitest@4.1.5)
       '@rspress/core': 2.0.16(@rspack/core@2.1.3(@swc/helpers@0.5.23))(@types/mdast@4.0.4)(@types/react@19.2.14)(micromark-util-types@2.0.2)(micromark@4.0.2)
@@ -4971,7 +4971,7 @@ snapshots:
       - utf-8-validate
       - vitest
 
-  '@ciderpress/config@1.0.0-rc.4(chokidar@5.0.0)(dotenv@17.4.2)(giget@1.2.5)(jiti@2.7.0)(magicast@0.5.2)(react@19.2.7)':
+  '@ciderpress/config@1.0.0-rc.5(chokidar@5.0.0)(dotenv@17.4.2)(giget@1.2.5)(jiti@2.7.0)(magicast@0.5.2)(react@19.2.7)':
     dependencies:
       '@ciderpress/theme': 1.0.0-rc.3
       c12: 4.0.0-beta.5(chokidar@5.0.0)(dotenv@17.4.2)(giget@1.2.5)(jiti@2.7.0)(magicast@0.5.2)
@@ -4987,7 +4987,7 @@ snapshots:
       - jiti
       - magicast
 
-  '@ciderpress/templates@1.0.0-rc.3':
+  '@ciderpress/templates@1.0.0-rc.4':
     dependencies:
       massaman: 0.3.0
 
@@ -4998,9 +4998,9 @@ snapshots:
       type-fest: 5.7.0
       zod: 4.4.3
 
-  '@ciderpress/ui@1.0.0-rc.5(@rspress/core@2.0.16(@rspack/core@2.1.3(@swc/helpers@0.5.23))(@types/mdast@4.0.4)(@types/react@19.2.14)(micromark-util-types@2.0.2)(micromark@4.0.2))(chokidar@5.0.0)(dotenv@17.4.2)(giget@1.2.5)(jiti@2.7.0)(magicast@0.5.2)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)':
+  '@ciderpress/ui@1.0.0-rc.6(@rspress/core@2.0.16(@rspack/core@2.1.3(@swc/helpers@0.5.23))(@types/mdast@4.0.4)(@types/react@19.2.14)(micromark-util-types@2.0.2)(micromark@4.0.2))(chokidar@5.0.0)(dotenv@17.4.2)(giget@1.2.5)(jiti@2.7.0)(magicast@0.5.2)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)':
     dependencies:
-      '@ciderpress/config': 1.0.0-rc.4(chokidar@5.0.0)(dotenv@17.4.2)(giget@1.2.5)(jiti@2.7.0)(magicast@0.5.2)(react@19.2.7)
+      '@ciderpress/config': 1.0.0-rc.5(chokidar@5.0.0)(dotenv@17.4.2)(giget@1.2.5)(jiti@2.7.0)(magicast@0.5.2)(react@19.2.7)
       '@ciderpress/theme': 1.0.0-rc.3
       '@iconify-json/catppuccin': 1.2.17
       '@iconify-json/devicon': 1.2.62
@@ -6404,12 +6404,12 @@ snapshots:
   chownr@3.0.0:
     optional: true
 
-  ciderpress@1.0.0-rc.5(@rspack/core@2.1.3(@swc/helpers@0.5.23))(@rspress/core@2.0.16(@rspack/core@2.1.3(@swc/helpers@0.5.23))(@types/mdast@4.0.4)(@types/react@19.2.14)(micromark-util-types@2.0.2)(micromark@4.0.2))(@types/mdast@4.0.4)(@types/react@19.2.14)(chokidar@5.0.0)(dotenv@17.4.2)(giget@1.2.5)(jiti@2.7.0)(magicast@0.5.2)(micromark-util-types@2.0.2)(micromark@4.0.2)(openapi-types@12.1.3)(pino@10.3.1)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(vitest@4.1.5):
+  ciderpress@1.0.0-rc.6(@rspack/core@2.1.3(@swc/helpers@0.5.23))(@rspress/core@2.0.16(@rspack/core@2.1.3(@swc/helpers@0.5.23))(@types/mdast@4.0.4)(@types/react@19.2.14)(micromark-util-types@2.0.2)(micromark@4.0.2))(@types/mdast@4.0.4)(@types/react@19.2.14)(chokidar@5.0.0)(dotenv@17.4.2)(giget@1.2.5)(jiti@2.7.0)(magicast@0.5.2)(micromark-util-types@2.0.2)(micromark@4.0.2)(openapi-types@12.1.3)(pino@10.3.1)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(vitest@4.1.5):
     dependencies:
-      '@ciderpress/cli': 1.0.0-rc.5(@rspack/core@2.1.3(@swc/helpers@0.5.23))(@types/mdast@4.0.4)(@types/react@19.2.14)(chokidar@5.0.0)(dotenv@17.4.2)(giget@1.2.5)(magicast@0.5.2)(micromark-util-types@2.0.2)(micromark@4.0.2)(openapi-types@12.1.3)(pino@10.3.1)(react-dom@19.2.7(react@19.2.7))(vitest@4.1.5)
-      '@ciderpress/config': 1.0.0-rc.4(chokidar@5.0.0)(dotenv@17.4.2)(giget@1.2.5)(jiti@2.7.0)(magicast@0.5.2)(react@19.2.7)
+      '@ciderpress/cli': 1.0.0-rc.6(@rspack/core@2.1.3(@swc/helpers@0.5.23))(@types/mdast@4.0.4)(@types/react@19.2.14)(chokidar@5.0.0)(dotenv@17.4.2)(giget@1.2.5)(magicast@0.5.2)(micromark-util-types@2.0.2)(micromark@4.0.2)(openapi-types@12.1.3)(pino@10.3.1)(react-dom@19.2.7(react@19.2.7))(vitest@4.1.5)
+      '@ciderpress/config': 1.0.0-rc.5(chokidar@5.0.0)(dotenv@17.4.2)(giget@1.2.5)(jiti@2.7.0)(magicast@0.5.2)(react@19.2.7)
       '@ciderpress/theme': 1.0.0-rc.3
-      '@ciderpress/ui': 1.0.0-rc.5(@rspress/core@2.0.16(@rspack/core@2.1.3(@swc/helpers@0.5.23))(@types/mdast@4.0.4)(@types/react@19.2.14)(micromark-util-types@2.0.2)(micromark@4.0.2))(chokidar@5.0.0)(dotenv@17.4.2)(giget@1.2.5)(jiti@2.7.0)(magicast@0.5.2)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+      '@ciderpress/ui': 1.0.0-rc.6(@rspress/core@2.0.16(@rspack/core@2.1.3(@swc/helpers@0.5.23))(@types/mdast@4.0.4)(@types/react@19.2.14)(micromark-util-types@2.0.2)(micromark@4.0.2))(chokidar@5.0.0)(dotenv@17.4.2)(giget@1.2.5)(jiti@2.7.0)(magicast@0.5.2)(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       '@rspress/core': 2.0.16(@rspack/core@2.1.3(@swc/helpers@0.5.23))(@types/mdast@4.0.4)(@types/react@19.2.14)(micromark-util-types@2.0.2)(micromark@4.0.2)
       react: 19.2.7
       react-dom: 19.2.7(react@19.2.7)

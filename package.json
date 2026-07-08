@@ -48,7 +48,7 @@
     "@types/node": "catalog:",
     "@typescript/native-preview": "7.0.0-dev.20260414.1",
     "@vitest/coverage-v8": "catalog:",
-    "ciderpress": "1.0.0-rc.5",
+    "ciderpress": "1.0.0-rc.6",
     "eslint-plugin-functional": "^9.0.4",
     "eslint-plugin-jsdoc": "^62.9.0",
     "eslint-plugin-security": "^4.0.0",
