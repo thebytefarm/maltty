@@ -135,6 +135,11 @@ export default defineConfig({
     },
   },
   sidebar: {
+    promo: {
+      title: 'New: maltty',
+      body: 'The batteries-included TypeScript CLI framework. Ship your first command in five minutes.',
+      cta: { text: 'Quick Start', href: '/getting-started/quick-start' },
+    },
     bottom: [{ text: 'Contributing', href: '/contributing', icon: 'pixelarticons:git-merge' }],
   },
   pages: [
