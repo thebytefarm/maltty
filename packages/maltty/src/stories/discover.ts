@@ -31,7 +31,9 @@ export interface DiscoverError {
   readonly message: string
 }
 
-/** Default include patterns for story file discovery. */
+/**
+ * Default include patterns for story file discovery.
+ */
 const DEFAULT_INCLUDE: readonly string[] = STORY_FILE_SUFFIXES.map((suffix) => `src/**/*${suffix}`)
 
 /**

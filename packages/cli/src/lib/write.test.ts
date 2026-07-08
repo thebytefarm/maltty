@@ -30,8 +30,8 @@ describe('writeFiles()', () => {
     })
 
     expect(error).toBeNull()
-    expect(result!.written).toEqual(['src/index.ts'])
-    expect(result!.skipped).toEqual([])
+    expect(result!.written).toStrictEqual(['src/index.ts'])
+    expect(result!.skipped).toStrictEqual([])
     expect(mockedWriteFile).toHaveBeenCalledWith('/project/src/index.ts', 'export {}', 'utf8')
   })
 
@@ -45,8 +45,8 @@ describe('writeFiles()', () => {
     })
 
     expect(error).toBeNull()
-    expect(result!.written).toEqual([])
-    expect(result!.skipped).toEqual(['existing.ts'])
+    expect(result!.written).toStrictEqual([])
+    expect(result!.skipped).toStrictEqual(['existing.ts'])
     expect(mockedWriteFile).not.toHaveBeenCalled()
   })
 
@@ -60,7 +60,7 @@ describe('writeFiles()', () => {
     })
 
     expect(error).toBeNull()
-    expect(result!.written).toEqual(['existing.ts'])
+    expect(result!.written).toStrictEqual(['existing.ts'])
     expect(mockedWriteFile).toHaveBeenCalledWith('/project/existing.ts', 'updated', 'utf8')
   })
 
@@ -105,6 +105,6 @@ describe('writeFiles()', () => {
     })
 
     expect(error).toBeNull()
-    expect(result!.written).toEqual(['a.ts', 'b.ts', 'c.ts'])
+    expect(result!.written).toStrictEqual(['a.ts', 'b.ts', 'c.ts'])
   })
 })

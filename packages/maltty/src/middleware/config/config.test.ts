@@ -277,7 +277,7 @@ describe('config middleware', () => {
       expect(result).not.toBeNull()
       expect(result!.layers).toBeDefined()
       expect(result!.layers).toHaveLength(3)
-      expect(result!.layers!.map((l) => l.name)).toEqual(['global', 'project', 'local'])
+      expect(result!.layers!.map((l) => l.name)).toStrictEqual(['global', 'project', 'local'])
 
       rmSync(tmpDir, { force: true, recursive: true })
     })

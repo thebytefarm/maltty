@@ -9,6 +9,13 @@ import { colors, symbols } from '../theme.js'
 import type { PromptOption, PromptProps } from './types.js'
 
 // ---------------------------------------------------------------------------
+// Constants
+// ---------------------------------------------------------------------------
+
+// Stable reference so the default prop doesn't break referential equality.
+const EMPTY_DEFAULT: readonly never[] = []
+
+// ---------------------------------------------------------------------------
 // Types
 // ---------------------------------------------------------------------------
 
@@ -16,22 +23,34 @@ import type { PromptOption, PromptProps } from './types.js'
  * Props for the {@link GroupMultiSelect} component.
  */
 export interface GroupMultiSelectProps<TValue> extends PromptProps {
-  /** Options organized by group name. */
+  /**
+   * Options organized by group name.
+   */
   readonly options: Readonly<Record<string, readonly PromptOption<TValue>[]>>
 
-  /** Initially selected values. */
+  /**
+   * Initially selected values.
+   */
   readonly defaultValue?: readonly TValue[]
 
-  /** When `true`, at least one option must be selected to submit. */
+  /**
+   * When `true`, at least one option must be selected to submit.
+   */
   readonly required?: boolean
 
-  /** When `true`, group headers can be toggled to select/deselect all options in the group. */
+  /**
+   * When `true`, group headers can be toggled to select/deselect all options in the group.
+   */
   readonly selectableGroups?: boolean
 
-  /** Called whenever the selection changes. */
+  /**
+   * Called whenever the selection changes.
+   */
   readonly onChange?: (value: readonly TValue[]) => void
 
-  /** Called when the user presses Enter to confirm. */
+  /**
+   * Called when the user presses Enter to confirm.
+   */
   readonly onSubmit?: (value: readonly TValue[]) => void
 }
 
@@ -52,7 +71,7 @@ export interface GroupMultiSelectProps<TValue> extends PromptProps {
  */
 export function GroupMultiSelect<TValue>({
   options,
-  defaultValue = [],
+  defaultValue = EMPTY_DEFAULT,
   required = false,
   selectableGroups = false,
   onChange,

@@ -84,7 +84,7 @@ describe('auth()', () => {
       credential: () => unknown
     }
 
-    expect(authCtx.credential()).toEqual({ token: 'my-secret', type: 'bearer' })
+    expect(authCtx.credential()).toStrictEqual({ token: 'my-secret', type: 'bearer' })
   })
 
   it('should decorate ctx.auth with credential() returning null when nothing found', async () => {
@@ -159,13 +159,13 @@ describe('auth.env()', () => {
   it('should return an EnvSourceConfig with source: env', () => {
     const config = auth.env()
 
-    expect(config).toEqual({ source: 'env' })
+    expect(config).toStrictEqual({ source: 'env' })
   })
 
   it('should include tokenVar when provided', () => {
     const config = auth.env({ tokenVar: 'GH_TOKEN' })
 
-    expect(config).toEqual({ source: 'env', tokenVar: 'GH_TOKEN' })
+    expect(config).toStrictEqual({ source: 'env', tokenVar: 'GH_TOKEN' })
   })
 })
 
@@ -173,13 +173,13 @@ describe('auth.dotenv()', () => {
   it('should return a DotenvSourceConfig with source: dotenv', () => {
     const config = auth.dotenv()
 
-    expect(config).toEqual({ source: 'dotenv' })
+    expect(config).toStrictEqual({ source: 'dotenv' })
   })
 
   it('should include tokenVar and path when provided', () => {
     const config = auth.dotenv({ path: '.env.local', tokenVar: 'API_TOKEN' })
 
-    expect(config).toEqual({ path: '.env.local', source: 'dotenv', tokenVar: 'API_TOKEN' })
+    expect(config).toStrictEqual({ path: '.env.local', source: 'dotenv', tokenVar: 'API_TOKEN' })
   })
 })
 
@@ -187,13 +187,13 @@ describe('auth.file()', () => {
   it('should return a FileSourceConfig with source: file', () => {
     const config = auth.file()
 
-    expect(config).toEqual({ source: 'file' })
+    expect(config).toStrictEqual({ source: 'file' })
   })
 
   it('should include filename and dirName when provided', () => {
     const config = auth.file({ dirName: '.my-app', filename: 'creds.json' })
 
-    expect(config).toEqual({ dirName: '.my-app', filename: 'creds.json', source: 'file' })
+    expect(config).toStrictEqual({ dirName: '.my-app', filename: 'creds.json', source: 'file' })
   })
 })
 
@@ -205,7 +205,7 @@ describe('auth.oauth()', () => {
       tokenUrl: 'https://example.com/token',
     })
 
-    expect(config).toEqual({
+    expect(config).toStrictEqual({
       authUrl: 'https://example.com/authorize',
       clientId: 'my-client',
       source: 'oauth',
@@ -234,7 +234,7 @@ describe('auth.deviceCode()', () => {
       tokenUrl: 'https://example.com/token',
     })
 
-    expect(config).toEqual({
+    expect(config).toStrictEqual({
       clientId: 'my-client',
       deviceAuthUrl: 'https://example.com/device/code',
       source: 'device-code',
@@ -259,13 +259,13 @@ describe('auth.token()', () => {
   it('should return a TokenSourceConfig with source: token', () => {
     const config = auth.token()
 
-    expect(config).toEqual({ source: 'token' })
+    expect(config).toStrictEqual({ source: 'token' })
   })
 
   it('should include message when provided', () => {
     const config = auth.token({ message: 'Enter token:' })
 
-    expect(config).toEqual({ message: 'Enter token:', source: 'token' })
+    expect(config).toStrictEqual({ message: 'Enter token:', source: 'token' })
   })
 })
 
@@ -273,13 +273,13 @@ describe('auth.apiKey()', () => {
   it('should return a TokenSourceConfig with source: token (alias)', () => {
     const config = auth.apiKey()
 
-    expect(config).toEqual({ source: 'token' })
+    expect(config).toStrictEqual({ source: 'token' })
   })
 
   it('should include message when provided', () => {
     const config = auth.apiKey({ message: 'Enter API key:' })
 
-    expect(config).toEqual({ message: 'Enter API key:', source: 'token' })
+    expect(config).toStrictEqual({ message: 'Enter API key:', source: 'token' })
   })
 })
 
@@ -288,7 +288,7 @@ describe('auth.custom()', () => {
     const resolver = () => null
     const config = auth.custom(resolver)
 
-    expect(config).toEqual({ resolver, source: 'custom' })
+    expect(config).toStrictEqual({ resolver, source: 'custom' })
   })
 })
 

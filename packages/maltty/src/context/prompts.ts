@@ -14,11 +14,17 @@ import type { Prompts } from './types.js'
  * Per-call defaults merged into every clack prompt invocation.
  */
 export interface PromptDefaults {
-  /** Show navigation guide hints. */
+  /**
+   * Show navigation guide hints.
+   */
   readonly guide?: boolean
-  /** Custom input stream. */
+  /**
+   * Custom input stream.
+   */
   readonly input?: Readable
-  /** Custom output stream. */
+  /**
+   * Custom output stream.
+   */
   readonly output?: Writable
 }
 
@@ -26,7 +32,9 @@ export interface PromptDefaults {
  * Options for {@link createContextPrompts}.
  */
 export interface CreateContextPromptsOptions {
-  /** Per-call defaults merged into every prompt. Method-level options win. */
+  /**
+   * Per-call defaults merged into every prompt. Method-level options win.
+   */
   readonly defaults?: PromptDefaults
 }
 

@@ -13,10 +13,14 @@ import type { PromptOption, PromptProps } from './types.js'
  * Props for the {@link SelectKey} component.
  */
 export interface SelectKeyProps<TValue extends string> extends PromptProps {
-  /** Options where each `value` is a single key character. */
+  /**
+   * Options where each `value` is a single key character.
+   */
   readonly options: readonly PromptOption<TValue>[]
 
-  /** Called when the user presses a matching key. */
+  /**
+   * Called when the user presses a matching key.
+   */
   readonly onSubmit?: (value: TValue) => void
 }
 

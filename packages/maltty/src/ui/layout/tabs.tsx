@@ -21,16 +21,24 @@ export interface TabItem {
  * Props for the {@link Tabs} component.
  */
 export interface TabsProps {
-  /** The tabs to render. */
+  /**
+   * The tabs to render.
+   */
   readonly tabs: readonly TabItem[]
 
-  /** Whether the tab bar responds to keyboard input. */
+  /**
+   * Whether the tab bar responds to keyboard input.
+   */
   readonly isFocused: boolean
 
-  /** Controlled active tab index. When omitted, the component manages its own state. */
+  /**
+   * Controlled active tab index. When omitted, the component manages its own state.
+   */
   readonly activeTab?: number
 
-  /** Callback fired when the active tab changes. */
+  /**
+   * Callback fired when the active tab changes.
+   */
   readonly onTabChange?: (index: number) => void
 }
 

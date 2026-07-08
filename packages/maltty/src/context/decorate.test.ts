@@ -52,7 +52,7 @@ describe('decorateContext()', () => {
   it('should add the property to the context', () => {
     const ctx = createContext(defaultOptions())
     decorateContext(ctx, 'github', { baseUrl: 'https://api.github.com' })
-    expect((ctx as Record<string, unknown>).github).toEqual({
+    expect((ctx as Record<string, unknown>).github).toStrictEqual({
       baseUrl: 'https://api.github.com',
     })
   })

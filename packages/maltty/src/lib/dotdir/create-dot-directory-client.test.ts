@@ -117,7 +117,7 @@ describe('createDotDirectoryClient()', () => {
 
       expect(error).toBeNull()
       const raw = readFileSync(filePath as string, 'utf8')
-      expect(JSON.parse(raw)).toEqual({ key: 'value' })
+      expect(JSON.parse(raw)).toStrictEqual({ key: 'value' })
     })
   })
 
@@ -129,7 +129,7 @@ describe('createDotDirectoryClient()', () => {
       const [error, data] = dotdir.readJson('data.json')
 
       expect(error).toBeNull()
-      expect(data).toEqual({ key: 'value' })
+      expect(data).toStrictEqual({ key: 'value' })
     })
 
     it('should return parse_error for invalid JSON', () => {
@@ -149,7 +149,7 @@ describe('createDotDirectoryClient()', () => {
       const [error, data] = dotdir.readJson('valid.json', { schema })
 
       expect(error).toBeNull()
-      expect(data).toEqual({ name: 'test', version: 1 })
+      expect(data).toStrictEqual({ name: 'test', version: 1 })
     })
 
     it('should return parse_error when Zod validation fails', () => {

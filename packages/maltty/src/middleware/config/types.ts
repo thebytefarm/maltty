@@ -16,13 +16,21 @@ export type ConfigLayerName = 'global' | 'project' | 'local'
  * Metadata for a single resolved configuration layer.
  */
 export interface ConfigLayer {
-  /** Which layer this config came from. */
+  /**
+   * Which layer this config came from.
+   */
   readonly name: ConfigLayerName
-  /** Absolute path to the resolved config file, or null if not found. */
+  /**
+   * Absolute path to the resolved config file, or null if not found.
+   */
   readonly filePath: string | null
-  /** The format of the resolved config file, or null if not found. */
+  /**
+   * The format of the resolved config file, or null if not found.
+   */
   readonly format: ConfigFormat | null
-  /** The raw config data loaded from this layer (pre-merge, pre-validation). */
+  /**
+   * The raw config data loaded from this layer (pre-merge, pre-validation).
+   */
   readonly config: Readonly<Record<string, unknown>> | null
 }
 
@@ -59,9 +67,13 @@ export interface ConfigLoadCallOptions {
  * @typeParam TConfig - The validated config type.
  */
 export interface ConfigLoadCallResult<TConfig> {
-  /** Validated config data. Deeply readonly. */
+  /**
+   * Validated config data. Deeply readonly.
+   */
   readonly config: TConfig
-  /** Per-layer metadata. Only present when `{ layers: true }` was passed. */
+  /**
+   * Per-layer metadata. Only present when `{ layers: true }` was passed.
+   */
   readonly layers?: readonly ConfigLayer[]
 }
 

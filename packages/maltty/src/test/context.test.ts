@@ -5,7 +5,7 @@ import { createTestContext, mockLog, mockPrompts, mockStatus } from './context.j
 describe('test context factory', () => {
   it('should return a context with default args', () => {
     const { ctx } = createTestContext()
-    expect(ctx.args).toEqual({})
+    expect(ctx.args).toStrictEqual({})
   })
 
   it('should return a context with default meta', () => {
@@ -59,32 +59,35 @@ describe('test context factory', () => {
 describe('mockPrompts factory', () => {
   it('should return confirm responses in order', async () => {
     const prompts = mockPrompts({ confirm: [true, false, true] })
-    expect(await prompts.confirm({ message: '1' })).toBeTruthy()
-    expect(await prompts.confirm({ message: '2' })).toBeFalsy()
-    expect(await prompts.confirm({ message: '3' })).toBeTruthy()
+    await expect(prompts.confirm({ message: '1' })).resolves.toBeTruthy()
+    await expect(prompts.confirm({ message: '2' })).resolves.toBeFalsy()
+    await expect(prompts.confirm({ message: '3' })).resolves.toBeTruthy()
   })
 
   it('should return text responses in order', async () => {
     const prompts = mockPrompts({ text: ['hello', 'world'] })
-    expect(await prompts.text({ message: '1' })).toBe('hello')
-    expect(await prompts.text({ message: '2' })).toBe('world')
+    await expect(prompts.text({ message: '1' })).resolves.toBe('hello')
+    await expect(prompts.text({ message: '2' })).resolves.toBe('world')
   })
 
   it('should return select responses in order', async () => {
     const prompts = mockPrompts({ select: ['a', 'b'] })
-    expect(await prompts.select({ message: '1', options: [] })).toBe('a')
-    expect(await prompts.select({ message: '2', options: [] })).toBe('b')
+    await expect(prompts.select({ message: '1', options: [] })).resolves.toBe('a')
+    await expect(prompts.select({ message: '2', options: [] })).resolves.toBe('b')
   })
 
   it('should return multiselect responses in order', async () => {
     const prompts = mockPrompts({ multiselect: [['a', 'b'], ['c']] })
-    expect(await prompts.multiselect({ message: '1', options: [] })).toEqual(['a', 'b'])
-    expect(await prompts.multiselect({ message: '2', options: [] })).toEqual(['c'])
+    await expect(prompts.multiselect({ message: '1', options: [] })).resolves.toStrictEqual([
+      'a',
+      'b',
+    ])
+    await expect(prompts.multiselect({ message: '2', options: [] })).resolves.toStrictEqual(['c'])
   })
 
   it('should return password responses in order', async () => {
     const prompts = mockPrompts({ password: ['secret'] })
-    expect(await prompts.password({ message: '1' })).toBe('secret')
+    await expect(prompts.password({ message: '1' })).resolves.toBe('secret')
   })
 
   it('should throw when confirm queue is exhausted', async () => {

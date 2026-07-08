@@ -179,7 +179,7 @@ describe('resolveFromOAuth()', () => {
 
     const result = await resultPromise
 
-    expect(result).toEqual({ token: 'at-12345', type: 'bearer' })
+    expect(result).toStrictEqual({ token: 'at-12345', type: 'bearer' })
     expect(fetchSpy).toHaveBeenCalledWith(
       'https://auth.example.com/token',
       expect.objectContaining({
@@ -491,7 +491,7 @@ describe('resolveFromOAuth()', () => {
     expect(response.status).toBe(200)
 
     const result = await resultPromise
-    expect(result).toEqual({ token: 'custom-path-token', type: 'bearer' })
+    expect(result).toStrictEqual({ token: 'custom-path-token', type: 'bearer' })
 
     const fetchBody = fetchSpy.mock.calls[0][1]?.body as string
     const params = new URLSearchParams(fetchBody)

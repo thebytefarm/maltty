@@ -177,7 +177,7 @@ describe('redactObject()', () => {
       tags: ['public', 'v2', 42, null, true],
     }
     const result = redactObject(obj)
-    expect(result.tags).toEqual(['public', 'v2', 42, null, true])
+    expect(result.tags).toStrictEqual(['public', 'v2', 42, null, true])
   })
 
   it('handles nested arrays of objects with sensitive keys', () => {
@@ -221,7 +221,7 @@ describe('redactObject()', () => {
       tags: ['prod', 'us-east'],
     }
     const result = redactObject(obj)
-    expect(result).toEqual(obj)
+    expect(result).toStrictEqual(obj)
   })
 
   // -- Does not mutate original --
@@ -237,7 +237,7 @@ describe('redactObject()', () => {
   // -- Empty object --
   it('handles an empty object', () => {
     const result = redactObject({})
-    expect(result).toEqual({})
+    expect(result).toStrictEqual({})
   })
 
   // -- Mixed sensitive and non-sensitive at multiple levels --

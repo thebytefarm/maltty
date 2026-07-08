@@ -79,7 +79,7 @@ function createMockResponse(): Response {
   return Response.json({ ok: true }, { status: 200 })
 }
 
-describe('Auth + Standalone HTTP Integration', () => {
+describe('auth + Standalone HTTP Integration', () => {
   let fetchSpy: ReturnType<typeof vi.spyOn<typeof globalThis, 'fetch'>>
 
   beforeEach(() => {
@@ -104,7 +104,7 @@ describe('Auth + Standalone HTTP Integration', () => {
       ctx as unknown as Record<string, { credential: () => unknown; authenticated: () => boolean }>
     ).auth
 
-    expect(authCtx.credential()).toEqual({ token: 'chain-test-token', type: 'bearer' })
+    expect(authCtx.credential()).toStrictEqual({ token: 'chain-test-token', type: 'bearer' })
     expect(authCtx.authenticated()).toBeTruthy()
   })
 
@@ -124,7 +124,7 @@ describe('Auth + Standalone HTTP Integration', () => {
   })
 })
 
-describe('Standalone http() (decoupled)', () => {
+describe('standalone http() (decoupled)', () => {
   let fetchSpy: ReturnType<typeof vi.spyOn<typeof globalThis, 'fetch'>>
 
   beforeEach(() => {

@@ -99,7 +99,29 @@
       {
         "noSingleLineBlocks": true
       }
-    ]
+    ],
+    "no-underscore-dangle": "off",
+    "require-unicode-regexp": "off",
+    "prefer-named-capture-group": "off",
+    "typescript/method-signature-style": "off",
+    "unicorn/max-nested-calls": "off",
+    "unicorn/prefer-single-call": "off",
+    "node/no-sync": "off",
+    "node/callback-return": "off",
+    "vitest/valid-title": "off",
+    "vitest/no-conditional-expect": "off",
+    "vitest/require-to-throw-message": "off",
+    "vitest/prefer-expect-assertions": "off",
+    "vitest/prefer-strict-equal": "off",
+    "vitest/no-hooks": "off",
+    "vitest/no-conditional-in-test": "off",
+    "vitest/max-expects": "off",
+    "vitest/prefer-called-with": "off",
+    "vitest/prefer-lowercase-title": "off",
+    "vitest/require-top-level-describe": "off",
+    "vitest/prefer-expect-resolves": "off",
+    "vitest/prefer-mock-return-shorthand": "off",
+    "vitest/require-hook": "off"
   },
   "overrides": [
     {

@@ -204,7 +204,7 @@ describe('createLog()', () => {
 
   describe('resolveOutput', () => {
     it('should default to process.stderr when no output is provided', () => {
-      const writeSpy = vi.spyOn(process.stderr, 'write').mockImplementation(() => true)
+      const writeSpy = vi.spyOn(process.stderr, 'write').mockReturnValue(true)
       const log = createLog()
 
       log.newline()

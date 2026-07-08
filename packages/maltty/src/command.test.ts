@@ -91,7 +91,7 @@ describe('command()', () => {
     expect(parent[TAG]).toBe('Command')
     expect(parent.commands).toBeDefined()
     expect(hasTag(parent.commands!['sub'], 'Command')).toBeTruthy()
-    expect(parent.help).toEqual({ order: ['sub'] })
+    expect(parent.help).toStrictEqual({ order: ['sub'] })
   })
 
   it('should preserve a static hidden value', () => {
@@ -135,7 +135,7 @@ describe('command()', () => {
     })
 
     expect(cmd[TAG]).toBe('Command')
-    expect(cmd.help).toEqual({ order: ['a', 'b'] })
+    expect(cmd.help).toStrictEqual({ order: ['a', 'b'] })
     // Path is not stored on the flat Command — it is resolved at the cli() level
     expect(cmd.commands).toBeUndefined()
   })

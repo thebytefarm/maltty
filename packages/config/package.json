@@ -46,7 +46,7 @@
   },
   "dependencies": {
     "@maltty/utils": "workspace:*",
-    "c12": "4.0.0-beta.4",
+    "c12": "4.0.0-beta.5",
     "es-toolkit": "catalog:",
     "zod": "catalog:"
   },

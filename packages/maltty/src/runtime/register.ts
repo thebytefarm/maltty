@@ -16,7 +16,7 @@ import { registerCommandArgs } from './args/index.js'
 import { isZodSchema, zodSchemaToPositionalMeta } from './args/zod.js'
 import type { PositionalMeta } from './args/zod.js'
 import { sortCommandEntries, validateCommandOrder } from './sort-commands.js'
-import type { ResolvedCommand, ResolvedRef } from './types.js'
+import type { ResolvedRef } from './types.js'
 
 /**
  * Type guard that checks whether a value is a Command object.

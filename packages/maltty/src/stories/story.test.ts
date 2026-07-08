@@ -35,7 +35,7 @@ describe('story() factory', () => {
     expect(result.name).toBe('detailed')
     expect(result.component).toBe(StubComponent)
     expect(result.schema).toBe(testSchema)
-    expect(result.props).toEqual({ label: 'world', count: 42 })
+    expect(result.props).toStrictEqual({ label: 'world', count: 42 })
     expect(result.description).toBe('A detailed story')
   })
 
@@ -46,7 +46,7 @@ describe('story() factory', () => {
       schema: testSchema,
       props: { label: '', count: 0 },
     })
-    expect(result.decorators).toEqual([])
+    expect(result.decorators).toStrictEqual([])
     expect(Object.isFrozen(result.decorators)).toBeTruthy()
   })
 
@@ -146,7 +146,7 @@ describe('stories() factory', () => {
         basic: { props: { label: '', count: 0 } },
       },
     })
-    expect(result.decorators).toEqual([])
+    expect(result.decorators).toStrictEqual([])
     expect(Object.isFrozen(result.decorators)).toBeTruthy()
   })
 

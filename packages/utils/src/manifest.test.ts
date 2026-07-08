@@ -33,7 +33,7 @@ describe(readManifest, () => {
     const [error, manifest] = await readManifest('/project')
 
     expect(error).toBeNull()
-    expect(manifest).toEqual({
+    expect(manifest).toStrictEqual({
       author: 'Alice',
       bin: { cli: './bin/cli.js' },
       description: 'A test package',
@@ -76,7 +76,7 @@ describe(readManifest, () => {
     const [error, manifest] = await readManifest('/project')
 
     expect(error).toBeNull()
-    expect(manifest).toEqual({
+    expect(manifest).toStrictEqual({
       author: undefined,
       bin: undefined,
       description: undefined,
@@ -129,7 +129,7 @@ describe(readManifest, () => {
 
     expect(error).toBeNull()
     expect(manifest).not.toBeNull()
-    expect(manifest!.bin).toEqual({ '': './bin/index.js' })
+    expect(manifest!.bin).toStrictEqual({ '': './bin/index.js' })
   })
 
   it('should pass through keywords array', async () => {
@@ -142,7 +142,7 @@ describe(readManifest, () => {
 
     expect(error).toBeNull()
     expect(manifest).not.toBeNull()
-    expect(manifest!.keywords).toEqual(['cli', 'tool', 'typescript'])
+    expect(manifest!.keywords).toStrictEqual(['cli', 'tool', 'typescript'])
   })
 
   it('should pass through record bin', async () => {
@@ -155,7 +155,7 @@ describe(readManifest, () => {
 
     expect(error).toBeNull()
     expect(manifest).not.toBeNull()
-    expect(manifest!.bin).toEqual({ build: './bin/build.js', serve: './bin/serve.js' })
+    expect(manifest!.bin).toStrictEqual({ build: './bin/build.js', serve: './bin/serve.js' })
   })
 })
 

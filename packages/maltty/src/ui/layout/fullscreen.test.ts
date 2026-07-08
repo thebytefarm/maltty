@@ -50,14 +50,14 @@ describe('useTerminalSize export', () => {
   })
 })
 
-describe('FullScreen export', () => {
+describe('fullScreen export', () => {
   it('should export FullScreen as a function component', async () => {
     const { FullScreen } = await import('./fullscreen.js')
     expect(typeof FullScreen).toBe('function')
   })
 })
 
-describe('ANSI sequences', () => {
+describe('aNSI sequences', () => {
   it('should use correct alternate screen buffer sequences', () => {
     expect('\u001B[?1049h').toBe('\u001B[?1049h')
     expect('\u001B[?1049l').toBe('\u001B[?1049l')

@@ -21,9 +21,13 @@ import type {
  * Per-call defaults for clack log methods.
  */
 export interface LogDefaults {
-  /** Show navigation guide hints. */
+  /**
+   * Show navigation guide hints.
+   */
   readonly guide?: boolean
-  /** Custom output stream. */
+  /**
+   * Custom output stream.
+   */
   readonly output?: Writable
 }
 
@@ -35,9 +39,13 @@ export interface CreateLogOptions {
    * Writable stream for raw output. Defaults to `process.stderr`.
    */
   readonly output?: NodeJS.WritableStream
-  /** Per-call defaults merged into every clack log call. Method-level options win. */
+  /**
+   * Per-call defaults merged into every clack log call. Method-level options win.
+   */
   readonly defaults?: LogDefaults
-  /** Box display defaults from {@link DisplayConfig}. */
+  /**
+   * Box display defaults from {@link DisplayConfig}.
+   */
   readonly boxDefaults?: DisplayConfig['box']
 }
 

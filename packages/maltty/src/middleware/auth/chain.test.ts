@@ -40,7 +40,7 @@ describe('resolveFromEnv()', () => {
 
     const result = resolveFromEnv({ tokenVar: 'MY_TOKEN' })
 
-    expect(result).toEqual({ token: 'abc123', type: 'bearer' })
+    expect(result).toStrictEqual({ token: 'abc123', type: 'bearer' })
   })
 
   it('should return null when env var is not set', () => {
@@ -68,7 +68,7 @@ describe('resolveFromDotenv()', () => {
 
     const result = resolveFromDotenv({ path: '/app/.env', tokenVar: 'MY_TOKEN' })
 
-    expect(result).toEqual({ token: 'secret-value', type: 'bearer' })
+    expect(result).toStrictEqual({ token: 'secret-value', type: 'bearer' })
   })
 
   it('should return null when .env file does not exist', () => {
@@ -106,7 +106,7 @@ describe('resolveFromToken()', () => {
 
     const result = await resolveFromToken({ prompts, message: 'Enter token' })
 
-    expect(result).toEqual({ token: 'user-token', type: 'bearer' })
+    expect(result).toStrictEqual({ token: 'user-token', type: 'bearer' })
   })
 
   it('should return null when user cancels prompt', async () => {
@@ -147,7 +147,7 @@ describe('runStrategyChain()', () => {
       strategies: [{ source: 'env' }, { source: 'token' }],
     })
 
-    expect(result).toEqual({ token: 'from-env', type: 'bearer' })
+    expect(result).toStrictEqual({ token: 'from-env', type: 'bearer' })
     expect(prompts.password).not.toHaveBeenCalled()
   })
 
@@ -174,7 +174,7 @@ describe('runStrategyChain()', () => {
       strategies: [{ source: 'env' }],
     })
 
-    expect(result).toEqual({ token: 'derived-token', type: 'bearer' })
+    expect(result).toStrictEqual({ token: 'derived-token', type: 'bearer' })
   })
 
   it('should try strategies in order', async () => {
@@ -189,7 +189,7 @@ describe('runStrategyChain()', () => {
       strategies: [{ source: 'env' }, { source: 'token' }],
     })
 
-    expect(result).toEqual({ token: 'from-prompt', type: 'bearer' })
+    expect(result).toStrictEqual({ token: 'from-prompt', type: 'bearer' })
     expect(prompts.password).toHaveBeenCalled()
   })
 
@@ -207,7 +207,7 @@ describe('runStrategyChain()', () => {
       ],
     })
 
-    expect(result).toEqual({ token: 'custom', type: 'bearer' })
+    expect(result).toStrictEqual({ token: 'custom', type: 'bearer' })
   })
 
   it('should dispatch to file strategy with default filename and dirName', async () => {
@@ -221,7 +221,7 @@ describe('runStrategyChain()', () => {
       strategies: [{ source: 'file' }],
     })
 
-    expect(result).toEqual({ token: 'from-file', type: 'bearer' })
+    expect(result).toStrictEqual({ token: 'from-file', type: 'bearer' })
     expect(resolveFromFile).toHaveBeenCalledWith({
       filename: 'auth.json',
       globalDirName: '.my-cli',
@@ -240,7 +240,7 @@ describe('runStrategyChain()', () => {
       strategies: [{ dirName: '.my-custom-dir', filename: 'creds.json', source: 'file' }],
     })
 
-    expect(result).toEqual({ token: 'from-custom-file', type: 'bearer' })
+    expect(result).toStrictEqual({ token: 'from-custom-file', type: 'bearer' })
     expect(resolveFromFile).toHaveBeenCalledWith({
       filename: 'creds.json',
       globalDirName: '.my-custom-dir',
@@ -284,7 +284,7 @@ describe('runStrategyChain()', () => {
       ],
     })
 
-    expect(result).toEqual({ token: 'from-oauth', type: 'bearer' })
+    expect(result).toStrictEqual({ token: 'from-oauth', type: 'bearer' })
     expect(resolveFromOAuth).toHaveBeenCalledWith({
       authUrl: 'https://auth.example.com/authorize',
       callbackPath: '/callback',
@@ -317,7 +317,7 @@ describe('runStrategyChain()', () => {
       ],
     })
 
-    expect(result).toEqual({ token: 'from-device', type: 'bearer' })
+    expect(result).toStrictEqual({ token: 'from-device', type: 'bearer' })
     expect(resolveFromDeviceCode).toHaveBeenCalledWith({
       clientId: 'my-client',
       deviceAuthUrl: 'https://auth.example.com/device/code',

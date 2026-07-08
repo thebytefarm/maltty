@@ -74,7 +74,7 @@ describe(sortCommandEntries, () => {
     const result = sortCommandEntries({ entries })
     const names = result.map(([name]) => name)
 
-    expect(names).toEqual(['alpha', 'beta', 'gamma'])
+    expect(names).toStrictEqual(['alpha', 'beta', 'gamma'])
   })
 
   it('should sort alphabetically when order is empty', () => {
@@ -87,7 +87,7 @@ describe(sortCommandEntries, () => {
     const result = sortCommandEntries({ entries, order: [] })
     const names = result.map(([name]) => name)
 
-    expect(names).toEqual(['alpha', 'beta', 'gamma'])
+    expect(names).toStrictEqual(['alpha', 'beta', 'gamma'])
   })
 
   it('should place ordered names first, then remaining alphabetically', () => {
@@ -101,7 +101,7 @@ describe(sortCommandEntries, () => {
     const result = sortCommandEntries({ entries, order: ['gamma', 'alpha'] })
     const names = result.map(([name]) => name)
 
-    expect(names).toEqual(['gamma', 'alpha', 'beta', 'delta'])
+    expect(names).toStrictEqual(['gamma', 'alpha', 'beta', 'delta'])
   })
 
   it('should respect exact specified order when all names are ordered', () => {
@@ -114,7 +114,7 @@ describe(sortCommandEntries, () => {
     const result = sortCommandEntries({ entries, order: ['beta', 'delta', 'alpha'] })
     const names = result.map(([name]) => name)
 
-    expect(names).toEqual(['beta', 'delta', 'alpha'])
+    expect(names).toStrictEqual(['beta', 'delta', 'alpha'])
   })
 
   it('should skip order names that are not in entries', () => {
@@ -126,7 +126,7 @@ describe(sortCommandEntries, () => {
     const result = sortCommandEntries({ entries, order: ['missing', 'alpha'] })
     const names = result.map(([name]) => name)
 
-    expect(names).toEqual(['alpha', 'beta'])
+    expect(names).toStrictEqual(['alpha', 'beta'])
   })
 
   it('should not mutate the original entries array', () => {

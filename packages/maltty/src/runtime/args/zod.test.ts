@@ -51,7 +51,7 @@ describe('zodSchemaToYargsOptions()', () => {
     const schema = z.object({ name: z.string() })
     const result = zodSchemaToYargsOptions(schema)
 
-    expect(result).toEqual({
+    expect(result).toStrictEqual({
       name: { demandOption: true, type: 'string' },
     })
   })
@@ -60,7 +60,7 @@ describe('zodSchemaToYargsOptions()', () => {
     const schema = z.object({ count: z.number() })
     const result = zodSchemaToYargsOptions(schema)
 
-    expect(result).toEqual({
+    expect(result).toStrictEqual({
       count: { demandOption: true, type: 'number' },
     })
   })
@@ -69,7 +69,7 @@ describe('zodSchemaToYargsOptions()', () => {
     const schema = z.object({ verbose: z.boolean() })
     const result = zodSchemaToYargsOptions(schema)
 
-    expect(result).toEqual({
+    expect(result).toStrictEqual({
       verbose: { demandOption: true, type: 'boolean' },
     })
   })
@@ -78,7 +78,7 @@ describe('zodSchemaToYargsOptions()', () => {
     const schema = z.object({ name: z.string().optional() })
     const result = zodSchemaToYargsOptions(schema)
 
-    expect(result).toEqual({
+    expect(result).toStrictEqual({
       name: { type: 'string' },
     })
   })
@@ -87,7 +87,7 @@ describe('zodSchemaToYargsOptions()', () => {
     const schema = z.object({ greeting: z.string().default('hello') })
     const result = zodSchemaToYargsOptions(schema)
 
-    expect(result).toEqual({
+    expect(result).toStrictEqual({
       greeting: { default: 'hello', type: 'string' },
     })
   })
@@ -96,7 +96,7 @@ describe('zodSchemaToYargsOptions()', () => {
     const schema = z.object({ name: z.string().describe('Your name') })
     const result = zodSchemaToYargsOptions(schema)
 
-    expect(result).toEqual({
+    expect(result).toStrictEqual({
       name: { demandOption: true, describe: 'Your name', type: 'string' },
     })
   })
@@ -105,7 +105,7 @@ describe('zodSchemaToYargsOptions()', () => {
     const schema = z.object({ files: z.array(z.string()) })
     const result = zodSchemaToYargsOptions(schema)
 
-    expect(result).toEqual({
+    expect(result).toStrictEqual({
       files: { demandOption: true, type: 'array' },
     })
   })
@@ -114,7 +114,7 @@ describe('zodSchemaToYargsOptions()', () => {
     const schema = z.object({ tags: z.array(z.string()).optional() })
     const result = zodSchemaToYargsOptions(schema)
 
-    expect(result).toEqual({
+    expect(result).toStrictEqual({
       tags: { type: 'array' },
     })
   })
@@ -127,7 +127,7 @@ describe('zodSchemaToYargsOptions()', () => {
     })
     const result = zodSchemaToYargsOptions(schema)
 
-    expect(result).toEqual({
+    expect(result).toStrictEqual({
       count: { default: 1, type: 'number' },
       name: { demandOption: true, type: 'string' },
       verbose: { type: 'boolean' },
@@ -138,14 +138,14 @@ describe('zodSchemaToYargsOptions()', () => {
     const schema = z.object({})
     const result = zodSchemaToYargsOptions(schema)
 
-    expect(result).toEqual({})
+    expect(result).toStrictEqual({})
   })
 
   it('should handle an optional field with a default value', () => {
     const schema = z.object({ level: z.number().optional().default(5) })
     const result = zodSchemaToYargsOptions(schema)
 
-    expect(result).toEqual({
+    expect(result).toStrictEqual({
       level: { default: 5, type: 'number' },
     })
   })
@@ -154,7 +154,7 @@ describe('zodSchemaToYargsOptions()', () => {
     const schema = z.object({ color: z.enum(['red', 'green', 'blue']) })
     const result = zodSchemaToYargsOptions(schema)
 
-    expect(result).toEqual({
+    expect(result).toStrictEqual({
       color: { choices: ['red', 'green', 'blue'], demandOption: true, type: 'string' },
     })
   })
@@ -163,7 +163,7 @@ describe('zodSchemaToYargsOptions()', () => {
     const schema = z.object({ color: z.enum(['red', 'green', 'blue']).optional() })
     const result = zodSchemaToYargsOptions(schema)
 
-    expect(result).toEqual({
+    expect(result).toStrictEqual({
       color: { choices: ['red', 'green', 'blue'], type: 'string' },
     })
   })
@@ -172,7 +172,7 @@ describe('zodSchemaToYargsOptions()', () => {
     const schema = z.object({ color: z.enum(['red', 'green', 'blue']).default('red') })
     const result = zodSchemaToYargsOptions(schema)
 
-    expect(result).toEqual({
+    expect(result).toStrictEqual({
       color: { choices: ['red', 'green', 'blue'], default: 'red', type: 'string' },
     })
   })
@@ -183,7 +183,7 @@ describe('zodSchemaToYargsPositionals()', () => {
     const schema = z.object({ file: z.string() })
     const result = zodSchemaToYargsPositionals(schema)
 
-    expect(result).toEqual({
+    expect(result).toStrictEqual({
       file: { demandOption: true, type: 'string' },
     })
   })
@@ -192,7 +192,7 @@ describe('zodSchemaToYargsPositionals()', () => {
     const schema = z.object({ port: z.number() })
     const result = zodSchemaToYargsPositionals(schema)
 
-    expect(result).toEqual({
+    expect(result).toStrictEqual({
       port: { demandOption: true, type: 'number' },
     })
   })
@@ -201,7 +201,7 @@ describe('zodSchemaToYargsPositionals()', () => {
     const schema = z.object({ flag: z.boolean() })
     const result = zodSchemaToYargsPositionals(schema)
 
-    expect(result).toEqual({
+    expect(result).toStrictEqual({
       flag: { demandOption: true, type: 'boolean' },
     })
   })
@@ -210,7 +210,7 @@ describe('zodSchemaToYargsPositionals()', () => {
     const schema = z.object({ file: z.string().optional() })
     const result = zodSchemaToYargsPositionals(schema)
 
-    expect(result).toEqual({
+    expect(result).toStrictEqual({
       file: { type: 'string' },
     })
   })
@@ -219,7 +219,7 @@ describe('zodSchemaToYargsPositionals()', () => {
     const schema = z.object({ output: z.string().default('dist') })
     const result = zodSchemaToYargsPositionals(schema)
 
-    expect(result).toEqual({
+    expect(result).toStrictEqual({
       output: { default: 'dist', type: 'string' },
     })
   })
@@ -228,7 +228,7 @@ describe('zodSchemaToYargsPositionals()', () => {
     const schema = z.object({ items: z.array(z.string()) })
     const result = zodSchemaToYargsPositionals(schema)
 
-    expect(result).toEqual({
+    expect(result).toStrictEqual({
       items: { demandOption: true, type: 'string' },
     })
   })
@@ -237,7 +237,7 @@ describe('zodSchemaToYargsPositionals()', () => {
     const schema = z.object({ env: z.enum(['dev', 'prod']) })
     const result = zodSchemaToYargsPositionals(schema)
 
-    expect(result).toEqual({
+    expect(result).toStrictEqual({
       env: { choices: ['dev', 'prod'], demandOption: true, type: 'string' },
     })
   })
@@ -246,7 +246,7 @@ describe('zodSchemaToYargsPositionals()', () => {
     const schema = z.object({ file: z.string().describe('Input file path') })
     const result = zodSchemaToYargsPositionals(schema)
 
-    expect(result).toEqual({
+    expect(result).toStrictEqual({
       file: { demandOption: true, describe: 'Input file path', type: 'string' },
     })
   })
@@ -258,7 +258,7 @@ describe('zodSchemaToYargsPositionals()', () => {
     })
     const result = zodSchemaToYargsPositionals(schema)
 
-    expect(result).toEqual({
+    expect(result).toStrictEqual({
       dest: { type: 'string' },
       source: { demandOption: true, type: 'string' },
     })
@@ -270,21 +270,21 @@ describe('zodSchemaToPositionalMeta()', () => {
     const schema = z.object({ file: z.string() })
     const result = zodSchemaToPositionalMeta(schema)
 
-    expect(result).toEqual([{ isOptional: false, name: 'file' }])
+    expect(result).toStrictEqual([{ isOptional: false, name: 'file' }])
   })
 
   it('should extract metadata for an optional field', () => {
     const schema = z.object({ output: z.string().optional() })
     const result = zodSchemaToPositionalMeta(schema)
 
-    expect(result).toEqual([{ isOptional: true, name: 'output' }])
+    expect(result).toStrictEqual([{ isOptional: true, name: 'output' }])
   })
 
   it('should extract metadata for a field with a default', () => {
     const schema = z.object({ format: z.string().default('json') })
     const result = zodSchemaToPositionalMeta(schema)
 
-    expect(result).toEqual([{ isOptional: true, name: 'format' }])
+    expect(result).toStrictEqual([{ isOptional: true, name: 'format' }])
   })
 
   it('should preserve field order from the schema', () => {
@@ -294,7 +294,7 @@ describe('zodSchemaToPositionalMeta()', () => {
     })
     const result = zodSchemaToPositionalMeta(schema)
 
-    expect(result).toEqual([
+    expect(result).toStrictEqual([
       { isOptional: true, name: 'dest' },
       { isOptional: false, name: 'source' },
     ])
@@ -304,7 +304,7 @@ describe('zodSchemaToPositionalMeta()', () => {
     const schema = z.object({})
     const result = zodSchemaToPositionalMeta(schema)
 
-    expect(result).toEqual([])
+    expect(result).toStrictEqual([])
   })
 
   it('should handle multiple fields with mixed optionality', () => {
@@ -315,7 +315,7 @@ describe('zodSchemaToPositionalMeta()', () => {
     })
     const result = zodSchemaToPositionalMeta(schema)
 
-    expect(result).toEqual([
+    expect(result).toStrictEqual([
       { isOptional: false, name: 'command' },
       { isOptional: true, name: 'flags' },
       { isOptional: true, name: 'target' },

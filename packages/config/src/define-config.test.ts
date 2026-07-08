@@ -28,9 +28,9 @@ describe(defineConfig, () => {
 
     expect(config.entry).toBe('./main.ts')
     expect(config.commands).toBe('./cmds')
-    expect(config.build).toEqual({ minify: true, out: './build', target: 'node20' })
-    expect(config.compile).toEqual({ name: 'my-cli', out: './bin', targets: ['linux-x64'] })
-    expect(config.include).toEqual(['assets/**'])
+    expect(config.build).toStrictEqual({ minify: true, out: './build', target: 'node20' })
+    expect(config.compile).toStrictEqual({ name: 'my-cli', out: './bin', targets: ['linux-x64'] })
+    expect(config.include).toStrictEqual(['assets/**'])
   })
 
   it('should not mutate the original object', () => {

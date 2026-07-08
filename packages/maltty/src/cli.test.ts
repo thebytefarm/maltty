@@ -70,7 +70,7 @@ describe('meta', () => {
     const ctx = handler.mock.calls[0]![0] as CommandContext
     expect(ctx.meta.name).toBe('my-tool')
     expect(ctx.meta.version).toBe('2.5.0')
-    expect(ctx.meta.command).toEqual(['info'])
+    expect(ctx.meta.command).toStrictEqual(['info'])
   })
 })
 
@@ -93,7 +93,7 @@ describe('dirs', () => {
 
     expect(handler).toHaveBeenCalledTimes(1)
     const ctx = handler.mock.calls[0]![0] as CommandContext
-    expect(ctx.meta.dirs).toEqual({ global: '.my-tool', local: '.my-tool' })
+    expect(ctx.meta.dirs).toStrictEqual({ global: '.my-tool', local: '.my-tool' })
   })
 
   it('should use custom dirs when provided', async () => {
@@ -115,7 +115,7 @@ describe('dirs', () => {
 
     expect(handler).toHaveBeenCalledTimes(1)
     const ctx = handler.mock.calls[0]![0] as CommandContext
-    expect(ctx.meta.dirs).toEqual({ global: '.maltty', local: '.maltty' })
+    expect(ctx.meta.dirs).toStrictEqual({ global: '.maltty', local: '.maltty' })
   })
 
   it('should allow partial dirs override for global only', async () => {
@@ -137,7 +137,7 @@ describe('dirs', () => {
 
     expect(handler).toHaveBeenCalledTimes(1)
     const ctx = handler.mock.calls[0]![0] as CommandContext
-    expect(ctx.meta.dirs).toEqual({ global: '.custom-global', local: '.my-tool' })
+    expect(ctx.meta.dirs).toStrictEqual({ global: '.custom-global', local: '.my-tool' })
   })
 
   it('should allow partial dirs override for local only', async () => {
@@ -159,7 +159,7 @@ describe('dirs', () => {
 
     expect(handler).toHaveBeenCalledTimes(1)
     const ctx = handler.mock.calls[0]![0] as CommandContext
-    expect(ctx.meta.dirs).toEqual({ global: '.my-tool', local: '.custom-local' })
+    expect(ctx.meta.dirs).toStrictEqual({ global: '.my-tool', local: '.custom-local' })
   })
 
   it('should fall back to default when dirs contain empty strings', async () => {
@@ -181,7 +181,7 @@ describe('dirs', () => {
 
     expect(handler).toHaveBeenCalledTimes(1)
     const ctx = handler.mock.calls[0]![0] as CommandContext
-    expect(ctx.meta.dirs).toEqual({ global: '.my-tool', local: '.my-tool' })
+    expect(ctx.meta.dirs).toStrictEqual({ global: '.my-tool', local: '.my-tool' })
   })
 })
 

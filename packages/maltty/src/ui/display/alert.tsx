@@ -18,25 +18,39 @@ export type AlertVariant = Variant
  * Props for the {@link Alert} component.
  */
 export interface AlertProps {
-  /** The text content to display inside the alert box. */
+  /**
+   * The text content to display inside the alert box.
+   */
   readonly children: string
 
-  /** The variant determines the border color and icon. */
+  /**
+   * The variant determines the border color and icon.
+   */
   readonly variant: AlertVariant
 
-  /** Optional title rendered in the top border. */
+  /**
+   * Optional title rendered in the top border.
+   */
   readonly title?: string
 
-  /** Box width. Defaults to `'auto'` which sizes to content. */
+  /**
+   * Box width. Defaults to `'auto'` which sizes to content.
+   */
   readonly width?: number | 'auto'
 
-  /** Use rounded border corners when `true`. */
+  /**
+   * Use rounded border corners when `true`.
+   */
   readonly rounded?: boolean
 
-  /** Horizontal alignment of content lines. */
+  /**
+   * Horizontal alignment of content lines.
+   */
   readonly contentAlign?: 'left' | 'center' | 'right'
 
-  /** Horizontal alignment of the title within the top border. */
+  /**
+   * Horizontal alignment of the title within the top border.
+   */
   readonly titleAlign?: 'left' | 'center' | 'right'
 }
 

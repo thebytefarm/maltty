@@ -56,7 +56,7 @@ describe('createContext()', () => {
 
     it('has the correct command path', () => {
       const ctx = createContext(defaultOptions())
-      expect(ctx.meta.command).toEqual(['deploy', 'preview'])
+      expect(ctx.meta.command).toStrictEqual(['deploy', 'preview'])
     })
   })
 
@@ -67,7 +67,7 @@ describe('createContext()', () => {
   describe('raw', () => {
     it('should contain the normalized argv', () => {
       const ctx = createContext(defaultOptions())
-      expect(ctx.raw.argv).toEqual(['my-cli', 'deploy', 'preview', '--verbose'])
+      expect(ctx.raw.argv).toStrictEqual(['my-cli', 'deploy', 'preview', '--verbose'])
     })
 
     it('should have argv[0] as the CLI name', () => {

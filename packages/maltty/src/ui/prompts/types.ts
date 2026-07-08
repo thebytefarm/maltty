@@ -14,10 +14,14 @@
  * When neither is provided, the component defaults to focused and enabled.
  */
 export interface PromptProps {
-  /** Whether the component currently has input focus. @default true */
+  /**
+   * Whether the component currently has input focus. @default true
+   */
   readonly focused?: boolean
 
-  /** Whether the component is visually and functionally disabled. @default false */
+  /**
+   * Whether the component is visually and functionally disabled. @default false
+   */
   readonly disabled?: boolean
 }
 
@@ -30,15 +34,23 @@ export interface PromptProps {
  * @typeParam TValue - The type of the option's value.
  */
 export interface PromptOption<TValue> {
-  /** The value returned when this option is selected. */
+  /**
+   * The value returned when this option is selected.
+   */
   readonly value: TValue
 
-  /** The display label shown to the user. */
+  /**
+   * The display label shown to the user.
+   */
   readonly label: string
 
-  /** Optional hint text shown dimmed beside the label. */
+  /**
+   * Optional hint text shown dimmed beside the label.
+   */
   readonly hint?: string
 
-  /** When `true`, the option is shown but not selectable. */
+  /**
+   * When `true`, the option is shown but not selectable.
+   */
   readonly disabled?: boolean
 }

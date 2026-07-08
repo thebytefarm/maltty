@@ -10,13 +10,19 @@ import { match } from 'ts-pattern'
  * Props for the {@link CursorValue} component.
  */
 export interface CursorValueProps {
-  /** The display string (plain text or masked). */
+  /**
+   * The display string (plain text or masked).
+   */
   readonly value: string
 
-  /** The cursor position within the value string. */
+  /**
+   * The cursor position within the value string.
+   */
   readonly cursor: number
 
-  /** When `true`, the value is rendered dimmed. */
+  /**
+   * When `true`, the value is rendered dimmed.
+   */
   readonly disabled: boolean
 }
 

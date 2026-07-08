@@ -166,7 +166,7 @@ describe('config', () => {
 
       expect(error).toBeNull()
       expect(result).not.toBeNull()
-      expect(result!.config).toEqual(validConfig)
+      expect(result!.config).toStrictEqual(validConfig)
       expect(result!.filePath).toBe(join(tmpDir, 'myapp.config.json'))
       expect(result!.format).toBe('json')
     })
@@ -185,7 +185,7 @@ describe('config', () => {
 
       expect(error).toBeNull()
       expect(result).not.toBeNull()
-      expect(result!.config).toEqual(validConfig)
+      expect(result!.config).toStrictEqual(validConfig)
       expect(result!.filePath).toBe(join(tmpDir, 'myapp.config.jsonc'))
       expect(result!.format).toBe('jsonc')
     })
@@ -198,7 +198,7 @@ describe('config', () => {
 
       expect(error).toBeNull()
       expect(result).not.toBeNull()
-      expect(result!.config).toEqual(validConfig)
+      expect(result!.config).toStrictEqual(validConfig)
       expect(result!.filePath).toBe(join(tmpDir, 'myapp.json'))
       expect(result!.format).toBe('json')
     })
@@ -217,7 +217,7 @@ features:
 
       expect(error).toBeNull()
       expect(result).not.toBeNull()
-      expect(result!.config).toEqual(validConfig)
+      expect(result!.config).toStrictEqual(validConfig)
       expect(result!.filePath).toBe(join(tmpDir, 'myapp.yaml'))
       expect(result!.format).toBe('yaml')
     })
@@ -294,7 +294,7 @@ features:
 
       expect(error).toBeNull()
       expect(result).not.toBeNull()
-      expect(result!.config).toEqual(validConfig)
+      expect(result!.config).toStrictEqual(validConfig)
       expect((result!.config as Record<string, unknown>)['extraField']).toBeUndefined()
     })
   })
@@ -314,7 +314,7 @@ features:
 
       const [loadError, loaded] = await client.load(tmpDir)
       expect(loadError).toBeNull()
-      expect(loaded!.config).toEqual(validConfig)
+      expect(loaded!.config).toStrictEqual(validConfig)
     })
 
     it('should write JSONC config as default format with name.config pattern', async () => {
@@ -328,7 +328,7 @@ features:
 
       const [loadError, loaded] = await client.load(tmpDir)
       expect(loadError).toBeNull()
-      expect(loaded!.config).toEqual(validConfig)
+      expect(loaded!.config).toStrictEqual(validConfig)
     })
 
     it('should write YAML config with name.config pattern', async () => {
@@ -345,7 +345,7 @@ features:
 
       const [loadError, loaded] = await client.load(tmpDir)
       expect(loadError).toBeNull()
-      expect(loaded!.config).toEqual(validConfig)
+      expect(loaded!.config).toStrictEqual(validConfig)
     })
 
     it('should create directories recursively', async () => {
@@ -468,7 +468,7 @@ features:
 
           const [loadError, loaded] = await client.load(subDir)
           expect(loadError).toBeNull()
-          expect(loaded!.config).toEqual(data)
+          expect(loaded!.config).toStrictEqual(data)
           expect(loaded!.format).toBe(format)
         })
       )

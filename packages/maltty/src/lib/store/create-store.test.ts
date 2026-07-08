@@ -215,7 +215,7 @@ describe('createStore()', () => {
         startDir: tmpDir,
       })
 
-      expect(result).toEqual(data)
+      expect(result).toStrictEqual(data)
     })
 
     it('returns defaults when file not found', () => {
@@ -227,7 +227,7 @@ describe('createStore()', () => {
         startDir: tmpDir,
       })
 
-      expect(result).toEqual(defaults)
+      expect(result).toStrictEqual(defaults)
     })
 
     it('returns null when no file and no defaults', () => {
@@ -252,7 +252,7 @@ describe('createStore()', () => {
         startDir: tmpDir,
       })
 
-      expect(result).toEqual({ extra: true, name: 'from-file', version: 2 })
+      expect(result).toStrictEqual({ extra: true, name: 'from-file', version: 2 })
     })
 
     it('returns defaults on JSON parse error', () => {
@@ -265,7 +265,7 @@ describe('createStore()', () => {
         startDir: tmpDir,
       })
 
-      expect(result).toEqual(defaults)
+      expect(result).toStrictEqual(defaults)
     })
 
     it('returns null on parse error with no defaults', () => {
@@ -408,7 +408,7 @@ describe('createStore()', () => {
       expect(existsSync(filePath as string)).toBeTruthy()
 
       const content = readFileSync(filePath as string, 'utf8')
-      expect(JSON.parse(content)).toEqual(data)
+      expect(JSON.parse(content)).toStrictEqual(data)
     })
 
     it("source='local': should write JSON file to local dir", () => {

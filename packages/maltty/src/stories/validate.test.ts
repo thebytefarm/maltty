@@ -8,7 +8,7 @@ describe('validateProps()', () => {
     const schema = z.object({ name: z.string(), age: z.number() })
     const result = validateProps({ schema, props: { name: 'Alice', age: 30 } })
 
-    expect(result).toEqual([])
+    expect(result).toStrictEqual([])
   })
 
   it('should return per-field errors for invalid props', () => {
@@ -43,7 +43,7 @@ describe('validateProps()', () => {
     const schema = z.object({ name: z.string(), bio: z.string().optional() })
     const result = validateProps({ schema, props: { name: 'Alice' } })
 
-    expect(result).toEqual([])
+    expect(result).toStrictEqual([])
   })
 
   it('should return frozen error objects', () => {

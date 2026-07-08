@@ -42,7 +42,7 @@ describe('createAuthHeaders()', () => {
 
     const headers = resolveHeaders(ctx)
 
-    expect(headers).toEqual({ Authorization: 'Bearer my-token' })
+    expect(headers).toStrictEqual({ Authorization: 'Bearer my-token' })
   })
 
   it('should return empty record when no credential', () => {
@@ -51,7 +51,7 @@ describe('createAuthHeaders()', () => {
 
     const headers = resolveHeaders(ctx)
 
-    expect(headers).toEqual({})
+    expect(headers).toStrictEqual({})
   })
 
   it('should return empty record when ctx has no auth', () => {
@@ -60,7 +60,7 @@ describe('createAuthHeaders()', () => {
 
     const headers = resolveHeaders(ctx)
 
-    expect(headers).toEqual({})
+    expect(headers).toStrictEqual({})
   })
 
   it('should handle basic credential type', () => {
@@ -71,7 +71,7 @@ describe('createAuthHeaders()', () => {
 
     const headers = resolveHeaders(ctx)
 
-    expect(headers).toEqual({
+    expect(headers).toStrictEqual({
       Authorization: `Basic ${Buffer.from('user:pass').toString('base64')}`,
     })
   })
@@ -84,7 +84,7 @@ describe('createAuthHeaders()', () => {
 
     const headers = resolveHeaders(ctx)
 
-    expect(headers).toEqual({ 'X-Api-Key': 'my-key' })
+    expect(headers).toStrictEqual({ 'X-Api-Key': 'my-key' })
   })
 
   it('should handle custom credential type', () => {
@@ -98,6 +98,6 @@ describe('createAuthHeaders()', () => {
 
     const headers = resolveHeaders(ctx)
 
-    expect(headers).toEqual({ 'X-Custom': 'value' })
+    expect(headers).toStrictEqual({ 'X-Custom': 'value' })
   })
 })

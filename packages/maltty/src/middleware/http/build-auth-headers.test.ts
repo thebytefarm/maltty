@@ -8,7 +8,7 @@ describe('buildAuthHeaders()', () => {
   it('should return Authorization Bearer header for bearer credential', () => {
     const headers = buildAuthHeaders({ token: 'abc123', type: 'bearer' })
 
-    expect(headers).toEqual({ Authorization: 'Bearer abc123' })
+    expect(headers).toStrictEqual({ Authorization: 'Bearer abc123' })
   })
 
   it('should return Authorization Basic header for basic credential', () => {
@@ -20,7 +20,7 @@ describe('buildAuthHeaders()', () => {
 
     const expected = Buffer.from('user:pass').toString('base64')
 
-    expect(headers).toEqual({ Authorization: `Basic ${expected}` })
+    expect(headers).toStrictEqual({ Authorization: `Basic ${expected}` })
   })
 
   it('should return custom header name for api-key credential', () => {
@@ -30,7 +30,7 @@ describe('buildAuthHeaders()', () => {
       type: 'api-key',
     })
 
-    expect(headers).toEqual({ 'X-Api-Key': 'my-api-key' })
+    expect(headers).toStrictEqual({ 'X-Api-Key': 'my-api-key' })
   })
 
   it('should return all headers from custom credential', () => {
@@ -42,7 +42,7 @@ describe('buildAuthHeaders()', () => {
       type: 'custom',
     })
 
-    expect(headers).toEqual({
+    expect(headers).toStrictEqual({
       'X-Custom-Auth': 'custom-value',
       'X-Org-Id': 'org-123',
     })
@@ -57,6 +57,6 @@ describe('buildAuthHeaders()', () => {
 
     const expected = Buffer.from('us3r:p@ss:w0rd').toString('base64')
 
-    expect(headers).toEqual({ Authorization: `Basic ${expected}` })
+    expect(headers).toStrictEqual({ Authorization: `Basic ${expected}` })
   })
 })

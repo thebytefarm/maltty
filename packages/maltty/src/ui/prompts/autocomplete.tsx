@@ -19,25 +19,39 @@ import type { PromptOption, PromptProps } from './types.js'
  * Props for the {@link Autocomplete} component.
  */
 export interface AutocompleteProps<TValue> extends PromptProps {
-  /** The full list of selectable options. */
+  /**
+   * The full list of selectable options.
+   */
   readonly options: readonly PromptOption<TValue>[]
 
-  /** Placeholder text shown when the search input is empty. */
+  /**
+   * Placeholder text shown when the search input is empty.
+   */
   readonly placeholder?: string
 
-  /** Maximum number of visible options in the dropdown. */
+  /**
+   * Maximum number of visible options in the dropdown.
+   */
   readonly maxVisible?: number
 
-  /** Initially selected value. */
+  /**
+   * Initially selected value.
+   */
   readonly defaultValue?: TValue
 
-  /** Custom filter function. Defaults to case-insensitive label match. */
+  /**
+   * Custom filter function. Defaults to case-insensitive label match.
+   */
   readonly filter?: (search: string, option: PromptOption<TValue>) => boolean
 
-  /** Called when the focused option changes. */
+  /**
+   * Called when the focused option changes.
+   */
   readonly onChange?: (value: TValue) => void
 
-  /** Called when the user presses Enter to confirm. */
+  /**
+   * Called when the user presses Enter to confirm.
+   */
   readonly onSubmit?: (value: TValue) => void
 }
 

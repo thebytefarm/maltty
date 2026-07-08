@@ -21,7 +21,7 @@ describe('injectOutputStore()', () => {
     const injected = injectOutputStore({ ctx, store })
 
     expect(injected).not.toBe(ctx)
-    expect(Object.keys(ctx)).toEqual(['existing'])
+    expect(Object.keys(ctx)).toStrictEqual(['existing'])
   })
 
   it('should preserve existing context properties', () => {

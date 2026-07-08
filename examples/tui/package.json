@@ -11,15 +11,15 @@
   },
   "dependencies": {
     "@inkjs/ui": "^2.0.0",
-    "ink": "^7.0.0",
+    "ink": "^7.1.0",
     "maltty": "workspace:*",
-    "react": "^19.2.5",
+    "react": "^19.2.7",
     "ts-pattern": "catalog:",
     "zod": "catalog:"
   },
   "devDependencies": {
     "@maltty/cli": "workspace:*",
-    "@types/react": "^19.2.14",
+    "@types/react": "^19.2.17",
     "tsdown": "catalog:",
     "tsx": "catalog:",
     "typescript": "catalog:"

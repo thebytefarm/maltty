@@ -18,10 +18,14 @@ export type StatusMessageVariant = Variant
  * Props for the {@link StatusMessage} component.
  */
 export interface StatusMessageProps {
-  /** The text content to display beside the icon. */
+  /**
+   * The text content to display beside the icon.
+   */
   readonly children: string
 
-  /** The variant determines the icon and color. */
+  /**
+   * The variant determines the icon and color.
+   */
   readonly variant: StatusMessageVariant
 }
 

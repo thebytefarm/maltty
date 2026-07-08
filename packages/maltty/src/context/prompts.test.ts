@@ -91,7 +91,7 @@ describe('createContextPrompts()', () => {
           { value: 'b', label: 'B' },
         ],
       })
-      expect(result).toEqual(['a', 'b'])
+      expect(result).toStrictEqual(['a', 'b'])
     })
   })
 
@@ -118,7 +118,7 @@ describe('createContextPrompts()', () => {
           { value: 'y', label: 'Y' },
         ],
       })
-      expect(result).toEqual(['x', 'y'])
+      expect(result).toStrictEqual(['x', 'y'])
     })
   })
 
@@ -130,7 +130,7 @@ describe('createContextPrompts()', () => {
         message: 'Pick from groups:',
         options: { group1: [{ value: 'g1', label: 'G1' }] },
       })
-      expect(result).toEqual(['g1'])
+      expect(result).toStrictEqual(['g1'])
     })
   })
 
@@ -164,7 +164,7 @@ describe('createContextPrompts()', () => {
         name: async () => 'Alice',
         age: async () => 30,
       })
-      expect(result).toEqual(groupResult)
+      expect(result).toStrictEqual(groupResult)
     })
   })
 
