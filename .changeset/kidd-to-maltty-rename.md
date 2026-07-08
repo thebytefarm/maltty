@@ -1,5 +1,5 @@
 ---
-'maltty': minor
+'maltty': major
 '@maltty/cli': minor
 '@maltty/config': minor
 '@maltty/utils': minor
