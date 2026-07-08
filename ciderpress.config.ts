@@ -123,7 +123,40 @@ export default defineConfig({
       ],
     },
     showcase: { columns: 2, source: 'workspaces' },
-    split: false,
+    split: {
+      label: 'Component Stories',
+      title: 'Storybook, for the terminal.',
+      body: 'Build and preview your terminal UI components in isolation. Define a story with a Zod schema and get an interactive props editor in the viewer, no full CLI run required.',
+      bullets: [
+        'Preview components in isolation with maltty stories',
+        'An interactive props editor driven by your Zod schema',
+        'Decorators for context, layout, and full-screen',
+      ],
+      cta: {
+        text: 'Explore Component Stories',
+        href: '/guides/component-stories',
+        variant: 'secondary',
+      },
+      visual: {
+        language: 'ts',
+        code: `import { story } from 'maltty/stories'
+import { z } from 'zod'
+
+import { Greeting } from './Greeting'
+
+export default story({
+  name: 'Greeting',
+  component: Greeting,
+  schema: z.object({
+    name: z.string(),
+    excited: z.boolean(),
+  }),
+  props: { name: 'World', excited: true },
+})`,
+      },
+    },
+    // Hide the workspaces showcase; surface the stories split instead.
+    layout: ['hero', 'proof', 'features', 'split', 'cta'],
     cta: {
       title: 'Your first command in five minutes',
       subtitle:
