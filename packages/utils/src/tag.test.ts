@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest'
 
 import { TAG, getTag, hasTag, withTag } from './tag.js'
 
-describe('TAG constant', () => {
+describe('tAG constant', () => {
   it('should be the string "__tag"', () => {
     expect(TAG).toBe('__tag')
   })
@@ -26,7 +26,7 @@ describe('withTag()', () => {
 
   it('should set TAG as non-enumerable', () => {
     const tagged = withTag({ x: 1 }, 'Test')
-    expect(Object.keys(tagged)).toEqual(['x'])
+    expect(Object.keys(tagged)).toStrictEqual(['x'])
   })
 
   it('should not appear in JSON.stringify output', () => {

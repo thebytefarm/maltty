@@ -8,12 +8,12 @@ describe(extractConfig, () => {
 
     const config = extractConfig(result as never)
 
-    expect(config).toEqual({ entry: './src/main.ts' })
+    expect(config).toStrictEqual({ entry: './src/main.ts' })
   })
 
   it('should return an empty object when result is null', () => {
     const config = extractConfig(null)
 
-    expect(config).toEqual({})
+    expect(config).toStrictEqual({})
   })
 })

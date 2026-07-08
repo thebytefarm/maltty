@@ -82,7 +82,7 @@ describe('compose()', () => {
 
     await composed.handler(ctx as never, next)
 
-    expect(order).toEqual([1, 2, 3])
+    expect(order).toStrictEqual([1, 2, 3])
   })
 
   it('should call next() after all composed middleware', async () => {
@@ -122,7 +122,7 @@ describe('compose()', () => {
 
     await composed.handler(ctx as never, next)
 
-    expect(order).toEqual([1, 2])
+    expect(order).toStrictEqual([1, 2])
     expect(next).not.toHaveBeenCalled()
   })
 
@@ -189,7 +189,7 @@ describe('compose()', () => {
 
     await composed.handler(ctx as never, next)
 
-    expect(order).toEqual([1])
+    expect(order).toStrictEqual([1])
     expect(next).toHaveBeenCalledOnce()
   })
 
@@ -221,6 +221,6 @@ describe('compose()', () => {
 
     await composed.handler(ctx as never, next)
 
-    expect(order).toEqual(['before', 'downstream', 'after'])
+    expect(order).toStrictEqual(['before', 'downstream', 'after'])
   })
 })

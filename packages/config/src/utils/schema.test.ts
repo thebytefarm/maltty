@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 
 import { MalttyConfigSchema, validateConfig } from './schema.js'
 
-describe('MalttyConfigSchema schema', () => {
+describe('malttyConfigSchema schema', () => {
   it('should accept an empty object', () => {
     const result = MalttyConfigSchema.safeParse({})
 
@@ -72,14 +72,14 @@ describe(validateConfig, () => {
     const [error, config] = validateConfig({ entry: './src/index.ts' })
 
     expect(error).toBeNull()
-    expect(config).toEqual({ entry: './src/index.ts' })
+    expect(config).toStrictEqual({ entry: './src/index.ts' })
   })
 
   it('should return success for empty config', () => {
     const [error, config] = validateConfig({})
 
     expect(error).toBeNull()
-    expect(config).toEqual({})
+    expect(config).toStrictEqual({})
   })
 
   it('should return error for invalid config', () => {

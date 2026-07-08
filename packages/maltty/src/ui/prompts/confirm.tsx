@@ -14,16 +14,24 @@ import type { PromptProps } from './types.js'
  * Props for the {@link Confirm} component.
  */
 export interface ConfirmProps extends PromptProps {
-  /** Label for the affirmative choice. @default "Yes" */
+  /**
+   * Label for the affirmative choice. @default "Yes"
+   */
   readonly active?: string
 
-  /** Label for the negative choice. @default "No" */
+  /**
+   * Label for the negative choice. @default "No"
+   */
   readonly inactive?: string
 
-  /** The initial value. @default true */
+  /**
+   * The initial value. @default true
+   */
   readonly defaultValue?: boolean
 
-  /** Callback fired when the value is submitted via Enter. */
+  /**
+   * Callback fired when the value is submitted via Enter.
+   */
   readonly onSubmit?: (value: boolean) => void
 }
 

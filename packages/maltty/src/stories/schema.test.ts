@@ -30,7 +30,7 @@ describe('schemaToFieldDescriptors()', () => {
     const [field] = schemaToFieldDescriptors(schema)
 
     expect(field).toMatchObject({ name: 'color', control: 'select', zodTypeName: 'enum' })
-    expect(field.options).toEqual(['red', 'green', 'blue'])
+    expect(field.options).toStrictEqual(['red', 'green', 'blue'])
   })
 
   it('should map z.literal() to a readonly control', () => {
@@ -59,7 +59,7 @@ describe('schemaToFieldDescriptors()', () => {
     const [field] = schemaToFieldDescriptors(schema)
 
     expect(field).toMatchObject({ name: 'roles', control: 'multiselect', zodTypeName: 'array' })
-    expect(field.options).toEqual(['admin', 'user'])
+    expect(field.options).toStrictEqual(['admin', 'user'])
   })
 
   it('should mark optional fields with isOptional true', () => {
@@ -109,7 +109,7 @@ describe('schemaToFieldDescriptors()', () => {
     const schema = z.object({})
     const result = schemaToFieldDescriptors(schema)
 
-    expect(result).toEqual([])
+    expect(result).toStrictEqual([])
   })
 
   it('should handle multiple fields preserving order', () => {
@@ -120,7 +120,7 @@ describe('schemaToFieldDescriptors()', () => {
     })
     const result = schemaToFieldDescriptors(schema)
 
-    expect(result.map((f) => f.name)).toEqual(['alpha', 'beta', 'gamma'])
+    expect(result.map((f) => f.name)).toStrictEqual(['alpha', 'beta', 'gamma'])
   })
 })
 

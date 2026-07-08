@@ -21,7 +21,7 @@ describe('validate() with valid input', () => {
       createError: defaultFactory,
     })
     expect(error).toBeNull()
-    expect(data).toEqual({ age: 30, name: 'Alice' })
+    expect(data).toStrictEqual({ age: 30, name: 'Alice' })
   })
 
   it('returns [null, data] for a z.string schema', () => {
@@ -47,7 +47,7 @@ describe('validate() with valid input', () => {
       createError: defaultFactory,
     })
     expect(error).toBeNull()
-    expect(data).toEqual([1, 2, 3])
+    expect(data).toStrictEqual([1, 2, 3])
   })
 
   it('returns [null, data] for a z.boolean schema', () => {
@@ -68,7 +68,7 @@ describe('validate() with valid input', () => {
       createError: defaultFactory,
     })
     expect(error).toBeNull()
-    expect(data).toEqual({ first: 1 })
+    expect(data).toStrictEqual({ first: 1 })
     expect(data).not.toHaveProperty('extra')
   })
 })
@@ -95,7 +95,7 @@ describe('validate() with schema transforms', () => {
     })
     const [error, data] = validate({ schema, params: {}, createError: defaultFactory })
     expect(error).toBeNull()
-    expect(data).toEqual({ host: 'localhost', port: 3000 })
+    expect(data).toStrictEqual({ host: 'localhost', port: 3000 })
   })
 
   it('applies coercion via z.coerce', () => {
@@ -195,7 +195,7 @@ describe('factory receives formatted details', () => {
     expect(data).toBeNull()
     expect(error).toBeInstanceOf(Error)
 
-    expect(captured.issues.length).toBe(2)
+    expect(captured.issues).toHaveLength(2)
   })
 
   it('formatted issues contain dot-joined paths', () => {
@@ -247,7 +247,7 @@ describe('validate() with various schema types', () => {
     const schema = z.tuple([z.string(), z.number()])
     const [error1, data1] = validate({ schema, params: ['hi', 1], createError: defaultFactory })
     expect(error1).toBeNull()
-    expect(data1).toEqual(['hi', 1])
+    expect(data1).toStrictEqual(['hi', 1])
 
     const [error2, data2] = validate({ schema, params: [1, 'hi'], createError: defaultFactory })
     expect(data2).toBeNull()
@@ -277,7 +277,7 @@ describe('validate() with various schema types', () => {
       createError: defaultFactory,
     })
     expect(error).toBeNull()
-    expect(data).toEqual({ name: 'Alice' })
+    expect(data).toStrictEqual({ name: 'Alice' })
     expect(data!.bio).toBeUndefined()
   })
 
@@ -289,7 +289,7 @@ describe('validate() with various schema types', () => {
       createError: defaultFactory,
     })
     expect(error1).toBeNull()
-    expect(data1).toEqual({ left: 1, right: 2 })
+    expect(data1).toStrictEqual({ left: 1, right: 2 })
 
     const [error2, data2] = validate({
       schema,
@@ -312,7 +312,7 @@ describe('validate() with various schema types', () => {
     const input = { user: { address: { city: 'NYC' }, name: 'Bob' } }
     const [error, data] = validate({ schema, params: input, createError: defaultFactory })
     expect(error).toBeNull()
-    expect(data).toEqual(input)
+    expect(data).toStrictEqual(input)
   })
 })
 

@@ -71,7 +71,7 @@ describe('middleware()', () => {
       version: '1.0.0',
     })
 
-    expect(order).toEqual(['mw1:before', 'mw2:before', 'handler', 'mw2:after', 'mw1:after'])
+    expect(order).toStrictEqual(['mw1:before', 'mw2:before', 'handler', 'mw2:after', 'mw1:after'])
   })
 
   it('middleware can short-circuit by not calling next', async () => {
@@ -181,7 +181,7 @@ describe('middleware()', () => {
       version: '1.0.0',
     })
 
-    expect(order).toEqual(['root:before', 'cmd:before', 'handler', 'cmd:after', 'root:after'])
+    expect(order).toStrictEqual(['root:before', 'cmd:before', 'handler', 'cmd:after', 'root:after'])
   })
 
   it('command middleware runs without root middleware', async () => {
@@ -212,7 +212,7 @@ describe('middleware()', () => {
       version: '1.0.0',
     })
 
-    expect(order).toEqual(['cmd:before', 'handler', 'cmd:after'])
+    expect(order).toStrictEqual(['cmd:before', 'handler', 'cmd:after'])
   })
 
   it('command middleware can short-circuit the handler', async () => {

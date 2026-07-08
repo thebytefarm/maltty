@@ -12,7 +12,9 @@ import { colors } from '../theme.js'
  * Props for the {@link ErrorMessage} component.
  */
 export interface ErrorMessageProps {
-  /** The error message to display. When `undefined`, renders nothing. */
+  /**
+   * The error message to display. When `undefined`, renders nothing.
+   */
   readonly message: string | undefined
 }
 

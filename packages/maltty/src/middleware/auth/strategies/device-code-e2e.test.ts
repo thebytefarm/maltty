@@ -25,7 +25,7 @@ function createMockPrompts(): Prompts {
   } as unknown as Prompts
 }
 
-describe('Device Code E2E (resolveFromDeviceCode with real mock server)', () => {
+describe('device Code E2E (resolveFromDeviceCode with real mock server)', () => {
   let mockServer: MockOAuthServer | null = null
 
   afterEach(() => {
@@ -66,7 +66,7 @@ describe('Device Code E2E (resolveFromDeviceCode with real mock server)', () => 
       tokenUrl: `${mockServer.url}/token`,
     })
 
-    expect(result).toEqual({ token: 'device-e2e-token', type: 'bearer' })
+    expect(result).toStrictEqual({ token: 'device-e2e-token', type: 'bearer' })
   }, 10_000)
 
   it('should display verification_uri and user_code via prompts.text()', async () => {
@@ -95,7 +95,7 @@ describe('Device Code E2E (resolveFromDeviceCode with real mock server)', () => 
       tokenUrl: `${mockServer.url}/token`,
     })
 
-    expect(result).toEqual({ token: 'display-token', type: 'bearer' })
+    expect(result).toStrictEqual({ token: 'display-token', type: 'bearer' })
 
     expect(prompts.text).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -269,7 +269,7 @@ describe('Device Code E2E (resolveFromDeviceCode with real mock server)', () => 
       tokenUrl: `${mockServer.url}/token`,
     })
 
-    expect(result).toEqual({ token: 'slow-down-token', type: 'bearer' })
+    expect(result).toStrictEqual({ token: 'slow-down-token', type: 'bearer' })
 
     // Verify 2 token requests were made (slow_down + success)
     const tokenRequests = mockServer.getTokenRequests()
@@ -307,7 +307,7 @@ describe('Device Code E2E (resolveFromDeviceCode with real mock server)', () => 
 
     // If the resolver used the configured pollInterval (60s), this would time out.
     // Server returns interval: 0.01 (10ms), so polling completes quickly.
-    expect(result).toEqual({ token: 'interval-token', type: 'bearer' })
+    expect(result).toStrictEqual({ token: 'interval-token', type: 'bearer' })
   }, 10_000)
 
   it('should return null on overall timeout', async () => {

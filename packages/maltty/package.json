@@ -92,11 +92,11 @@
     "test:watch": "vitest"
   },
   "dependencies": {
-    "@clack/prompts": "^1.2.0",
+    "@clack/prompts": "^1.7.0",
     "@maltty/config": "workspace:*",
     "@maltty/utils": "workspace:*",
     "@pinojs/redact": "^0.4.0",
-    "c12": "4.0.0-beta.4",
+    "c12": "4.0.0-beta.5",
     "dotenv": "^17.4.2",
     "es-toolkit": "catalog:",
     "figures": "^6.1.0",
@@ -109,10 +109,10 @@
   },
   "devDependencies": {
     "@types/node": "catalog:",
-    "@types/react": "^19.2.14",
+    "@types/react": "^19.2.17",
     "@types/yargs": "^17.0.35",
-    "ink": "^7.0.0",
-    "react": "^19.2.5",
+    "ink": "^7.1.0",
+    "react": "^19.2.7",
     "tsdown": "catalog:",
     "typescript": "catalog:",
     "vitest": "catalog:"

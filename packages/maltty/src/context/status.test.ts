@@ -202,7 +202,7 @@ describe('createContextStatus()', () => {
       createContextStatus({ spinnerConfig: { frames } })
       const [[call]] = (clack.spinner as Mock).mock.calls
       expect(Array.isArray(call.frames)).toBeTruthy()
-      expect(call.frames).toEqual(['a', 'b', 'c'])
+      expect(call.frames).toStrictEqual(['a', 'b', 'c'])
     })
 
     it('should pass guide defaults as withGuide to clack calls', () => {

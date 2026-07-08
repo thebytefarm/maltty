@@ -10,7 +10,7 @@ describe('createArgsParser()', () => {
       const [error, result] = parser.parse({ foo: 'bar', verbose: true })
 
       expect(error).toBeNull()
-      expect(result).toEqual({ foo: 'bar', verbose: true })
+      expect(result).toStrictEqual({ foo: 'bar', verbose: true })
     })
 
     it('should strip the _ key from raw args', () => {
@@ -18,7 +18,7 @@ describe('createArgsParser()', () => {
       const [error, result] = parser.parse({ _: ['cmd'], name: 'test' })
 
       expect(error).toBeNull()
-      expect(result).toEqual({ name: 'test' })
+      expect(result).toStrictEqual({ name: 'test' })
     })
 
     it('should strip the $0 key from raw args', () => {
@@ -26,7 +26,7 @@ describe('createArgsParser()', () => {
       const [error, result] = parser.parse({ $0: 'my-cli', file: 'index.ts' })
 
       expect(error).toBeNull()
-      expect(result).toEqual({ file: 'index.ts' })
+      expect(result).toStrictEqual({ file: 'index.ts' })
     })
 
     it('should strip hyphenated keys (camelCase duplicates)', () => {
@@ -38,7 +38,7 @@ describe('createArgsParser()', () => {
       })
 
       expect(error).toBeNull()
-      expect(result).toEqual({ dryRun: true, output: 'dist' })
+      expect(result).toStrictEqual({ dryRun: true, output: 'dist' })
     })
 
     it('should strip all yargs-internal keys simultaneously', () => {
@@ -52,7 +52,7 @@ describe('createArgsParser()', () => {
       })
 
       expect(error).toBeNull()
-      expect(result).toEqual({ dryRun: true, name: 'test' })
+      expect(result).toStrictEqual({ dryRun: true, name: 'test' })
     })
 
     it('should return an empty object when all keys are internal', () => {
@@ -60,7 +60,7 @@ describe('createArgsParser()', () => {
       const [error, result] = parser.parse({ $0: 'cli', _: [] })
 
       expect(error).toBeNull()
-      expect(result).toEqual({})
+      expect(result).toStrictEqual({})
     })
   })
 
@@ -71,7 +71,7 @@ describe('createArgsParser()', () => {
       const [error, result] = parser.parse({ name: 'Alice' })
 
       expect(error).toBeNull()
-      expect(result).toEqual({ name: 'Alice' })
+      expect(result).toStrictEqual({ name: 'Alice' })
     })
 
     it('should return an error when required args are missing', () => {
@@ -89,7 +89,7 @@ describe('createArgsParser()', () => {
       const [error, result] = parser.parse({})
 
       expect(error).toBeNull()
-      expect(result).toEqual({ greeting: 'hello' })
+      expect(result).toStrictEqual({ greeting: 'hello' })
     })
 
     it('should pass through extra keys when only options is zod (passthrough)', () => {
@@ -118,7 +118,7 @@ describe('createArgsParser()', () => {
       const [error, result] = parser.parse({ file: 'index.ts' })
 
       expect(error).toBeNull()
-      expect(result).toEqual({ file: 'index.ts' })
+      expect(result).toStrictEqual({ file: 'index.ts' })
     })
 
     it('should return error when required positional is missing', () => {
@@ -148,7 +148,7 @@ describe('createArgsParser()', () => {
       const [error, result] = parser.parse({ file: 'src/index.ts', verbose: true })
 
       expect(error).toBeNull()
-      expect(result).toEqual({ file: 'src/index.ts', verbose: true })
+      expect(result).toStrictEqual({ file: 'src/index.ts', verbose: true })
     })
 
     it('should return error when merged schema validation fails', () => {
@@ -168,7 +168,7 @@ describe('createArgsParser()', () => {
       const [error, result] = parser.parse({ extra: 'dropped', file: 'index.ts', verbose: true })
 
       expect(error).toBeNull()
-      expect(result).toEqual({ file: 'index.ts', verbose: true })
+      expect(result).toStrictEqual({ file: 'index.ts', verbose: true })
     })
   })
 
@@ -181,7 +181,7 @@ describe('createArgsParser()', () => {
       const [error, result] = parser.parse({ name: 'Alice' })
 
       expect(error).toBeNull()
-      expect(result).toEqual({ name: 'Alice' })
+      expect(result).toStrictEqual({ name: 'Alice' })
     })
 
     it('should skip validation when both are yargs-native', () => {
@@ -195,7 +195,7 @@ describe('createArgsParser()', () => {
       const [error, result] = parser.parse({ file: 'index.ts', verbose: true })
 
       expect(error).toBeNull()
-      expect(result).toEqual({ file: 'index.ts', verbose: true })
+      expect(result).toStrictEqual({ file: 'index.ts', verbose: true })
     })
 
     it('should use passthrough when options is zod but positionals is yargs-native', () => {

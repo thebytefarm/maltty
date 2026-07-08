@@ -109,7 +109,7 @@ describe('screen()', () => {
     const { screen } = await import('./screen.js')
     const cmd = screen({ aliases: ['d'], name: 'dash', render: StubComponent })
     expect(cmd.name).toBe('dash')
-    expect(cmd.aliases).toEqual(['d'])
+    expect(cmd.aliases).toStrictEqual(['d'])
   })
 
   it('should resolve hidden as a static value', async () => {
@@ -179,7 +179,7 @@ describe('screen() render function', () => {
 
     const rendered = mockedInkRender.mock.calls[0]![0] as React.ReactElement
     const providerValue = rendered.props.value as ScreenContext
-    expect(providerValue.config).toEqual({ debug: true })
+    expect(providerValue.config).toStrictEqual({ debug: true })
     expect(providerValue.meta).toBe(baseMeta)
     expect(providerValue).toHaveProperty('log')
     expect(providerValue).toHaveProperty('status')

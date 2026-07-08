@@ -26,11 +26,17 @@ import type {
  * Options for {@link createContextStatus}.
  */
 export interface CreateContextStatusOptions {
-  /** Spinner config defaults from {@link DisplayConfig}. */
+  /**
+   * Spinner config defaults from {@link DisplayConfig}.
+   */
   readonly spinnerConfig?: DisplayConfig['spinner']
-  /** Progress config defaults from {@link DisplayConfig}. */
+  /**
+   * Progress config defaults from {@link DisplayConfig}.
+   */
   readonly progressConfig?: DisplayConfig['progress']
-  /** Common per-call defaults (guide, output). */
+  /**
+   * Common per-call defaults (guide, output).
+   */
   readonly defaults?: {
     readonly guide?: boolean
     readonly output?: Writable

@@ -7,14 +7,14 @@ describe(jsonParse, () => {
     const [error, value] = jsonParse('{"name":"maltty","version":1}')
 
     expect(error).toBeNull()
-    expect(value).toEqual({ name: 'maltty', version: 1 })
+    expect(value).toStrictEqual({ name: 'maltty', version: 1 })
   })
 
   it('should parse a valid JSON array string', () => {
     const [error, value] = jsonParse('[1,2,3]')
 
     expect(error).toBeNull()
-    expect(value).toEqual([1, 2, 3])
+    expect(value).toStrictEqual([1, 2, 3])
   })
 
   it('should return error for invalid JSON', () => {

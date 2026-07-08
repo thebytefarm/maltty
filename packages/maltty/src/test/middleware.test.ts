@@ -45,7 +45,7 @@ describe('run middleware utility', () => {
 
   it('should handle empty middleware array', async () => {
     const { ctx } = await runMiddleware({ middlewares: [] })
-    expect(ctx.args).toEqual({})
+    expect(ctx.args).toStrictEqual({})
   })
 
   it('should accept context overrides', async () => {

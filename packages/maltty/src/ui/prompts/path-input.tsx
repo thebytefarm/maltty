@@ -25,22 +25,34 @@ const MAX_SUGGESTIONS = 5
  * Props for the {@link PathInput} component.
  */
 export interface PathInputProps extends PromptProps {
-  /** Root directory for completion lookups. Defaults to `process.cwd()`. */
+  /**
+   * Root directory for completion lookups. Defaults to `process.cwd()`.
+   */
   readonly root?: string
 
-  /** When `true`, only directories are suggested and accepted. */
+  /**
+   * When `true`, only directories are suggested and accepted.
+   */
   readonly directoryOnly?: boolean
 
-  /** Initial value for the input. */
+  /**
+   * Initial value for the input.
+   */
   readonly defaultValue?: string
 
-  /** Validation function. Return a string message on error, or `undefined` on success. */
+  /**
+   * Validation function. Return a string message on error, or `undefined` on success.
+   */
   readonly validate?: (value: string) => string | undefined
 
-  /** Called whenever the input value changes. */
+  /**
+   * Called whenever the input value changes.
+   */
   readonly onChange?: (value: string) => void
 
-  /** Called when the user presses Enter to confirm. */
+  /**
+   * Called when the user presses Enter to confirm.
+   */
   readonly onSubmit?: (value: string) => void
 }
 

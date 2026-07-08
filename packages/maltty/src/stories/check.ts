@@ -8,7 +8,9 @@ import { validateProps } from './validate.js'
 // Constants
 // ---------------------------------------------------------------------------
 
-/** Maximum number of editable fields (schema keys minus default keys) per story. */
+/**
+ * Maximum number of editable fields (schema keys minus default keys) per story.
+ */
 export const MAX_EDITABLE_FIELDS = 6
 
 // ---------------------------------------------------------------------------

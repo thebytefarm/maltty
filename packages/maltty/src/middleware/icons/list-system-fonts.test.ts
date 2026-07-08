@@ -164,7 +164,7 @@ describe('listSystemFonts()', () => {
       const [error, fonts] = await listSystemFonts()
 
       expect(error).toBeNull()
-      expect(fonts).toEqual([])
+      expect(fonts).toStrictEqual([])
     })
   })
 
@@ -177,7 +177,7 @@ describe('listSystemFonts()', () => {
       const [error, fonts] = await listSystemFonts()
 
       expect(error).toBeNull()
-      expect(fonts).toEqual([])
+      expect(fonts).toStrictEqual([])
     })
 
     it('should gracefully handle lstat Error via safeLstat and return empty results', async () => {
@@ -195,7 +195,7 @@ describe('listSystemFonts()', () => {
       const [error, fonts] = await listSystemFonts()
 
       expect(error).toBeNull()
-      expect(fonts).toEqual([])
+      expect(fonts).toStrictEqual([])
     })
 
     it('should gracefully handle lstat non-Error rejection via safeLstat and return empty results', async () => {
@@ -213,7 +213,7 @@ describe('listSystemFonts()', () => {
       const [error, fonts] = await listSystemFonts()
 
       expect(error).toBeNull()
-      expect(fonts).toEqual([])
+      expect(fonts).toStrictEqual([])
     })
   })
 
@@ -273,7 +273,7 @@ describe('listSystemFonts()', () => {
       const [error, fonts] = await listSystemFonts()
 
       expect(error).toBeNull()
-      expect(fonts).toEqual(['/Library/Fonts/font.ttf'])
+      expect(fonts).toStrictEqual(['/Library/Fonts/font.ttf'])
     })
   })
 })

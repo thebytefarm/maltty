@@ -29,7 +29,7 @@ describe('resolveFromFile()', () => {
       localDirName: '.my-cli',
     })
 
-    expect(result).toEqual({ token: 'my-token', type: 'bearer' })
+    expect(result).toStrictEqual({ token: 'my-token', type: 'bearer' })
     expect(createStore).toHaveBeenCalledWith({ dirName: '.my-cli' })
     expect(mockStore.load).toHaveBeenCalledWith('credentials.json', { source: 'local' })
   })
@@ -45,7 +45,7 @@ describe('resolveFromFile()', () => {
       localDirName: '.my-cli-local',
     })
 
-    expect(result).toEqual({ token: 'global-token', type: 'bearer' })
+    expect(result).toStrictEqual({ token: 'global-token', type: 'bearer' })
     expect(createStore).toHaveBeenCalledWith({ dirName: '.my-cli-local' })
     expect(createStore).toHaveBeenCalledWith({ dirName: '.my-cli-global' })
     expect(mockStore.load).toHaveBeenCalledWith('credentials.json', { source: 'local' })
@@ -89,7 +89,7 @@ describe('resolveFromFile()', () => {
       localDirName: '.my-cli',
     })
 
-    expect(result).toEqual({ password: 's3cret', type: 'basic', username: 'admin' })
+    expect(result).toStrictEqual({ password: 's3cret', type: 'basic', username: 'admin' })
   })
 })
 
@@ -116,7 +116,7 @@ describe('resolveFromFile() with different local and global dirs', () => {
 
     expect(createStore).toHaveBeenCalledWith({ dirName: '.app-local' })
     expect(createStore).toHaveBeenCalledWith({ dirName: '.app-global' })
-    expect(result).toEqual({ token: 'global-tok', type: 'bearer' })
+    expect(result).toStrictEqual({ token: 'global-tok', type: 'bearer' })
   })
 
   it('should resolve from local before trying global when dirs differ', () => {
@@ -131,6 +131,6 @@ describe('resolveFromFile() with different local and global dirs', () => {
     expect(createStore).toHaveBeenCalledTimes(1)
     expect(createStore).toHaveBeenCalledWith({ dirName: '.local-dir' })
     expect(createStore).not.toHaveBeenCalledWith({ dirName: '.global-dir' })
-    expect(result).toEqual({ token: 'local-tok', type: 'bearer' })
+    expect(result).toStrictEqual({ token: 'local-tok', type: 'bearer' })
   })
 })

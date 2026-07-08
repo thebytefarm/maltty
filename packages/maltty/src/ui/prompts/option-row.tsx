@@ -14,19 +14,29 @@ import type { PromptOption } from './types.js'
  * Props for the {@link OptionRow} component.
  */
 export interface OptionRowProps<TValue> {
-  /** The option to render. */
+  /**
+   * The option to render.
+   */
   readonly option: PromptOption<TValue>
 
-  /** The indicator symbol (e.g. radio or checkbox). */
+  /**
+   * The indicator symbol (e.g. radio or checkbox).
+   */
   readonly indicator: string
 
-  /** Whether this row is currently focused by the cursor. */
+  /**
+   * Whether this row is currently focused by the cursor.
+   */
   readonly isFocused: boolean
 
-  /** Whether this row is the selected/checked option. */
+  /**
+   * Whether this row is the selected/checked option.
+   */
   readonly isSelected: boolean
 
-  /** Whether the entire prompt is disabled. */
+  /**
+   * Whether the entire prompt is disabled.
+   */
   readonly disabled: boolean
 }
 

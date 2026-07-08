@@ -17,19 +17,29 @@ import type { PromptProps } from './types.js'
  * Props for the {@link TextInput} component.
  */
 export interface TextInputProps extends PromptProps {
-  /** Placeholder text shown dimmed when the input is empty. */
+  /**
+   * Placeholder text shown dimmed when the input is empty.
+   */
   readonly placeholder?: string
 
-  /** The initial input value. */
+  /**
+   * The initial input value.
+   */
   readonly defaultValue?: string
 
-  /** Validation function. Return an error message string to show, or undefined if valid. */
+  /**
+   * Validation function. Return an error message string to show, or undefined if valid.
+   */
   readonly validate?: (value: string) => string | undefined
 
-  /** Callback fired when the input value changes. */
+  /**
+   * Callback fired when the input value changes.
+   */
   readonly onChange?: (value: string) => void
 
-  /** Callback fired when the value is submitted via Enter. */
+  /**
+   * Callback fired when the value is submitted via Enter.
+   */
   readonly onSubmit?: (value: string) => void
 }
 

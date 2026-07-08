@@ -8,7 +8,9 @@ import { createContext, useContext, useEffect, useState } from 'react'
 // Constants
 // ---------------------------------------------------------------------------
 
-/** ANSI: switch to the alternate screen buffer. */
+/**
+ * ANSI: switch to the alternate screen buffer.
+ */
 const ENTER_ALT_SCREEN = '\u001B[?1049h'
 
 /**
@@ -26,10 +28,14 @@ const CLEAR_SCREEN = '\u001B[2J'
  */
 const CURSOR_HOME = '\u001B[H'
 
-/** ANSI: hide the cursor. */
+/**
+ * ANSI: hide the cursor.
+ */
 const HIDE_CURSOR = '\u001B[?25l'
 
-/** ANSI: show the cursor. */
+/**
+ * ANSI: show the cursor.
+ */
 const SHOW_CURSOR = '\u001B[?25h'
 
 // ---------------------------------------------------------------------------

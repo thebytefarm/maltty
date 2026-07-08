@@ -148,7 +148,7 @@ describe('command ordering', () => {
       resolved,
     })
 
-    expect(registeredNames).toEqual(['gamma', 'alpha', 'beta'])
+    expect(registeredNames).toStrictEqual(['gamma', 'alpha', 'beta'])
     expect(errorRef.error).toBeUndefined()
   })
 
@@ -274,7 +274,7 @@ describe('hidden and deprecated commands', () => {
       resolved,
     })
 
-    expect(registeredDescriptions).toEqual([false])
+    expect(registeredDescriptions).toStrictEqual([false])
   })
 
   it('should register a visible command with its description', () => {
@@ -301,7 +301,7 @@ describe('hidden and deprecated commands', () => {
       resolved,
     })
 
-    expect(registeredDescriptions).toEqual(['A visible command'])
+    expect(registeredDescriptions).toStrictEqual(['A visible command'])
   })
 
   it('should pass deprecated to yargs', () => {
@@ -336,7 +336,7 @@ describe('hidden and deprecated commands', () => {
       resolved,
     })
 
-    expect(registeredDeprecated).toEqual(['Use new-cmd instead'])
+    expect(registeredDeprecated).toStrictEqual(['Use new-cmd instead'])
   })
 
   it('should execute a hidden command handler', async () => {
@@ -360,7 +360,7 @@ describe('hidden and deprecated commands', () => {
   })
 })
 
-describe('AutoloadMarker handling', () => {
+describe('autoloadMarker handling', () => {
   it('skips AutoloadMarker entries in command map', async () => {
     const handler = vi.fn()
     const commands: CommandMap = {
@@ -440,7 +440,7 @@ describe('positional argument support', () => {
       resolved,
     })
 
-    expect(registeredNames).toEqual(['create <workspace>'])
+    expect(registeredNames).toStrictEqual(['create <workspace>'])
     expect(errorRef.error).toBeUndefined()
   })
 
@@ -471,7 +471,7 @@ describe('positional argument support', () => {
       resolved,
     })
 
-    expect(registeredNames).toEqual(['list [filter]'])
+    expect(registeredNames).toStrictEqual(['list [filter]'])
   })
 
   it('should register command with multiple positionals', () => {
@@ -505,7 +505,7 @@ describe('positional argument support', () => {
       resolved,
     })
 
-    expect(registeredNames).toEqual(['copy <source> <dest> [flags]'])
+    expect(registeredNames).toStrictEqual(['copy <source> <dest> [flags]'])
   })
 
   it('should register command with no positionals as bare name', () => {
@@ -534,7 +534,7 @@ describe('positional argument support', () => {
       resolved,
     })
 
-    expect(registeredNames).toEqual(['status'])
+    expect(registeredNames).toStrictEqual(['status'])
   })
 
   it('should execute command handler with positional arg value', async () => {

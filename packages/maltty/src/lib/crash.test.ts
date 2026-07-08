@@ -18,7 +18,7 @@ vi.mock(import('node:fs'), () => ({
   writeFileSync: vi.fn(),
 }))
 
-const exitSpy = vi.spyOn(process, 'exit').mockImplementation(() => undefined as never)
+const exitSpy = vi.spyOn(process, 'exit').mockReturnValue(undefined as never)
 
 beforeEach(() => {
   vi.clearAllMocks()

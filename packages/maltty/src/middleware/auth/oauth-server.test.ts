@@ -61,7 +61,7 @@ describe('createTimeout()', () => {
     const timeout = createTimeout(100)
 
     vi.advanceTimersByTime(100)
-    await timeout.promise
+    await expect(timeout.promise).resolves.toBeUndefined()
 
     vi.useRealTimers()
   })
@@ -77,8 +77,10 @@ describe('createTimeout()', () => {
 
   it('should be safe to call clear multiple times', () => {
     const timeout = createTimeout(1000)
-    timeout.clear()
-    timeout.clear()
+    expect(() => {
+      timeout.clear()
+      timeout.clear()
+    }).not.toThrow()
   })
 })
 

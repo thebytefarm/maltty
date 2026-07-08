@@ -19,19 +19,29 @@ import type { PromptOption, PromptProps } from './types.js'
  * @typeParam TValue - The type of each option's value.
  */
 export interface SelectProps<TValue> extends PromptProps {
-  /** The list of selectable options. */
+  /**
+   * The list of selectable options.
+   */
   readonly options: readonly PromptOption<TValue>[]
 
-  /** The initially selected value. */
+  /**
+   * The initially selected value.
+   */
   readonly defaultValue?: TValue
 
-  /** Maximum number of visible options before scrolling. */
+  /**
+   * Maximum number of visible options before scrolling.
+   */
   readonly maxVisible?: number
 
-  /** Callback fired when the focused option changes. */
+  /**
+   * Callback fired when the focused option changes.
+   */
   readonly onChange?: (value: TValue) => void
 
-  /** Callback fired when an option is submitted via Enter. */
+  /**
+   * Callback fired when an option is submitted via Enter.
+   */
   readonly onSubmit?: (value: TValue) => void
 }
 

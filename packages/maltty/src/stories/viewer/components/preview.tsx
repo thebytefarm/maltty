@@ -17,10 +17,14 @@ import { PropsEditor } from './props-editor.js'
 // Constants
 // ---------------------------------------------------------------------------
 
-/** Minimum rows allocated to the props editor area. */
+/**
+ * Minimum rows allocated to the props editor area.
+ */
 const MIN_PROPS_ROWS = 6
 
-/** Maximum rows allocated to the props editor area. */
+/**
+ * Maximum rows allocated to the props editor area.
+ */
 const MAX_PROPS_ROWS = 14
 
 // ---------------------------------------------------------------------------

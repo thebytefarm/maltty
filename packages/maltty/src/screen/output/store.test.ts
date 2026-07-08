@@ -7,8 +7,8 @@ describe('createOutputStore()', () => {
     const store = createOutputStore()
     const snapshot = store.getSnapshot()
 
-    expect(snapshot.entries).toEqual([])
-    expect(snapshot.spinner).toEqual({ status: 'idle' })
+    expect(snapshot.entries).toStrictEqual([])
+    expect(snapshot.spinner).toStrictEqual({ status: 'idle' })
   })
 
   it('should add entries with auto-incrementing IDs via push()', () => {
@@ -19,7 +19,7 @@ describe('createOutputStore()', () => {
 
     const snapshot = store.getSnapshot()
 
-    expect(snapshot.entries).toEqual([
+    expect(snapshot.entries).toStrictEqual([
       { kind: 'log', level: 'info', text: 'first', id: 0 },
       { kind: 'log', level: 'warn', text: 'second', id: 1 },
     ])
@@ -55,7 +55,7 @@ describe('createOutputStore()', () => {
 
     const snapshot = store.getSnapshot()
 
-    expect(snapshot.spinner).toEqual({ status: 'spinning', message: 'Working...' })
+    expect(snapshot.spinner).toStrictEqual({ status: 'spinning', message: 'Working...' })
     expect(callback).toHaveBeenCalledOnce()
   })
 
@@ -68,7 +68,7 @@ describe('createOutputStore()', () => {
 
     const ids = store.getSnapshot().entries.map((entry) => entry.id)
 
-    expect(ids).toEqual([0, 1, 2])
+    expect(ids).toStrictEqual([0, 1, 2])
   })
 
   it('should return a frozen snapshot', () => {

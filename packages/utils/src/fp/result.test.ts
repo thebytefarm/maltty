@@ -7,7 +7,7 @@ describe(ok, () => {
   describe('void overload', () => {
     it('should return [null, undefined] when called with no arguments', () => {
       const result = ok()
-      expect(result).toEqual([null, undefined])
+      expect(result).toStrictEqual([null, undefined])
     })
 
     it('should have null as the error element', () => {
@@ -19,30 +19,30 @@ describe(ok, () => {
   describe('value overload', () => {
     it('should wrap a string value', () => {
       const result = ok('hello')
-      expect(result).toEqual([null, 'hello'])
+      expect(result).toStrictEqual([null, 'hello'])
     })
 
     it('should wrap a number value', () => {
       const result = ok(42)
-      expect(result).toEqual([null, 42])
+      expect(result).toStrictEqual([null, 42])
     })
 
     it('should wrap an object value', () => {
       const obj = { name: 'test', version: '1.0' }
       const result = ok(obj)
-      expect(result).toEqual([null, obj])
+      expect(result).toStrictEqual([null, obj])
     })
 
     it('should wrap an array value', () => {
       const arr = [1, 2, 3]
       const result = ok(arr)
-      expect(result).toEqual([null, arr])
+      expect(result).toStrictEqual([null, arr])
     })
 
     it('should wrap a nested Result value', () => {
       const inner = ok('nested')
       const result = ok(inner)
-      expect(result).toEqual([null, [null, 'nested']])
+      expect(result).toStrictEqual([null, [null, 'nested']])
     })
   })
 })
@@ -82,7 +82,7 @@ describe(err, () => {
   })
 })
 
-describe('Result destructuring', () => {
+describe('result destructuring', () => {
   it('should destructure a success tuple', () => {
     const result: Result<string> = ok('value')
     const [error, value] = result
@@ -111,7 +111,7 @@ describe('Result destructuring', () => {
   })
 })
 
-describe('ResultAsync type', () => {
+describe('resultAsync type', () => {
   it('should resolve to a success Result', async () => {
     const asyncResult: ResultAsync<string> = Promise.resolve(ok('async value'))
     const [error, value] = await asyncResult

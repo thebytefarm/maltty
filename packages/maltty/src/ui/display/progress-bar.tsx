@@ -17,19 +17,29 @@ export type ProgressBarStyle = 'light' | 'heavy' | 'block'
  * Props for the {@link ProgressBar} component.
  */
 export interface ProgressBarProps {
-  /** Current progress value. */
+  /**
+   * Current progress value.
+   */
   readonly value: number
 
-  /** Maximum value (defaults to 100). */
+  /**
+   * Maximum value (defaults to 100).
+   */
   readonly max?: number
 
-  /** Optional label displayed after the percentage. */
+  /**
+   * Optional label displayed after the percentage.
+   */
   readonly label?: string
 
-  /** Visual style of the bar characters. */
+  /**
+   * Visual style of the bar characters.
+   */
   readonly style?: ProgressBarStyle
 
-  /** Width of the bar in characters. */
+  /**
+   * Width of the bar in characters.
+   */
   readonly size?: number
 }
 

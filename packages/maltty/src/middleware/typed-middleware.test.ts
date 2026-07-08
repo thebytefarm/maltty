@@ -116,7 +116,7 @@ describe('typed middleware', () => {
       handler(ctx)
 
       const receivedCtx = handler.mock.calls[0]![0] as CommandContext & Readonly<{ user: User }>
-      expect(receivedCtx.user).toEqual(testUser)
+      expect(receivedCtx.user).toStrictEqual(testUser)
       expect(receivedCtx.user.role).toBe('admin')
     })
   })
@@ -149,8 +149,8 @@ describe('typed middleware', () => {
 
       const receivedCtx = handler.mock.calls[0]![0] as CommandContext &
         Readonly<{ user: User; org: Organization }>
-      expect(receivedCtx.user).toEqual(testUser)
-      expect(receivedCtx.org).toEqual(testOrg)
+      expect(receivedCtx.user).toStrictEqual(testUser)
+      expect(receivedCtx.org).toStrictEqual(testOrg)
     })
   })
 
@@ -197,7 +197,7 @@ describe('typed middleware', () => {
       const ctx = createTestContext()
       await runMiddlewareChain(ctx, loadUser, readUser)
 
-      expect(readValues).toEqual([testUser])
+      expect(readValues).toStrictEqual([testUser])
     })
   })
 })

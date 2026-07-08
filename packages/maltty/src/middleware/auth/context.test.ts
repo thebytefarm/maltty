@@ -45,7 +45,7 @@ describe('createAuthContext()', () => {
         strategies: [],
       })
 
-      expect(ctx.credential()).toEqual(credential)
+      expect(ctx.credential()).toStrictEqual(credential)
     })
 
     it('should return null when no credential is available', () => {
@@ -128,7 +128,7 @@ describe('createAuthContext()', () => {
       const [error, result] = await ctx.login()
 
       expect(error).toBeNull()
-      expect(result).toEqual(credential)
+      expect(result).toStrictEqual(credential)
     })
 
     it('should return no_credential error when no strategy produces a credential', async () => {
@@ -352,7 +352,7 @@ describe('createAuthContext()', () => {
       const [error, result] = await ctx.login()
 
       expect(error).toBeNull()
-      expect(result).toEqual(credential)
+      expect(result).toStrictEqual(credential)
       expect(saveFn).toHaveBeenCalledWith('auth.json', credential)
     })
 
@@ -411,7 +411,7 @@ describe('createAuthContext()', () => {
       const [error, result] = await ctx.login()
 
       expect(error).toBeNull()
-      expect(result).toEqual(credential)
+      expect(result).toStrictEqual(credential)
       expect(saveFn).toHaveBeenCalledWith('auth.json', credential)
     })
 
@@ -443,7 +443,7 @@ describe('createAuthContext()', () => {
       const [error, result] = await ctx.login()
 
       expect(error).toBeNull()
-      expect(result).toEqual(transformed)
+      expect(result).toStrictEqual(transformed)
       expect(saveFn).toHaveBeenCalledWith('auth.json', transformed)
     })
   })

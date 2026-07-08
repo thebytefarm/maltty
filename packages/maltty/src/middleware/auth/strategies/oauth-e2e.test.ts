@@ -93,7 +93,7 @@ async function sendCallback(options: {
   return originalFetch(url.toString())
 }
 
-describe('OAuth PKCE E2E (resolveFromOAuth with real mock server)', () => {
+describe('oAuth PKCE E2E (resolveFromOAuth with real mock server)', () => {
   let mockServer: MockOAuthServer | null = null
 
   afterEach(async () => {
@@ -128,7 +128,7 @@ describe('OAuth PKCE E2E (resolveFromOAuth with real mock server)', () => {
 
     const result = await resultPromise
 
-    expect(result).toEqual({ token: 'e2e-access-token', type: 'bearer' })
+    expect(result).toStrictEqual({ token: 'e2e-access-token', type: 'bearer' })
 
     const tokenRequests = mockServer.getTokenRequests()
     expect(tokenRequests).toHaveLength(1)
@@ -165,7 +165,7 @@ describe('OAuth PKCE E2E (resolveFromOAuth with real mock server)', () => {
 
     const result = await resultPromise
 
-    expect(result).toEqual({ token: 'verified-token', type: 'bearer' })
+    expect(result).toStrictEqual({ token: 'verified-token', type: 'bearer' })
 
     const tokenRequests = mockServer.getTokenRequests()
     const sentVerifier = tokenRequests[0].params.get('code_verifier')

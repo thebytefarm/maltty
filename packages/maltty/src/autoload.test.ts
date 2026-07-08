@@ -52,7 +52,7 @@ describe('autoload()', () => {
 
     const result = await autoload({ dir: '/tmp/commands' })
 
-    expect(result).toEqual({})
+    expect(result).toStrictEqual({})
   })
 
   it('should ignore files starting with underscore', async () => {
@@ -60,7 +60,7 @@ describe('autoload()', () => {
 
     const result = await autoload({ dir: '/tmp/commands' })
 
-    expect(result).toEqual({})
+    expect(result).toStrictEqual({})
   })
 
   it('should ignore files starting with dot', async () => {
@@ -68,7 +68,7 @@ describe('autoload()', () => {
 
     const result = await autoload({ dir: '/tmp/commands' })
 
-    expect(result).toEqual({})
+    expect(result).toStrictEqual({})
   })
 
   it('should ignore directories starting with underscore', async () => {
@@ -76,7 +76,7 @@ describe('autoload()', () => {
 
     const result = await autoload({ dir: '/tmp/commands' })
 
-    expect(result).toEqual({})
+    expect(result).toStrictEqual({})
   })
 
   it('should ignore directories starting with dot', async () => {
@@ -84,7 +84,7 @@ describe('autoload()', () => {
 
     const result = await autoload({ dir: '/tmp/commands' })
 
-    expect(result).toEqual({})
+    expect(result).toStrictEqual({})
   })
 
   it('should import command files and derive names from filenames', async () => {
@@ -117,7 +117,7 @@ describe('autoload()', () => {
 
     const result = await autoload({ dir: '/tmp/commands' })
 
-    expect(result).toEqual({})
+    expect(result).toStrictEqual({})
   })
 
   it('should skip index.ts files in the root scan', async () => {
@@ -251,12 +251,12 @@ describe('autoload()', () => {
 
     const result = await autoload({ dir: '/tmp/commands' })
 
-    expect(result).toEqual({})
+    expect(result).toStrictEqual({})
   })
 
   it('should log import errors when MALTTY_DEBUG is enabled', async () => {
     process.env.MALTTY_DEBUG = 'true'
-    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => undefined)
+    const warnSpy = vi.spyOn(console, 'warn').mockReturnValue(undefined)
 
     mockedReaddir.mockResolvedValue([makeDirent('broken.ts', true)] as unknown as Dirent[])
 
@@ -266,7 +266,7 @@ describe('autoload()', () => {
 
     const result = await autoload({ dir: '/tmp/commands' })
 
-    expect(result).toEqual({})
+    expect(result).toStrictEqual({})
     expect(warnSpy).toHaveBeenCalledWith(
       expect.stringContaining('[maltty] failed to import command from'),
       expect.any(Error)
@@ -296,6 +296,6 @@ describe('autoload()', () => {
 
     const result = await autoload({ dir: '/tmp/commands' })
 
-    expect(result).toEqual({})
+    expect(result).toStrictEqual({})
   })
 })

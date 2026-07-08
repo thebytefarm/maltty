@@ -5,7 +5,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { renderTemplate } from './render.js'
 
-const mockParseAndRender = vi.fn()
+const mockParseAndRender = vi.hoisted(() => vi.fn())
 
 vi.mock(import('node:fs/promises'), () => ({
   readFile: vi.fn(),
@@ -16,11 +16,11 @@ vi.mock(import('liquidjs'), async (importOriginal) => {
   const original = await importOriginal()
   return {
     ...original,
-    Liquid: vi.fn().mockImplementation(function mockLiquid() {
-      return {
-        parseAndRender: mockParseAndRender,
+    Liquid: vi.fn().mockImplementation(
+      class {
+        parseAndRender = mockParseAndRender
       }
-    }),
+    ),
   }
 })
 
@@ -55,7 +55,7 @@ describe('renderTemplate()', () => {
     })
 
     expect(error).toBeNull()
-    expect(result).toEqual([])
+    expect(result).toStrictEqual([])
   })
 
   it('should render a simple template with variables', async () => {

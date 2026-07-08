@@ -95,7 +95,7 @@ describe('normalize key', () => {
 describe('parse key pattern', () => {
   it('should parse a single character key', () => {
     const result = parseKeyPattern('q')
-    expect(result).toEqual({
+    expect(result).toStrictEqual({
       type: 'single',
       key: 'q',
       ctrl: false,
@@ -106,7 +106,7 @@ describe('parse key pattern', () => {
 
   it('should parse a special key name', () => {
     const result = parseKeyPattern('escape')
-    expect(result).toEqual({
+    expect(result).toStrictEqual({
       type: 'single',
       key: 'escape',
       ctrl: false,
@@ -117,7 +117,7 @@ describe('parse key pattern', () => {
 
   it('should parse ctrl+key modifier pattern', () => {
     const result = parseKeyPattern('ctrl+c')
-    expect(result).toEqual({
+    expect(result).toStrictEqual({
       type: 'single',
       key: 'c',
       ctrl: true,
@@ -128,7 +128,7 @@ describe('parse key pattern', () => {
 
   it('should parse meta+key modifier pattern', () => {
     const result = parseKeyPattern('meta+s')
-    expect(result).toEqual({
+    expect(result).toStrictEqual({
       type: 'single',
       key: 's',
       ctrl: false,
@@ -139,7 +139,7 @@ describe('parse key pattern', () => {
 
   it('should parse shift+tab modifier pattern', () => {
     const result = parseKeyPattern('shift+tab')
-    expect(result).toEqual({
+    expect(result).toStrictEqual({
       type: 'single',
       key: 'tab',
       ctrl: false,
@@ -150,7 +150,7 @@ describe('parse key pattern', () => {
 
   it('should parse a two-key sequence', () => {
     const result = parseKeyPattern('escape escape')
-    expect(result).toEqual({
+    expect(result).toStrictEqual({
       type: 'sequence',
       steps: [
         { type: 'single', key: 'escape', ctrl: false, meta: false, shift: false },

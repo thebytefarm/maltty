@@ -131,7 +131,7 @@ describe('createHttpClient()', () => {
 
     const response = await client.get('/users/1')
 
-    expect(response.data).toEqual({ id: 1, name: 'Alice' })
+    expect(response.data).toStrictEqual({ id: 1, name: 'Alice' })
     expect(response.status).toBe(200)
     expect(response.ok).toBeTruthy()
     expect(response.headers).toBeInstanceOf(Headers)
@@ -159,6 +159,6 @@ describe('createHttpClient()', () => {
 
     const methods = mockFetch.mock.calls.map((call: [string, RequestInit]) => call[1].method)
 
-    expect(methods).toEqual(['GET', 'POST', 'PUT', 'PATCH', 'DELETE'])
+    expect(methods).toStrictEqual(['GET', 'POST', 'PUT', 'PATCH', 'DELETE'])
   })
 })

@@ -34,7 +34,7 @@ describe('readCLIManifest()', () => {
     const [error, result] = await readCLIManifest('/project/dist')
 
     expect(error).toBeNull()
-    expect(result).toEqual({
+    expect(result).toStrictEqual({
       description: 'A test CLI tool',
       name: 'my-cli',
       version: '1.0.0',

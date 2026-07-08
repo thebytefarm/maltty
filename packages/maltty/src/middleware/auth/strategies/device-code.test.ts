@@ -126,7 +126,7 @@ describe('resolveFromDeviceCode()', () => {
         message: expect.stringContaining('https://auth.example.com/activate'),
       })
     )
-    expect(result).toEqual({ token: 'at-xyz', type: 'bearer' })
+    expect(result).toStrictEqual({ token: 'at-xyz', type: 'bearer' })
   })
 
   it('should return bearer credential on successful authorization', async () => {
@@ -152,7 +152,7 @@ describe('resolveFromDeviceCode()', () => {
 
     const result = await resultPromise
 
-    expect(result).toEqual({ token: 'final-token', type: 'bearer' })
+    expect(result).toStrictEqual({ token: 'final-token', type: 'bearer' })
   })
 
   it('should return null when access is denied', async () => {
@@ -210,7 +210,7 @@ describe('resolveFromDeviceCode()', () => {
 
     const result = await resultPromise
 
-    expect(result).toEqual({ token: 'slow-token', type: 'bearer' })
+    expect(result).toStrictEqual({ token: 'slow-token', type: 'bearer' })
   })
 
   it('should continue polling on authorization_pending', async () => {
@@ -238,7 +238,7 @@ describe('resolveFromDeviceCode()', () => {
 
     const result = await resultPromise
 
-    expect(result).toEqual({ token: 'pending-token', type: 'bearer' })
+    expect(result).toStrictEqual({ token: 'pending-token', type: 'bearer' })
   })
 
   it('should use correct grant_type in token request', async () => {
@@ -314,7 +314,7 @@ describe('resolveFromDeviceCode()', () => {
 
     const result = await resultPromise
 
-    expect(result).toEqual({ token: 'config-interval-token', type: 'bearer' })
+    expect(result).toStrictEqual({ token: 'config-interval-token', type: 'bearer' })
   })
 
   it('should include scopes in device auth request', async () => {
