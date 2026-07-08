@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 838 300">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 838 288">
   <defs>
     <style>
       .text { font-family: 'SF Mono', 'Fira Code', 'JetBrains Mono', Consolas, monospace; }
@@ -19,7 +19,7 @@
   </defs>
 
   <!-- Window -->
-  <rect width="838" height="300" rx="10" ry="10" fill="#1e1e2e" />
+  <rect width="838" height="288" rx="10" ry="10" fill="#1e1e2e" />
   <rect width="838" height="36" rx="10" ry="10" fill="#181825" />
   <rect y="26" width="838" height="10" fill="#181825" />
   <circle cx="20" cy="18" r="6" fill="#f38ba8" />
@@ -27,47 +27,46 @@
   <circle cx="60" cy="18" r="6" fill="#a6e3a1" />
   <text class="text dim" font-size="12" x="419" y="22" text-anchor="middle">maltty</text>
 
-  <!-- Split -->
-  <line x1="16" y1="48" x2="822" y2="48" stroke="#313244" stroke-width="1" />
-  <line x1="419" y1="48" x2="419" y2="290" stroke="#313244" stroke-width="1" />
+  <!-- Split (flush to header) -->
+  <line x1="419" y1="36" x2="419" y2="278" stroke="#313244" stroke-width="1" />
 
   <!-- Left pane: terminal -->
-  <rect x="4" y="56" width="80" height="24" rx="4" ry="4" fill="#181825" />
-  <text class="tab" x="18" y="72">terminal</text>
-  <text class="code" x="18" y="100"><tspan class="prompt">~</tspan><tspan class="dim"> $ </tspan><tspan class="tx">maltty dev</tspan></text>
-  <text class="code" x="18" y="128"><tspan class="dim">Starting </tspan><tspan class="brand">my-cli</tspan><tspan class="dim">...</tspan></text>
-  <text class="code" x="18" y="144" xml:space="preserve"><tspan class="st">  ✓</tspan><tspan class="tx"> Loaded config</tspan></text>
-  <text class="code" x="18" y="160" xml:space="preserve"><tspan class="st">  ✓</tspan><tspan class="tx"> Registered 3 commands</tspan></text>
-  <text class="code" x="18" y="176" xml:space="preserve"><tspan class="st">  ✓</tspan><tspan class="tx"> Applied 2 middleware</tspan></text>
-  <text class="code" x="18" y="192" xml:space="preserve"><tspan class="st">  ✓</tspan><tspan class="tx"> Watching for changes</tspan></text>
-  <text class="code" x="18" y="220"><tspan class="dim">Ready — dev server on :4000</tspan></text>
-  <text class="code" x="18" y="252"><tspan class="prompt">~</tspan><tspan class="dim"> $ </tspan><tspan class="tx">&#x2588;</tspan></text>
+  <rect x="4" y="44" width="80" height="24" rx="4" ry="4" fill="#181825" />
+  <text class="tab" x="18" y="60">terminal</text>
+  <text class="code" x="18" y="88"><tspan class="prompt">~</tspan><tspan class="dim"> $ </tspan><tspan class="tx">maltty dev</tspan></text>
+  <text class="code" x="18" y="116"><tspan class="dim">Starting </tspan><tspan class="brand">my-cli</tspan><tspan class="dim">...</tspan></text>
+  <text class="code" x="18" y="132" xml:space="preserve"><tspan class="st">  ✓</tspan><tspan class="tx"> Loaded config</tspan></text>
+  <text class="code" x="18" y="148" xml:space="preserve"><tspan class="st">  ✓</tspan><tspan class="tx"> Registered 3 commands</tspan></text>
+  <text class="code" x="18" y="164" xml:space="preserve"><tspan class="st">  ✓</tspan><tspan class="tx"> Applied 2 middleware</tspan></text>
+  <text class="code" x="18" y="180" xml:space="preserve"><tspan class="st">  ✓</tspan><tspan class="tx"> Watching for changes</tspan></text>
+  <text class="code" x="18" y="208"><tspan class="dim">Ready — dev server on :4000</tspan></text>
+  <text class="code" x="18" y="240"><tspan class="prompt">~</tspan><tspan class="dim"> $ </tspan><tspan class="tx">&#x2588;</tspan></text>
 
   <!-- Right pane: deploy.ts -->
-  <rect x="423" y="56" width="100" height="24" rx="4" ry="4" fill="#181825" />
-  <text class="tab" x="437" y="72">deploy.ts</text>
-  <line x1="457" y1="84" x2="457" y2="290" stroke="#313244" stroke-width="1" />
-  <text class="ln" x="451" y="100">1</text>
-  <text class="code" x="467" y="100" xml:space="preserve"><tspan class="kw">import</tspan><tspan class="op"> { </tspan><tspan class="fn">command</tspan><tspan class="op">, </tspan><tspan class="fn">z</tspan><tspan class="op"> } </tspan><tspan class="kw">from</tspan><tspan class="st"> 'maltty'</tspan></text>
-  <text class="ln" x="451" y="116">2</text>
-  <text class="ln" x="451" y="132">3</text>
-  <text class="code" x="467" y="132" xml:space="preserve"><tspan class="kw">export default </tspan><tspan class="fn">command</tspan><tspan class="op">({</tspan></text>
-  <text class="ln" x="451" y="148">4</text>
-  <text class="code" x="467" y="148" xml:space="preserve"><tspan class="op">  </tspan><tspan class="pr">name</tspan><tspan class="op">: </tspan><tspan class="st">'deploy'</tspan><tspan class="op">,</tspan></text>
-  <text class="ln" x="451" y="164">5</text>
-  <text class="code" x="467" y="164" xml:space="preserve"><tspan class="op">  </tspan><tspan class="pr">description</tspan><tspan class="op">: </tspan><tspan class="st">'Deploy the app'</tspan><tspan class="op">,</tspan></text>
-  <text class="ln" x="451" y="180">6</text>
-  <text class="code" x="467" y="180" xml:space="preserve"><tspan class="op">  </tspan><tspan class="pr">args</tspan><tspan class="op">: {</tspan></text>
-  <text class="ln" x="451" y="196">7</text>
-  <text class="code" x="467" y="196" xml:space="preserve"><tspan class="op">    </tspan><tspan class="pr">env</tspan><tspan class="op">: </tspan><tspan class="fn">z</tspan><tspan class="op">.</tspan><tspan class="fn">string</tspan><tspan class="op">(),</tspan></text>
-  <text class="ln" x="451" y="212">8</text>
-  <text class="code" x="467" y="212" xml:space="preserve"><tspan class="op">  },</tspan></text>
-  <text class="ln" x="451" y="228">9</text>
-  <text class="code" x="467" y="228" xml:space="preserve"><tspan class="op">  </tspan><tspan class="kw">async </tspan><tspan class="fn">handler</tspan><tspan class="op">(</tspan><tspan class="vr">ctx</tspan><tspan class="op">) {</tspan></text>
-  <text class="ln" x="451" y="244">10</text>
-  <text class="code" x="467" y="244" xml:space="preserve"><tspan class="op">    </tspan><tspan class="kw">await </tspan><tspan class="vr">ctx</tspan><tspan class="op">.</tspan><tspan class="pr">output</tspan><tspan class="op">.</tspan><tspan class="fn">spinner</tspan><tspan class="op">(</tspan></text>
-  <text class="ln" x="451" y="260">11</text>
-  <text class="code" x="467" y="260" xml:space="preserve"><tspan class="op">  },</tspan></text>
-  <text class="ln" x="451" y="276">12</text>
-  <text class="code" x="467" y="276" xml:space="preserve"><tspan class="op">})</tspan></text>
+  <rect x="423" y="44" width="100" height="24" rx="4" ry="4" fill="#181825" />
+  <text class="tab" x="437" y="60">deploy.ts</text>
+  <line x1="457" y1="72" x2="457" y2="278" stroke="#313244" stroke-width="1" />
+  <text class="ln" x="451" y="88">1</text>
+  <text class="code" x="467" y="88" xml:space="preserve"><tspan class="kw">import</tspan><tspan class="op"> { </tspan><tspan class="fn">command</tspan><tspan class="op">, </tspan><tspan class="fn">z</tspan><tspan class="op"> } </tspan><tspan class="kw">from</tspan><tspan class="st"> 'maltty'</tspan></text>
+  <text class="ln" x="451" y="104">2</text>
+  <text class="ln" x="451" y="120">3</text>
+  <text class="code" x="467" y="120" xml:space="preserve"><tspan class="kw">export default </tspan><tspan class="fn">command</tspan><tspan class="op">({</tspan></text>
+  <text class="ln" x="451" y="136">4</text>
+  <text class="code" x="467" y="136" xml:space="preserve"><tspan class="op">  </tspan><tspan class="pr">name</tspan><tspan class="op">: </tspan><tspan class="st">'deploy'</tspan><tspan class="op">,</tspan></text>
+  <text class="ln" x="451" y="152">5</text>
+  <text class="code" x="467" y="152" xml:space="preserve"><tspan class="op">  </tspan><tspan class="pr">description</tspan><tspan class="op">: </tspan><tspan class="st">'Deploy the app'</tspan><tspan class="op">,</tspan></text>
+  <text class="ln" x="451" y="168">6</text>
+  <text class="code" x="467" y="168" xml:space="preserve"><tspan class="op">  </tspan><tspan class="pr">args</tspan><tspan class="op">: {</tspan></text>
+  <text class="ln" x="451" y="184">7</text>
+  <text class="code" x="467" y="184" xml:space="preserve"><tspan class="op">    </tspan><tspan class="pr">env</tspan><tspan class="op">: </tspan><tspan class="fn">z</tspan><tspan class="op">.</tspan><tspan class="fn">string</tspan><tspan class="op">(),</tspan></text>
+  <text class="ln" x="451" y="200">8</text>
+  <text class="code" x="467" y="200" xml:space="preserve"><tspan class="op">  },</tspan></text>
+  <text class="ln" x="451" y="216">9</text>
+  <text class="code" x="467" y="216" xml:space="preserve"><tspan class="op">  </tspan><tspan class="kw">async </tspan><tspan class="fn">handler</tspan><tspan class="op">(</tspan><tspan class="vr">ctx</tspan><tspan class="op">) {</tspan></text>
+  <text class="ln" x="451" y="232">10</text>
+  <text class="code" x="467" y="232" xml:space="preserve"><tspan class="op">    </tspan><tspan class="kw">await </tspan><tspan class="vr">ctx</tspan><tspan class="op">.</tspan><tspan class="pr">output</tspan><tspan class="op">.</tspan><tspan class="fn">spinner</tspan><tspan class="op">(</tspan></text>
+  <text class="ln" x="451" y="248">11</text>
+  <text class="code" x="467" y="248" xml:space="preserve"><tspan class="op">  },</tspan></text>
+  <text class="ln" x="451" y="264">12</text>
+  <text class="code" x="467" y="264" xml:space="preserve"><tspan class="op">})</tspan></text>
 </svg>
