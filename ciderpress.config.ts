@@ -259,11 +259,12 @@ export default defineConfig({
       ],
     },
 
-    // ── Contributing ──
+    // ── Contributing (isolated sidebar island) ──
     {
       title: 'Contributing',
       path: '/contributing',
       icon: 'pixelarticons:git-merge',
+      nav: { island: true },
       pages: [
         {
           title: 'Concepts',
