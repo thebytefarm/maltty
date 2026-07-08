@@ -63,22 +63,22 @@ const malttyTheme = defineTheme({
 
 export default defineConfig({
   title: 'maltty',
-  description: 'The batteries-included TypeScript framework for production CLIs.',
+  description: 'The batteries-included TypeScript CLI framework.',
   theme: { themes: [malttyTheme] },
   brand: {
     logo: '/logo.svg',
-    loader: 'apple',
+    loader: { content: '/icon.svg', label: 'maltty' },
   },
   home: {
     hero: {
       label: 'Ship a production CLI this afternoon',
       tagline:
-        'Typed commands, middleware, OAuth, and a built-in terminal UI. Skip the boilerplate and write what your CLI actually does, not how it boots.',
+        'Typed commands, middleware, OAuth, a built-in TUI, and Storybook-style stories for your terminal components. The whole stack, not a dozen libraries you glue together.',
       actions: [
         { variant: 'primary', text: 'Quick Start', href: '/getting-started/quick-start' },
         { variant: 'secondary', text: 'Introduction', href: '/getting-started/introduction' },
       ],
-      demo: false,
+      demo: { src: '/banner.svg', alt: 'maltty' },
     },
     proof: { lead: 'Built on', names: ['yargs', 'Zod', 'tsdown', 'Bun'] },
     features: {
