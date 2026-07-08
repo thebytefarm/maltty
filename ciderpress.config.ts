@@ -78,7 +78,7 @@ export default defineConfig({
         { variant: 'primary', text: 'Quick Start', href: '/getting-started/quick-start' },
         { variant: 'secondary', text: 'Introduction', href: '/getting-started/introduction' },
       ],
-      demo: { src: '/banner.svg', alt: 'maltty' },
+      demo: { src: '/hero.svg', alt: 'maltty dev and a command definition, side by side' },
     },
     proof: { lead: 'Built on', names: ['yargs', 'Zod', 'tsdown', 'Bun'] },
     features: {
