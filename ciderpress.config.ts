@@ -63,27 +63,30 @@ const malttyTheme = defineTheme({
 
 export default defineConfig({
   title: 'maltty',
-  description: 'An opinionated CLI framework',
-  tagline: 'Built on yargs and Zod. Convention over configuration, end-to-end type safety.',
+  description:
+    'A batteries-included TypeScript framework for building production CLIs. Typed commands, middleware, OAuth, and a built-in terminal UI.',
+  tagline:
+    "A batteries-included TypeScript framework for real CLIs. Typed commands, middleware, OAuth, and a built-in TUI, without the boilerplate you'd normally write first.",
   themes: [malttyTheme],
   theme: { name: 'maltty' },
   logo: '/logo.svg',
   loader: 'apple',
   actions: [
-    { theme: 'brand', text: 'Introduction', link: '/getting-started/introduction' },
-    { theme: 'alt', text: 'Quick Start', link: '/getting-started/quick-start' },
+    { theme: 'brand', text: 'Quick Start', link: '/getting-started/quick-start' },
+    { theme: 'alt', text: 'Introduction', link: '/getting-started/introduction' },
   ],
   sidebar: {
     below: [{ text: 'Contributing', link: '/contributing', icon: 'pixelarticons:git-merge' }],
   },
   home: {
-    eyebrow: 'CLI framework · v0.24',
+    eyebrow: 'Ship a production CLI this afternoon',
+    trust: { lead: 'Built on', names: ['yargs', 'Zod', 'tsdown', 'Bun'] },
     features: { columns: 3 },
     workspaces: { columns: 2 },
     cta: {
-      title: 'Ship your CLI in an afternoon',
+      title: 'Your first command in five minutes',
       subtitle:
-        "Type-safe commands, middleware composition, OAuth out of the box. Built-in TUI when you need it, plain stdout when you don't.",
+        'Install the runtime, define a command with a Zod schema, and run it. The guide walks the whole path from argv to a compiled binary.',
       actions: [
         { theme: 'brand', text: 'Build a CLI', link: '/guides/build-a-cli' },
         { theme: 'alt', text: 'Read the Reference', link: '/reference/maltty' },
@@ -291,32 +294,37 @@ export default defineConfig({
     {
       title: 'Type-Safe Commands',
       description:
-        'Define commands with Zod schemas and get fully typed args, config, and context in every handler.',
+        'Describe args with a Zod schema and the parsed args, config, and context arrive fully typed in every handler. No casting, no drift.',
       icon: 'pixelarticons:command',
     },
     {
       title: 'Middleware Pipelines',
-      description: 'Compose auth, logging, timing, and custom logic with a nested onion model.',
+      description:
+        'Compose auth, logging, and timing as a nested onion. Each layer wraps the next in the order you declare it.',
       icon: 'pixelarticons:card-stack',
     },
     {
       title: 'Built-in Auth',
-      description: 'OAuth PKCE, device code, env vars, and file tokens with zero boilerplate.',
+      description:
+        'OAuth PKCE, device code, env vars, and file tokens. Wire up a login flow without hand-rolling a token refresh loop.',
       icon: 'pixelarticons:shield',
     },
     {
       title: 'Terminal UI',
-      description: 'Logger, spinner, prompts, colors, and formatters all available on ctx.',
+      description:
+        "Logger, spinner, prompts, colors, and formatters, all on ctx. Plain stdout when you want it, a real TUI when you don't.",
       icon: 'pixelarticons:sparkle',
     },
     {
       title: 'Config Discovery',
-      description: 'Automatic config file loading with Zod validation and typed access.',
+      description:
+        "Drop a maltty.config.ts and it's found, validated with Zod, and typed at every read. No parsing glue to maintain.",
       icon: 'pixelarticons:sliders',
     },
     {
       title: 'Build & Compile',
-      description: 'Bundle to ESM with tsdown and compile to standalone binaries with Bun.',
+      description:
+        'Bundle to ESM with tsdown, or compile a standalone binary with Bun. Ship one file that runs without a Node install.',
       icon: 'pixelarticons:zap',
     },
   ],
