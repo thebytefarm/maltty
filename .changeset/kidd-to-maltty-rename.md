@@ -1,9 +1,9 @@
 ---
 'maltty': major
-'@maltty/cli': minor
-'@maltty/config': minor
-'@maltty/utils': minor
-'@maltty/bundler': minor
+'@maltty/cli': major
+'@maltty/config': major
+'@maltty/utils': major
+'@maltty/bundler': major
 ---
 
 End-to-end rename. The framework was previously published under `@kidd-cli/*`, then briefly under `@maltty/*`, and is now consolidated as **`maltty`** (the runtime you import) plus a few scoped support packages. The CLI binary, config file convention, env var prefix, and several public types were renamed to match.
