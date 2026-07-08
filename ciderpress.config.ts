@@ -64,41 +64,86 @@ const malttyTheme = defineTheme({
 export default defineConfig({
   title: 'maltty',
   description: 'The batteries-included TypeScript framework for production CLIs.',
-  tagline:
-    'Typed commands, middleware, OAuth, and a built-in terminal UI. Skip the boilerplate and write what your CLI actually does, not how it boots.',
-  themes: [malttyTheme],
-  theme: { name: 'maltty' },
-  logo: '/logo.svg',
-  loader: 'apple',
-  actions: [
-    { theme: 'brand', text: 'Quick Start', link: '/getting-started/quick-start' },
-    { theme: 'alt', text: 'Introduction', link: '/getting-started/introduction' },
-  ],
-  sidebar: {
-    below: [{ text: 'Contributing', link: '/contributing', icon: 'pixelarticons:git-merge' }],
+  theme: { themes: [malttyTheme] },
+  brand: {
+    logo: '/logo.svg',
+    loader: 'apple',
   },
   home: {
-    eyebrow: 'Ship a production CLI this afternoon',
-    trust: { lead: 'Built on', names: ['yargs', 'Zod', 'tsdown', 'Bun'] },
-    features: { columns: 3 },
-    workspaces: { columns: 2 },
+    hero: {
+      label: 'Ship a production CLI this afternoon',
+      tagline:
+        'Typed commands, middleware, OAuth, and a built-in terminal UI. Skip the boilerplate and write what your CLI actually does, not how it boots.',
+      actions: [
+        { variant: 'primary', text: 'Quick Start', href: '/getting-started/quick-start' },
+        { variant: 'secondary', text: 'Introduction', href: '/getting-started/introduction' },
+      ],
+      demo: false,
+    },
+    proof: { lead: 'Built on', names: ['yargs', 'Zod', 'tsdown', 'Bun'] },
+    features: {
+      columns: 3,
+      items: [
+        {
+          title: 'Type-Safe Commands',
+          description:
+            'Describe args with a Zod schema and the parsed args, config, and context arrive fully typed in every handler. No casting, no drift.',
+          icon: 'pixelarticons:command',
+        },
+        {
+          title: 'Middleware Pipelines',
+          description:
+            'Compose auth, logging, and timing as a nested onion. Each layer wraps the next in the order you declare it.',
+          icon: 'pixelarticons:card-stack',
+        },
+        {
+          title: 'Built-in Auth',
+          description:
+            'OAuth PKCE, device code, env vars, and file tokens. Wire up a login flow without hand-rolling a token refresh loop.',
+          icon: 'pixelarticons:shield',
+        },
+        {
+          title: 'Terminal UI',
+          description:
+            "Logger, spinner, prompts, colors, and formatters, all on ctx. Plain stdout when you want it, a real TUI when you don't.",
+          icon: 'pixelarticons:sparkle',
+        },
+        {
+          title: 'Config Discovery',
+          description:
+            "Drop a maltty.config.ts and it's found, validated with Zod, and typed at every read. No parsing glue to maintain.",
+          icon: 'pixelarticons:sliders',
+        },
+        {
+          title: 'Build & Compile',
+          description:
+            'Bundle to ESM with tsdown, or compile a standalone binary with Bun. Ship one file that runs without a Node install.',
+          icon: 'pixelarticons:zap',
+        },
+      ],
+    },
+    showcase: { columns: 2, source: 'workspaces' },
+    split: false,
     cta: {
       title: 'Your first command in five minutes',
       subtitle:
         'Install the runtime, define a command with a Zod schema, and run it. The guide walks the whole path from argv to a compiled binary.',
       actions: [
-        { theme: 'brand', text: 'Build a CLI', link: '/guides/build-a-cli' },
-        { theme: 'alt', text: 'Read the Reference', link: '/reference/maltty' },
+        { variant: 'primary', text: 'Build a CLI', href: '/guides/build-a-cli' },
+        { variant: 'secondary', text: 'Read the Reference', href: '/reference/maltty' },
       ],
     },
   },
-  sections: [
+  sidebar: {
+    bottom: [{ text: 'Contributing', href: '/contributing', icon: 'pixelarticons:git-merge' }],
+  },
+  pages: [
     // ── Getting Started ──
     {
       title: 'Getting Started',
       icon: 'pixelarticons:speed-fast',
       path: '/getting-started',
-      items: [
+      pages: [
         {
           title: 'Introduction',
           path: '/getting-started/introduction',
@@ -117,7 +162,7 @@ export default defineConfig({
       title: 'Concepts',
       path: '/concepts',
       icon: 'pixelarticons:lightbulb',
-      items: [
+      pages: [
         {
           title: 'Lifecycle',
           path: '/concepts/lifecycle',
@@ -161,7 +206,7 @@ export default defineConfig({
       title: 'Guides',
       path: '/guides',
       icon: 'pixelarticons:book',
-      items: [
+      pages: [
         {
           title: 'Build a CLI',
           path: '/guides/build-a-cli',
@@ -195,7 +240,7 @@ export default defineConfig({
       title: 'Reference',
       path: '/reference',
       icon: 'pixelarticons:file-alt',
-      items: [
+      pages: [
         { title: 'maltty', path: '/reference/maltty', include: 'docs/reference/maltty.md' },
         { title: 'cli', path: '/reference/cli', include: 'docs/reference/cli.md' },
         {
@@ -219,11 +264,11 @@ export default defineConfig({
       title: 'Contributing',
       path: '/contributing',
       icon: 'pixelarticons:git-merge',
-      items: [
+      pages: [
         {
           title: 'Concepts',
           path: '/contributing/concepts',
-          items: [
+          pages: [
             {
               title: { from: 'heading' },
               path: '/contributing/concepts/architecture',
@@ -244,7 +289,7 @@ export default defineConfig({
         {
           title: 'Guides',
           path: '/contributing/guides',
-          items: [
+          pages: [
             {
               title: { from: 'heading' },
               path: '/contributing/guides/getting-started',
@@ -265,66 +310,28 @@ export default defineConfig({
         {
           title: 'Standards',
           path: '/contributing/standards',
-          items: [
+          pages: [
             {
               title: { from: 'heading' },
               path: '/contributing/standards/typescript',
               include: 'contributing/standards/typescript/*.md',
-              sort: 'alpha',
+              discover: { sort: 'alpha' },
             },
             {
               title: { from: 'heading' },
               path: '/contributing/standards/documentation',
               include: 'contributing/standards/documentation/*.md',
-              sort: 'alpha',
+              discover: { sort: 'alpha' },
             },
             {
               title: { from: 'heading' },
               path: '/contributing/standards/git',
               include: 'contributing/standards/git-*.md',
-              sort: 'alpha',
+              discover: { sort: 'alpha' },
             },
           ],
         },
       ],
-    },
-  ],
-  features: [
-    {
-      title: 'Type-Safe Commands',
-      description:
-        'Describe args with a Zod schema and the parsed args, config, and context arrive fully typed in every handler. No casting, no drift.',
-      icon: 'pixelarticons:command',
-    },
-    {
-      title: 'Middleware Pipelines',
-      description:
-        'Compose auth, logging, and timing as a nested onion. Each layer wraps the next in the order you declare it.',
-      icon: 'pixelarticons:card-stack',
-    },
-    {
-      title: 'Built-in Auth',
-      description:
-        'OAuth PKCE, device code, env vars, and file tokens. Wire up a login flow without hand-rolling a token refresh loop.',
-      icon: 'pixelarticons:shield',
-    },
-    {
-      title: 'Terminal UI',
-      description:
-        "Logger, spinner, prompts, colors, and formatters, all on ctx. Plain stdout when you want it, a real TUI when you don't.",
-      icon: 'pixelarticons:sparkle',
-    },
-    {
-      title: 'Config Discovery',
-      description:
-        "Drop a maltty.config.ts and it's found, validated with Zod, and typed at every read. No parsing glue to maintain.",
-      icon: 'pixelarticons:sliders',
-    },
-    {
-      title: 'Build & Compile',
-      description:
-        'Bundle to ESM with tsdown, or compile a standalone binary with Bun. Ship one file that runs without a Node install.',
-      icon: 'pixelarticons:zap',
     },
   ],
   workspaces: [
@@ -349,10 +356,12 @@ export default defineConfig({
       ],
     },
   ],
-  nav: [
-    { title: 'Getting Started', link: '/getting-started/introduction' },
-    { title: 'Concepts', link: '/concepts/lifecycle' },
-    { title: 'Guides', link: '/guides/build-a-cli' },
-    { title: 'Reference', link: '/reference/maltty' },
-  ],
+  topbar: {
+    nav: [
+      { title: 'Getting Started', link: '/getting-started/introduction' },
+      { title: 'Concepts', link: '/concepts/lifecycle' },
+      { title: 'Guides', link: '/guides/build-a-cli' },
+      { title: 'Reference', link: '/reference/maltty' },
+    ],
+  },
 })

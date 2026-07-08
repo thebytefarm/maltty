@@ -18,13 +18,9 @@ catalog:
 
 overrides:
   fast-xml-parser: ^5.7.1
-  jiti: ^2.7.0
   liquidjs: ^10.25.7
   postcss: ^8.5.10
   tar: ^7.5.13
   uuid: ^14.0.0
   vite: ^8.0.10
   zod: ^4.4.3
-
-patchedDependencies:
-  '@ciderpress/ui@1.0.0-rc.3': patches/@ciderpress__ui@1.0.0-rc.3.patch
