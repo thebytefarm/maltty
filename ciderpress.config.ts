@@ -365,4 +365,31 @@ export default defineConfig({
       { title: 'Reference', link: '/reference/maltty' },
     ],
   },
+  socials: [
+    { icon: 'github', url: 'https://github.com/thebytefarm/maltty', label: 'GitHub' },
+    { icon: 'npm', url: 'https://www.npmjs.com/package/maltty', label: 'npm' },
+  ],
+  footer: {
+    tagline: 'The batteries-included TypeScript CLI framework.',
+    copyright: { company: 'Zac Rosenbauer', year: 2026 },
+    socials: true,
+    columns: [
+      {
+        heading: 'Docs',
+        links: [
+          { text: 'Getting Started', href: '/getting-started/introduction' },
+          { text: 'Guides', href: '/guides/build-a-cli' },
+          { text: 'Reference', href: '/reference/maltty' },
+        ],
+      },
+      {
+        heading: 'Project',
+        links: [
+          { text: 'GitHub', href: 'https://github.com/thebytefarm/maltty' },
+          { text: 'npm', href: 'https://www.npmjs.com/package/maltty' },
+          { text: 'Contributing', href: '/contributing' },
+        ],
+      },
+    ],
+  },
 })
