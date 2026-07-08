@@ -57,14 +57,17 @@ The `maltty` package exposes focused sub-exports so you only import what you nee
 | Export           | Purpose                                            |
 | ---------------- | -------------------------------------------------- |
 | `maltty`         | Commands, middleware, context, module augmentation |
+| `maltty/config`  | `defineConfig` and the config middleware           |
 | `maltty/auth`    | Auth middleware and credential strategies          |
 | `maltty/http`    | HTTP client middleware                             |
-| `maltty/icons`   | Nerd Font icon middleware                          |
-| `maltty/config`  | Config client for loading outside cli()            |
-| `maltty/logger`  | Standalone terminal logger                         |
-| `maltty/store`   | File-backed JSON store                             |
-| `maltty/project` | Git root resolution and path utilities             |
-| `maltty/format`  | Standalone format functions                        |
+| `maltty/icons`   | Nerd Font icon middleware with emoji fallback      |
+| `maltty/figures` | Unicode figure set for terminal output             |
+| `maltty/report`  | Structured reporting output                        |
+| `maltty/store`   | File-backed JSON store (`createStore`)             |
+| `maltty/project` | Project root and dot-dir path resolution           |
+| `maltty/format`  | Standalone terminal formatting helpers             |
+| `maltty/ui`      | Ink UI primitives for terminal interfaces          |
+| `maltty/stories` | Component stories and preview decorators           |
 | `maltty/test`    | Test utilities for commands and middleware         |
 
 ## Packages

@@ -54,6 +54,18 @@
       "types": "./dist/middleware/report.d.ts",
       "default": "./dist/middleware/report.js"
     },
+    "./store": {
+      "types": "./dist/lib/store.d.ts",
+      "default": "./dist/lib/store.js"
+    },
+    "./project": {
+      "types": "./dist/lib/project.d.ts",
+      "default": "./dist/lib/project.js"
+    },
+    "./format": {
+      "types": "./dist/lib/format.d.ts",
+      "default": "./dist/lib/format.js"
+    },
     "./test": {
       "types": "./dist/test/index.d.ts",
       "default": "./dist/test/index.js"
