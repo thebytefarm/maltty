@@ -6,7 +6,7 @@
 <a href="https://www.npmjs.com/package/maltty"><img src="https://img.shields.io/npm/v/maltty" alt="npm version" /></a>
 <a href="https://github.com/thebytefarm/maltty/blob/main/LICENSE"><img src="https://img.shields.io/github/license/thebytefarm/maltty" alt="License" /></a>
 
-<a href="https://maltty.dev">📖 Documentation</a> &nbsp;&nbsp;&nbsp;·&nbsp;&nbsp;&nbsp; <a href="https://github.com/thebytefarm/maltty/issues">🐛 Issues</a>
+<a href="https://maltty.sh">📖 Documentation</a> &nbsp;&nbsp;&nbsp;·&nbsp;&nbsp;&nbsp; <a href="https://github.com/thebytefarm/maltty/issues">🐛 Issues</a>
 
 </div>
 
