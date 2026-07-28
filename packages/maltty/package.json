@@ -104,15 +104,15 @@
     "picocolors": "^1.1.1",
     "ts-pattern": "catalog:",
     "yaml": "catalog:",
-    "yargs": "^18.0.0",
+    "yargs": "^18.1.0",
     "zod": "catalog:"
   },
   "devDependencies": {
     "@types/node": "catalog:",
     "@types/react": "^19.2.17",
     "@types/yargs": "^17.0.35",
-    "ink": "^7.1.0",
-    "react": "^19.2.7",
+    "ink": "^7.1.1",
+    "react": "^19.2.8",
     "tsdown": "catalog:",
     "typescript": "catalog:",
     "vitest": "catalog:"
