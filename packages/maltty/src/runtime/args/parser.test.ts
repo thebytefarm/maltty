@@ -113,7 +113,7 @@ describe('createArgsParser()', () => {
     it('should resolve a kebab-case schema key from the kebab-case argv variant', () => {
       const options = z.object({ 'dry-run': z.boolean().default(false) })
       const parser = createArgsParser({ options, positionals: undefined })
-      const [error, result] = parser.parse({ 'dry-run': true, dryRun: true })
+      const [error, result] = parser.parse({ 'dry-run': true, dryRun: false })
 
       expect(error).toBeNull()
       expect(result).toMatchObject({ 'dry-run': true })
@@ -122,20 +122,19 @@ describe('createArgsParser()', () => {
     it('should not fall back to the default for a kebab-case schema key', () => {
       const options = z.object({ 'dry-run': z.boolean().default(false) })
       const parser = createArgsParser({ options, positionals: undefined })
-      const [error, result] = parser.parse({ 'dry-run': true, dryRun: true })
+      const [error, result] = parser.parse({ 'dry-run': true, dryRun: false })
 
       expect(error).toBeNull()
-      expect(result!['dry-run']).toBeTruthy()
+      expect(result).toMatchObject({ 'dry-run': true })
     })
 
     it('should expose both accessors for a kebab-case schema key (passthrough)', () => {
       const options = z.object({ 'dry-run': z.boolean().default(false) })
       const parser = createArgsParser({ options, positionals: undefined })
-      const [error, result] = parser.parse({ 'dry-run': true, dryRun: true })
+      const [error, result] = parser.parse({ 'dry-run': true, dryRun: false })
 
       expect(error).toBeNull()
-      expect(result!['dry-run']).toBeTruthy()
-      expect(result!.dryRun).toBeTruthy()
+      expect(result).toMatchObject({ 'dry-run': true, dryRun: false })
     })
   })
 
@@ -203,7 +202,7 @@ describe('createArgsParser()', () => {
       const options = z.object({ 'dry-run': z.boolean() })
       const positionals = z.object({ file: z.string() })
       const parser = createArgsParser({ options, positionals })
-      const [error, result] = parser.parse({ 'dry-run': true, dryRun: true, file: 'index.ts' })
+      const [error, result] = parser.parse({ 'dry-run': true, dryRun: false, file: 'index.ts' })
 
       expect(error).toBeNull()
       expect(result).toStrictEqual({ 'dry-run': true, file: 'index.ts' })

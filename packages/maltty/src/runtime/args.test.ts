@@ -181,8 +181,7 @@ describe('args with zod schema', () => {
 
     expect(handler).toHaveBeenCalledTimes(1)
     const ctx = handler.mock.calls[0]![0] as CommandContext
-    expect(ctx.args['dry-run']).toBeTruthy()
-    expect(ctx.args.dryRun).toBeTruthy()
+    expect(ctx.args).toMatchObject({ 'dry-run': true, dryRun: true })
   })
 
   it('applies the default for a kebab-case key when the flag is omitted', async () => {
@@ -206,7 +205,7 @@ describe('args with zod schema', () => {
 
     expect(handler).toHaveBeenCalledTimes(1)
     const ctx = handler.mock.calls[0]![0] as CommandContext
-    expect(ctx.args['dry-run']).toBeFalsy()
+    expect(ctx.args).toMatchObject({ 'dry-run': false })
   })
 })
 
