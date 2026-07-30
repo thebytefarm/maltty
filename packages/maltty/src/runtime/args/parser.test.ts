@@ -29,7 +29,7 @@ describe('createArgsParser()', () => {
       expect(result).toStrictEqual({ file: 'index.ts' })
     })
 
-    it('should strip hyphenated keys (camelCase duplicates)', () => {
+    it('should keep both kebab and camelCase variants of a key', () => {
       const parser = createArgsParser({ options: undefined, positionals: undefined })
       const [error, result] = parser.parse({
         'dry-run': true,
@@ -38,10 +38,10 @@ describe('createArgsParser()', () => {
       })
 
       expect(error).toBeNull()
-      expect(result).toStrictEqual({ dryRun: true, output: 'dist' })
+      expect(result).toStrictEqual({ 'dry-run': true, dryRun: true, output: 'dist' })
     })
 
-    it('should strip all yargs-internal keys simultaneously', () => {
+    it('should strip only yargs-internal keys and keep kebab variants', () => {
       const parser = createArgsParser({ options: undefined, positionals: undefined })
       const [error, result] = parser.parse({
         $0: 'cli',
@@ -52,7 +52,7 @@ describe('createArgsParser()', () => {
       })
 
       expect(error).toBeNull()
-      expect(result).toStrictEqual({ dryRun: true, name: 'test' })
+      expect(result).toStrictEqual({ 'dry-run': true, dryRun: true, name: 'test' })
     })
 
     it('should return an empty object when all keys are internal', () => {
@@ -108,6 +108,34 @@ describe('createArgsParser()', () => {
 
       expect(error).toBeInstanceOf(Error)
       expect(error!.message).toContain('Invalid arguments')
+    })
+
+    it('should resolve a kebab-case schema key from the kebab-case argv variant', () => {
+      const options = z.object({ 'dry-run': z.boolean().default(false) })
+      const parser = createArgsParser({ options, positionals: undefined })
+      const [error, result] = parser.parse({ 'dry-run': true, dryRun: true })
+
+      expect(error).toBeNull()
+      expect(result).toMatchObject({ 'dry-run': true })
+    })
+
+    it('should not fall back to the default for a kebab-case schema key', () => {
+      const options = z.object({ 'dry-run': z.boolean().default(false) })
+      const parser = createArgsParser({ options, positionals: undefined })
+      const [error, result] = parser.parse({ 'dry-run': true, dryRun: true })
+
+      expect(error).toBeNull()
+      expect(result!['dry-run']).toBeTruthy()
+    })
+
+    it('should expose both accessors for a kebab-case schema key (passthrough)', () => {
+      const options = z.object({ 'dry-run': z.boolean().default(false) })
+      const parser = createArgsParser({ options, positionals: undefined })
+      const [error, result] = parser.parse({ 'dry-run': true, dryRun: true })
+
+      expect(error).toBeNull()
+      expect(result!['dry-run']).toBeTruthy()
+      expect(result!.dryRun).toBeTruthy()
     })
   })
 
@@ -169,6 +197,16 @@ describe('createArgsParser()', () => {
 
       expect(error).toBeNull()
       expect(result).toStrictEqual({ file: 'index.ts', verbose: true })
+    })
+
+    it('should resolve a kebab-case key and drop the camelCase variant in a merged schema', () => {
+      const options = z.object({ 'dry-run': z.boolean() })
+      const positionals = z.object({ file: z.string() })
+      const parser = createArgsParser({ options, positionals })
+      const [error, result] = parser.parse({ 'dry-run': true, dryRun: true, file: 'index.ts' })
+
+      expect(error).toBeNull()
+      expect(result).toStrictEqual({ 'dry-run': true, file: 'index.ts' })
     })
   })
 

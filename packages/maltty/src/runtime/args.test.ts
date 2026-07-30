@@ -159,6 +159,55 @@ describe('args with zod schema', () => {
     const ctx = handler.mock.calls[0]![0] as CommandContext
     expect(ctx.args).toMatchObject({ verbose: true })
   })
+
+  it('exposes a kebab-case schema key on ctx.args (issue #177)', async () => {
+    const handler = vi.fn()
+    const commands: CommandMap = {
+      build: command({
+        description: 'Build the project',
+        options: z.object({
+          'dry-run': z.boolean().default(false).describe('Preview without writing'),
+        }),
+        handler,
+      }),
+    }
+
+    setArgv('build', '--dry-run')
+    await runTestCli({
+      commands,
+      name: 'test-cli',
+      version: '1.0.0',
+    })
+
+    expect(handler).toHaveBeenCalledTimes(1)
+    const ctx = handler.mock.calls[0]![0] as CommandContext
+    expect(ctx.args['dry-run']).toBeTruthy()
+    expect(ctx.args.dryRun).toBeTruthy()
+  })
+
+  it('applies the default for a kebab-case key when the flag is omitted', async () => {
+    const handler = vi.fn()
+    const commands: CommandMap = {
+      build: command({
+        description: 'Build the project',
+        options: z.object({
+          'dry-run': z.boolean().default(false).describe('Preview without writing'),
+        }),
+        handler,
+      }),
+    }
+
+    setArgv('build')
+    await runTestCli({
+      commands,
+      name: 'test-cli',
+      version: '1.0.0',
+    })
+
+    expect(handler).toHaveBeenCalledTimes(1)
+    const ctx = handler.mock.calls[0]![0] as CommandContext
+    expect(ctx.args['dry-run']).toBeFalsy()
+  })
 })
 
 describe('args with yargs native format', () => {
