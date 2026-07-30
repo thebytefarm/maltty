@@ -1,6 +1,6 @@
 import process from 'node:process'
 
-import { isFunction, toError } from '@maltty/utils/fp'
+import { attempt, isFunction, toError } from '@maltty/utils/fp'
 import { withTag } from '@maltty/utils/tag'
 import type { Instance } from 'ink'
 import type { ComponentType } from 'react'
@@ -227,8 +227,8 @@ type ProcessErrorEvent = 'unhandledRejection' | 'uncaughtException'
 type ProcessErrorListener = (...args: unknown[]) => void
 
 /**
- * Suspend Node's global crash handlers and capture the first async error thrown
- * while a screen is mounted.
+ * Suspend the pre-existing global crash handlers and capture the first async
+ * error thrown while a screen is mounted.
  *
  * Ink resolves `waitUntilExit()` on unmount even when an async `useEffect`
  * callback rejects, so those rejections never reach the runtime's error
@@ -236,58 +236,65 @@ type ProcessErrorListener = (...args: unknown[]) => void
  * crash reporter) fires first and calls `process.exit(1)` before the screen can
  * leave the alternate buffer — erasing the message in fullscreen mode. This
  * guard takes ownership of async error handling for the render window: it
- * removes the global listeners, installs its own that unmount the screen and
- * reject {@link AsyncErrorGuard.signal} with the first error, and restores the
- * globals via {@link AsyncErrorGuard.dispose} so ordering (leave fullscreen,
- * then print) is controlled by the screen runtime.
+ * removes only the listeners it captured, prepends its own that reject
+ * {@link AsyncErrorGuard.signal} with the first error and unmount the screen,
+ * and restores exactly those captured listeners via
+ * {@link AsyncErrorGuard.dispose}. Foreign listeners (and those from an
+ * overlapping guard) are left untouched, so nesting and concurrency are safe.
  *
  * @private
  * @param instance - The Ink render instance to unmount when an error is caught.
  * @returns A guard exposing a rejection signal and a dispose function.
  */
 function createAsyncErrorGuard(instance: Instance): AsyncErrorGuard {
-  const savedRejection = process.listeners(
-    'unhandledRejection'
-  ) as unknown as readonly ProcessErrorListener[]
-  const savedException = process.listeners(
-    'uncaughtException'
-  ) as unknown as readonly ProcessErrorListener[]
   const { promise, reject } = Promise.withResolvers<never>()
   const onError = (error: unknown): void => {
-    instance.unmount()
+    // Settle the signal first, then unmount. Ink's unmount runs user effect teardown;
+    // If that throws, the rejection is already registered so renderFn never strands.
+    // Any unmount failure is swallowed rather than allowed to escape the listener.
     reject(toError(error))
+    attempt(() => instance.unmount())
   }
 
-  process.removeAllListeners('unhandledRejection')
-  process.removeAllListeners('uncaughtException')
-  process.on('unhandledRejection', onError)
-  process.on('uncaughtException', onError)
+  const restoreRejection = suspendListeners('unhandledRejection')
+  const restoreException = suspendListeners('uncaughtException')
+  process.prependListener('unhandledRejection', onError)
+  process.prependListener('uncaughtException', onError)
 
   const dispose = (): void => {
-    process.removeAllListeners('unhandledRejection')
-    process.removeAllListeners('uncaughtException')
-    restoreListeners('unhandledRejection', savedRejection)
-    restoreListeners('uncaughtException', savedException)
+    process.removeListener('unhandledRejection', onError)
+    process.removeListener('uncaughtException', onError)
+    restoreRejection()
+    restoreException()
   }
 
   return { dispose, signal: promise }
 }
 
 /**
- * Re-attach previously saved listeners to a process error event, in order.
+ * Remove a process error event's current listeners and return a function that
+ * re-attaches exactly those listeners, in their original order.
+ *
+ * Only the listeners present when this is called are touched, so listeners
+ * registered by unrelated code (or an overlapping guard) during the render
+ * window survive.
  *
  * @private
- * @param event - The process error event to restore listeners for.
- * @param listeners - The listeners captured before the guard took over.
+ * @param event - The process error event to suspend.
+ * @returns A restore function that re-attaches the captured listeners.
  */
-function restoreListeners(
-  event: ProcessErrorEvent,
-  listeners: readonly ProcessErrorListener[]
-): void {
-  listeners.reduce<null>((_acc, listener) => {
-    process.on(event, listener)
+function suspendListeners(event: ProcessErrorEvent): () => void {
+  const captured = process.listeners(event) as unknown as readonly ProcessErrorListener[]
+  captured.reduce<null>((_acc, listener) => {
+    process.removeListener(event, listener)
     return null
   }, null)
+  return () => {
+    captured.reduce<null>((_acc, listener) => {
+      process.on(event, listener)
+      return null
+    }, null)
+  }
 }
 
 /**

@@ -1,5 +1,5 @@
 import { hasTag } from '@maltty/utils/tag'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, onTestFinished, vi } from 'vitest'
 import { z } from 'zod'
 
 import type { CommandContext, ScreenContext, Store } from '../context/types.js'
@@ -467,6 +467,9 @@ describe('screen() async error handling', () => {
   it('should leave fullscreen before surfacing an async error', async () => {
     mockPendingScreen()
     const writeSpy = vi.spyOn(process.stdout, 'write').mockReturnValue(true)
+    onTestFinished(() => {
+      writeSpy.mockRestore()
+    })
 
     const { screen } = await import('./screen.js')
     const cmd = screen({ fullscreen: true, render: StubComponent })
@@ -477,12 +480,12 @@ describe('screen() async error handling', () => {
 
     await expect(renderPromise).rejects.toThrow('async boom')
     expect(writeSpy).toHaveBeenCalledWith(LEAVE_ALT_SCREEN)
-    writeSpy.mockRestore()
   })
 
-  it('should restore the global crash handlers after an async error', async () => {
+  it('should restore the exact crash handlers after an async error', async () => {
     mockPendingScreen()
-    const before = process.listeners('unhandledRejection').length
+    const beforeRejection = [...process.listeners('unhandledRejection')]
+    const beforeException = [...process.listeners('uncaughtException')]
 
     const { screen } = await import('./screen.js')
     const cmd = screen({ render: StubComponent })
@@ -492,21 +495,42 @@ describe('screen() async error handling', () => {
     process.emit('unhandledRejection', new Error('async boom'), Promise.resolve())
     await expect(renderPromise).rejects.toThrow('async boom')
 
-    expect(process.listeners('unhandledRejection')).toHaveLength(before)
+    expect(process.listeners('unhandledRejection')).toEqual(beforeRejection)
+    expect(process.listeners('uncaughtException')).toEqual(beforeException)
   })
 
-  it('should restore the global crash handlers after a normal exit', async () => {
+  it('should restore the exact crash handlers after a normal exit', async () => {
     mockedInkRender.mockReturnValue({
       unmount: vi.fn(),
       waitUntilExit: vi.fn().mockResolvedValue(undefined),
     } as never)
-    const before = process.listeners('unhandledRejection').length
+    const beforeRejection = [...process.listeners('unhandledRejection')]
+    const beforeException = [...process.listeners('uncaughtException')]
 
     const { screen } = await import('./screen.js')
     const cmd = screen({ render: StubComponent })
 
     await cmd.render!(makeContext())
 
-    expect(process.listeners('unhandledRejection')).toHaveLength(before)
+    expect(process.listeners('unhandledRejection')).toEqual(beforeRejection)
+    expect(process.listeners('uncaughtException')).toEqual(beforeException)
+  })
+
+  it('should leave a foreign listener registered mid-render untouched', async () => {
+    mockPendingScreen()
+    const foreign = (): void => {}
+
+    const { screen } = await import('./screen.js')
+    const cmd = screen({ render: StubComponent })
+
+    const renderPromise = cmd.render!(makeContext())
+    await flushRenderStartup()
+    // Registered while the guard owns the event — dispose must not drop it.
+    process.on('unhandledRejection', foreign)
+    process.emit('unhandledRejection', new Error('async boom'), Promise.resolve())
+    await expect(renderPromise).rejects.toThrow('async boom')
+
+    expect(process.listeners('unhandledRejection')).toContain(foreign)
+    process.removeListener('unhandledRejection', foreign)
   })
 })
