@@ -69,17 +69,20 @@ function buildMergedSchema(
 }
 
 /**
- * Strip yargs-internal keys (`_`, `$0`) and camelCase-duplicated hyphenated keys
- * from a parsed argv record, returning only user-defined arguments.
+ * Strip yargs-internal keys (`_`, `$0`) from a parsed argv record, returning
+ * only user-defined arguments.
+ *
+ * Both kebab-case (`dry-run`) and camelCase (`dryRun`) variants that yargs emits
+ * are preserved so a Zod schema keyed by either form validates against the
+ * matching key. Strict merged schemas drop whichever variant they don't declare;
+ * passthrough (and no-schema) results keep both, so both accessors resolve.
  *
  * @private
  * @param argv - Raw parsed argv from yargs.
  * @returns A cleaned record containing only user-defined arguments.
  */
 function cleanParsedArgs(argv: Record<string, unknown>): Record<string, unknown> {
-  return Object.fromEntries(
-    Object.entries(argv).filter(([key]) => key !== '_' && key !== '$0' && !key.includes('-'))
-  )
+  return Object.fromEntries(Object.entries(argv).filter(([key]) => key !== '_' && key !== '$0'))
 }
 
 /**
