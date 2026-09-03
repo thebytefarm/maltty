@@ -15,6 +15,11 @@ describe('isZodSchema()', () => {
     expect(isZodSchema(schema)).toBeTruthy()
   })
 
+  it('should return true when the zod definition is inherited', () => {
+    const schema: unknown = Object.create({ _def: { type: 'object' } })
+    expect(isZodSchema(schema)).toBeTruthy()
+  })
+
   it('should return false for null', () => {
     expect(isZodSchema(null)).toBeFalsy()
   })

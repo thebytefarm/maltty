@@ -20,7 +20,6 @@ export function isZodSchema(args: unknown): args is z.ZodObject<z.ZodRawShape> {
   return (
     typeof args === 'object' &&
     args !== null &&
-    Object.hasOwn(args as object, '_def') &&
     typeof (args as { _def: unknown })._def === 'object' &&
     (args as { _def: { type?: string } })._def !== null &&
     (args as { _def: { type?: string } })._def.type === 'object'
