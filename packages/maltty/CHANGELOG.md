@@ -1,5 +1,16 @@
 # maltty
 
+## 1.0.0-rc.1
+
+### Patch Changes
+
+- ca2001d: Detect Zod v4 object schemas when their `_def` metadata is inherited from the prototype.
+- 3cd4b94: Fix kebab-case Zod schema keys silently resolving to `undefined`. Previously the args parser stripped every argv key containing `-`, so an option defined as `'dry-run'` in a schema was dropped and `ctx.args['dry-run']` always fell back to its `.default()`. The parser now preserves both the kebab-case and camelCase variants yargs emits, so `ctx.args['dry-run']` and `ctx.args.dryRun` both resolve to the parsed value.
+- ab97d81: Upgrade dependencies to their latest versions — runtime deps (yargs, liquidjs, fs-extra, ink, react, es-toolkit) and dev tooling (oxlint, oxfmt, tsdown, turbo, vite, @rspress/core, ciderpress). TypeScript held at 6.x because `@typescript-eslint` (loaded by oxlint's JS plugins) does not yet support TypeScript 7.
+- Updated dependencies [ab97d81]
+  - @maltty/config@1.0.0-rc.1
+  - @maltty/utils@1.0.0-rc.1
+
 ## 1.0.0-rc.0
 
 ### Major Changes

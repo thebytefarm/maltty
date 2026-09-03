@@ -1,5 +1,18 @@
 # maltty
 
+## 1.0.0-rc.1
+
+### Patch Changes
+
+- ab97d81: Upgrade dependencies to their latest versions — runtime deps (yargs, liquidjs, fs-extra, ink, react, es-toolkit) and dev tooling (oxlint, oxfmt, tsdown, turbo, vite, @rspress/core, ciderpress). TypeScript held at 6.x because `@typescript-eslint` (loaded by oxlint's JS plugins) does not yet support TypeScript 7.
+- Updated dependencies [ca2001d]
+- Updated dependencies [3cd4b94]
+- Updated dependencies [ab97d81]
+  - maltty@1.0.0-rc.1
+  - @maltty/config@1.0.0-rc.1
+  - @maltty/utils@1.0.0-rc.1
+  - @maltty/bundler@1.0.0-rc.1
+
 ## 1.0.0-rc.0
 
 ### Major Changes
