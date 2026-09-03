@@ -1,0 +1,19 @@
+packages/maltty/src/runtime/args/zod.ts
+  s_37b01068c21d67::t_76d19ee7ac8bd3 20-25
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.0",
+  "base_commit_sha": "c34661af620757e20147c38f74f585a0fa97acbd",
+  "prompts": {},
+  "sessions": {
+    "s_37b01068c21d67": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_f965e95efffefyLbHs9ht8uxLW",
+        "model": "qwen3-coder-next"
+      },
+      "human_author": "Zac Rosenbauer <me@zrosenbauer.com>"
+    }
+  }
+}
