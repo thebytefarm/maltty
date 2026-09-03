@@ -1,6 +1,7 @@
 import { match } from 'ts-pattern'
 import type { Options as YargsOptions, PositionalOptions } from 'yargs'
 import type { z } from 'zod'
+import { $ZodObject } from 'zod/v4/core'
 
 /**
  * Metadata for a single positional argument extracted from a Zod schema.
@@ -17,13 +18,7 @@ export interface PositionalMeta {
  * @returns True when args is a ZodObject.
  */
 export function isZodSchema(args: unknown): args is z.ZodObject<z.ZodRawShape> {
-  return (
-    typeof args === 'object' &&
-    args !== null &&
-    typeof (args as { _def: unknown })._def === 'object' &&
-    (args as { _def: { type?: string } })._def !== null &&
-    (args as { _def: { type?: string } })._def.type === 'object'
-  )
+  return args instanceof $ZodObject
 }
 
 /**
