@@ -1,0 +1,30 @@
+packages/maltty/src/runtime/args/zod.test.ts
+  s_37b01068c21d67::t_4e662872963644 18-20
+  s_05ef158d0bd1ec::t_90b5415e404b03 16-17
+.changeset/fix-zod-v4-schema-detection.md
+  s_37b01068c21d67::t_4e662872963644 1-5
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.0",
+  "base_commit_sha": "790071ece163daaee785165ba7b4056903b65867",
+  "prompts": {},
+  "sessions": {
+    "s_05ef158d0bd1ec": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_f971b6cffffevNTze0RaGSAiw3",
+        "model": "gpt-5.6-sol"
+      },
+      "human_author": "Zac Rosenbauer <me@zrosenbauer.com>"
+    },
+    "s_37b01068c21d67": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_f965e95efffefyLbHs9ht8uxLW",
+        "model": "qwen3-coder-next"
+      },
+      "human_author": "Zac Rosenbauer <me@zrosenbauer.com>"
+    }
+  }
+}
