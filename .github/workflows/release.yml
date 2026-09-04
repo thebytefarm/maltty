@@ -51,28 +51,26 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_CONFIG_PROVENANCE: true
 
-      # While in `pre` mode, changesets publishes under `--tag rc`, so
-      # `npm install <pkg>` stays on whatever was on `latest`, and GitHub marks
-      # the prerelease as non-latest. RCs are what users install today, so
-      # re-point `latest` (and `rc`) at every just-published version and force
-      # the maltty GitHub release to be the repo's Latest.
-      - name: Promote published RCs to npm latest + GitHub Latest
+      # RCs are what users install today, so `pnpm release` passes
+      # `--tag latest` to publish every package straight onto `latest` over
+      # OIDC. That is deliberate: `maltty` has a non-prerelease `0.0.0` on the
+      # registry, so changesets would otherwise tag it `rc` (via preState.tag)
+      # while tagging the prerelease-only `@maltty/*` packages `latest`,
+      # splitting the group across two dist-tags on every release.
+      #
+      # Only the GitHub release still needs fixing up: changesets marks it a
+      # prerelease from the semver suffix, so `latest` stays on the older
+      # stable. npm dist-tags are NOT touched here — OIDC trusted publishing
+      # only authenticates `npm publish`, and the repo holds no npm token.
+      - name: Mark maltty release as GitHub Latest
         if: steps.changesets.outputs.published == 'true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           PUBLISHED: ${{ steps.changesets.outputs.publishedPackages }}
         run: |
           set -euo pipefail
-          echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
-          echo "$PUBLISHED" | jq -c '.[]' | while read -r pkg; do
-            name=$(echo "$pkg" | jq -r '.name')
-            version=$(echo "$pkg" | jq -r '.version')
-            echo "Promoting ${name}@${version} -> latest, rc"
-            npm dist-tag add "${name}@${version}" latest
-            npm dist-tag add "${name}@${version}" rc
-            if [ "$name" = "maltty" ]; then
-              echo "Marking ${name}@${version} as GitHub Latest"
-              gh release edit "${name}@${version}" --prerelease=false --latest=true --repo "$GITHUB_REPOSITORY"
-            fi
-          done
+          version=$(echo "$PUBLISHED" | jq -r '.[] | select(.name == "maltty") | .version')
+          if [ -n "$version" ]; then
+            echo "Marking maltty@${version} as GitHub Latest"
+            gh release edit "maltty@${version}" --prerelease=false --latest=true --repo "$GITHUB_REPOSITORY"
+          fi
