@@ -1,8 +1,9 @@
 import { hasTag } from '@maltty/utils/tag'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, onTestFinished, vi } from 'vitest'
 import { z } from 'zod'
 
 import type { CommandContext, ScreenContext, Store } from '../context/types.js'
+import { LEAVE_ALT_SCREEN } from '../ui/layout/fullscreen.js'
 
 vi.mock(import('ink'), () => ({
   render: vi.fn(() => ({
@@ -411,5 +412,125 @@ describe('screen() render function', () => {
 
     expect(writeSpy).toHaveBeenCalledWith('\u001B[?1049l')
     writeSpy.mockRestore()
+  })
+})
+
+describe('screen() async error handling', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+  })
+
+  // Park waitUntilExit forever so the async error (not a normal unmount) settles the render.
+  function mockPendingScreen(): ReturnType<typeof vi.fn> {
+    const unmount = vi.fn()
+    mockedInkRender.mockReturnValue({
+      unmount,
+      waitUntilExit: vi.fn(() => new Promise<void>(() => {})),
+    } as never)
+    return unmount
+  }
+
+  // Advance renderFn past the dynamic import so the guard's listeners are installed before we emit.
+  async function flushRenderStartup(): Promise<void> {
+    await new Promise((resolve) => {
+      setTimeout(resolve, 0)
+    })
+  }
+
+  it('should surface an async unhandledRejection thrown during the render window', async () => {
+    const unmount = mockPendingScreen()
+
+    const { screen } = await import('./screen.js')
+    const cmd = screen({ render: StubComponent })
+
+    const renderPromise = cmd.render!(makeContext())
+    await flushRenderStartup()
+    process.emit('unhandledRejection', new Error('async boom'), Promise.resolve())
+
+    await expect(renderPromise).rejects.toThrow('async boom')
+    expect(unmount).toHaveBeenCalledOnce()
+  })
+
+  it('should surface an uncaughtException thrown during the render window', async () => {
+    mockPendingScreen()
+
+    const { screen } = await import('./screen.js')
+    const cmd = screen({ render: StubComponent })
+
+    const renderPromise = cmd.render!(makeContext())
+    await flushRenderStartup()
+    process.emit('uncaughtException', new Error('sync boom'))
+
+    await expect(renderPromise).rejects.toThrow('sync boom')
+  })
+
+  it('should leave fullscreen before surfacing an async error', async () => {
+    mockPendingScreen()
+    const writeSpy = vi.spyOn(process.stdout, 'write').mockReturnValue(true)
+    onTestFinished(() => {
+      writeSpy.mockRestore()
+    })
+
+    const { screen } = await import('./screen.js')
+    const cmd = screen({ fullscreen: true, render: StubComponent })
+
+    const renderPromise = cmd.render!(makeContext())
+    await flushRenderStartup()
+    process.emit('unhandledRejection', new Error('async boom'), Promise.resolve())
+
+    await expect(renderPromise).rejects.toThrow('async boom')
+    expect(writeSpy).toHaveBeenCalledWith(LEAVE_ALT_SCREEN)
+  })
+
+  it('should restore the exact crash handlers after an async error', async () => {
+    mockPendingScreen()
+    const beforeRejection = [...process.listeners('unhandledRejection')]
+    const beforeException = [...process.listeners('uncaughtException')]
+
+    const { screen } = await import('./screen.js')
+    const cmd = screen({ render: StubComponent })
+
+    const renderPromise = cmd.render!(makeContext())
+    await flushRenderStartup()
+    process.emit('unhandledRejection', new Error('async boom'), Promise.resolve())
+    await expect(renderPromise).rejects.toThrow('async boom')
+
+    expect(process.listeners('unhandledRejection')).toEqual(beforeRejection)
+    expect(process.listeners('uncaughtException')).toEqual(beforeException)
+  })
+
+  it('should restore the exact crash handlers after a normal exit', async () => {
+    mockedInkRender.mockReturnValue({
+      unmount: vi.fn(),
+      waitUntilExit: vi.fn().mockResolvedValue(undefined),
+    } as never)
+    const beforeRejection = [...process.listeners('unhandledRejection')]
+    const beforeException = [...process.listeners('uncaughtException')]
+
+    const { screen } = await import('./screen.js')
+    const cmd = screen({ render: StubComponent })
+
+    await cmd.render!(makeContext())
+
+    expect(process.listeners('unhandledRejection')).toEqual(beforeRejection)
+    expect(process.listeners('uncaughtException')).toEqual(beforeException)
+  })
+
+  it('should leave a foreign listener registered mid-render untouched', async () => {
+    mockPendingScreen()
+    const foreign = (): void => {}
+
+    const { screen } = await import('./screen.js')
+    const cmd = screen({ render: StubComponent })
+
+    const renderPromise = cmd.render!(makeContext())
+    await flushRenderStartup()
+    // Registered while the guard owns the event — dispose must not drop it.
+    process.on('unhandledRejection', foreign)
+    process.emit('unhandledRejection', new Error('async boom'), Promise.resolve())
+    await expect(renderPromise).rejects.toThrow('async boom')
+
+    expect(process.listeners('unhandledRejection')).toContain(foreign)
+    process.removeListener('unhandledRejection', foreign)
   })
 })

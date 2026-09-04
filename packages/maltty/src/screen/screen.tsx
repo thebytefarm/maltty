@@ -1,7 +1,8 @@
 import process from 'node:process'
 
-import { isFunction } from '@maltty/utils/fp'
+import { attempt, isFunction, toError } from '@maltty/utils/fp'
 import { withTag } from '@maltty/utils/tag'
+import type { Instance } from 'ink'
 import type { ComponentType } from 'react'
 import React from 'react'
 import { match } from 'ts-pattern'
@@ -159,9 +160,15 @@ export function screen<
       }, 0)
     }
 
+    // Guard async `useEffect` rejections that Ink swallows (see createAsyncErrorGuard).
+    // Racing the guard against `waitUntilExit()` surfaces async and render-phase failures.
+    // A rejected race re-rejects renderFn into the runtime's error channel, and the
+    // `finally` block leaves fullscreen first so the message survives.
+    const guard = createAsyncErrorGuard(instance)
     try {
-      await instance.waitUntilExit()
+      await Promise.race([instance.waitUntilExit(), guard.signal])
     } finally {
+      guard.dispose()
       if (isFullscreen) {
         process.stdout.write(LEAVE_ALT_SCREEN)
       }
@@ -187,6 +194,108 @@ export function screen<
 // ---------------------------------------------------------------------------
 // Private
 // ---------------------------------------------------------------------------
+
+/**
+ * A scoped guard over async errors thrown while a screen is mounted.
+ *
+ * @private
+ */
+interface AsyncErrorGuard {
+  /**
+   * Rejects with the first async error captured during the render window.
+   */
+  readonly signal: Promise<never>
+
+  /**
+   * Restores the suspended global crash handlers.
+   */
+  readonly dispose: () => void
+}
+
+/**
+ * A process error event whose global handlers the screen runtime suspends.
+ *
+ * @private
+ */
+type ProcessErrorEvent = 'unhandledRejection' | 'uncaughtException'
+
+/**
+ * A process-level error listener for `unhandledRejection` / `uncaughtException`.
+ *
+ * @private
+ */
+type ProcessErrorListener = (...args: unknown[]) => void
+
+/**
+ * Suspend the pre-existing global crash handlers and capture the first async
+ * error thrown while a screen is mounted.
+ *
+ * Ink resolves `waitUntilExit()` on unmount even when an async `useEffect`
+ * callback rejects, so those rejections never reach the runtime's error
+ * channel. Worse, the global `unhandledRejection` handler (registered by the
+ * crash reporter) fires first and calls `process.exit(1)` before the screen can
+ * leave the alternate buffer — erasing the message in fullscreen mode. This
+ * guard takes ownership of async error handling for the render window: it
+ * removes only the listeners it captured, prepends its own that reject
+ * {@link AsyncErrorGuard.signal} with the first error and unmount the screen,
+ * and restores exactly those captured listeners via
+ * {@link AsyncErrorGuard.dispose}. Foreign listeners (and those from an
+ * overlapping guard) are left untouched, so nesting and concurrency are safe.
+ *
+ * @private
+ * @param instance - The Ink render instance to unmount when an error is caught.
+ * @returns A guard exposing a rejection signal and a dispose function.
+ */
+function createAsyncErrorGuard(instance: Instance): AsyncErrorGuard {
+  const { promise, reject } = Promise.withResolvers<never>()
+  const onError = (error: unknown): void => {
+    // Settle the signal first, then unmount. Ink's unmount runs user effect teardown;
+    // If that throws, the rejection is already registered so renderFn never strands.
+    // Any unmount failure is swallowed rather than allowed to escape the listener.
+    reject(toError(error))
+    attempt(() => instance.unmount())
+  }
+
+  const restoreRejection = suspendListeners('unhandledRejection')
+  const restoreException = suspendListeners('uncaughtException')
+  process.prependListener('unhandledRejection', onError)
+  process.prependListener('uncaughtException', onError)
+
+  const dispose = (): void => {
+    process.removeListener('unhandledRejection', onError)
+    process.removeListener('uncaughtException', onError)
+    restoreRejection()
+    restoreException()
+  }
+
+  return { dispose, signal: promise }
+}
+
+/**
+ * Remove a process error event's current listeners and return a function that
+ * re-attaches exactly those listeners, in their original order.
+ *
+ * Only the listeners present when this is called are touched, so listeners
+ * registered by unrelated code (or an overlapping guard) during the render
+ * window survive.
+ *
+ * @private
+ * @param event - The process error event to suspend.
+ * @returns A restore function that re-attaches the captured listeners.
+ */
+function suspendListeners(event: ProcessErrorEvent): () => void {
+  const captured = process.listeners(event) as unknown as readonly ProcessErrorListener[]
+  captured.reduce<null>((_acc, listener) => {
+    process.removeListener(event, listener)
+    return null
+  }, null)
+  return () => {
+    captured.reduce<null>((_acc, listener) => {
+      process.on(event, listener)
+      return null
+    }, null)
+  }
+}
 
 /**
  * Keys stripped from the screen context (no screen-safe equivalent).
