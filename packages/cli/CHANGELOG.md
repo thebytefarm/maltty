@@ -1,5 +1,15 @@
 # maltty
 
+## 1.0.0-rc.2
+
+### Patch Changes
+
+- Updated dependencies [9a6bdc8]
+  - maltty@1.0.0-rc.2
+  - @maltty/bundler@1.0.0-rc.2
+  - @maltty/config@1.0.0-rc.2
+  - @maltty/utils@1.0.0-rc.2
+
 ## 1.0.0-rc.1
 
 ### Patch Changes

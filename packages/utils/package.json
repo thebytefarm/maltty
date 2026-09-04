@@ -1,6 +1,6 @@
 {
   "name": "@maltty/utils",
-  "version": "1.0.0-rc.1",
+  "version": "1.0.0-rc.2",
   "description": "Shared utilities for the maltty ecosystem",
   "keywords": [
     "cli",
