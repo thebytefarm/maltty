@@ -37,7 +37,7 @@
     "validate": "turbo run typecheck --filter='./packages/*' && turbo run test --filter='./packages/*' && pnpm lint && pnpm format",
     "changeset": "changeset",
     "version": "changeset version",
-    "release": "pnpm build && changeset publish",
+    "release": "pnpm build && changeset publish --tag latest",
     "release:initial": "bash scripts/release-initial.sh"
   },
   "devDependencies": {
