@@ -1,5 +1,11 @@
 # @maltty/config
 
+## 1.0.0-rc.2
+
+### Patch Changes
+
+- @maltty/utils@1.0.0-rc.2
+
 ## 1.0.0-rc.1
 
 ### Patch Changes

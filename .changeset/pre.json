@@ -19,6 +19,7 @@
     "fix-zod-v4-schema-detection",
     "kebab-case-schema-keys",
     "kidd-to-maltty-rename",
+    "release-lockstep-versions-and-tags",
     "upgrade-deps-2026-07-28",
     "upgrade-deps-latest"
   ]
