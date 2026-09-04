@@ -51,17 +51,20 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_CONFIG_PROVENANCE: true
 
-      # RCs are what users install today, so `pnpm release` passes
-      # `--tag latest` to publish every package straight onto `latest` over
-      # OIDC. That is deliberate: `maltty` has a non-prerelease `0.0.0` on the
-      # registry, so changesets would otherwise tag it `rc` (via preState.tag)
+      # npm dist-tags are NOT corrected here. `maltty` has a non-prerelease
+      # `0.0.0` on the registry, so changesets tags it `rc` (via preState.tag)
       # while tagging the prerelease-only `@maltty/*` packages `latest`,
       # splitting the group across two dist-tags on every release.
       #
-      # Only the GitHub release still needs fixing up: changesets marks it a
+      # Passing `--tag latest` to `changeset publish` does NOT fix this:
+      # `publish()` hard-errors with "Releasing under custom tag is not allowed
+      # in pre mode" before the tag is ever resolved. Unifying the tags means
+      # `npm dist-tag` after publish, which needs a real token -- OIDC trusted
+      # publishing only authenticates `npm publish`.
+      #
+      # Only the GitHub release is fixed up here: changesets marks it a
       # prerelease from the semver suffix, so `latest` stays on the older
-      # stable. npm dist-tags are NOT touched here — OIDC trusted publishing
-      # only authenticates `npm publish`, and the repo holds no npm token.
+      # stable. This runs on GITHUB_TOKEN and needs no npm credential.
       - name: Mark maltty release as GitHub Latest
         if: steps.changesets.outputs.published == 'true'
         env:
