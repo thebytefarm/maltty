@@ -1,0 +1,26 @@
+package.json
+  s_e2dbbae8b4d7b3::t_9ba804b1d82b3c 40
+.github/workflows/release.yml
+  s_e2dbbae8b4d7b3::t_4e6afcc71b08fe 54-65,72-76
+.changeset/config.json
+  s_e2dbbae8b4d7b3::t_7e657f8d620d29 5
+.changeset/release-lockstep-versions-and-tags.md
+  s_e2dbbae8b4d7b3::t_c8dbf5908c1df5 2
+  s_e2dbbae8b4d7b3::t_e868a31ef6363a 1,3-14
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.0",
+  "base_commit_sha": "0b0be1dc3e8d6755a43c55a4fd446b54debf22a4",
+  "prompts": {},
+  "sessions": {
+    "s_e2dbbae8b4d7b3": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "6449df7b-3c8f-4ba9-94d6-777d8be5b66a",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Zac Rosenbauer <me@zrosenbauer.com>"
+    }
+  }
+}
