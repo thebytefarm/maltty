@@ -1,5 +1,13 @@
 # maltty
 
+## 1.0.0-rc.3
+
+### Patch Changes
+
+- 0f5f594: Export the documented standalone `createConfigClient` API and its types from `maltty/config`.
+  - @maltty/config@1.0.0-rc.3
+  - @maltty/utils@1.0.0-rc.3
+
 ## 1.0.0-rc.2
 
 ### Patch Changes
