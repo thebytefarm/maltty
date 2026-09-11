@@ -156,3 +156,6 @@ vite.config.ts.timestamp-*
 .ciderpress/content
 .ciderpress/dist
 .ciderpress/cache
+
+# serena
+.serena
