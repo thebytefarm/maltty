@@ -1,6 +1,6 @@
 {
   "name": "maltty",
-  "version": "1.0.0-rc.2",
+  "version": "1.0.0-rc.3",
   "description": "An opinionated CLI framework for Node.js",
   "keywords": [
     "cli",
