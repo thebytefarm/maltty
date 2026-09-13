@@ -1,0 +1,59 @@
+packages/maltty/src/middleware/config/config.ts
+  s_e77ab197068dfb::t_994a430acdaa6e 3,11-15,89,92-94,122,124-125,134-143,150,153-155,157-158,160,164-165,167,198,201-204,206-208
+  s_e77ab197068dfb::t_f8a2c999e53747 88,90-91
+  s_e77ab197068dfb::t_f3856fc6216174 191,194-196
+  s_e77ab197068dfb::t_6d0fad3b2d107f 213,222,225
+packages/maltty/src/lib/config/client.test.ts
+  s_e77ab197068dfb::t_40fa830c65bb5d 341-353
+  s_e77ab197068dfb::t_3e6cfd1ed02655 158-166,183-191,358,414-420,426-435,437-441
+  s_e77ab197068dfb::t_5af28293482133 450-453
+  s_e77ab197068dfb::t_f8a2c999e53747 326,396-401,454-459,479-484,496-501
+  s_e77ab197068dfb::t_a7dc7c79723053 421-425
+  s_e77ab197068dfb::t_62afb28da789a5 192,320-325,327-340,354-357,359-395,402-413,436,442-449,460-478,485-495,502-508
+  s_e77ab197068dfb::t_24d6bcb340bd3d 193
+.changeset/tidy-planets-layer.md
+  s_e77ab197068dfb::t_62afb28da789a5 1-5
+packages/maltty/src/lib/config/types.ts
+  s_e77ab197068dfb::t_40fa830c65bb5d 49
+  s_e77ab197068dfb::t_f8a2c999e53747 29-33,50
+  s_e77ab197068dfb::t_adfe8c570a5523 14-28,34-42,54-74,84-91,118-122,124-125
+  s_e77ab197068dfb::t_5d6dfb7818def8 123
+packages/maltty/src/middleware/config/types.ts
+  s_e77ab197068dfb::t_4c86e805318659 3
+  s_e77ab197068dfb::t_8f51a734a6a9b7 17-23
+  s_e77ab197068dfb::t_adfe8c570a5523 6
+packages/maltty/src/middleware/config/index.ts
+  s_e77ab197068dfb::t_f8a2c999e53747 9
+  s_e77ab197068dfb::t_adfe8c570a5523 6,8,10-13,16
+packages/maltty/src/lib/config/index.ts
+  s_e77ab197068dfb::t_f8a2c999e53747 6
+  s_e77ab197068dfb::t_adfe8c570a5523 3,5,7-10,13
+packages/maltty/src/lib/config/client.ts
+  s_e77ab197068dfb::t_6d0fad3b2d107f 35-44,139-142,174,222,242,323
+  s_e77ab197068dfb::t_f8a2c999e53747 67
+  s_e77ab197068dfb::t_5af28293482133 188,337-338
+  s_e77ab197068dfb::t_bf2d365a9a4400 223-240,262
+  s_e77ab197068dfb::t_10d0a3d13c8441 285-287,294-296
+  s_e77ab197068dfb::t_3e6cfd1ed02655 5,53-56,136,173,291-293,297-299
+  s_e77ab197068dfb::t_d080c1f4cbf4cc 14-17,20,143,151,189-197,199-208,210-221,252-261,263-284,288-290,300-322,324-336,339-350
+  s_e77ab197068dfb::t_40fa830c65bb5d 2,64-66,69,209
+  s_e77ab197068dfb::t_5cbec55130282b 63,68
+  s_e77ab197068dfb::t_d8b856e53ed9c9 34
+  s_e77ab197068dfb::t_db91eafd28f810 351
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "084f3b8a9d5e3f23238382466da75a8baf7cbcda",
+  "prompts": {},
+  "sessions": {
+    "s_e77ab197068dfb": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_f67148dfdffew54YTu31JksMIf",
+        "model": "gpt-5.6-sol"
+      },
+      "human_author": "Zac Rosenbauer <me@zrosenbauer.com>"
+    }
+  }
+}
