@@ -155,6 +155,15 @@ describe('config', () => {
 
       expect(result).toBe(join(searchDir, 'myapp.json'))
     })
+
+    it('should find config from the factory cwd by default', async () => {
+      writeFileSync(join(tmpDir, 'myapp.config.json'), JSON.stringify(validConfig))
+      const client = createConfigClient({ cwd: tmpDir, name: 'myapp', schema })
+
+      const result = await client.find()
+
+      expect(result).toBe(join(tmpDir, 'myapp.config.json'))
+    })
   })
 
   describe('load', () => {
@@ -169,6 +178,17 @@ describe('config', () => {
       expect(result!.config).toStrictEqual(validConfig)
       expect(result!.filePath).toBe(join(tmpDir, 'myapp.config.json'))
       expect(result!.format).toBe('json')
+    })
+
+    it('should load config from the factory cwd by default', async () => {
+      writeFileSync(join(tmpDir, 'myapp.config.json'), JSON.stringify(validConfig))
+      const client = createConfigClient({ cwd: tmpDir, name: 'myapp', schema })
+
+      const [error, result] = await client.load()
+
+      expect(error).toBeNull()
+      expect(result?.config).toStrictEqual(validConfig)
+      expect(result?.filePath).toBe(join(tmpDir, 'myapp.config.json'))
     })
 
     it('should load and validate JSONC config via long form', async () => {
@@ -296,6 +316,195 @@ features:
       expect(result).not.toBeNull()
       expect(result!.config).toStrictEqual(validConfig)
       expect((result!.config as Record<string, unknown>)['extraField']).toBeUndefined()
+    })
+
+    it('should load a named layer from factory directories', async () => {
+      const projectDir = join(tmpDir, 'project')
+      mkdirSync(projectDir, { recursive: true })
+      writeFileSync(join(projectDir, 'myapp.config.json'), JSON.stringify(validConfig))
+      const client = createConfigClient({
+        cwd: projectDir,
+        dirs: {
+          global: join(tmpDir, 'global'),
+          local: join(tmpDir, 'local'),
+        },
+        name: 'myapp',
+        schema,
+      })
+
+      const [error, result] = await client.load({ layer: 'project' })
+
+      expect(error).toBeNull()
+      expect(result?.config).toStrictEqual(validConfig)
+      expect(result?.filePath).toBe(join(projectDir, 'myapp.config.json'))
+    })
+
+    it('should derive project and local layers from cwd', async () => {
+      const localDir = join(tmpDir, '.myapp')
+      mkdirSync(localDir, { recursive: true })
+      writeFileSync(join(localDir, 'myapp.config.json'), JSON.stringify(validConfig))
+      const client = createConfigClient({ cwd: tmpDir, name: 'myapp', schema })
+
+      const [error, result] = await client.load({ layer: 'local' })
+
+      expect(error).toBeNull()
+      expect(result?.config).toStrictEqual(validConfig)
+      expect(result?.filePath).toBe(join(localDir, 'myapp.config.json'))
+    })
+  })
+
+  describe('layered load', () => {
+    const layeredSchema = z.object({
+      items: z.array(z.string()).optional(),
+      name: z.string(),
+      nested: z.object({
+        globalOnly: z.string().optional(),
+        localOnly: z.string().optional(),
+        projectOnly: z.string().optional(),
+        shared: z.string(),
+      }),
+    })
+
+    function createLayerDirs(): {
+      readonly global: string
+      readonly project: string
+      readonly local: string
+    } {
+      const dirs = {
+        global: join(tmpDir, 'global'),
+        project: join(tmpDir, 'project'),
+        local: join(tmpDir, 'local'),
+      }
+      Object.values(dirs).map((dir) => mkdirSync(dir, { recursive: true }))
+      return dirs
+    }
+
+    it('should deep merge all layers with local precedence', async () => {
+      const dirs = createLayerDirs()
+      writeFileSync(
+        join(dirs.global, 'myapp.config.json'),
+        JSON.stringify({ name: 'global', nested: { globalOnly: 'global', shared: 'global' } })
+      )
+      writeFileSync(
+        join(dirs.project, 'myapp.config.json'),
+        JSON.stringify({ name: 'project', nested: { projectOnly: 'project', shared: 'project' } })
+      )
+      writeFileSync(
+        join(dirs.local, 'myapp.config.json'),
+        JSON.stringify({ name: 'local', nested: { localOnly: 'local', shared: 'local' } })
+      )
+      const client = createConfigClient({
+        cwd: dirs.project,
+        dirs: { global: dirs.global, local: dirs.local },
+        name: 'myapp',
+        schema: layeredSchema,
+      })
+
+      const [error, result] = await client.load({ layers: true })
+
+      expect(error).toBeNull()
+      expect(result?.config).toStrictEqual({
+        name: 'local',
+        nested: {
+          globalOnly: 'global',
+          localOnly: 'local',
+          projectOnly: 'project',
+          shared: 'local',
+        },
+      })
+    })
+
+    it('should replace arrays with the higher-precedence layer', async () => {
+      const dirs = createLayerDirs()
+      writeFileSync(
+        join(dirs.global, 'myapp.config.json'),
+        JSON.stringify({
+          items: ['global-a', 'global-b'],
+          name: 'global',
+          nested: { shared: 'global' },
+        })
+      )
+      writeFileSync(
+        join(dirs.local, 'myapp.config.json'),
+        JSON.stringify({ items: ['local'], name: 'local', nested: { shared: 'local' } })
+      )
+      const client = createConfigClient({
+        cwd: dirs.project,
+        dirs: { global: dirs.global, local: dirs.local },
+        name: 'myapp',
+        schema: layeredSchema,
+      })
+
+      const [error, result] = await client.load({ layers: true })
+
+      expect(error).toBeNull()
+      expect(result?.config.items).toStrictEqual(['local'])
+    })
+
+    it('should preserve per-layer provenance and missing layer metadata', async () => {
+      const dirs = createLayerDirs()
+      const projectConfig = {
+        name: 'project',
+        nested: { projectOnly: 'project', shared: 'project' },
+      }
+      writeFileSync(
+        join(dirs.project, 'myapp.config.yaml'),
+        'name: project\nnested:\n  shared: project\n  projectOnly: project\n'
+      )
+      const client = createConfigClient({
+        cwd: dirs.project,
+        dirs: { global: dirs.global, local: dirs.local },
+        name: 'myapp',
+        schema: layeredSchema,
+      })
+
+      const [error, result] = await client.load({ layers: true })
+
+      expect(error).toBeNull()
+      expect(result?.layers).toStrictEqual([
+        { config: null, filePath: null, format: null, name: 'global' },
+        {
+          config: projectConfig,
+          filePath: join(dirs.project, 'myapp.config.yaml'),
+          format: 'yaml',
+          name: 'project',
+        },
+        { config: null, filePath: null, format: null, name: 'local' },
+      ])
+    })
+
+    it('should apply schema defaults when all layers are missing', async () => {
+      const dirs = createLayerDirs()
+      const defaultSchema = z.object({ port: z.number().default(3000) })
+      const client = createConfigClient({
+        cwd: dirs.project,
+        dirs: { global: dirs.global, local: dirs.local },
+        name: 'myapp',
+        schema: defaultSchema,
+      })
+
+      const [error, result] = await client.load({ layers: true })
+
+      expect(error).toBeNull()
+      expect(result?.config).toStrictEqual({ port: 3000 })
+    })
+
+    it('should include the invalid layer file path in validation errors', async () => {
+      const dirs = createLayerDirs()
+      const localPath = join(dirs.local, 'myapp.config.json')
+      writeFileSync(localPath, JSON.stringify({ name: 42, nested: { shared: 'local' } }))
+      const client = createConfigClient({
+        cwd: dirs.project,
+        dirs: { global: dirs.global, local: dirs.local },
+        name: 'myapp',
+        schema: layeredSchema,
+      })
+
+      const [error, result] = await client.load({ layers: true })
+
+      expect(result).toBeNull()
+      expect(error?.message).toContain(localPath)
+      expect(error?.message).toContain('name')
     })
   })
 

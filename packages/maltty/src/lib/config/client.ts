@@ -1,7 +1,8 @@
 import { mkdir, writeFile } from 'node:fs/promises'
+import { homedir } from 'node:os'
 import { dirname, extname, isAbsolute, join } from 'node:path'
 
-import { attemptAsync, err, match, ok } from '@maltty/utils/fp'
+import { P, attemptAsync, err, isPlainObject, match, mergeWith, ok } from '@maltty/utils/fp'
 import { validate } from '@maltty/utils/validate'
 import { loadConfig as c12LoadConfig } from 'c12'
 import type { ZodTypeAny, output } from 'zod'
@@ -10,8 +11,13 @@ import { CONFIG_DATA_EXTENSIONS } from './constants.js'
 import { getExtension, getFormat, serializeContent } from './serialize.js'
 import type {
   ConfigClient,
+  ConfigClientLoadOptions,
+  ConfigLayer,
+  ConfigLayeredLoadOptions,
+  ConfigLayeredLoadResult,
   ConfigLoadOptions,
   ConfigLoadResult,
+  ConfigNamedLayerLoadOptions,
   ConfigOperationResult,
   ConfigWriteOptions,
   ConfigWriteResult,
@@ -26,6 +32,17 @@ interface C12Result {
 }
 
 /**
+ * Parameters for config resolution with an optional exact-directory resolver.
+ */
+interface LoadConfigParams {
+  readonly cwd: string
+  readonly resolver?: (
+    cwd: string,
+    configFile: string
+  ) => Promise<ConfigOperationResult<C12Result | null>>
+}
+
+/**
  * Create a typed config client that loads, validates, and writes config files.
  *
  * Uses c12 to resolve config files in two passes:
@@ -33,13 +50,23 @@ interface C12Result {
  * 1. `name.config.*` — all formats (TS, JS, JSON, JSONC, YAML, TOML)
  * 2. `name.*` — data formats only (JSON, JSONC, YAML, TOML)
  *
- * @param options - Config client options including name and Zod schema.
+ * `cwd` is the exact project-layer directory. Global and local directories
+ * default to `~/.name` and `cwd/.name`, respectively, and can be overridden.
+ *
+ * @param options - Config name, schema, project directory, layer overrides, and search paths.
  * @returns A {@link ConfigClient} client instance.
  */
 export function createConfigClient<TSchema extends ZodTypeAny>(
   options: ConfigLoadOptions<TSchema>
 ): ConfigClient<output<TSchema>> {
   const { name, schema, searchPaths } = options
+  const rootDir = options.cwd ?? process.cwd()
+  const defaultDirName = `.${name}`
+  const dirs = {
+    global: options.dirs?.global ?? join(homedir(), defaultDirName),
+    project: rootDir,
+    local: options.dirs?.local ?? join(rootDir, defaultDirName),
+  }
 
   /**
    * Resolve a config file via c12 for a single directory.
@@ -106,11 +133,14 @@ export function createConfigClient<TSchema extends ZodTypeAny>(
    * Second pass: `name.*` (data formats only — no TS/JS).
    *
    * @private
-   * @param cwd - Working directory to search from.
+   * @param params - Directory and optional resolver used for both naming passes.
    * @returns The c12 result, or null if nothing was found.
    */
-  async function loadConfig(cwd: string): Promise<ConfigOperationResult<C12Result | null>> {
-    const [longError, longForm] = await resolveConfig(cwd, `${name}.config`)
+  async function loadConfig({
+    cwd,
+    resolver = resolveConfig,
+  }: LoadConfigParams): Promise<ConfigOperationResult<C12Result | null>> {
+    const [longError, longForm] = await resolver(cwd, `${name}.config`)
     if (longError) {
       return err(longError)
     }
@@ -118,7 +148,7 @@ export function createConfigClient<TSchema extends ZodTypeAny>(
       return ok(longForm)
     }
 
-    const [shortError, shortForm] = await resolveConfig(cwd, name)
+    const [shortError, shortForm] = await resolver(cwd, name)
     if (shortError) {
       return err(shortError)
     }
@@ -140,8 +170,8 @@ export function createConfigClient<TSchema extends ZodTypeAny>(
    * @returns The path to the config file, or null if not found.
    */
   async function find(cwd?: string): Promise<string | null> {
-    const resolvedCwd = cwd ?? process.cwd()
-    const [, result] = await loadConfig(resolvedCwd)
+    const resolvedCwd = cwd ?? dirs.project
+    const [, result] = await loadConfig({ cwd: resolvedCwd })
     if (result && hasResolvedConfigFile(result.configFile)) {
       return result.configFile
     }
@@ -155,11 +185,41 @@ export function createConfigClient<TSchema extends ZodTypeAny>(
    * @param cwd - Working directory to search from.
    * @returns A ConfigOperationResult with the loaded config, or null if not found.
    */
+  async function load(): Promise<ConfigOperationResult<ConfigLoadResult<output<TSchema>> | null>>
   async function load(
-    cwd?: string
+    cwd: string
+  ): Promise<ConfigOperationResult<ConfigLoadResult<output<TSchema>> | null>>
+  async function load(
+    loadOptions: ConfigLayeredLoadOptions
+  ): Promise<ConfigOperationResult<ConfigLayeredLoadResult<output<TSchema>>>>
+  async function load(
+    loadOptions: ConfigNamedLayerLoadOptions
+  ): Promise<ConfigOperationResult<ConfigLoadResult<output<TSchema>> | null>>
+  async function load(
+    cwdOrOptions?: string | ConfigClientLoadOptions
+  ): Promise<
+    ConfigOperationResult<
+      ConfigLayeredLoadResult<output<TSchema>> | ConfigLoadResult<output<TSchema>> | null
+    >
+  > {
+    return match(cwdOrOptions)
+      .with(P.string, loadFromDir)
+      .with({ layers: true }, loadLayers)
+      .with({ layer: P.union('global', 'project', 'local') }, ({ layer }) => loadNamedLayer(layer))
+      .otherwise(() => loadFromDir(dirs.project))
+  }
+
+  /**
+   * Load and validate one exact directory.
+   *
+   * @private
+   * @param cwd - Directory containing the config file.
+   * @returns The loaded config, or null when no file exists.
+   */
+  async function loadFromDir(
+    cwd: string
   ): Promise<ConfigOperationResult<ConfigLoadResult<output<TSchema>> | null>> {
-    const resolvedCwd = cwd ?? process.cwd()
-    const [loadError, result] = await loadConfig(resolvedCwd)
+    const [loadError, result] = await loadConfig({ cwd })
     if (loadError) {
       return err(loadError)
     }
@@ -167,6 +227,126 @@ export function createConfigClient<TSchema extends ZodTypeAny>(
       return ok(null)
     }
     return validateAndReturn(result.config, result.configFile)
+  }
+
+  /**
+   * Load and validate one directory without applying configured search paths.
+   *
+   * @private
+   * @param cwd - Exact directory containing the config file.
+   * @returns The loaded config, or null when no file exists.
+   */
+  async function loadExactDir(
+    cwd: string
+  ): Promise<ConfigOperationResult<ConfigLoadResult<output<TSchema>> | null>> {
+    const [loadError, result] = await loadConfig({ cwd, resolver: resolveFromDir })
+    if (loadError) {
+      return err(loadError)
+    }
+    if (!result || !hasResolvedConfigFile(result.configFile)) {
+      return ok(null)
+    }
+    return validateAndReturn(result.config, result.configFile)
+  }
+
+  /**
+   * Load and validate one named layer from the configured directories.
+   *
+   * @private
+   * @param layerName - Layer to load.
+   * @returns The loaded config, or null when no file exists.
+   */
+  async function loadNamedLayer(
+    layerName: ConfigNamedLayerLoadOptions['layer']
+  ): Promise<ConfigOperationResult<ConfigLoadResult<output<TSchema>> | null>> {
+    return loadExactDir(dirs[layerName])
+  }
+
+  /**
+   * Load, validate, and merge all configured layers.
+   *
+   * @private
+   * @returns The merged config and per-layer provenance.
+   */
+  async function loadLayers(): Promise<
+    ConfigOperationResult<ConfigLayeredLoadResult<output<TSchema>>>
+  > {
+    const layerEntries = [
+      { dir: dirs.global, name: 'global' },
+      { dir: dirs.project, name: 'project' },
+      { dir: dirs.local, name: 'local' },
+    ] as const
+    const layerResults = await Promise.all(layerEntries.map(loadLayer))
+    const firstError = layerResults.find(([layerError]) => layerError !== null)
+    if (firstError) {
+      return err(firstError[0])
+    }
+
+    const layers = layerResults
+      .map(([, layer]) => layer)
+      .filter((layer): layer is ConfigLayer => layer !== null)
+    const mergedConfig = layers
+      .filter((layer) => layer.config !== null)
+      .map((layer) => layer.config as Record<string, unknown>)
+      .reduce(
+        (mergedResult, layerConfig) =>
+          mergeWith(mergedResult, layerConfig, (_targetValue, sourceValue) =>
+            match(sourceValue)
+              .with(P.array(), (value) => value)
+              .otherwise(() => undefined)
+          ),
+        {}
+      )
+    const [validationError, validated] = validate({
+      schema,
+      params: mergedConfig,
+      createError: ({ message }) => new Error(`Invalid merged config:\n${message}`),
+    })
+    if (validationError) {
+      return err(validationError)
+    }
+
+    return ok({ config: validated, layers })
+  }
+
+  /**
+   * Load one raw layer while validating its file against the client schema.
+   *
+   * @private
+   * @param entry - Layer name and exact directory.
+   * @returns The layer provenance or a load error.
+   */
+  async function loadLayer(entry: {
+    readonly dir: string
+    readonly name: ConfigLayer['name']
+  }): Promise<ConfigOperationResult<ConfigLayer>> {
+    const [loadError, result] = await loadConfig({ cwd: entry.dir, resolver: resolveFromDir })
+    if (loadError) {
+      return err(loadError)
+    }
+    if (!result || !hasResolvedConfigFile(result.configFile)) {
+      return ok({ config: null, filePath: null, format: null, name: entry.name })
+    }
+    if (!isPlainObject(result.config)) {
+      return err(`Invalid config in ${result.configFile}: expected an object`)
+    }
+
+    const [validationError] = validate({
+      schema,
+      params: result.config,
+      createError: ({ message }) =>
+        new Error(`Invalid config in ${result.configFile}:\n${message}`),
+    })
+    if (validationError) {
+      return err(validationError)
+    }
+
+    return ok({
+      config: result.config as Record<string, unknown>,
+      filePath: result.configFile,
+      format: getFormat(result.configFile),
+      name: entry.name,
+    })
   }
 
   /**
