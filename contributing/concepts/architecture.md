@@ -269,6 +269,7 @@ The `autoload()` function discovers command files from a directory:
 
 ```
 commands/
+├── index.ts            -> { $0: Command } with `default: true`
 ├── deploy.ts           -> { deploy: Command }
 ├── status.ts           -> { status: Command }
 └── auth/
@@ -281,8 +282,11 @@ commands/
 
 - Files must export a default `Command` (created via `command()`)
 - Extensions: `.ts` or `.js` (not `.d.ts`)
-- Ignored: files starting with `_` or `.`, files named `index`
+- Ignored: files starting with `_` or `.`
 - Subdirectories become parent commands; `index.ts` in a subdirectory becomes the parent handler
+- `index.ts` at the root becomes the default command, keyed by its explicit `name` when it has one and by the `$0` sigil otherwise
+
+`registerCommands()` turns `default: true` into a trailing `$0` alias on the yargs command spec, and strips the sigil back out of `ctx.meta.command`.
 
 ## Config System
 

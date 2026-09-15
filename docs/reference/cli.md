@@ -141,7 +141,7 @@ declare module 'maltty' {
 
 ### `maltty commands`
 
-Display the command tree for a maltty CLI project. Scans the configured commands directory and prints an ASCII tree of all discovered commands and subcommands.
+Display the command tree for a maltty CLI project. Scans the configured commands directory and prints an ASCII tree of all discovered commands and subcommands. The default command, if any, is annotated `(default)`.
 
 ```bash
 maltty commands
