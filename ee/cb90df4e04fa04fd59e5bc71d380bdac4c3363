@@ -1,0 +1,14 @@
+AGENTS.md
+  h_475ea7276ec9b8 195-196
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "eecb90df4e04fa04fd59e5bc71d380bdac4c3363",
+  "prompts": {},
+  "humans": {
+    "h_475ea7276ec9b8": {
+      "author": "Zac Rosenbauer <me@zrosenbauer.com>"
+    }
+  }
+}
