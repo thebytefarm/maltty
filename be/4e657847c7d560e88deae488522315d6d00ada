@@ -1,0 +1,58 @@
+packages/maltty/src/autoload.ts
+  s_0f9eb65832a4f8::t_1ea47e16adb0d3 61-88
+  s_0f9eb65832a4f8::t_f59933a4515b7b 10,20-25,32-39
+  s_0f9eb65832a4f8::t_d0f280ff543f91 60
+packages/maltty/src/runtime/register.test.ts
+  s_0f9eb65832a4f8::t_43c0a9ee4a66cb 567-731
+packages/cli/src/commands/commands.ts
+  s_0f9eb65832a4f8::t_c32e08750ddd36 253-274
+  s_0f9eb65832a4f8::t_2590cc6b1d9a86 106
+  s_0f9eb65832a4f8::t_571d081a112ccd 5
+  s_0f9eb65832a4f8::t_0f0f1d548175c3 252
+packages/cli/src/commands/commands.test.ts
+  s_0f9eb65832a4f8::t_db5fc7175d46d3 15
+docs/reference/command.md
+  s_0f9eb65832a4f8::t_6d381380b1d167 108-153
+  s_0f9eb65832a4f8::t_1ef25aaf16666a 34
+packages/maltty/src/command.ts
+  s_0f9eb65832a4f8::t_d2289fd674052c 53
+packages/maltty/src/runtime/register.ts
+  s_0f9eb65832a4f8::t_6c4d894376e8c1 7
+  s_0f9eb65832a4f8::t_6a6ece2b433d6b 151-157
+  s_0f9eb65832a4f8::t_a353e19a38e377 185-187
+  s_0f9eb65832a4f8::t_338a592fcd7161 202
+  s_0f9eb65832a4f8::t_12ff71a14f6d14 1-2
+  s_0f9eb65832a4f8::t_3b1483f08aeb35 49-55
+  s_0f9eb65832a4f8::t_90464e184dbdb1 126-131
+  s_0f9eb65832a4f8::t_5d81019ca94d6c 280-284,287,290-345,347-349
+packages/maltty/src/autoload.test.ts
+  s_0f9eb65832a4f8::t_a08ed1194d5cae 123,129-131,142-158,160-171,173-185
+  s_0f9eb65832a4f8::t_9264996f9b4a7d 159,172
+  s_0f9eb65832a4f8::t_b6330e2be07985 186
+.changeset/default-commands.md
+  s_0f9eb65832a4f8::t_5a2c88787ce3f4 1-13
+packages/maltty/src/constants.ts
+  s_0f9eb65832a4f8::t_c1820e2a2b646d 1-8
+packages/maltty/src/types/command.ts
+  s_0f9eb65832a4f8::t_3d1435b36360f9 184-195
+  s_0f9eb65832a4f8::t_02e09b109e0ae2 267
+  s_0f9eb65832a4f8::t_ff1b3c913054e7 183
+packages/maltty/src/index.ts
+  s_0f9eb65832a4f8::t_a12ec1a04c36c5 3
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "be4e657847c7d560e88deae488522315d6d00ada",
+  "prompts": {},
+  "sessions": {
+    "s_0f9eb65832a4f8": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "aea4917a-4670-4f7c-b025-ce2dc5be7ff6",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Zac Rosenbauer <me@zrosenbauer.com>"
+    }
+  }
+}
