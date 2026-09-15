@@ -1,4 +1,4 @@
-import type { BuildOptions, CompileOptions, CompileTarget, MalttyConfig } from '@maltty/config'
+import type { CompileTarget, MalttyConfig } from '@maltty/config'
 import type { ResultAsync, Result } from '@maltty/utils/fp'
 
 // Resolved config types (all fields required, paths absolute)
@@ -188,4 +188,4 @@ export interface ScanResult {
 
 // Re-exports from @maltty/config for convenience
 
-export type { BuildOptions, CompileOptions, CompileTarget, MalttyConfig }
+export type { BuildOptions, CompileOptions, CompileTarget, MalttyConfig } from '@maltty/config'

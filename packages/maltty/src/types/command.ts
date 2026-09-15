@@ -181,6 +181,19 @@ export interface CommandDef<
   readonly hidden?: Resolvable<boolean>
 
   /**
+   * When `true`, the command also runs when no subcommand is given — `mygrep --filter x`
+   * in addition to `mygrep search --filter x`. Both invocation forms stay available,
+   * and the command keeps its own name in `ctx.meta.command`.
+   *
+   * At most one command per level may be marked default. Positionals declared on a
+   * default command are matched against any leading token that is not a known
+   * subcommand name, so a subcommand name can never be passed as a positional value.
+   *
+   * Accepts a boolean or a function that returns a boolean, resolved at registration time.
+   */
+  readonly default?: Resolvable<boolean>
+
+  /**
    * Marks the command as deprecated. When set, yargs displays the command with
    * a deprecation notice in help output and prints a warning when invoked.
    * A string value is used as the deprecation message; `true` uses a default message.
@@ -251,6 +264,7 @@ export type Command<
     readonly aliases?: readonly string[]
     readonly description?: string
     readonly hidden?: boolean
+    readonly default?: boolean
     readonly deprecated?: string | boolean
     readonly options?: TOptionsDef
     readonly positionals?: TPositionalsDef

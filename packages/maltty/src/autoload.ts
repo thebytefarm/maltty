@@ -7,14 +7,20 @@ import { path as pathUtils } from '@maltty/utils/node'
 import { hasTag, withTag } from '@maltty/utils/tag'
 import { match } from 'ts-pattern'
 
+import { INDEX_COMMAND_NAME } from './constants.js'
 import { isDebug } from './lib/debug.js'
 import type { AutoloadOptions, Command, CommandMap } from './types/index.js'
 
 const VALID_EXTENSIONS = new Set(['.ts', '.js', '.mjs', '.tsx', '.jsx'])
-const INDEX_NAME = 'index'
 
 /**
  * Scan a directory for command files and produce a CommandMap.
+ *
+ * An `index` file at the root of the scanned directory becomes the CLI's default
+ * command — it runs when no subcommand matches. This mirrors how an `index` file
+ * inside a subdirectory becomes that group's parent command. The default command
+ * keeps its explicit `name` when it declares one, so both `mycli` and
+ * `mycli <name>` dispatch to it; otherwise it is reachable only as the default.
  *
  * @param options - Autoload configuration (directory override, etc.).
  * @returns A promise resolving to a CommandMap built from the directory tree.
@@ -22,7 +28,14 @@ const INDEX_NAME = 'index'
 export async function autoload(options?: AutoloadOptions): Promise<CommandMap> {
   const dir = resolveDir(options)
   const entries = await readdir(dir, { withFileTypes: true })
-  return resolveCommandMapFromEntries(dir, entries)
+  const commands = await resolveCommandMapFromEntries(dir, entries)
+  const defaultPair = await resolveRootDefaultCommand({ dir, entries })
+
+  if (!defaultPair) {
+    return commands
+  }
+
+  return Object.fromEntries(deduplicateCommandPairs([defaultPair, ...Object.entries(commands)]))
 }
 
 // ---------------------------------------------------------------------------
@@ -41,6 +54,35 @@ function resolveDir(options?: AutoloadOptions): string {
     return resolve(options.dir)
   }
   return resolve('./commands')
+}
+
+/**
+ * Resolve the root `index` file into a default command entry.
+ *
+ * The command is keyed by its explicit `name` when it declares one — keeping the
+ * named invocation form available alongside the default — and by the reserved
+ * index name otherwise, which registers it with no name of its own.
+ *
+ * @private
+ * @param params - The scanned directory and its pre-read entries.
+ * @returns A tuple of [name, Command] or undefined when there is no root index command.
+ */
+async function resolveRootDefaultCommand(params: {
+  readonly dir: string
+  readonly entries: Dirent[]
+}): Promise<[string, Command] | undefined> {
+  const { dir, entries } = params
+  const indexFile = findIndexInEntries(entries)
+  if (!indexFile) {
+    return undefined
+  }
+
+  const cmd = await importCommand(join(dir, indexFile.name))
+  if (!cmd) {
+    return undefined
+  }
+
+  return [cmd.name ?? INDEX_COMMAND_NAME, withTag({ ...cmd, default: true }, 'Command')]
 }
 
 /**
@@ -125,7 +167,7 @@ function findIndexInEntries(entries: Dirent[]): Dirent | undefined {
       !entry.name.endsWith('.d.ts') &&
       !entry.name.endsWith('.d.tsx') &&
       VALID_EXTENSIONS.has(extname(entry.name)) &&
-      basename(entry.name, extname(entry.name)) === INDEX_NAME
+      basename(entry.name, extname(entry.name)) === INDEX_COMMAND_NAME
   )
 }
 
@@ -211,7 +253,7 @@ function isCommandFile(entry: Dirent): boolean {
   if (!VALID_EXTENSIONS.has(extname(entry.name))) {
     return false
   }
-  return deriveCommandName(entry) !== INDEX_NAME
+  return deriveCommandName(entry) !== INDEX_COMMAND_NAME
 }
 
 /**

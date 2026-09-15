@@ -247,6 +247,7 @@ Commands are auto-discovered from a directory via `autoload()`:
 
 ```
 commands/
+├── index.ts            -> default command (runs when no subcommand matches)
 ├── deploy.ts           -> "deploy" command
 ├── status.ts           -> "status" command
 └── auth/
@@ -259,8 +260,11 @@ commands/
 
 - Files must have a default export created via `command()`
 - Extensions: `.ts` or `.js` (not `.d.ts`)
-- Ignored: files starting with `_` or `.`, files named `index` (used as parent handlers)
+- Ignored: files starting with `_` or `.`
+- Files named `index` are never keyed as `"index"` -- at the root they become the default command, inside a subdirectory they become that directory's parent handler
 - Subdirectories become parent commands with nested subcommands
+
+A root `index` command is keyed by its explicit `name` when it declares one -- keeping `mycli <name>` available alongside the bare form -- and stays keyed `index` otherwise, which registers it with no invocable name. See [default commands](../../docs/reference/command.md#default-commands).
 
 ## Error Flow
 

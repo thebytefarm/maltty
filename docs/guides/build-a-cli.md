@@ -165,7 +165,33 @@ const generate = command({
 })
 ```
 
-### 6. Autoload commands from a directory
+### 6. Add a default command
+
+Mark a command `default: true` so it runs when no subcommand is given. Both invocation forms stay available:
+
+```ts
+const search = command({
+  name: 'search',
+  default: true,
+  description: 'Search things',
+  positionals: z.object({ pattern: z.string().describe('Pattern to match').optional() }),
+  handler: async (ctx) => {
+    ctx.log.info(`Searching for ${ctx.args.pattern}`)
+  },
+})
+```
+
+```bash
+my-app needle           # runs search with pattern="needle"
+my-app search needle    # same thing
+my-app generate         # runs the generate command, not search
+```
+
+A registered command name always wins over the default command's positionals -- `my-app generate` can never pass `generate` as a `pattern`. Use the explicit form when you need that value.
+
+Only one command per level may be marked default. Note that adding a default command means a bare `my-app` runs that handler instead of printing help, so `help.header` no longer appears.
+
+### 7. Autoload commands from a directory
 
 Dynamically discover commands at runtime:
 
@@ -181,7 +207,18 @@ cli({
 })
 ```
 
-### 7. Add typed config
+An `index` file at the root of an autoloaded directory becomes that level's default command:
+
+```text
+commands/
+├── index.ts     # default -- runs on `my-app needle`
+├── generate.ts  # my-app generate
+└── status.ts    # my-app status
+```
+
+Give it a `name` to keep a named invocation form alongside the default; without one it is reachable only as the default.
+
+### 8. Add typed config
 
 Scaffold config setup with the CLI, or create the files manually.
 
@@ -264,7 +301,7 @@ const config = createConfigClient({ name: 'my-app', schema: MySchema })
 const [error, result] = await config.load()
 ```
 
-### 8. Use sub-exports
+### 9. Use sub-exports
 
 maltty exposes focused utilities through sub-exports.
 
@@ -299,7 +336,7 @@ const appDir = resolvePath({ dirName: '.my-app' })
 
 `findProjectRoot` returns `ProjectRoot | null` (with `path` and `isSubmodule` properties). `resolvePath` accepts `{ dirName, source?, startDir? }` and resolves to a local or global directory path.
 
-### 9. Define a screen command
+### 10. Define a screen command
 
 For interactive terminal UIs, use `screen()` instead of `command()`. Screen commands render a React component using Ink.
 

@@ -4,6 +4,7 @@ import { loadConfig } from '@maltty/config/utils'
 import { fs } from '@maltty/utils/node'
 import { autoload, command } from 'maltty'
 import type { Command as MalttyCommand, CommandContext } from 'maltty'
+import { match } from 'ts-pattern'
 
 import { extractConfig } from '../lib/config-helpers.js'
 
@@ -103,7 +104,7 @@ async function buildTree(
       return {
         children,
         description: cmd.description ?? '',
-        name,
+        name: formatName({ isDefault: cmd.default === true, name }),
       }
     })
   )
@@ -247,6 +248,22 @@ function resolveChildPrefix(isLast: boolean): string {
   }
 
   return '│   '
+}
+
+/**
+ * Format a command name for tree display, annotating the default command.
+ *
+ * The default command is annotated so the tree shows which one runs on a bare
+ * invocation.
+ *
+ * @private
+ * @param params - The command name and whether it runs when no subcommand matches.
+ * @returns The display name.
+ */
+function formatName(params: { readonly name: string; readonly isDefault: boolean }): string {
+  return match(params)
+    .with({ isDefault: true }, ({ name }) => `${name} (default)`)
+    .otherwise(({ name }) => name)
 }
 
 /**

@@ -50,6 +50,7 @@ export function command<
 >(def: CommandDef<TOptionsDef, TPositionalsDef, TMiddleware>): CommandType {
   const resolved = {
     ...def,
+    default: resolveValue(def.default),
     deprecated: resolveValue(def.deprecated),
     description: resolveValue(def.description),
     hidden: resolveValue(def.hidden),

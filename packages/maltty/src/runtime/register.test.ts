@@ -256,6 +256,7 @@ describe('hidden and deprecated commands', () => {
     }
 
     const resolved: ResolvedRef = { ref: undefined }
+    const errorRef: ErrorRef = { error: undefined }
     const instance = yargs([])
 
     const registeredDescriptions: (string | false)[] = []
@@ -269,6 +270,7 @@ describe('hidden and deprecated commands', () => {
 
     registerCommands({
       commands,
+      errorRef,
       instance,
       parentPath: [],
       resolved,
@@ -283,6 +285,7 @@ describe('hidden and deprecated commands', () => {
     }
 
     const resolved: ResolvedRef = { ref: undefined }
+    const errorRef: ErrorRef = { error: undefined }
     const instance = yargs([])
 
     const registeredDescriptions: (string | false)[] = []
@@ -296,6 +299,7 @@ describe('hidden and deprecated commands', () => {
 
     registerCommands({
       commands,
+      errorRef,
       instance,
       parentPath: [],
       resolved,
@@ -310,6 +314,7 @@ describe('hidden and deprecated commands', () => {
     }
 
     const resolved: ResolvedRef = { ref: undefined }
+    const errorRef: ErrorRef = { error: undefined }
     const instance = yargs([])
 
     const registeredDeprecated: (string | boolean | undefined)[] = []
@@ -331,6 +336,7 @@ describe('hidden and deprecated commands', () => {
 
     registerCommands({
       commands,
+      errorRef,
       instance,
       parentPath: [],
       resolved,
@@ -561,6 +567,214 @@ describe('positional argument support', () => {
           name: 'world',
         }),
       })
+    )
+  })
+})
+
+describe('default commands', () => {
+  it('should run a default command when no subcommand is given', async () => {
+    const handler = vi.fn()
+    const commands: CommandMap = {
+      config: command({ description: 'Config stuff', handler: vi.fn() }),
+      search: command({
+        default: true,
+        description: 'Search things',
+        handler,
+        options: z.object({ filter: z.string().optional() }),
+      }),
+    }
+
+    setArgv('--filter', 'x')
+    await runTestCli({ commands, name: 'test-cli', version: '1.0.0' })
+
+    expect(handler).toHaveBeenCalledTimes(1)
+    expect(handler).toHaveBeenCalledWith(
+      expect.objectContaining({
+        args: expect.objectContaining({ filter: 'x' }),
+        meta: expect.objectContaining({ command: ['search'] }),
+      })
+    )
+  })
+
+  it('should keep the named invocation form for a default command', async () => {
+    const handler = vi.fn()
+    const commands: CommandMap = {
+      search: command({
+        default: true,
+        description: 'Search things',
+        handler,
+        options: z.object({ filter: z.string().optional() }),
+      }),
+    }
+
+    setArgv('search', '--filter', 'x')
+    await runTestCli({ commands, name: 'test-cli', version: '1.0.0' })
+
+    expect(handler).toHaveBeenCalledTimes(1)
+    expect(handler).toHaveBeenCalledWith(
+      expect.objectContaining({
+        args: expect.objectContaining({ filter: 'x' }),
+        meta: expect.objectContaining({ command: ['search'] }),
+      })
+    )
+  })
+
+  it('should bind a leading non-command token to a default command positional', async () => {
+    const handler = vi.fn()
+    const commands: CommandMap = {
+      config: command({ description: 'Config stuff', handler: vi.fn() }),
+      search: command({
+        default: true,
+        description: 'Search things',
+        handler,
+        positionals: z.object({ pattern: z.string().optional() }),
+      }),
+    }
+
+    setArgv('needle')
+    await runTestCli({ commands, name: 'test-cli', version: '1.0.0' })
+
+    expect(handler).toHaveBeenCalledWith(
+      expect.objectContaining({ args: expect.objectContaining({ pattern: 'needle' }) })
+    )
+  })
+
+  it('should prefer a named command over the default command', async () => {
+    const defaultHandler = vi.fn()
+    const configHandler = vi.fn()
+    const commands: CommandMap = {
+      config: command({ description: 'Config stuff', handler: configHandler }),
+      search: command({
+        default: true,
+        description: 'Search things',
+        handler: defaultHandler,
+        positionals: z.object({ pattern: z.string().optional() }),
+      }),
+    }
+
+    setArgv('config')
+    await runTestCli({ commands, name: 'test-cli', version: '1.0.0' })
+
+    expect(configHandler).toHaveBeenCalledTimes(1)
+    expect(defaultHandler).not.toHaveBeenCalled()
+  })
+
+  it('should report an empty ctx.meta.command for a nameless default', async () => {
+    const handler = vi.fn()
+    const commands: CommandMap = {
+      index: command({ default: true, description: 'Search things', handler }),
+    }
+
+    setArgv()
+    await runTestCli({ commands, name: 'test-cli', version: '1.0.0' })
+
+    expect(handler).toHaveBeenCalledWith(
+      expect.objectContaining({ meta: expect.objectContaining({ command: [] }) })
+    )
+  })
+
+  it('should register a default command with $0 as a trailing alias', () => {
+    const commands: CommandMap = {
+      search: command({
+        aliases: ['find'],
+        default: true,
+        description: 'Search things',
+        positionals: z.object({ pattern: z.string() }),
+      }),
+    }
+
+    const resolved: ResolvedRef = { ref: undefined }
+    const errorRef: ErrorRef = { error: undefined }
+    const instance = yargs([])
+
+    const originalCommand = instance.command.bind(instance)
+    const commandSpy = vi
+      .spyOn(instance, 'command')
+      .mockImplementation((name: unknown, ...rest: unknown[]) =>
+        originalCommand(name as string, ...(rest as [string]))
+      )
+
+    registerCommands({ commands, errorRef, instance, parentPath: [], resolved })
+
+    expect(commandSpy.mock.calls.map(([name]) => name)).toStrictEqual([
+      ['search <pattern>', 'find', '$0'],
+    ])
+  })
+
+  it('should set errorRef when two commands are marked default', () => {
+    const commands: CommandMap = {
+      find: command({ default: true, description: 'Find things' }),
+      search: command({ default: true, description: 'Search things' }),
+    }
+
+    const resolved: ResolvedRef = { ref: undefined }
+    const errorRef: ErrorRef = { error: undefined }
+
+    registerCommands({ commands, errorRef, instance: yargs([]), parentPath: [], resolved })
+
+    expect(errorRef.error).toBeInstanceOf(Error)
+    expect(errorRef.error?.message).toContain('Multiple default commands')
+  })
+
+  it('should run a default subcommand inside a group', async () => {
+    const handler = vi.fn()
+    const commands: CommandMap = {
+      remote: command({
+        commands: {
+          add: command({ description: 'Add a remote', handler: vi.fn() }),
+          list: command({ default: true, description: 'List remotes', handler }),
+        },
+        description: 'Manage remotes',
+      }),
+    }
+
+    setArgv('remote')
+    await runTestCli({ commands, name: 'test-cli', version: '1.0.0' })
+
+    expect(handler).toHaveBeenCalledTimes(1)
+    expect(handler).toHaveBeenCalledWith(
+      expect.objectContaining({ meta: expect.objectContaining({ command: ['remote', 'list'] }) })
+    )
+  })
+})
+
+describe('default command edge cases', () => {
+  it('should omit the nameless default from a subcommand path', async () => {
+    const handler = vi.fn()
+    const commands: CommandMap = {
+      index: command({
+        commands: { tail: command({ description: 'Tail output', handler }) },
+        default: true,
+        description: 'Search things',
+      }),
+    }
+
+    setArgv('tail')
+    await runTestCli({ commands, name: 'test-cli', version: '1.0.0' })
+
+    expect(handler).toHaveBeenCalledWith(
+      expect.objectContaining({ meta: expect.objectContaining({ command: ['tail'] }) })
+    )
+  })
+
+  it('should accept a bare group invocation with a nameless default subcommand', async () => {
+    const handler = vi.fn()
+    const commands: CommandMap = {
+      remote: command({
+        commands: {
+          add: command({ description: 'Add a remote', handler: vi.fn() }),
+          index: command({ default: true, description: 'List remotes', handler }),
+        },
+        description: 'Manage remotes',
+      }),
+    }
+
+    setArgv('remote')
+    await runTestCli({ commands, name: 'test-cli', version: '1.0.0' })
+
+    expect(handler).toHaveBeenCalledTimes(1)
+    expect(handler).toHaveBeenCalledWith(
+      expect.objectContaining({ meta: expect.objectContaining({ command: ['remote'] }) })
     )
   })
 })
