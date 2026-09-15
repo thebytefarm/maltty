@@ -7,12 +7,11 @@ import { path as pathUtils } from '@maltty/utils/node'
 import { hasTag, withTag } from '@maltty/utils/tag'
 import { match } from 'ts-pattern'
 
-import { DEFAULT_COMMAND_NAME } from './constants.js'
+import { INDEX_COMMAND_NAME } from './constants.js'
 import { isDebug } from './lib/debug.js'
 import type { AutoloadOptions, Command, CommandMap } from './types/index.js'
 
 const VALID_EXTENSIONS = new Set(['.ts', '.js', '.mjs', '.tsx', '.jsx'])
-const INDEX_NAME = 'index'
 
 /**
  * Scan a directory for command files and produce a CommandMap.
@@ -61,8 +60,8 @@ function resolveDir(options?: AutoloadOptions): string {
  * Resolve the root `index` file into a default command entry.
  *
  * The command is keyed by its explicit `name` when it declares one — keeping the
- * named invocation form available alongside the default — and by the `$0` sigil
- * otherwise.
+ * named invocation form available alongside the default — and by the reserved
+ * index name otherwise, which registers it with no name of its own.
  *
  * @private
  * @param params - The scanned directory and its pre-read entries.
@@ -83,7 +82,7 @@ async function resolveRootDefaultCommand(params: {
     return undefined
   }
 
-  return [cmd.name ?? DEFAULT_COMMAND_NAME, withTag({ ...cmd, default: true }, 'Command')]
+  return [cmd.name ?? INDEX_COMMAND_NAME, withTag({ ...cmd, default: true }, 'Command')]
 }
 
 /**
@@ -168,7 +167,7 @@ function findIndexInEntries(entries: Dirent[]): Dirent | undefined {
       !entry.name.endsWith('.d.ts') &&
       !entry.name.endsWith('.d.tsx') &&
       VALID_EXTENSIONS.has(extname(entry.name)) &&
-      basename(entry.name, extname(entry.name)) === INDEX_NAME
+      basename(entry.name, extname(entry.name)) === INDEX_COMMAND_NAME
   )
 }
 
@@ -254,7 +253,7 @@ function isCommandFile(entry: Dirent): boolean {
   if (!VALID_EXTENSIONS.has(extname(entry.name))) {
     return false
   }
-  return deriveCommandName(entry) !== INDEX_NAME
+  return deriveCommandName(entry) !== INDEX_COMMAND_NAME
 }
 
 /**

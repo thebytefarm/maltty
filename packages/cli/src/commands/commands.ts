@@ -2,7 +2,7 @@ import { join } from 'node:path'
 
 import { loadConfig } from '@maltty/config/utils'
 import { fs } from '@maltty/utils/node'
-import { DEFAULT_COMMAND_NAME, autoload, command } from 'maltty'
+import { autoload, command } from 'maltty'
 import type { Command as MalttyCommand, CommandContext } from 'maltty'
 import { match } from 'ts-pattern'
 
@@ -253,8 +253,8 @@ function resolveChildPrefix(isLast: boolean): string {
 /**
  * Format a command name for tree display, annotating the default command.
  *
- * A nameless default command is keyed by the yargs `$0` sigil, which means
- * nothing to a reader, so it renders as `(default)` instead.
+ * The default command is annotated so the tree shows which one runs on a bare
+ * invocation.
  *
  * @private
  * @param params - The command name and whether it runs when no subcommand matches.
@@ -262,7 +262,6 @@ function resolveChildPrefix(isLast: boolean): string {
  */
 function formatName(params: { readonly name: string; readonly isDefault: boolean }): string {
   return match(params)
-    .with({ name: DEFAULT_COMMAND_NAME }, () => '(default)')
     .with({ isDefault: true }, ({ name }) => `${name} (default)`)
     .otherwise(({ name }) => name)
 }

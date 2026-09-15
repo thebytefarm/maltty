@@ -1,8 +1,7 @@
 /**
- * The yargs sigil that marks a command as the default command.
+ * Filename (and command-map key) reserved for a directory's index command.
  *
- * A command registered under this name (or carrying it as an alias) runs when
- * the CLI is invoked without a matching subcommand — `mygrep --filter x`
- * instead of `mygrep search --filter x`.
+ * At the root of a commands directory this is the CLI's default command, which
+ * has no name of its own. Inside a subdirectory it is that group's parent command.
  */
-export const DEFAULT_COMMAND_NAME = '$0'
+export const INDEX_COMMAND_NAME = 'index'

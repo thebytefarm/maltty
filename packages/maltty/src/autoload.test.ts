@@ -120,7 +120,7 @@ describe('autoload()', () => {
     expect(result).toStrictEqual({})
   })
 
-  it('should not key the root index.ts under "index"', async () => {
+  it('should not mark sibling commands as default', async () => {
     mockedReaddir.mockResolvedValue([
       makeDirent('index.ts', true),
       makeDirent('init.ts', true),
@@ -135,8 +135,8 @@ describe('autoload()', () => {
 
     const result = await autoload({ dir: '/tmp/commands' })
 
-    expect(result['index']).toBeUndefined()
     expect(hasTag(result['init'], 'Command')).toBeTruthy()
+    expect(result['init'].default).toBeUndefined()
   })
 
   it('should register the root index.ts as the default command', async () => {
@@ -154,9 +154,9 @@ describe('autoload()', () => {
 
     const result = await autoload({ dir: '/tmp/commands' })
 
-    expect(hasTag(result['$0'], 'Command')).toBeTruthy()
-    expect(result['$0'].description).toBe('Search things')
-    expect(result['$0'].default).toBeTruthy()
+    expect(hasTag(result['index'], 'Command')).toBeTruthy()
+    expect(result['index'].description).toBe('Search things')
+    expect(result['index'].default).toBeTruthy()
   })
 
   it('should key a named root index.ts under its explicit name', async () => {
@@ -168,7 +168,7 @@ describe('autoload()', () => {
 
     const result = await autoload({ dir: '/tmp/commands' })
 
-    expect(result['$0']).toBeUndefined()
+    expect(result['index']).toBeUndefined()
     expect(result['search'].default).toBeTruthy()
   })
 

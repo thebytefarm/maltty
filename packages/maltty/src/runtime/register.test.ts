@@ -256,6 +256,7 @@ describe('hidden and deprecated commands', () => {
     }
 
     const resolved: ResolvedRef = { ref: undefined }
+    const errorRef: ErrorRef = { error: undefined }
     const instance = yargs([])
 
     const registeredDescriptions: (string | false)[] = []
@@ -269,6 +270,7 @@ describe('hidden and deprecated commands', () => {
 
     registerCommands({
       commands,
+      errorRef,
       instance,
       parentPath: [],
       resolved,
@@ -283,6 +285,7 @@ describe('hidden and deprecated commands', () => {
     }
 
     const resolved: ResolvedRef = { ref: undefined }
+    const errorRef: ErrorRef = { error: undefined }
     const instance = yargs([])
 
     const registeredDescriptions: (string | false)[] = []
@@ -296,6 +299,7 @@ describe('hidden and deprecated commands', () => {
 
     registerCommands({
       commands,
+      errorRef,
       instance,
       parentPath: [],
       resolved,
@@ -310,6 +314,7 @@ describe('hidden and deprecated commands', () => {
     }
 
     const resolved: ResolvedRef = { ref: undefined }
+    const errorRef: ErrorRef = { error: undefined }
     const instance = yargs([])
 
     const registeredDeprecated: (string | boolean | undefined)[] = []
@@ -331,6 +336,7 @@ describe('hidden and deprecated commands', () => {
 
     registerCommands({
       commands,
+      errorRef,
       instance,
       parentPath: [],
       resolved,
@@ -653,10 +659,10 @@ describe('default commands', () => {
     expect(defaultHandler).not.toHaveBeenCalled()
   })
 
-  it('should omit the $0 sigil from ctx.meta.command for a nameless default', async () => {
+  it('should report an empty ctx.meta.command for a nameless default', async () => {
     const handler = vi.fn()
     const commands: CommandMap = {
-      $0: command({ description: 'Search things', handler }),
+      index: command({ default: true, description: 'Search things', handler }),
     }
 
     setArgv()
@@ -733,11 +739,12 @@ describe('default commands', () => {
 })
 
 describe('default command edge cases', () => {
-  it('should omit the $0 sigil from a subcommand of a nameless default', async () => {
+  it('should omit the nameless default from a subcommand path', async () => {
     const handler = vi.fn()
     const commands: CommandMap = {
-      $0: command({
+      index: command({
         commands: { tail: command({ description: 'Tail output', handler }) },
+        default: true,
         description: 'Search things',
       }),
     }
@@ -750,13 +757,13 @@ describe('default command edge cases', () => {
     )
   })
 
-  it('should accept a bare group invocation when a subcommand is keyed $0', async () => {
+  it('should accept a bare group invocation with a nameless default subcommand', async () => {
     const handler = vi.fn()
     const commands: CommandMap = {
       remote: command({
         commands: {
-          $0: command({ description: 'List remotes', handler }),
           add: command({ description: 'Add a remote', handler: vi.fn() }),
+          index: command({ default: true, description: 'List remotes', handler }),
         },
         description: 'Manage remotes',
       }),

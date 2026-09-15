@@ -4,7 +4,7 @@ import { hasTag } from '@maltty/utils/tag'
 import { match } from 'ts-pattern'
 import type { Argv } from 'yargs'
 
-import { DEFAULT_COMMAND_NAME } from '@/constants.js'
+import { INDEX_COMMAND_NAME } from '@/constants.js'
 import type { CommandContext } from '@/context/types.js'
 import type {
   ArgsDef,
@@ -91,6 +91,14 @@ export interface ErrorRef {
 // Private
 // ---------------------------------------------------------------------------
 
+/**
+ * The yargs sigil for a default command. Confined to this module — `default: true`
+ * is the only surface callers ever touch.
+ *
+ * @private
+ */
+const YARGS_DEFAULT_COMMAND = '$0'
+
 interface RegisterSingleCommandOptions {
   builder: Argv
   cmd: Command
@@ -122,12 +130,16 @@ interface RegisterCommandsOptions {
  */
 function registerSingleCommand(options: RegisterSingleCommandOptions): void {
   const { instance, name, cmd, resolved, parentPath, errorRef } = options
-  const commandString = formatCommandString(name, cmd.positionals)
+  const isNamelessDefault = cmd.default === true && name === INDEX_COMMAND_NAME
+  const commandString = formatCommandString(
+    resolveCommandName(name, isNamelessDefault),
+    cmd.positionals
+  )
   const commandSpec = formatCommandSpec({
     aliases: cmd.aliases,
     commandString,
     isDefault: cmd.default === true,
-    name,
+    isNamelessDefault,
   })
 
   const builder = (yargsBuilder: Argv): Argv => {
@@ -177,7 +189,7 @@ function registerSingleCommand(options: RegisterSingleCommandOptions): void {
           errorRef,
           instance: yargsBuilder,
           name: subName,
-          parentPath: formatCommandPath(parentPath, name),
+          parentPath: resolveCommandPath({ isNamelessDefault, name, parentPath }),
           resolved,
         })
       )
@@ -199,7 +211,7 @@ function registerSingleCommand(options: RegisterSingleCommandOptions): void {
     // The `as` casts are accepted exceptions — generic handler/middleware types
     // Cannot be narrowed further inside the yargs callback boundary.
     resolved.ref = {
-      commandPath: formatCommandPath(parentPath, name),
+      commandPath: resolveCommandPath({ isNamelessDefault, name, parentPath }),
       handler: cmd.handler as ((ctx: CommandContext) => Promise<void> | void) | undefined,
       middleware: (cmd.middleware ?? []) as Middleware[],
       options: cmd.options,
@@ -275,52 +287,72 @@ function formatPlaceholder(meta: PositionalMeta): string {
 }
 
 /**
+ * Resolve the name a command is registered under in yargs.
+ *
+ * A nameless default is registered under the yargs default sigil so it has no
+ * invocable name of its own.
+ *
+ * @private
+ * @param name - The resolved command name.
+ * @param isNamelessDefault - Whether the command is the default and has no name.
+ * @returns The yargs command name.
+ */
+function resolveCommandName(name: string, isNamelessDefault: boolean): string {
+  if (isNamelessDefault) {
+    return YARGS_DEFAULT_COMMAND
+  }
+  return name
+}
+
+/**
+ * Build the command path reported as `ctx.meta.command`.
+ *
+ * A nameless default contributes no segment, so neither it nor its subcommands
+ * expose an internal placeholder to user code.
+ *
+ * @private
+ * @param params - The parent path, command name, and nameless-default flag.
+ * @returns The command path segments.
+ */
+function resolveCommandPath(params: {
+  readonly isNamelessDefault: boolean
+  readonly name: string
+  readonly parentPath: readonly string[]
+}): string[] {
+  const { isNamelessDefault, name, parentPath } = params
+  if (isNamelessDefault) {
+    return [...parentPath]
+  }
+  return [...parentPath, name]
+}
+
+/**
  * Build the first argument to `yargs.command()`.
  *
  * Returns a plain string when the command has no aliases and is not the default,
  * otherwise a `[commandString, ...aliases]` array — both forms are accepted by yargs.
- * A default command gains `$0` as a trailing alias, which is how yargs marks the
- * command to run when no subcommand matches. A command already named `$0` is
- * default by virtue of its name and needs no extra alias.
+ * A named default command gains the yargs default sigil as a trailing alias so both
+ * invocation forms dispatch to it. A nameless default is already registered under the
+ * sigil as its command string and needs no extra alias.
  *
  * @private
- * @param params - The command string, its name, aliases, and default flag.
+ * @param params - The command string, its aliases, and its default flags.
  * @returns A string or string array suitable for `yargs.command()`.
  */
 function formatCommandSpec(params: {
   readonly aliases: readonly string[] | undefined
   readonly commandString: string
   readonly isDefault: boolean
-  readonly name: string
+  readonly isNamelessDefault: boolean
 }): string | string[] {
-  const { aliases, commandString, isDefault, name } = params
-  const needsDefaultAlias = isDefault && name !== DEFAULT_COMMAND_NAME
-  const allAliases = match(needsDefaultAlias)
-    .with(true, () => [...(aliases ?? []), DEFAULT_COMMAND_NAME])
+  const { aliases, commandString, isDefault, isNamelessDefault } = params
+  const allAliases = match(isDefault && !isNamelessDefault)
+    .with(true, () => [...(aliases ?? []), YARGS_DEFAULT_COMMAND])
     .otherwise(() => aliases ?? [])
 
   return match(allAliases.length)
     .with(0, () => commandString)
     .otherwise(() => [commandString, ...allAliases])
-}
-
-/**
- * Build the command path reported as `ctx.meta.command`.
- *
- * The `$0` sigil is an implementation detail of yargs default-command dispatch,
- * so a nameless default command reports its parent path rather than leaking `$0`
- * into user-facing context.
- *
- * @private
- * @param parentPath - The path segments of the enclosing command group.
- * @param name - The registered command name.
- * @returns The command path with any `$0` segment removed.
- */
-function formatCommandPath(parentPath: readonly string[], name: string): string[] {
-  if (name === DEFAULT_COMMAND_NAME) {
-    return [...parentPath]
-  }
-  return [...parentPath, name]
 }
 
 /**
@@ -336,9 +368,7 @@ function formatCommandPath(parentPath: readonly string[], name: string): string[
 function validateSingleDefault(
   entries: readonly (readonly [string, Command])[]
 ): Result<void, Error> {
-  const defaults = entries.filter(
-    ([name, cmd]) => cmd.default === true || name === DEFAULT_COMMAND_NAME
-  )
+  const defaults = entries.filter(([, cmd]) => cmd.default === true)
 
   if (defaults.length > 1) {
     return err(
