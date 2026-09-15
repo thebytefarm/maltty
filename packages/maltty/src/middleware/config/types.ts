@@ -17,7 +17,13 @@ export type { ConfigLayer, ConfigLayerName } from '@/lib/config/types.js'
 export type ConfigLoadCallOptions = (
   | ConfigClientLoadOptions
   | {
+      /**
+       * Named-layer selection is omitted for default project resolution.
+       */
       readonly layer?: never
+      /**
+       * Set to false or omit for default project resolution.
+       */
       readonly layers?: false
     }
 ) & {

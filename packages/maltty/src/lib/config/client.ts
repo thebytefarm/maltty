@@ -42,6 +42,14 @@ interface LoadConfigParams {
   ) => Promise<ConfigOperationResult<C12Result | null>>
 }
 
+type ConfigLoadOperationResult<TConfig> = ConfigOperationResult<ConfigLoadResult<TConfig> | null>
+type ConfigLayeredLoadOperationResult<TConfig> = ConfigOperationResult<
+  ConfigLayeredLoadResult<TConfig>
+>
+type ConfigAnyLoadOperationResult<TConfig> = ConfigOperationResult<
+  ConfigLayeredLoadResult<TConfig> | ConfigLoadResult<TConfig> | null
+>
+
 /**
  * Create a typed config client that loads, validates, and writes config files.
  *
@@ -185,23 +193,17 @@ export function createConfigClient<TSchema extends ZodTypeAny>(
    * @param cwd - Working directory to search from.
    * @returns A ConfigOperationResult with the loaded config, or null if not found.
    */
-  async function load(): Promise<ConfigOperationResult<ConfigLoadResult<output<TSchema>> | null>>
-  async function load(
-    cwd: string
-  ): Promise<ConfigOperationResult<ConfigLoadResult<output<TSchema>> | null>>
+  async function load(): Promise<ConfigLoadOperationResult<output<TSchema>>>
+  async function load(cwd: string): Promise<ConfigLoadOperationResult<output<TSchema>>>
   async function load(
     loadOptions: ConfigLayeredLoadOptions
-  ): Promise<ConfigOperationResult<ConfigLayeredLoadResult<output<TSchema>>>>
+  ): Promise<ConfigLayeredLoadOperationResult<output<TSchema>>>
   async function load(
     loadOptions: ConfigNamedLayerLoadOptions
-  ): Promise<ConfigOperationResult<ConfigLoadResult<output<TSchema>> | null>>
+  ): Promise<ConfigLoadOperationResult<output<TSchema>>>
   async function load(
     cwdOrOptions?: string | ConfigClientLoadOptions
-  ): Promise<
-    ConfigOperationResult<
-      ConfigLayeredLoadResult<output<TSchema>> | ConfigLoadResult<output<TSchema>> | null
-    >
-  > {
+  ): Promise<ConfigAnyLoadOperationResult<output<TSchema>>> {
     return match(cwdOrOptions)
       .with(P.string, loadFromDir)
       .with({ layers: true }, loadLayers)
