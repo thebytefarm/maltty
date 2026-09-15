@@ -11,6 +11,7 @@ env:
 jobs:
   changeset-check:
     name: Changeset Check
+    if: github.head_ref != 'changeset-release/main'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
