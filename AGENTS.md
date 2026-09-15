@@ -192,6 +192,8 @@ See [commit standards](contributing/standards/git-commits.md) and [PR standards]
 
 **Always prefix commands with `rtk`**. If RTK has a dedicated filter, it uses it. If not, it passes through unchanged. This means RTK is always safe to use.
 
+**Exception**: Run `plannotator` directly. Its interactive review process must not be prefixed with `rtk`.
+
 **Important**: Even in command chains with `&&`, use `rtk`:
 
 ```bash
