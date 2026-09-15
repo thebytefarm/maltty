@@ -1,0 +1,42 @@
+packages/maltty/src/autoload.test.ts
+  s_0f9eb65832a4f8::t_dbabdbba6a8a2b 123,139
+  s_0f9eb65832a4f8::t_04f92cc86fa89c 157-159,171
+packages/maltty/src/autoload.ts
+  s_0f9eb65832a4f8::t_f29abcc4fe1ea6 63-64
+  s_0f9eb65832a4f8::t_9ad3bdb1fbf11e 10,85,170,256
+packages/cli/src/commands/commands.ts
+  s_0f9eb65832a4f8::t_758f4a1360f722 5,256-257
+packages/maltty/src/runtime/register.test.ts
+  s_0f9eb65832a4f8::t_d5764bf48f4996 259,288,317
+  s_0f9eb65832a4f8::t_723e792471b1fd 273,302,339
+  s_0f9eb65832a4f8::t_04f92cc86fa89c 662,665,742,745,747,760,766
+packages/maltty/src/constants.ts
+  s_0f9eb65832a4f8::t_3a657721c1053c 2,4-5,7
+contributing/concepts/architecture.md
+  s_0f9eb65832a4f8::t_5586cccc34f75c 272,287,289
+packages/maltty/src/runtime/register.ts
+  s_0f9eb65832a4f8::t_aee72d7e6385b3 192,214,289-327
+  s_0f9eb65832a4f8::t_dd95b60b6f0fc4 134-137
+  s_0f9eb65832a4f8::t_3e1a0f2c43dfee 7,94-101,133,142,334-336,339,346,348-350,371
+  s_0f9eb65832a4f8::t_d99f94c5cf8cf8 328
+contributing/concepts/cli.md
+  s_0f9eb65832a4f8::t_5586cccc34f75c 267
+.changeset/default-commands.md
+  s_0f9eb65832a4f8::t_7e2657298ccd29 8
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "9247c138e292ec5960121a37a847e43a194ce3c9",
+  "prompts": {},
+  "sessions": {
+    "s_0f9eb65832a4f8": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "aea4917a-4670-4f7c-b025-ce2dc5be7ff6",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Zac Rosenbauer <me@zrosenbauer.com>"
+    }
+  }
+}
