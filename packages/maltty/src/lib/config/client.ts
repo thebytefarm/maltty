@@ -2,7 +2,16 @@ import { mkdir, writeFile } from 'node:fs/promises'
 import { homedir } from 'node:os'
 import { dirname, extname, isAbsolute, join } from 'node:path'
 
-import { P, attemptAsync, err, isPlainObject, match, mergeWith, ok } from '@maltty/utils/fp'
+import {
+  P,
+  attemptAsync,
+  cloneDeep,
+  err,
+  isPlainObject,
+  match,
+  mergeWith,
+  ok,
+} from '@maltty/utils/fp'
 import { validate } from '@maltty/utils/validate'
 import { loadConfig as c12LoadConfig } from 'c12'
 import type { ZodTypeAny, output } from 'zod'
@@ -310,7 +319,7 @@ export function createConfigClient<TSchema extends ZodTypeAny>(
       .map((layer) => layer.config as Record<string, unknown>)
       .reduce(
         (mergedResult, layerConfig) =>
-          mergeWith(mergedResult, layerConfig, (_targetValue, sourceValue) =>
+          mergeWith(cloneDeep(mergedResult), layerConfig, (_targetValue, sourceValue) =>
             match(sourceValue)
               .with(P.array(), (value) => value)
               .otherwise(() => undefined)
