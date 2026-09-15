@@ -12,6 +12,7 @@ vi.mock(import('@maltty/config/utils'), () => ({
 }))
 
 vi.mock(import('maltty'), () => ({
+  DEFAULT_COMMAND_NAME: '$0',
   autoload: vi.fn(),
   command: vi.fn((def) => def),
 }))

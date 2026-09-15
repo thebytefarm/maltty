@@ -1,7 +1,10 @@
+import { err, ok } from '@maltty/utils/fp'
+import type { Result } from '@maltty/utils/fp'
 import { hasTag } from '@maltty/utils/tag'
 import { match } from 'ts-pattern'
 import type { Argv } from 'yargs'
 
+import { DEFAULT_COMMAND_NAME } from '@/constants.js'
 import type { CommandContext } from '@/context/types.js'
 import type {
   ArgsDef,
@@ -42,6 +45,13 @@ export function registerCommands(options: RegisterCommandsOptions): void {
   const commandEntries = Object.entries(commands)
     .filter((pair): pair is [string, Command] => isCommand(pair[1]))
     .map(([key, entry]): readonly [string, Command] => [entry.name ?? key, entry])
+
+  const [defaultError] = validateSingleDefault(commandEntries)
+  if (defaultError && errorRef) {
+    // Intentional mutation: errorRef is a mutable holder for deferred error reporting.
+    errorRef.error = defaultError
+    return
+  }
 
   if (order && order.length > 0) {
     const commandNames = commandEntries.map(([name]) => name)
@@ -113,7 +123,12 @@ interface RegisterCommandsOptions {
 function registerSingleCommand(options: RegisterSingleCommandOptions): void {
   const { instance, name, cmd, resolved, parentPath, errorRef } = options
   const commandString = formatCommandString(name, cmd.positionals)
-  const commandSpec = formatCommandSpec(commandString, cmd.aliases)
+  const commandSpec = formatCommandSpec({
+    aliases: cmd.aliases,
+    commandString,
+    isDefault: cmd.default === true,
+    name,
+  })
 
   const builder = (yargsBuilder: Argv): Argv => {
     if (cmd.strict !== undefined) {
@@ -132,6 +147,13 @@ function registerSingleCommand(options: RegisterSingleCommandOptions): void {
         .map(([key, entry]): readonly [string, Command] => [entry.name ?? key, entry])
 
       const subOrder = cmd.help?.order
+
+      const [subDefaultError] = validateSingleDefault(subCommands)
+      if (subDefaultError && errorRef) {
+        // Intentional mutation: errorRef is a mutable holder for deferred error reporting.
+        errorRef.error = subDefaultError
+        return yargsBuilder
+      }
 
       if (subOrder && subOrder.length > 0) {
         const subNames = subCommands.map(([n]) => n)
@@ -160,7 +182,9 @@ function registerSingleCommand(options: RegisterSingleCommandOptions): void {
         })
       )
 
-      if (cmd.handler || cmd.render) {
+      const hasDefaultSub = subCommands.some(([, sub]) => sub.default === true)
+
+      if (cmd.handler || cmd.render || hasDefaultSub) {
         yargsBuilder.demandCommand(0)
       } else {
         yargsBuilder.demandCommand(1, 'You must specify a subcommand.')
@@ -175,7 +199,7 @@ function registerSingleCommand(options: RegisterSingleCommandOptions): void {
     // The `as` casts are accepted exceptions — generic handler/middleware types
     // Cannot be narrowed further inside the yargs callback boundary.
     resolved.ref = {
-      commandPath: [...parentPath, name],
+      commandPath: formatCommandPath(parentPath, name),
       handler: cmd.handler as ((ctx: CommandContext) => Promise<void> | void) | undefined,
       middleware: (cmd.middleware ?? []) as Middleware[],
       options: cmd.options,
@@ -253,23 +277,74 @@ function formatPlaceholder(meta: PositionalMeta): string {
 /**
  * Build the first argument to `yargs.command()`.
  *
- * Returns a plain string when there are no aliases, or a `[commandString, ...aliases]`
- * array when aliases are present — both forms are accepted by yargs.
+ * Returns a plain string when the command has no aliases and is not the default,
+ * otherwise a `[commandString, ...aliases]` array — both forms are accepted by yargs.
+ * A default command gains `$0` as a trailing alias, which is how yargs marks the
+ * command to run when no subcommand matches. A command already named `$0` is
+ * default by virtue of its name and needs no extra alias.
  *
  * @private
- * @param commandString - The primary command string (may include positional placeholders).
- * @param aliases - Optional alternative names for the command.
+ * @param params - The command string, its name, aliases, and default flag.
  * @returns A string or string array suitable for `yargs.command()`.
  */
-function formatCommandSpec(
-  commandString: string,
-  aliases: readonly string[] | undefined
-): string | string[] {
-  return match(aliases)
-    .with(undefined, () => commandString)
-    .otherwise((a) =>
-      match(a.length)
-        .with(0, () => commandString)
-        .otherwise(() => [commandString, ...a])
+function formatCommandSpec(params: {
+  readonly aliases: readonly string[] | undefined
+  readonly commandString: string
+  readonly isDefault: boolean
+  readonly name: string
+}): string | string[] {
+  const { aliases, commandString, isDefault, name } = params
+  const needsDefaultAlias = isDefault && name !== DEFAULT_COMMAND_NAME
+  const allAliases = match(needsDefaultAlias)
+    .with(true, () => [...(aliases ?? []), DEFAULT_COMMAND_NAME])
+    .otherwise(() => aliases ?? [])
+
+  return match(allAliases.length)
+    .with(0, () => commandString)
+    .otherwise(() => [commandString, ...allAliases])
+}
+
+/**
+ * Build the command path reported as `ctx.meta.command`.
+ *
+ * The `$0` sigil is an implementation detail of yargs default-command dispatch,
+ * so a nameless default command reports its parent path rather than leaking `$0`
+ * into user-facing context.
+ *
+ * @private
+ * @param parentPath - The path segments of the enclosing command group.
+ * @param name - The registered command name.
+ * @returns The command path with any `$0` segment removed.
+ */
+function formatCommandPath(parentPath: readonly string[], name: string): string[] {
+  if (name === DEFAULT_COMMAND_NAME) {
+    return [...parentPath]
+  }
+  return [...parentPath, name]
+}
+
+/**
+ * Validate that at most one command in a level is marked as the default.
+ *
+ * yargs silently keeps a single default command when several are registered, so
+ * the conflict is surfaced as a startup error instead of a dispatch surprise.
+ *
+ * @private
+ * @param entries - The `[name, Command]` pairs registered at one level.
+ * @returns A Result tuple — `[null, void]` on success or `[Error, null]` on conflict.
+ */
+function validateSingleDefault(
+  entries: readonly (readonly [string, Command])[]
+): Result<void, Error> {
+  const defaults = entries.filter(
+    ([name, cmd]) => cmd.default === true || name === DEFAULT_COMMAND_NAME
+  )
+
+  if (defaults.length > 1) {
+    return err(
+      `Multiple default commands: ${defaults.map(([name]) => `"${name}"`).join(', ')}. Only one command per level may be marked default.`
     )
+  }
+
+  return ok()
 }

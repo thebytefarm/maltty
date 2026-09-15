@@ -1,5 +1,6 @@
 export { cli } from './cli.js'
 export { command } from './command.js'
+export { DEFAULT_COMMAND_NAME } from './constants.js'
 export { compose } from './compose.js'
 export { autoload } from './autoload.js'
 export { decorateContext } from './context/decorate.js'

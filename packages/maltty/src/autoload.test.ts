@@ -120,12 +120,15 @@ describe('autoload()', () => {
     expect(result).toStrictEqual({})
   })
 
-  it('should skip index.ts files in the root scan', async () => {
+  it('should not key the root index.ts under "index"', async () => {
     mockedReaddir.mockResolvedValue([
       makeDirent('index.ts', true),
       makeDirent('init.ts', true),
     ] as unknown as Dirent[])
 
+    vi.doMock('/tmp/commands/index.ts', () => ({
+      default: withTag({ description: 'Root' }, 'Command'),
+    }))
     vi.doMock('/tmp/commands/init.ts', () => ({
       default: withTag({ description: 'Init' }, 'Command'),
     }))
@@ -134,6 +137,51 @@ describe('autoload()', () => {
 
     expect(result['index']).toBeUndefined()
     expect(hasTag(result['init'], 'Command')).toBeTruthy()
+  })
+
+  it('should register the root index.ts as the default command', async () => {
+    mockedReaddir.mockResolvedValue([
+      makeDirent('index.ts', true),
+      makeDirent('init.ts', true),
+    ] as unknown as Dirent[])
+
+    vi.doMock('/tmp/commands/index.ts', () => ({
+      default: withTag({ description: 'Search things' }, 'Command'),
+    }))
+    vi.doMock('/tmp/commands/init.ts', () => ({
+      default: withTag({ description: 'Init' }, 'Command'),
+    }))
+
+    const result = await autoload({ dir: '/tmp/commands' })
+
+    expect(hasTag(result['$0'], 'Command')).toBeTruthy()
+    expect(result['$0'].description).toBe('Search things')
+    expect(result['$0'].default).toBeTruthy()
+  })
+
+  it('should key a named root index.ts under its explicit name', async () => {
+    mockedReaddir.mockResolvedValue([makeDirent('index.ts', true)] as unknown as Dirent[])
+
+    vi.doMock('/tmp/commands/index.ts', () => ({
+      default: withTag({ description: 'Search things', name: 'search' }, 'Command'),
+    }))
+
+    const result = await autoload({ dir: '/tmp/commands' })
+
+    expect(result['$0']).toBeUndefined()
+    expect(result['search'].default).toBeTruthy()
+  })
+
+  it('should ignore a root index.ts without a valid Command default export', async () => {
+    mockedReaddir.mockResolvedValue([makeDirent('index.ts', true)] as unknown as Dirent[])
+
+    vi.doMock('/tmp/commands/index.ts', () => ({
+      default: { notACommand: true },
+    }))
+
+    const result = await autoload({ dir: '/tmp/commands' })
+
+    expect(result).toStrictEqual({})
   })
 
   it('should handle subdirectory with index.ts as parent command', async () => {
