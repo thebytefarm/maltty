@@ -69,6 +69,21 @@ interface ConfigHandleParams<TSchema extends ZodTypeAny> {
   readonly options: ConfigMiddlewareOptions<TSchema>
 }
 
+interface NormalizeLoadResultParams {
+  readonly result: ConfigLayeredLoadResult<unknown> | ConfigLoadResult<unknown> | null
+  readonly schema: ZodTypeAny
+}
+
+interface ResolveLayerDirsParams<TSchema extends ZodTypeAny> {
+  readonly ctx: CommandContext
+  readonly options: ConfigMiddlewareOptions<TSchema>
+}
+
+interface ValidateConfigParams {
+  readonly data: Record<string, unknown>
+  readonly schema: ZodTypeAny
+}
+
 /**
  * Create a closure-based config handle with lazy loading and caching.
  *
@@ -85,7 +100,7 @@ function createConfigHandle<TSchema extends ZodTypeAny>(
 ): ConfigHandle<unknown> {
   const { configName, ctx, options } = params
   const { schema } = options
-  const layerDirs = resolveLayerDirs(ctx, options)
+  const layerDirs = resolveLayerDirs({ ctx, options })
   const client = createConfigClient({
     cwd: layerDirs.project,
     dirs: { global: layerDirs.global, local: layerDirs.local },
@@ -131,7 +146,7 @@ function createConfigHandle<TSchema extends ZodTypeAny>(
       return null
     }
 
-    const [normalizeError, normalized] = normalizeLoadResult(result, schema)
+    const [normalizeError, normalized] = normalizeLoadResult({ result, schema })
     if (normalizeError) {
       if (callOptions?.exitOnError === true) {
         ctx.fail(`Failed to load config: ${normalizeError.message}`)
@@ -150,21 +165,20 @@ function createConfigHandle<TSchema extends ZodTypeAny>(
  * Convert client load metadata into the middleware's context-facing result.
  *
  * @private
- * @param result - Result returned by the standalone config client.
- * @param schema - Schema used to apply defaults when no file exists.
+ * @param params - Client result and schema used to normalize it.
  * @returns The normalized middleware result.
  */
-function normalizeLoadResult(
-  result: ConfigLayeredLoadResult<unknown> | ConfigLoadResult<unknown> | null,
-  schema: ZodTypeAny
-): Result<ConfigLoadCallResult<unknown>> {
-  if (!result) {
-    return validateConfig({}, schema)
-  }
-  if ('layers' in result) {
-    return ok({ config: result.config, layers: result.layers })
-  }
-  return ok({ config: result.config })
+function normalizeLoadResult({
+  result,
+  schema,
+}: NormalizeLoadResultParams): Result<ConfigLoadCallResult<unknown>> {
+  return match(result)
+    .with(null, () => validateConfig({ data: {}, schema }))
+    .with({ layers: P.array() }, ({ config: loadedConfig, layers }) =>
+      ok({ config: loadedConfig, layers })
+    )
+    .with({ filePath: P.string }, ({ config: loadedConfig }) => ok({ config: loadedConfig }))
+    .exhaustive()
 }
 
 /**
@@ -191,14 +205,13 @@ function resolveCacheKey(options?: ConfigLoadCallOptions): string {
  * Resolve the middleware's context-derived directories for the standalone client.
  *
  * @private
- * @param ctx - Command context containing default directory names.
- * @param options - Middleware options containing directory overrides.
+ * @param params - Command context and middleware directory overrides.
  * @returns Explicit global, project, and local directories.
  */
-function resolveLayerDirs<TSchema extends ZodTypeAny>(
-  ctx: CommandContext,
-  options: ConfigMiddlewareOptions<TSchema>
-): ConfigLayerDirs {
+function resolveLayerDirs<TSchema extends ZodTypeAny>({
+  ctx,
+  options,
+}: ResolveLayerDirsParams<TSchema>): ConfigLayerDirs {
   const cwd = process.cwd()
   const globalDirName = options.dirs?.global ?? ctx.meta.dirs.global
   const localDirName = options.dirs?.local ?? ctx.meta.dirs.local
@@ -213,14 +226,13 @@ function resolveLayerDirs<TSchema extends ZodTypeAny>(
  * Validate empty config against a schema to apply defaults.
  *
  * @private
- * @param data - The raw data to validate.
- * @param schema - Zod schema for validation.
+ * @param params - Raw data and Zod schema used for validation.
  * @returns A Result tuple with the validated config.
  */
-function validateConfig(
-  data: Record<string, unknown>,
-  schema: ZodTypeAny
-): Result<ConfigLoadCallResult<unknown>> {
+function validateConfig({
+  data,
+  schema,
+}: ValidateConfigParams): Result<ConfigLoadCallResult<unknown>> {
   const [validationError, validated] = validate({
     createError: ({ message }) => new Error(`Invalid config:\n${message}`),
     params: data,

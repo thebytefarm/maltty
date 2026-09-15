@@ -195,6 +195,9 @@ type ConfigLoadOperationResult<TConfig> = ConfigOperationResult<ConfigLoadResult
 type ConfigLayeredLoadOperationResult<TConfig> = ConfigOperationResult<
   ConfigLayeredLoadResult<TConfig>
 >
+type ConfigAnyLoadOperationResult<TConfig> = ConfigOperationResult<
+  ConfigLayeredLoadResult<TConfig> | ConfigLoadResult<TConfig> | null
+>
 
 /**
  * Config client for loading, finding, and writing config files.
@@ -211,6 +214,7 @@ export interface ConfigClient<TConfig> {
     (
       cwdOrOptions?: string | ConfigNamedLayerLoadOptions
     ): Promise<ConfigLoadOperationResult<TConfig>>
+    (cwdOrOptions: ConfigClientLoadOptions): Promise<ConfigAnyLoadOperationResult<TConfig>>
   }
   /**
    * Find the nearest project configuration file.

@@ -32,14 +32,29 @@ interface C12Result {
 }
 
 /**
+ * Parameters for resolving one config file name from a directory.
+ */
+interface ResolveConfigParams {
+  readonly cwd: string
+  readonly configFile: string
+}
+
+/**
  * Parameters for config resolution with an optional exact-directory resolver.
  */
 interface LoadConfigParams {
   readonly cwd: string
   readonly resolver?: (
-    cwd: string,
-    configFile: string
+    params: ResolveConfigParams
   ) => Promise<ConfigOperationResult<C12Result | null>>
+}
+
+/**
+ * Parameters for validating a resolved config file.
+ */
+interface ValidateAndReturnParams {
+  readonly data: unknown
+  readonly filePath: string
 }
 
 type ConfigLoadOperationResult<TConfig> = ConfigOperationResult<ConfigLoadResult<TConfig> | null>
@@ -80,14 +95,13 @@ export function createConfigClient<TSchema extends ZodTypeAny>(
    * Resolve a config file via c12 for a single directory.
    *
    * @private
-   * @param cwd - Directory to search in.
-   * @param configFile - The base config file name (without extension).
+   * @param params - Directory and base config file name to resolve.
    * @returns The c12 result, or null if nothing was found.
    */
-  async function resolveFromDir(
-    cwd: string,
-    configFile: string
-  ): Promise<ConfigOperationResult<C12Result | null>> {
+  async function resolveFromDir({
+    cwd,
+    configFile,
+  }: ResolveConfigParams): Promise<ConfigOperationResult<C12Result | null>> {
     const [loadError, loaded] = await attemptAsync(() =>
       c12LoadConfig({
         configFile,
@@ -112,16 +126,17 @@ export function createConfigClient<TSchema extends ZodTypeAny>(
    * Resolve a config file across searchPaths then cwd.
    *
    * @private
-   * @param cwd - Working directory.
-   * @param configFile - The base config file name (without extension).
+   * @param params - Working directory and base config file name to resolve.
    * @returns The c12 result, or null if nothing was found.
    */
-  async function resolveConfig(
-    cwd: string,
-    configFile: string
-  ): Promise<ConfigOperationResult<C12Result | null>> {
+  async function resolveConfig({
+    cwd,
+    configFile,
+  }: ResolveConfigParams): Promise<ConfigOperationResult<C12Result | null>> {
     if (searchPaths && searchPaths.length > 0) {
-      const results = await Promise.all(searchPaths.map((dir) => resolveFromDir(dir, configFile)))
+      const results = await Promise.all(
+        searchPaths.map((dir) => resolveFromDir({ configFile, cwd: dir }))
+      )
       const firstError = results.find(([e]) => e !== null)
       if (firstError) {
         return firstError
@@ -131,7 +146,7 @@ export function createConfigClient<TSchema extends ZodTypeAny>(
         return found
       }
     }
-    return resolveFromDir(cwd, configFile)
+    return resolveFromDir({ configFile, cwd })
   }
 
   /**
@@ -148,7 +163,7 @@ export function createConfigClient<TSchema extends ZodTypeAny>(
     cwd,
     resolver = resolveConfig,
   }: LoadConfigParams): Promise<ConfigOperationResult<C12Result | null>> {
-    const [longError, longForm] = await resolver(cwd, `${name}.config`)
+    const [longError, longForm] = await resolver({ configFile: `${name}.config`, cwd })
     if (longError) {
       return err(longError)
     }
@@ -156,7 +171,7 @@ export function createConfigClient<TSchema extends ZodTypeAny>(
       return ok(longForm)
     }
 
-    const [shortError, shortForm] = await resolver(cwd, name)
+    const [shortError, shortForm] = await resolver({ configFile: name, cwd })
     if (shortError) {
       return err(shortError)
     }
@@ -202,6 +217,9 @@ export function createConfigClient<TSchema extends ZodTypeAny>(
     loadOptions: ConfigNamedLayerLoadOptions
   ): Promise<ConfigLoadOperationResult<output<TSchema>>>
   async function load(
+    loadOptions: ConfigClientLoadOptions
+  ): Promise<ConfigAnyLoadOperationResult<output<TSchema>>>
+  async function load(
     cwdOrOptions?: string | ConfigClientLoadOptions
   ): Promise<ConfigAnyLoadOperationResult<output<TSchema>>> {
     return match(cwdOrOptions)
@@ -228,7 +246,7 @@ export function createConfigClient<TSchema extends ZodTypeAny>(
     if (!result || !hasResolvedConfigFile(result.configFile)) {
       return ok(null)
     }
-    return validateAndReturn(result.config, result.configFile)
+    return validateAndReturn({ data: result.config, filePath: result.configFile })
   }
 
   /**
@@ -248,7 +266,7 @@ export function createConfigClient<TSchema extends ZodTypeAny>(
     if (!result || !hasResolvedConfigFile(result.configFile)) {
       return ok(null)
     }
-    return validateAndReturn(result.config, result.configFile)
+    return validateAndReturn({ data: result.config, filePath: result.configFile })
   }
 
   /**
@@ -429,14 +447,13 @@ export function createConfigClient<TSchema extends ZodTypeAny>(
    * Validate parsed config data and return a typed result.
    *
    * @private
-   * @param data - The parsed config data.
-   * @param filePath - Path to the config file.
+   * @param params - Parsed config data and its resolved file path.
    * @returns A ConfigOperationResult with the validated config.
    */
-  function validateAndReturn(
-    data: unknown,
-    filePath: string
-  ): ConfigOperationResult<ConfigLoadResult<output<TSchema>>> {
+  function validateAndReturn({
+    data,
+    filePath,
+  }: ValidateAndReturnParams): ConfigOperationResult<ConfigLoadResult<output<TSchema>>> {
     const [validationError, validated] = validate({
       schema,
       params: data,
