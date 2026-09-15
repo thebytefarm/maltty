@@ -1,0 +1,19 @@
+packages/maltty/src/lib/config/client.ts
+  s_838e0eb087133b::t_e80e4a651213ae 5-14,322
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "cd398d9c6f639e44f4da80de4bac4e7704959e20",
+  "prompts": {},
+  "sessions": {
+    "s_838e0eb087133b": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_f5d24cc72ffe2kSU49SSVkrIru",
+        "model": "gpt-5.6-sol"
+      },
+      "human_author": "Zac Rosenbauer <me@zrosenbauer.com>"
+    }
+  }
+}
