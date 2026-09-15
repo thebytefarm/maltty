@@ -1,5 +1,12 @@
 # @maltty/bundler
 
+## 1.0.0-rc.4
+
+### Patch Changes
+
+- @maltty/config@1.0.0-rc.4
+- @maltty/utils@1.0.0-rc.4
+
 ## 1.0.0-rc.3
 
 ### Patch Changes

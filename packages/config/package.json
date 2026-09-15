@@ -1,6 +1,6 @@
 {
   "name": "@maltty/config",
-  "version": "1.0.0-rc.3",
+  "version": "1.0.0-rc.4",
   "description": "Build-time configuration for maltty CLIs",
   "keywords": [
     "cli",

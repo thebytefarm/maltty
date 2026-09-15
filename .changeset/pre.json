@@ -21,6 +21,7 @@
     "kidd-to-maltty-rename",
     "public-config-client",
     "release-lockstep-versions-and-tags",
+    "tidy-planets-layer",
     "upgrade-deps-2026-07-28",
     "upgrade-deps-latest"
   ]
