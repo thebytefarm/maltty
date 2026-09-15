@@ -1,5 +1,15 @@
 # maltty
 
+## 1.0.0-rc.4
+
+### Patch Changes
+
+- Updated dependencies [80eb582]
+  - maltty@1.0.0-rc.4
+  - @maltty/bundler@1.0.0-rc.4
+  - @maltty/config@1.0.0-rc.4
+  - @maltty/utils@1.0.0-rc.4
+
 ## 1.0.0-rc.3
 
 ### Patch Changes
