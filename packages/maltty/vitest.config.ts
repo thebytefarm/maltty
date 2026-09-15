@@ -41,6 +41,6 @@ export default defineConfig({
         statements: 60,
       },
     },
-    include: ['src/**/*.test.ts'],
+    include: ['src/**/*.test.ts', 'test/integration/**/*.test.ts'],
   },
 })

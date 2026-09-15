@@ -1,38 +1,9 @@
 import type { ZodType, ZodTypeAny, infer as ZodInfer } from 'zod'
 
-import type { ConfigFormat } from '@/lib/config/types.js'
+import type { ConfigClientLoadOptions, ConfigLayer } from '@/lib/config/types.js'
 import type { DeepReadonly } from '@/types/index.js'
 
-// ---------------------------------------------------------------------------
-// Config layer types
-// ---------------------------------------------------------------------------
-
-/**
- * Names for configuration resolution layers.
- */
-export type ConfigLayerName = 'global' | 'project' | 'local'
-
-/**
- * Metadata for a single resolved configuration layer.
- */
-export interface ConfigLayer {
-  /**
-   * Which layer this config came from.
-   */
-  readonly name: ConfigLayerName
-  /**
-   * Absolute path to the resolved config file, or null if not found.
-   */
-  readonly filePath: string | null
-  /**
-   * The format of the resolved config file, or null if not found.
-   */
-  readonly format: ConfigFormat | null
-  /**
-   * The raw config data loaded from this layer (pre-merge, pre-validation).
-   */
-  readonly config: Readonly<Record<string, unknown>> | null
-}
+export type { ConfigLayer, ConfigLayerName } from '@/lib/config/types.js'
 
 // ---------------------------------------------------------------------------
 // Config load types
@@ -43,17 +14,19 @@ export interface ConfigLayer {
  *
  * Controls how config is resolved and how errors are handled.
  */
-export interface ConfigLoadCallOptions {
-  /**
-   * Enable layered resolution (global > project > local merge).
-   * When true, returns layer metadata alongside the merged config.
-   */
-  readonly layers?: boolean
-  /**
-   * Load a specific named layer only. Validates against the full schema.
-   * Mutually exclusive with `layers`.
-   */
-  readonly layer?: ConfigLayerName
+export type ConfigLoadCallOptions = (
+  | ConfigClientLoadOptions
+  | {
+      /**
+       * Named-layer selection is omitted for default project resolution.
+       */
+      readonly layer?: never
+      /**
+       * Set to false or omit for default project resolution.
+       */
+      readonly layers?: false
+    }
+) & {
   /**
    * When true, calls `ctx.fail()` on load/validation errors instead of
    * returning null. Guarantees a non-null return value.
