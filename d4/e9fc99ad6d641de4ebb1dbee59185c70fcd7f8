@@ -1,0 +1,26 @@
+packages/cli/src/commands/commands.ts
+  s_0f9eb65832a4f8::t_8e1d2d15883e36 7
+packages/maltty/src/middleware/auth/oauth-server.test.ts
+  s_0f9eb65832a4f8::t_ff7151f630c92f 185
+packages/bundler/src/types.ts
+  s_0f9eb65832a4f8::t_ff7151f630c92f 191
+  s_0f9eb65832a4f8::t_206c7055a92a7e 1
+packages/maltty/src/lib/config/client.ts
+  s_0f9eb65832a4f8::t_ff7151f630c92f 322
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "d4e9fc99ad6d641de4ebb1dbee59185c70fcd7f8",
+  "prompts": {},
+  "sessions": {
+    "s_0f9eb65832a4f8": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "aea4917a-4670-4f7c-b025-ce2dc5be7ff6",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Zac Rosenbauer <me@zrosenbauer.com>"
+    }
+  }
+}
