@@ -1,0 +1,27 @@
+packages/maltty/src/lib/config/types.ts
+  s_9ee7b5db86da6e::t_0e50485ed0f607 203-208,215-220,222-228
+  s_9ee7b5db86da6e::t_78b1dceeddba85 194-198,213
+  s_9ee7b5db86da6e::t_4013af6bceac18 23-25,27-29,31-33,46-48,50-52,54-56,58-60,68-70,72-74,76-78,80-82,84-86,99-101,114-116,129-131,133-135,137-139,147-149,151-153,161-163,165-167,169-171,179-181,183-185
+  s_9ee7b5db86da6e::t_a62c797cb64bbc 210
+  s_9ee7b5db86da6e::t_2a9d1293f7ac76 94-97,109-112
+packages/maltty/src/lib/config/client.ts
+  s_9ee7b5db86da6e::t_78b1dceeddba85 45-52,196-197,200,203,206
+packages/maltty/src/middleware/config/types.ts
+  s_9ee7b5db86da6e::t_4013af6bceac18 20-22,24-26
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "00c2cf04e5d53f5eb5288d67a5bd7603c39d1697",
+  "prompts": {},
+  "sessions": {
+    "s_9ee7b5db86da6e": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_f5fe4c750ffelc52D26ueW0yHy",
+        "model": "gpt-5.6-sol"
+      },
+      "human_author": "Zac Rosenbauer <me@zrosenbauer.com>"
+    }
+  }
+}
