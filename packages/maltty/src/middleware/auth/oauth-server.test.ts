@@ -182,7 +182,7 @@ describe('isSecureAuthUrl()', () => {
   })
 
   it('should reject a URL with javascript scheme', () => {
-    // oxlint-disable-next-line eslint(no-script-url) -- Intentional: testing URL scheme validation
+    // oxlint-disable-next-line no-script-url -- Intentional: testing URL scheme validation
     expect(isSecureAuthUrl('javascript:alert(1)')).toBeFalsy()
   })
 

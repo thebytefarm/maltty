@@ -3,8 +3,8 @@ import { join } from 'node:path'
 import { loadConfig } from '@maltty/config/utils'
 import { fs } from '@maltty/utils/node'
 import { DEFAULT_COMMAND_NAME, autoload, command } from 'maltty'
-import { match } from 'ts-pattern'
 import type { Command as MalttyCommand, CommandContext } from 'maltty'
+import { match } from 'ts-pattern'
 
 import { extractConfig } from '../lib/config-helpers.js'
 
