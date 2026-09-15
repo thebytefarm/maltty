@@ -30,7 +30,7 @@ export async function autoload(options?: AutoloadOptions): Promise<CommandMap> {
   const dir = resolveDir(options)
   const entries = await readdir(dir, { withFileTypes: true })
   const commands = await resolveCommandMapFromEntries(dir, entries)
-  const defaultPair = await resolveRootDefaultCommand(dir, entries)
+  const defaultPair = await resolveRootDefaultCommand({ dir, entries })
 
   if (!defaultPair) {
     return commands
@@ -65,14 +65,14 @@ function resolveDir(options?: AutoloadOptions): string {
  * otherwise.
  *
  * @private
- * @param dir - Absolute path to the scanned directory.
- * @param entries - Pre-read directory entries for that directory.
+ * @param params - The scanned directory and its pre-read entries.
  * @returns A tuple of [name, Command] or undefined when there is no root index command.
  */
-async function resolveRootDefaultCommand(
-  dir: string,
-  entries: Dirent[]
-): Promise<[string, Command] | undefined> {
+async function resolveRootDefaultCommand(params: {
+  readonly dir: string
+  readonly entries: Dirent[]
+}): Promise<[string, Command] | undefined> {
+  const { dir, entries } = params
   const indexFile = findIndexInEntries(entries)
   if (!indexFile) {
     return undefined

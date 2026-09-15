@@ -142,7 +142,7 @@ mycli remote add     # runs add
 
 An `index` file at the root of the commands directory becomes the default command automatically, mirroring how an `index` file inside a subdirectory becomes that group's parent command.
 
-```
+```text
 commands/
 ├── index.ts     # the default command -- runs on `mygrep --filter x`
 ├── config.ts    # mygrep config

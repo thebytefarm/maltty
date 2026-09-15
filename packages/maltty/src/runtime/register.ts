@@ -47,7 +47,7 @@ export function registerCommands(options: RegisterCommandsOptions): void {
     .map(([key, entry]): readonly [string, Command] => [entry.name ?? key, entry])
 
   const [defaultError] = validateSingleDefault(commandEntries)
-  if (defaultError && errorRef) {
+  if (defaultError) {
     // Intentional mutation: errorRef is a mutable holder for deferred error reporting.
     errorRef.error = defaultError
     return
@@ -56,7 +56,7 @@ export function registerCommands(options: RegisterCommandsOptions): void {
   if (order && order.length > 0) {
     const commandNames = commandEntries.map(([name]) => name)
     const [validationError] = validateCommandOrder({ commandNames, order })
-    if (validationError && errorRef) {
+    if (validationError) {
       // Intentional mutation: errorRef is a mutable holder for deferred error reporting.
       errorRef.error = validationError
       return
@@ -94,7 +94,7 @@ export interface ErrorRef {
 interface RegisterSingleCommandOptions {
   builder: Argv
   cmd: Command
-  errorRef?: ErrorRef
+  errorRef: ErrorRef
   instance: Argv
   name: string
   parentPath: string[]
@@ -103,7 +103,7 @@ interface RegisterSingleCommandOptions {
 
 interface RegisterCommandsOptions {
   commands: CommandMap
-  errorRef?: ErrorRef
+  errorRef: ErrorRef
   instance: Argv
   order?: readonly string[]
   parentPath: string[]
@@ -149,7 +149,7 @@ function registerSingleCommand(options: RegisterSingleCommandOptions): void {
       const subOrder = cmd.help?.order
 
       const [subDefaultError] = validateSingleDefault(subCommands)
-      if (subDefaultError && errorRef) {
+      if (subDefaultError) {
         // Intentional mutation: errorRef is a mutable holder for deferred error reporting.
         errorRef.error = subDefaultError
         return yargsBuilder
@@ -161,7 +161,7 @@ function registerSingleCommand(options: RegisterSingleCommandOptions): void {
           commandNames: subNames,
           order: subOrder,
         })
-        if (validationError && errorRef) {
+        if (validationError) {
           // Intentional mutation: errorRef is a mutable holder for deferred error reporting.
           errorRef.error = validationError
           return yargsBuilder
@@ -177,14 +177,14 @@ function registerSingleCommand(options: RegisterSingleCommandOptions): void {
           errorRef,
           instance: yargsBuilder,
           name: subName,
-          parentPath: [...parentPath, name],
+          parentPath: formatCommandPath(parentPath, name),
           resolved,
         })
       )
 
-      const hasDefaultSub = subCommands.some(([, sub]) => sub.default === true)
-
-      if (cmd.handler || cmd.render || hasDefaultSub) {
+      // Yargs counts a matched default subcommand toward `demandCommand(1)`.
+      // A bare group invocation therefore needs no special case here.
+      if (cmd.handler || cmd.render) {
         yargsBuilder.demandCommand(0)
       } else {
         yargsBuilder.demandCommand(1, 'You must specify a subcommand.')

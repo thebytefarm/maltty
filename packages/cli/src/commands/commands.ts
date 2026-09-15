@@ -3,6 +3,7 @@ import { join } from 'node:path'
 import { loadConfig } from '@maltty/config/utils'
 import { fs } from '@maltty/utils/node'
 import { DEFAULT_COMMAND_NAME, autoload, command } from 'maltty'
+import { match } from 'ts-pattern'
 import type { Command as MalttyCommand, CommandContext } from 'maltty'
 
 import { extractConfig } from '../lib/config-helpers.js'
@@ -103,7 +104,7 @@ async function buildTree(
       return {
         children,
         description: cmd.description ?? '',
-        name: formatName(name, cmd.default === true),
+        name: formatName({ isDefault: cmd.default === true, name }),
       }
     })
   )
@@ -256,20 +257,14 @@ function resolveChildPrefix(isLast: boolean): string {
  * nothing to a reader, so it renders as `(default)` instead.
  *
  * @private
- * @param name - The command name from the command map.
- * @param isDefault - Whether the command runs when no subcommand matches.
+ * @param params - The command name and whether it runs when no subcommand matches.
  * @returns The display name.
  */
-function formatName(name: string, isDefault: boolean): string {
-  if (name === DEFAULT_COMMAND_NAME) {
-    return '(default)'
-  }
-
-  if (isDefault) {
-    return `${name} (default)`
-  }
-
-  return name
+function formatName(params: { readonly name: string; readonly isDefault: boolean }): string {
+  return match(params)
+    .with({ name: DEFAULT_COMMAND_NAME }, () => '(default)')
+    .with({ isDefault: true }, ({ name }) => `${name} (default)`)
+    .otherwise(({ name }) => name)
 }
 
 /**

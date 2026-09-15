@@ -681,16 +681,18 @@ describe('default commands', () => {
     const errorRef: ErrorRef = { error: undefined }
     const instance = yargs([])
 
-    const registeredNames: unknown[] = []
     const originalCommand = instance.command.bind(instance)
-    vi.spyOn(instance, 'command').mockImplementation((name: unknown, ...rest: unknown[]) => {
-      registeredNames.push(name)
-      return originalCommand(name as string, ...(rest as [string]))
-    })
+    const commandSpy = vi
+      .spyOn(instance, 'command')
+      .mockImplementation((name: unknown, ...rest: unknown[]) =>
+        originalCommand(name as string, ...(rest as [string]))
+      )
 
     registerCommands({ commands, errorRef, instance, parentPath: [], resolved })
 
-    expect(registeredNames).toStrictEqual([['search <pattern>', 'find', '$0']])
+    expect(commandSpy.mock.calls.map(([name]) => name)).toStrictEqual([
+      ['search <pattern>', 'find', '$0'],
+    ])
   })
 
   it('should set errorRef when two commands are marked default', () => {
@@ -726,6 +728,46 @@ describe('default commands', () => {
     expect(handler).toHaveBeenCalledTimes(1)
     expect(handler).toHaveBeenCalledWith(
       expect.objectContaining({ meta: expect.objectContaining({ command: ['remote', 'list'] }) })
+    )
+  })
+})
+
+describe('default command edge cases', () => {
+  it('should omit the $0 sigil from a subcommand of a nameless default', async () => {
+    const handler = vi.fn()
+    const commands: CommandMap = {
+      $0: command({
+        commands: { tail: command({ description: 'Tail output', handler }) },
+        description: 'Search things',
+      }),
+    }
+
+    setArgv('tail')
+    await runTestCli({ commands, name: 'test-cli', version: '1.0.0' })
+
+    expect(handler).toHaveBeenCalledWith(
+      expect.objectContaining({ meta: expect.objectContaining({ command: ['tail'] }) })
+    )
+  })
+
+  it('should accept a bare group invocation when a subcommand is keyed $0', async () => {
+    const handler = vi.fn()
+    const commands: CommandMap = {
+      remote: command({
+        commands: {
+          $0: command({ description: 'List remotes', handler }),
+          add: command({ description: 'Add a remote', handler: vi.fn() }),
+        },
+        description: 'Manage remotes',
+      }),
+    }
+
+    setArgv('remote')
+    await runTestCli({ commands, name: 'test-cli', version: '1.0.0' })
+
+    expect(handler).toHaveBeenCalledTimes(1)
+    expect(handler).toHaveBeenCalledWith(
+      expect.objectContaining({ meta: expect.objectContaining({ command: ['remote'] }) })
     )
   })
 })

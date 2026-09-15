@@ -209,7 +209,7 @@ cli({
 
 An `index` file at the root of an autoloaded directory becomes that level's default command:
 
-```
+```text
 commands/
 ├── index.ts     # default -- runs on `my-app needle`
 ├── generate.ts  # my-app generate
