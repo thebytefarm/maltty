@@ -172,6 +172,54 @@ describe('autoload()', () => {
     expect(result['search'].default).toBeTruthy()
   })
 
+  it('should warn when a named root index.ts collides with another default command', async () => {
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => undefined)
+    mockedReaddir.mockResolvedValue([
+      makeDirent('index.ts', true),
+      makeDirent('search.ts', true),
+    ] as unknown as Dirent[])
+
+    vi.doMock('/tmp/commands/index.ts', () => ({
+      default: withTag({ description: 'Root search', name: 'search' }, 'Command'),
+    }))
+    vi.doMock('/tmp/commands/search.ts', () => ({
+      default: withTag({ default: true, description: 'File search' }, 'Command'),
+    }))
+
+    const result = await autoload({ dir: '/tmp/commands' })
+
+    expect(result['search'].description).toBe('Root search')
+    expect(warnSpy).toHaveBeenCalledWith(
+      expect.stringContaining('both definitions are marked default')
+    )
+
+    warnSpy.mockRestore()
+  })
+
+  it('should not mention defaults when a plain duplicate name collides', async () => {
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => undefined)
+    mockedReaddir.mockResolvedValue([
+      makeDirent('build.ts', true),
+      makeDirent('compile.ts', true),
+    ] as unknown as Dirent[])
+
+    vi.doMock('/tmp/commands/build.ts', () => ({
+      default: withTag({ description: 'Build' }, 'Command'),
+    }))
+    vi.doMock('/tmp/commands/compile.ts', () => ({
+      default: withTag({ description: 'Compile', name: 'build' }, 'Command'),
+    }))
+
+    await autoload({ dir: '/tmp/commands' })
+
+    expect(warnSpy).toHaveBeenCalledWith(
+      expect.stringContaining('first definition wins, later definition ignored')
+    )
+    expect(warnSpy).not.toHaveBeenCalledWith(expect.stringContaining('marked default'))
+
+    warnSpy.mockRestore()
+  })
+
   it('should ignore a root index.ts without a valid Command default export', async () => {
     mockedReaddir.mockResolvedValue([makeDirent('index.ts', true)] as unknown as Dirent[])
 

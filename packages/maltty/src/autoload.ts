@@ -287,24 +287,52 @@ function deduplicateCommandPairs(
   pairs: readonly (readonly [string, Command])[]
 ): readonly (readonly [string, Command])[] {
   const { result } = pairs.reduce<{
-    readonly seen: ReadonlySet<string>
+    readonly seen: ReadonlyMap<string, Command>
     readonly result: readonly (readonly [string, Command])[]
   }>(
     (acc, pair) => {
-      const [name] = pair
-      if (acc.seen.has(name)) {
-        console.warn(
-          `[maltty] duplicate command name "${name}" — first definition wins, later definition ignored`
-        )
+      const [name, cmd] = pair
+      const kept = acc.seen.get(name)
+      if (kept) {
+        console.warn(formatDuplicateWarning({ dropped: cmd, kept, name }))
         return acc
       }
       return {
         result: [...acc.result, pair],
-        seen: new Set([...acc.seen, name]),
+        seen: new Map([...acc.seen, [name, cmd] as const]),
       }
     },
-    { result: [], seen: new Set<string>() }
+    { result: [], seen: new Map<string, Command>() }
   )
 
   return result
+}
+
+/**
+ * Build the warning emitted when two commands resolve to the same name.
+ *
+ * Registration rejects multiple defaults at one level, but that check only sees
+ * the deduplicated map — two commands that are both marked default and collapse
+ * to a single name never reach it. The collision is called out here instead, so
+ * the discarded default is reported rather than silently dropped.
+ *
+ * @private
+ * @param params - The colliding name, the command kept, and the command dropped.
+ * @returns The warning message.
+ */
+function formatDuplicateWarning(params: {
+  readonly dropped: Command
+  readonly kept: Command
+  readonly name: string
+}): string {
+  const { dropped, kept, name } = params
+  const prefix = `[maltty] duplicate command name "${name}"`
+
+  return match(kept.default === true && dropped.default === true)
+    .with(
+      true,
+      () =>
+        `${prefix} — both definitions are marked default. First definition wins, later definition ignored.`
+    )
+    .otherwise(() => `${prefix} — first definition wins, later definition ignored`)
 }

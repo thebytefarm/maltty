@@ -123,7 +123,7 @@ function registerSingleCommand(options: RegisterSingleCommandOptions): void {
   const isDefault = cmd.default === true
   const isNamelessDefault = isDefault && name === INDEX_COMMAND_NAME
   const commandString = formatCommandString(
-    resolveCommandName(name, isNamelessDefault),
+    resolveCommandName({ isNamelessDefault, name }),
     cmd.positionals
   )
   const commandSpec = formatCommandSpec({
@@ -270,11 +270,14 @@ function formatPlaceholder(meta: PositionalMeta): string {
  * invocable name of its own.
  *
  * @private
- * @param name - The resolved command name.
- * @param isNamelessDefault - Whether the command is the default and has no name.
+ * @param params - The resolved command name and whether it is a nameless default.
  * @returns The yargs command name.
  */
-function resolveCommandName(name: string, isNamelessDefault: boolean): string {
+function resolveCommandName(params: {
+  readonly isNamelessDefault: boolean
+  readonly name: string
+}): string {
+  const { isNamelessDefault, name } = params
   if (isNamelessDefault) {
     return YARGS_DEFAULT_COMMAND
   }
