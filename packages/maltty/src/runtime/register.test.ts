@@ -587,13 +587,14 @@ describe('default commands', () => {
     setArgv('--filter', 'x')
     await runTestCli({ commands, name: 'test-cli', version: '1.0.0' })
 
-    expect(handler).toHaveBeenCalledTimes(1)
-    expect(handler).toHaveBeenCalledWith(
-      expect.objectContaining({
-        args: expect.objectContaining({ filter: 'x' }),
-        meta: expect.objectContaining({ command: ['search'] }),
-      })
-    )
+    expect(handler.mock.calls).toEqual([
+      [
+        expect.objectContaining({
+          args: expect.objectContaining({ filter: 'x' }),
+          meta: expect.objectContaining({ command: ['search'] }),
+        }),
+      ],
+    ])
   })
 
   it('should keep the named invocation form for a default command', async () => {
@@ -610,13 +611,14 @@ describe('default commands', () => {
     setArgv('search', '--filter', 'x')
     await runTestCli({ commands, name: 'test-cli', version: '1.0.0' })
 
-    expect(handler).toHaveBeenCalledTimes(1)
-    expect(handler).toHaveBeenCalledWith(
-      expect.objectContaining({
-        args: expect.objectContaining({ filter: 'x' }),
-        meta: expect.objectContaining({ command: ['search'] }),
-      })
-    )
+    expect(handler.mock.calls).toEqual([
+      [
+        expect.objectContaining({
+          args: expect.objectContaining({ filter: 'x' }),
+          meta: expect.objectContaining({ command: ['search'] }),
+        }),
+      ],
+    ])
   })
 
   it('should bind a leading non-command token to a default command positional', async () => {
@@ -731,10 +733,9 @@ describe('default commands', () => {
     setArgv('remote')
     await runTestCli({ commands, name: 'test-cli', version: '1.0.0' })
 
-    expect(handler).toHaveBeenCalledTimes(1)
-    expect(handler).toHaveBeenCalledWith(
-      expect.objectContaining({ meta: expect.objectContaining({ command: ['remote', 'list'] }) })
-    )
+    expect(handler.mock.calls).toEqual([
+      [expect.objectContaining({ meta: expect.objectContaining({ command: ['remote', 'list'] }) })],
+    ])
   })
 })
 
@@ -757,6 +758,54 @@ describe('default command edge cases', () => {
     )
   })
 
+  it('should set errorRef when two subcommands in an unselected group are marked default', () => {
+    const commands: CommandMap = {
+      other: command({ description: 'Unrelated' }),
+      remote: command({
+        commands: {
+          add: command({ default: true, description: 'Add a remote' }),
+          list: command({ default: true, description: 'List remotes' }),
+        },
+        description: 'Manage remotes',
+      }),
+    }
+
+    const resolved: ResolvedRef = { ref: undefined }
+    const errorRef: ErrorRef = { error: undefined }
+
+    registerCommands({ commands, errorRef, instance: yargs([]), parentPath: [], resolved })
+
+    expect(errorRef.error?.message).toContain('Multiple default commands')
+  })
+
+  it('should keep the named form for a default command explicitly named index', async () => {
+    const handler = vi.fn()
+    const commands: CommandMap = {
+      index: command({ default: true, description: 'Search things', handler, name: 'index' }),
+    }
+
+    setArgv('index')
+    await runTestCli({ commands, name: 'test-cli', version: '1.0.0' })
+
+    expect(handler).toHaveBeenCalledWith(
+      expect.objectContaining({ meta: expect.objectContaining({ command: ['index'] }) })
+    )
+  })
+
+  it('should keep the bare form for a default command explicitly named index', async () => {
+    const handler = vi.fn()
+    const commands: CommandMap = {
+      index: command({ default: true, description: 'Search things', handler, name: 'index' }),
+    }
+
+    setArgv()
+    await runTestCli({ commands, name: 'test-cli', version: '1.0.0' })
+
+    expect(handler).toHaveBeenCalledWith(
+      expect.objectContaining({ meta: expect.objectContaining({ command: ['index'] }) })
+    )
+  })
+
   it('should accept a bare group invocation with a nameless default subcommand', async () => {
     const handler = vi.fn()
     const commands: CommandMap = {
@@ -772,9 +821,8 @@ describe('default command edge cases', () => {
     setArgv('remote')
     await runTestCli({ commands, name: 'test-cli', version: '1.0.0' })
 
-    expect(handler).toHaveBeenCalledTimes(1)
-    expect(handler).toHaveBeenCalledWith(
-      expect.objectContaining({ meta: expect.objectContaining({ command: ['remote'] }) })
-    )
+    expect(handler.mock.calls).toEqual([
+      [expect.objectContaining({ meta: expect.objectContaining({ command: ['remote'] }) })],
+    ])
   })
 })

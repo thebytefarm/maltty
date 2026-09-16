@@ -42,11 +42,9 @@ export function isCommand(value: unknown): value is Command {
  */
 export function registerCommands(options: RegisterCommandsOptions): void {
   const { instance, commands, resolved, parentPath, order, errorRef } = options
-  const commandEntries = Object.entries(commands)
-    .filter((pair): pair is [string, Command] => isCommand(pair[1]))
-    .map(([key, entry]): readonly [string, Command] => [entry.name ?? key, entry])
+  const commandEntries = toCommandEntries(commands)
 
-  const [validationError] = validateLevel({ entries: commandEntries, order })
+  const [validationError] = validateTree({ entries: commandEntries, order })
   if (validationError) {
     // Intentional mutation: errorRef is a mutable holder for deferred error reporting.
     errorRef.error = validationError
@@ -59,7 +57,6 @@ export function registerCommands(options: RegisterCommandsOptions): void {
     registerSingleCommand({
       builder: instance,
       cmd: entry,
-      errorRef,
       instance,
       name,
       parentPath,
@@ -92,7 +89,6 @@ const YARGS_DEFAULT_COMMAND = '$0'
 interface RegisterSingleCommandOptions {
   builder: Argv
   cmd: Command
-  errorRef: ErrorRef
   instance: Argv
   name: string
   parentPath: string[]
@@ -119,9 +115,9 @@ interface RegisterCommandsOptions {
  * @param options - Command registration context.
  */
 function registerSingleCommand(options: RegisterSingleCommandOptions): void {
-  const { instance, name, cmd, resolved, parentPath, errorRef } = options
+  const { instance, name, cmd, resolved, parentPath } = options
   const isDefault = cmd.default === true
-  const isNamelessDefault = isDefault && name === INDEX_COMMAND_NAME
+  const isNamelessDefault = isDefault && name === INDEX_COMMAND_NAME && cmd.name === undefined
   const commandString = formatCommandString(
     resolveCommandName({ isNamelessDefault, name }),
     cmd.positionals
@@ -144,26 +140,13 @@ function registerSingleCommand(options: RegisterSingleCommandOptions): void {
     })
 
     if (cmd.commands) {
-      const subCommands = Object.entries(cmd.commands)
-        .filter((pair): pair is [string, Command] => isCommand(pair[1]))
-        .map(([key, entry]): readonly [string, Command] => [entry.name ?? key, entry])
-
-      const subOrder = cmd.help?.order
-
-      const [subValidationError] = validateLevel({ entries: subCommands, order: subOrder })
-      if (subValidationError) {
-        // Intentional mutation: errorRef is a mutable holder for deferred error reporting.
-        errorRef.error = subValidationError
-        return yargsBuilder
-      }
-
-      const sortedSubs = sortCommandEntries({ entries: subCommands, order: subOrder })
+      const subCommands = toCommandEntries(cmd.commands)
+      const sortedSubs = sortCommandEntries({ entries: subCommands, order: cmd.help?.order })
 
       sortedSubs.map(([subName, subEntry]) =>
         registerSingleCommand({
           builder: yargsBuilder,
           cmd: subEntry,
-          errorRef,
           instance: yargsBuilder,
           name: subName,
           parentPath: resolveCommandPath({ isNamelessDefault, name, parentPath }),
@@ -332,6 +315,56 @@ function formatCommandSpec(params: {
   return match(allAliases.length)
     .with(0, () => commandString)
     .otherwise(() => [commandString, ...allAliases])
+}
+
+/**
+ * Normalize a CommandMap into `[name, Command]` pairs.
+ *
+ * Non-Command values are dropped and each entry resolves to its explicit `name`
+ * when it declares one, falling back to its map key. An unresolved promise has
+ * no own entries and yields no pairs.
+ *
+ * @private
+ * @param commands - The command map to normalize.
+ * @returns The resolved `[name, Command]` pairs.
+ */
+function toCommandEntries(
+  commands: CommandMap | Promise<CommandMap>
+): readonly (readonly [string, Command])[] {
+  return Object.entries(commands)
+    .filter((pair): pair is [string, Command] => isCommand(pair[1]))
+    .map(([key, entry]): readonly [string, Command] => [entry.name ?? key, entry])
+}
+
+/**
+ * Validate every level of the command tree before any of it reaches yargs.
+ *
+ * Nested levels are only built by yargs when their branch is selected, so an
+ * unvisited group would otherwise hide its conflicts until someone invoked it.
+ * Walking the whole tree up front makes those conflicts a startup error.
+ *
+ * @private
+ * @param params - The `[name, Command]` pairs at one level and its optional order array.
+ * @returns A Result tuple — `[null, void]` on success or `[Error, null]` on the first failure.
+ */
+function validateTree(params: {
+  readonly entries: readonly (readonly [string, Command])[]
+  readonly order: readonly string[] | undefined
+}): Result<void, Error> {
+  const { entries, order } = params
+
+  const [levelError] = validateLevel({ entries, order })
+  if (levelError) {
+    return [levelError, null]
+  }
+
+  return entries.reduce<Result<void, Error>>((acc, [, cmd]) => {
+    const [accError] = acc
+    if (accError || !cmd.commands) {
+      return acc
+    }
+    return validateTree({ entries: toCommandEntries(cmd.commands), order: cmd.help?.order })
+  }, ok())
 }
 
 /**

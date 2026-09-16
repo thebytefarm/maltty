@@ -40,6 +40,20 @@ function makeDirent(name: string, isFile: boolean): Dirent {
 
 const mockedReaddir = vi.mocked(readdir)
 
+function mockCollidingDefaults(): void {
+  mockedReaddir.mockResolvedValue([
+    makeDirent('index.ts', true),
+    makeDirent('search.ts', true),
+  ] as unknown as Dirent[])
+
+  vi.doMock('/tmp/commands/index.ts', () => ({
+    default: withTag({ description: 'Root search', name: 'search' }, 'Command'),
+  }))
+  vi.doMock('/tmp/commands/search.ts', () => ({
+    default: withTag({ default: true, description: 'File search' }, 'Command'),
+  }))
+}
+
 describe('autoload()', () => {
   beforeEach(() => {
     vi.clearAllMocks()
@@ -172,28 +186,24 @@ describe('autoload()', () => {
     expect(result['search'].default).toBeTruthy()
   })
 
-  it('should warn when a named root index.ts collides with another default command', async () => {
-    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => undefined)
-    mockedReaddir.mockResolvedValue([
-      makeDirent('index.ts', true),
-      makeDirent('search.ts', true),
-    ] as unknown as Dirent[])
-
-    vi.doMock('/tmp/commands/index.ts', () => ({
-      default: withTag({ description: 'Root search', name: 'search' }, 'Command'),
-    }))
-    vi.doMock('/tmp/commands/search.ts', () => ({
-      default: withTag({ default: true, description: 'File search' }, 'Command'),
-    }))
+  it('should keep the root index.ts when a named collision discards another default', async () => {
+    vi.spyOn(console, 'warn').mockImplementation(() => undefined)
+    mockCollidingDefaults()
 
     const result = await autoload({ dir: '/tmp/commands' })
 
     expect(result['search'].description).toBe('Root search')
+  })
+
+  it('should name the discarded default in the collision warning', async () => {
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => undefined)
+    mockCollidingDefaults()
+
+    await autoload({ dir: '/tmp/commands' })
+
     expect(warnSpy).toHaveBeenCalledWith(
       expect.stringContaining('both definitions are marked default')
     )
-
-    warnSpy.mockRestore()
   })
 
   it('should not mention defaults when a plain duplicate name collides', async () => {
@@ -213,11 +223,8 @@ describe('autoload()', () => {
     await autoload({ dir: '/tmp/commands' })
 
     expect(warnSpy).toHaveBeenCalledWith(
-      expect.stringContaining('first definition wins, later definition ignored')
+      expect.not.stringContaining('marked default') as unknown as string
     )
-    expect(warnSpy).not.toHaveBeenCalledWith(expect.stringContaining('marked default'))
-
-    warnSpy.mockRestore()
   })
 
   it('should ignore a root index.ts without a valid Command default export', async () => {

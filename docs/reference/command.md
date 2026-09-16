@@ -151,6 +151,8 @@ commands/
 
 Give it a `name` to keep a named invocation form alongside the default; without one it is reachable only as the default.
 
+If that `name` collides with another file's command, autoload keeps the root `index` command and warns -- the later definition is discarded. Because only one survives, the collision is reported as a warning rather than the duplicate-default startup error, which sees the deduplicated map.
+
 ## Subcommands
 
 Commands can contain nested subcommands:
