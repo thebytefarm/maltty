@@ -1,0 +1,26 @@
+packages/maltty/src/autoload.ts
+  s_690b78bd701925::t_c8671023be0efa 31-34
+packages/maltty/src/runtime/register.ts
+  s_690b78bd701925::t_0e9d6a6a814295 49-50,52
+  s_690b78bd701925::t_a21fb873ac91b3 123-124,132
+  s_690b78bd701925::t_09263ecb244c9d 309,316,322,324-325
+  s_690b78bd701925::t_61808ae19cc295 335-361
+  s_690b78bd701925::t_c438786125d2af 153-154,156
+  s_690b78bd701925::t_24dfc066dbab66 334
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "4057afbab59d806ebd9138f1ac4e7b59e2bb023c",
+  "prompts": {},
+  "sessions": {
+    "s_690b78bd701925": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "ab1eb0e3-ab63-4a86-89cb-13df56efdde0",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Zac Rosenbauer <me@zrosenbauer.com>"
+    }
+  }
+}
