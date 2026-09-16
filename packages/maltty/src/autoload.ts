@@ -28,8 +28,10 @@ const VALID_EXTENSIONS = new Set(['.ts', '.js', '.mjs', '.tsx', '.jsx'])
 export async function autoload(options?: AutoloadOptions): Promise<CommandMap> {
   const dir = resolveDir(options)
   const entries = await readdir(dir, { withFileTypes: true })
-  const commands = await resolveCommandMapFromEntries(dir, entries)
-  const defaultPair = await resolveRootDefaultCommand({ dir, entries })
+  const [commands, defaultPair] = await Promise.all([
+    resolveCommandMapFromEntries(dir, entries),
+    resolveRootDefaultCommand({ dir, entries }),
+  ])
 
   if (!defaultPair) {
     return commands

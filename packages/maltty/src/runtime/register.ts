@@ -46,21 +46,11 @@ export function registerCommands(options: RegisterCommandsOptions): void {
     .filter((pair): pair is [string, Command] => isCommand(pair[1]))
     .map(([key, entry]): readonly [string, Command] => [entry.name ?? key, entry])
 
-  const [defaultError] = validateSingleDefault(commandEntries)
-  if (defaultError) {
+  const [validationError] = validateLevel({ entries: commandEntries, order })
+  if (validationError) {
     // Intentional mutation: errorRef is a mutable holder for deferred error reporting.
-    errorRef.error = defaultError
+    errorRef.error = validationError
     return
-  }
-
-  if (order && order.length > 0) {
-    const commandNames = commandEntries.map(([name]) => name)
-    const [validationError] = validateCommandOrder({ commandNames, order })
-    if (validationError) {
-      // Intentional mutation: errorRef is a mutable holder for deferred error reporting.
-      errorRef.error = validationError
-      return
-    }
   }
 
   const sorted = sortCommandEntries({ entries: commandEntries, order })
@@ -130,7 +120,8 @@ interface RegisterCommandsOptions {
  */
 function registerSingleCommand(options: RegisterSingleCommandOptions): void {
   const { instance, name, cmd, resolved, parentPath, errorRef } = options
-  const isNamelessDefault = cmd.default === true && name === INDEX_COMMAND_NAME
+  const isDefault = cmd.default === true
+  const isNamelessDefault = isDefault && name === INDEX_COMMAND_NAME
   const commandString = formatCommandString(
     resolveCommandName(name, isNamelessDefault),
     cmd.positionals
@@ -138,8 +129,7 @@ function registerSingleCommand(options: RegisterSingleCommandOptions): void {
   const commandSpec = formatCommandSpec({
     aliases: cmd.aliases,
     commandString,
-    isDefault: cmd.default === true,
-    isNamelessDefault,
+    isNamedDefault: isDefault && !isNamelessDefault,
   })
 
   const builder = (yargsBuilder: Argv): Argv => {
@@ -160,24 +150,11 @@ function registerSingleCommand(options: RegisterSingleCommandOptions): void {
 
       const subOrder = cmd.help?.order
 
-      const [subDefaultError] = validateSingleDefault(subCommands)
-      if (subDefaultError) {
+      const [subValidationError] = validateLevel({ entries: subCommands, order: subOrder })
+      if (subValidationError) {
         // Intentional mutation: errorRef is a mutable holder for deferred error reporting.
-        errorRef.error = subDefaultError
+        errorRef.error = subValidationError
         return yargsBuilder
-      }
-
-      if (subOrder && subOrder.length > 0) {
-        const subNames = subCommands.map(([n]) => n)
-        const [validationError] = validateCommandOrder({
-          commandNames: subNames,
-          order: subOrder,
-        })
-        if (validationError) {
-          // Intentional mutation: errorRef is a mutable holder for deferred error reporting.
-          errorRef.error = validationError
-          return yargsBuilder
-        }
       }
 
       const sortedSubs = sortCommandEntries({ entries: subCommands, order: subOrder })
@@ -329,30 +306,57 @@ function resolveCommandPath(params: {
 /**
  * Build the first argument to `yargs.command()`.
  *
- * Returns a plain string when the command has no aliases and is not the default,
+ * Returns a plain string when the command has no aliases and is not a named default,
  * otherwise a `[commandString, ...aliases]` array — both forms are accepted by yargs.
  * A named default command gains the yargs default sigil as a trailing alias so both
  * invocation forms dispatch to it. A nameless default is already registered under the
  * sigil as its command string and needs no extra alias.
  *
  * @private
- * @param params - The command string, its aliases, and its default flags.
+ * @param params - The command string, its aliases, and whether it is a named default.
  * @returns A string or string array suitable for `yargs.command()`.
  */
 function formatCommandSpec(params: {
   readonly aliases: readonly string[] | undefined
   readonly commandString: string
-  readonly isDefault: boolean
-  readonly isNamelessDefault: boolean
+  readonly isNamedDefault: boolean
 }): string | string[] {
-  const { aliases, commandString, isDefault, isNamelessDefault } = params
-  const allAliases = match(isDefault && !isNamelessDefault)
+  const { aliases, commandString, isNamedDefault } = params
+  const allAliases = match(isNamedDefault)
     .with(true, () => [...(aliases ?? []), YARGS_DEFAULT_COMMAND])
     .otherwise(() => aliases ?? [])
 
   return match(allAliases.length)
     .with(0, () => commandString)
     .otherwise(() => [commandString, ...allAliases])
+}
+
+/**
+ * Validate one level of command entries before they are registered.
+ *
+ * Runs every per-level check — single default, then declared order — so the root
+ * level and each subcommand level share one validation path.
+ *
+ * @private
+ * @param params - The `[name, Command]` pairs at one level and its optional order array.
+ * @returns A Result tuple — `[null, void]` on success or `[Error, null]` on the first failure.
+ */
+function validateLevel(params: {
+  readonly entries: readonly (readonly [string, Command])[]
+  readonly order: readonly string[] | undefined
+}): Result<void, Error> {
+  const { entries, order } = params
+
+  const [defaultError] = validateSingleDefault(entries)
+  if (defaultError) {
+    return [defaultError, null]
+  }
+
+  if (!order || order.length === 0) {
+    return ok()
+  }
+
+  return validateCommandOrder({ commandNames: entries.map(([name]) => name), order })
 }
 
 /**
