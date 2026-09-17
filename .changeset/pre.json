@@ -15,6 +15,7 @@
     "@maltty/utils": "0.4.2"
   },
   "changesets": [
+    "default-commands",
     "expose-lib-subpaths",
     "fix-zod-v4-schema-detection",
     "kebab-case-schema-keys",
