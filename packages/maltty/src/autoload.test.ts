@@ -40,10 +40,48 @@ function makeDirent(name: string, isFile: boolean): Dirent {
 
 const mockedReaddir = vi.mocked(readdir)
 
+// Every specifier any test registers a `vi.doMock()` factory for.
+// Resetting modules drops the cache but leaves those factories registered.
+// Each is retired before the next test imports its path.
+const MOCKED_SPECIFIERS = [
+  '/tmp/commands/broken.ts',
+  '/tmp/commands/build.ts',
+  '/tmp/commands/compile.ts',
+  '/tmp/commands/deploy.js',
+  '/tmp/commands/doctor.ts',
+  '/tmp/commands/generate/command.ts',
+  '/tmp/commands/generate/index.ts',
+  '/tmp/commands/generate/middleware.ts',
+  '/tmp/commands/index.js',
+  '/tmp/commands/index.ts',
+  '/tmp/commands/init.ts',
+  '/tmp/commands/remote/index.js',
+  '/tmp/commands/remote/index.ts',
+  '/tmp/commands/search.ts',
+  '/tmp/commands/tools/lint.ts',
+  '/tmp/commands/utils.ts',
+] as const
+
+function mockCollidingDefaults(): void {
+  mockedReaddir.mockResolvedValue([
+    makeDirent('index.ts', true),
+    makeDirent('search.ts', true),
+  ] as unknown as Dirent[])
+
+  vi.doMock('/tmp/commands/index.ts', () => ({
+    default: withTag({ description: 'Root search', name: 'search' }, 'Command'),
+  }))
+  vi.doMock('/tmp/commands/search.ts', () => ({
+    default: withTag({ default: true, description: 'File search' }, 'Command'),
+  }))
+}
+
 describe('autoload()', () => {
   beforeEach(() => {
     vi.clearAllMocks()
     vi.restoreAllMocks()
+    MOCKED_SPECIFIERS.map((specifier) => vi.doUnmock(specifier))
+    vi.resetModules()
     mockPathToFileURL.mockImplementation((p: string) => ({ href: p }))
   })
 
@@ -120,20 +158,166 @@ describe('autoload()', () => {
     expect(result).toStrictEqual({})
   })
 
-  it('should skip index.ts files in the root scan', async () => {
+  it('should not mark sibling commands as default', async () => {
     mockedReaddir.mockResolvedValue([
       makeDirent('index.ts', true),
       makeDirent('init.ts', true),
     ] as unknown as Dirent[])
 
+    vi.doMock('/tmp/commands/index.ts', () => ({
+      default: withTag({ description: 'Root' }, 'Command'),
+    }))
     vi.doMock('/tmp/commands/init.ts', () => ({
       default: withTag({ description: 'Init' }, 'Command'),
     }))
 
     const result = await autoload({ dir: '/tmp/commands' })
 
-    expect(result['index']).toBeUndefined()
     expect(hasTag(result['init'], 'Command')).toBeTruthy()
+    expect(result['init'].default).toBeUndefined()
+  })
+
+  it('should register the root index.ts as the default command', async () => {
+    mockedReaddir.mockResolvedValue([
+      makeDirent('index.ts', true),
+      makeDirent('init.ts', true),
+    ] as unknown as Dirent[])
+
+    vi.doMock('/tmp/commands/index.ts', () => ({
+      default: withTag({ description: 'Search things' }, 'Command'),
+    }))
+    vi.doMock('/tmp/commands/init.ts', () => ({
+      default: withTag({ description: 'Init' }, 'Command'),
+    }))
+
+    const result = await autoload({ dir: '/tmp/commands' })
+
+    expect(hasTag(result['index'], 'Command')).toBeTruthy()
+    expect(result['index'].description).toBe('Search things')
+    expect(result['index'].default).toBeTruthy()
+  })
+
+  it('should key a named root index.ts under its explicit name', async () => {
+    mockedReaddir.mockResolvedValue([makeDirent('index.ts', true)] as unknown as Dirent[])
+
+    vi.doMock('/tmp/commands/index.ts', () => ({
+      default: withTag({ description: 'Search things', name: 'search' }, 'Command'),
+    }))
+
+    const result = await autoload({ dir: '/tmp/commands' })
+
+    expect(result['index']).toBeUndefined()
+    expect(result['search'].default).toBeTruthy()
+  })
+
+  it('should keep the root index.ts when a named collision discards another default', async () => {
+    vi.spyOn(console, 'warn').mockImplementation(() => undefined)
+    mockCollidingDefaults()
+
+    const result = await autoload({ dir: '/tmp/commands' })
+
+    expect(result['search'].description).toBe('Root search')
+  })
+
+  it('should name the discarded default in the collision warning', async () => {
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => undefined)
+    mockCollidingDefaults()
+
+    await autoload({ dir: '/tmp/commands' })
+
+    expect(warnSpy).toHaveBeenCalledWith(
+      expect.stringContaining('both definitions are marked default')
+    )
+  })
+
+  it('should not mention defaults when a plain duplicate name collides', async () => {
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => undefined)
+    mockedReaddir.mockResolvedValue([
+      makeDirent('build.ts', true),
+      makeDirent('compile.ts', true),
+    ] as unknown as Dirent[])
+
+    vi.doMock('/tmp/commands/build.ts', () => ({
+      default: withTag({ description: 'Build' }, 'Command'),
+    }))
+    vi.doMock('/tmp/commands/compile.ts', () => ({
+      default: withTag({ description: 'Compile', name: 'build' }, 'Command'),
+    }))
+
+    await autoload({ dir: '/tmp/commands' })
+
+    const messages = warnSpy.mock.calls.map(([message]) => String(message))
+
+    expect(messages.some((message) => message.includes('marked default'))).toBeFalsy()
+  })
+
+  it('should resolve every root index file into a default command', async () => {
+    mockedReaddir.mockResolvedValue([
+      makeDirent('index.js', true),
+      makeDirent('index.ts', true),
+    ] as unknown as Dirent[])
+
+    vi.doMock('/tmp/commands/index.ts', () => ({
+      default: withTag({ description: 'From ts', name: 'from-ts' }, 'Command'),
+    }))
+    vi.doMock('/tmp/commands/index.js', () => ({
+      default: withTag({ description: 'From js', name: 'from-js' }, 'Command'),
+    }))
+
+    const result = await autoload({ dir: '/tmp/commands' })
+
+    expect(Object.keys(result).toSorted()).toStrictEqual(['from-js', 'from-ts'])
+  })
+
+  it('should mark every resolved root index file as a default command', async () => {
+    mockedReaddir.mockResolvedValue([
+      makeDirent('index.js', true),
+      makeDirent('index.ts', true),
+    ] as unknown as Dirent[])
+
+    vi.doMock('/tmp/commands/index.ts', () => ({
+      default: withTag({ description: 'From ts', name: 'from-ts' }, 'Command'),
+    }))
+    vi.doMock('/tmp/commands/index.js', () => ({
+      default: withTag({ description: 'From js', name: 'from-js' }, 'Command'),
+    }))
+
+    const result = await autoload({ dir: '/tmp/commands' })
+
+    expect([result['from-js'].default, result['from-ts'].default]).toStrictEqual([true, true])
+  })
+
+  it('should warn when a subdirectory holds more than one index file', async () => {
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => undefined)
+    mockedReaddir
+      .mockResolvedValueOnce([makeDirent('remote', false)] as unknown as Dirent[])
+      .mockResolvedValueOnce([
+        makeDirent('index.js', true),
+        makeDirent('index.ts', true),
+      ] as unknown as Dirent[])
+
+    vi.doMock('/tmp/commands/remote/index.js', () => ({
+      default: withTag({ description: 'From js' }, 'Command'),
+    }))
+    vi.doMock('/tmp/commands/remote/index.ts', () => ({
+      default: withTag({ description: 'From ts' }, 'Command'),
+    }))
+
+    await autoload({ dir: '/tmp/commands' })
+
+    expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('multiple index files'))
+  })
+
+  it('should ignore a root index.ts without a valid Command default export', async () => {
+    mockedReaddir.mockResolvedValue([makeDirent('index.ts', true)] as unknown as Dirent[])
+
+    vi.doMock('/tmp/commands/index.ts', () => ({
+      default: { notACommand: true },
+    }))
+
+    const result = await autoload({ dir: '/tmp/commands' })
+
+    expect(result).toStrictEqual({})
   })
 
   it('should handle subdirectory with index.ts as parent command', async () => {

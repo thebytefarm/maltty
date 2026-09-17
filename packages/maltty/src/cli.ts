@@ -21,8 +21,8 @@ import type {
 
 import { autoload } from './autoload.js'
 import { isCommandsConfig } from './command.js'
-import { createRuntime, registerCommands } from './runtime/index.js'
-import type { ErrorRef, ResolvedRef } from './runtime/index.js'
+import { createRuntime, registerCommands, resolveCommandTree } from './runtime/index.js'
+import type { ResolvedRef } from './runtime/index.js'
 
 /**
  * Bootstrap and run the CLI application.
@@ -66,22 +66,26 @@ export async function cli(options: CliOptions): Promise<void> {
     }
 
     const resolved: ResolvedRef = { ref: undefined }
-    const errorRef: ErrorRef = { error: undefined }
 
-    const resolvedCmds = await resolveCommands(options.commands)
+    const [treeError, loadedCmds] = await resolveCommandTrees(
+      await resolveCommands(options.commands)
+    )
+    if (treeError) {
+      return treeError
+    }
+    const resolvedCmds = loadedCmds ?? undefined
 
     if (resolvedCmds) {
-      registerCommands({
+      const [registerError] = registerCommands({
         commands: resolvedCmds.commands,
-        errorRef,
         instance: program,
         order: options.help?.order,
         parentPath: [],
         resolved,
       })
 
-      if (errorRef.error) {
-        return errorRef.error
+      if (registerError) {
+        return registerError
       }
     }
 
@@ -213,6 +217,31 @@ async function resolveCommands(
     .when(isCommandsConfig, (cfg) => resolveCommandsConfig(cfg))
     .when(isPlainObject, (cmds) => ({ commands: cmds }))
     .otherwise(() => resolveCommandsFromConfig())
+}
+
+/**
+ * Await every nested subcommand map in the loaded commands.
+ *
+ * Registration is synchronous, so a nested `commands` promise — what `autoload()`
+ * returns — has to be resolved before the tree reaches yargs.
+ *
+ * @private
+ * @param loaded - The loaded commands, or undefined when none were configured.
+ * @returns A Result tuple carrying the same value with every nested map awaited.
+ */
+async function resolveCommandTrees(
+  loaded: ResolvedCommands | undefined
+): Promise<Result<ResolvedCommands | undefined, Error>> {
+  if (!loaded) {
+    return ok(undefined)
+  }
+
+  const [treeError, commands] = await resolveCommandTree(loaded.commands)
+  if (treeError) {
+    return [treeError, null]
+  }
+
+  return ok({ ...loaded, commands })
 }
 
 /**

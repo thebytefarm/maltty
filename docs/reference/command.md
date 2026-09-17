@@ -31,6 +31,7 @@ const deploy = command({
 | `middleware`  | `Middleware[]`                    | --      | Command-scoped middleware                                      |
 | `commands`    | `CommandMap`                      | --      | Nested subcommands                                             |
 | `hidden`      | `Resolvable<boolean>`             | --      | When true, hidden from help output                             |
+| `default`     | `Resolvable<boolean>`             | --      | When true, also runs when no subcommand is given               |
 | `deprecated`  | `Resolvable<string \| boolean>`   | --      | Marks the command as deprecated                                |
 | `name`        | `string`                          | --      | Explicit command name (overrides autoload filename)            |
 | `aliases`     | `readonly string[]`               | --      | Alternative names                                              |
@@ -103,6 +104,54 @@ const oldDeploy = command({
   },
 })
 ```
+
+## Default commands
+
+Mark a command `default: true` to make it run when no subcommand matches. Both invocation forms stay available, and `ctx.meta.command` still reports the command's own name. A nameless root `index` command is the exception -- it has no name to report, so it contributes no path segment and `ctx.meta.command` is `[]`.
+
+```ts
+const search = command({
+  name: 'search',
+  default: true,
+  description: 'Search things',
+  positionals: z.object({ pattern: z.string().optional() }),
+  options: z.object({ filter: z.string().optional() }),
+  handler: async (ctx) => {
+    /* ... */
+  },
+})
+```
+
+```bash
+mygrep --filter x          # runs search
+mygrep needle              # runs search with pattern="needle"
+mygrep search --filter x   # runs search
+mygrep config              # runs the config command, not search
+```
+
+A known subcommand name always wins over the default command's positionals, so `mygrep config` cannot pass `config` as a `pattern`. Use the explicit form (`mygrep search config`) when you need that value.
+
+At most one command per level may be marked default -- a second one is a startup error. The flag also works inside a subcommand group, where it makes the bare group invocation dispatch to that subcommand:
+
+```bash
+mycli remote        # runs the subcommand marked default
+mycli remote add     # runs add
+```
+
+### Via autoload
+
+An `index` file at the root of the commands directory becomes the default command automatically, mirroring how an `index` file inside a subdirectory becomes that group's parent command.
+
+```text
+commands/
+├── index.ts     # the default command -- runs on `mygrep --filter x`
+├── config.ts    # mygrep config
+└── version.ts   # mygrep version
+```
+
+Give it a `name` to keep a named invocation form alongside the default; without one it is reachable only as the default.
+
+If that `name` collides with another file's command, autoload keeps the root `index` command and warns -- the later definition is discarded. Because only one survives, the collision is reported as a warning rather than the duplicate-default startup error, which sees the deduplicated map.
 
 ## Subcommands
 

@@ -319,6 +319,7 @@ export function createConfigClient<TSchema extends ZodTypeAny>(
       .map((layer) => layer.config as Record<string, unknown>)
       .reduce(
         (mergedResult, layerConfig) =>
+          // oxlint-disable-next-line prefer-structured-clone -- structuredClone throws on function values, which a TS config file may legitimately hold
           mergeWith(cloneDeep(mergedResult), layerConfig, (_targetValue, sourceValue) =>
             match(sourceValue)
               .with(P.array(), (value) => value)

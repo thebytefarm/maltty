@@ -7,14 +7,20 @@ import { path as pathUtils } from '@maltty/utils/node'
 import { hasTag, withTag } from '@maltty/utils/tag'
 import { match } from 'ts-pattern'
 
+import { INDEX_COMMAND_NAME } from './constants.js'
 import { isDebug } from './lib/debug.js'
 import type { AutoloadOptions, Command, CommandMap } from './types/index.js'
 
 const VALID_EXTENSIONS = new Set(['.ts', '.js', '.mjs', '.tsx', '.jsx'])
-const INDEX_NAME = 'index'
 
 /**
  * Scan a directory for command files and produce a CommandMap.
+ *
+ * An `index` file at the root of the scanned directory becomes the CLI's default
+ * command — it runs when no subcommand matches. This mirrors how an `index` file
+ * inside a subdirectory becomes that group's parent command. The default command
+ * keeps its explicit `name` when it declares one, so both `mycli` and
+ * `mycli <name>` dispatch to it; otherwise it is reachable only as the default.
  *
  * @param options - Autoload configuration (directory override, etc.).
  * @returns A promise resolving to a CommandMap built from the directory tree.
@@ -22,7 +28,16 @@ const INDEX_NAME = 'index'
 export async function autoload(options?: AutoloadOptions): Promise<CommandMap> {
   const dir = resolveDir(options)
   const entries = await readdir(dir, { withFileTypes: true })
-  return resolveCommandMapFromEntries(dir, entries)
+  const [commands, defaultPairs] = await Promise.all([
+    resolveCommandMapFromEntries(dir, entries),
+    resolveRootDefaultCommands({ dir, entries }),
+  ])
+
+  if (defaultPairs.length === 0) {
+    return commands
+  }
+
+  return Object.fromEntries(deduplicateCommandPairs([...defaultPairs, ...Object.entries(commands)]))
 }
 
 // ---------------------------------------------------------------------------
@@ -44,6 +59,42 @@ function resolveDir(options?: AutoloadOptions): string {
 }
 
 /**
+ * Resolve every root `index` file into a default command entry.
+ *
+ * Each command is keyed by its explicit `name` when it declares one — keeping the
+ * named invocation form available alongside the default — and by the reserved
+ * index name otherwise, which registers it with no name of its own.
+ *
+ * A directory can hold more than one index file across the supported extensions.
+ * All of them are resolved so a genuine conflict reaches registration as a
+ * multiple-default error rather than being decided by directory order.
+ *
+ * @private
+ * @param params - The scanned directory and its pre-read entries.
+ * @returns The resolved [name, Command] tuples, empty when there is no root index command.
+ */
+async function resolveRootDefaultCommands(params: {
+  readonly dir: string
+  readonly entries: Dirent[]
+}): Promise<readonly (readonly [string, Command])[]> {
+  const { dir, entries } = params
+
+  const pairs = await Promise.all(
+    findIndexEntries(entries).map(
+      async (entry): Promise<readonly [string, Command] | undefined> => {
+        const cmd = await importCommand(join(dir, entry.name))
+        if (!cmd) {
+          return undefined
+        }
+        return [cmd.name ?? INDEX_COMMAND_NAME, withTag({ ...cmd, default: true }, 'Command')]
+      }
+    )
+  )
+
+  return pairs.filter((pair): pair is readonly [string, Command] => pair !== undefined)
+}
+
+/**
  * Scan a subdirectory and assemble it as a parent command with subcommands.
  *
  * If the directory contains an `index.ts`/`index.js`, that becomes the parent
@@ -58,9 +109,15 @@ async function resolveDirCommand(dir: string): Promise<[string, Command] | undef
   const dirName = basename(dir)
   const dirEntries = await readdir(dir, { withFileTypes: true })
   const subCommands = await resolveCommandMapFromEntries(dir, dirEntries)
-  const indexFile = findIndexInEntries(dirEntries)
+  const indexFiles = findIndexEntries(dirEntries)
+  const [indexFile] = indexFiles
 
   if (indexFile) {
+    const warning = formatMultipleIndexWarning({ dirName, indexFiles, winner: indexFile.name })
+    if (warning) {
+      console.warn(warning)
+    }
+
     const parentCommand = await importCommand(join(dir, indexFile.name))
     if (parentCommand) {
       const name = parentCommand.name ?? dirName
@@ -73,6 +130,33 @@ async function resolveDirCommand(dir: string): Promise<[string, Command] | undef
   }
 
   return [dirName, withTag({ commands: subCommands }, 'Command')]
+}
+
+/**
+ * Build the warning for a subdirectory holding more than one index file.
+ *
+ * A group has room for exactly one parent handler, so the extra candidates are
+ * dropped. Only the winner is deterministic — which file that is depends on the
+ * sort in `findIndexEntries`, so the collision is worth naming.
+ *
+ * @private
+ * @param params - The directory name, its index candidates, and the winning filename.
+ * @returns The warning message, or undefined when there is no ambiguity.
+ */
+function formatMultipleIndexWarning(params: {
+  readonly dirName: string
+  readonly indexFiles: readonly Dirent[]
+  readonly winner: string
+}): string | undefined {
+  const { dirName, indexFiles, winner } = params
+
+  return match(indexFiles.length)
+    .when(
+      (count) => count > 1,
+      () =>
+        `[maltty] multiple index files in "${dirName}" (${indexFiles.map((entry) => entry.name).join(', ')}) — a group has one parent handler, so "${winner}" wins`
+    )
+    .otherwise(() => undefined)
 }
 
 /**
@@ -112,21 +196,26 @@ async function resolveCommandMapFromEntries(dir: string, entries: Dirent[]): Pro
 }
 
 /**
- * Find the index file (index.ts or index.js) in pre-read directory entries.
+ * Find every index file (`index.ts`, `index.js`, ...) in pre-read directory entries.
+ *
+ * Results are sorted by filename so callers that can only use one candidate pick
+ * the same file on every platform, regardless of directory read order.
  *
  * @private
  * @param entries - Pre-read directory entries.
- * @returns The index file's Dirent or undefined.
+ * @returns The index files' Dirents, sorted by name.
  */
-function findIndexInEntries(entries: Dirent[]): Dirent | undefined {
-  return entries.find(
-    (entry) =>
-      entry.isFile() &&
-      !entry.name.endsWith('.d.ts') &&
-      !entry.name.endsWith('.d.tsx') &&
-      VALID_EXTENSIONS.has(extname(entry.name)) &&
-      basename(entry.name, extname(entry.name)) === INDEX_NAME
-  )
+function findIndexEntries(entries: Dirent[]): readonly Dirent[] {
+  return entries
+    .filter(
+      (entry) =>
+        entry.isFile() &&
+        !entry.name.endsWith('.d.ts') &&
+        !entry.name.endsWith('.d.tsx') &&
+        VALID_EXTENSIONS.has(extname(entry.name)) &&
+        basename(entry.name, extname(entry.name)) === INDEX_COMMAND_NAME
+    )
+    .toSorted((a, b) => a.name.localeCompare(b.name))
 }
 
 /**
@@ -211,7 +300,7 @@ function isCommandFile(entry: Dirent): boolean {
   if (!VALID_EXTENSIONS.has(extname(entry.name))) {
     return false
   }
-  return deriveCommandName(entry) !== INDEX_NAME
+  return deriveCommandName(entry) !== INDEX_COMMAND_NAME
 }
 
 /**
@@ -243,24 +332,52 @@ function deduplicateCommandPairs(
   pairs: readonly (readonly [string, Command])[]
 ): readonly (readonly [string, Command])[] {
   const { result } = pairs.reduce<{
-    readonly seen: ReadonlySet<string>
+    readonly seen: ReadonlyMap<string, Command>
     readonly result: readonly (readonly [string, Command])[]
   }>(
     (acc, pair) => {
-      const [name] = pair
-      if (acc.seen.has(name)) {
-        console.warn(
-          `[maltty] duplicate command name "${name}" — first definition wins, later definition ignored`
-        )
+      const [name, cmd] = pair
+      const kept = acc.seen.get(name)
+      if (kept) {
+        console.warn(formatDuplicateWarning({ dropped: cmd, kept, name }))
         return acc
       }
       return {
         result: [...acc.result, pair],
-        seen: new Set([...acc.seen, name]),
+        seen: new Map([...acc.seen, [name, cmd] as const]),
       }
     },
-    { result: [], seen: new Set<string>() }
+    { result: [], seen: new Map<string, Command>() }
   )
 
   return result
+}
+
+/**
+ * Build the warning emitted when two commands resolve to the same name.
+ *
+ * Registration rejects multiple defaults at one level, but that check only sees
+ * the deduplicated map — two commands that are both marked default and collapse
+ * to a single name never reach it. The collision is called out here instead, so
+ * the discarded default is reported rather than silently dropped.
+ *
+ * @private
+ * @param params - The colliding name, the command kept, and the command dropped.
+ * @returns The warning message.
+ */
+function formatDuplicateWarning(params: {
+  readonly dropped: Command
+  readonly kept: Command
+  readonly name: string
+}): string {
+  const { dropped, kept, name } = params
+  const prefix = `[maltty] duplicate command name "${name}"`
+
+  return match(kept.default === true && dropped.default === true)
+    .with(
+      true,
+      () =>
+        `${prefix} — both definitions are marked default. First definition wins, later definition ignored.`
+    )
+    .otherwise(() => `${prefix} — first definition wins, later definition ignored`)
 }

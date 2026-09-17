@@ -43,6 +43,8 @@ cli({
 | `header` | `string` | Text displayed above help output when the CLI is invoked without a command             |
 | `footer` | `string` | Text displayed below help output on all help screens (e.g., docs URL, bug report link) |
 
+`header` only appears when the bare invocation has nothing to run. Registering a [default command](./command.md#default-commands) makes the bare invocation dispatch to that handler instead, so `header` is never shown.
+
 ## DirsConfig
 
 Overrides directory names for file-backed stores (auth credentials, config). Both default to `.<name>` when omitted.
@@ -63,6 +65,8 @@ The `commands` field accepts several forms:
 | `string`              | Directory path -- triggers autoloading from that directory         |
 | `CommandsConfig`      | Structured config with optional `order` array for display ordering |
 | _(omitted)_           | Loads `maltty.config.ts` and autoloads from its `commands` field   |
+
+Autoload registers an `index` file at the root of the directory as the [default command](./command.md#default-commands) rather than as a command named `index`.
 
 ## defineConfig()
 
