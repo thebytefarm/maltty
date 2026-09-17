@@ -384,6 +384,11 @@ function validateLevel(params: {
     return [reservedError, null]
   }
 
+  const [duplicateError] = validateUniqueNames(entries)
+  if (duplicateError) {
+    return [duplicateError, null]
+  }
+
   const [defaultError] = validateSingleDefault(entries)
   if (defaultError) {
     return [defaultError, null]
@@ -419,6 +424,32 @@ function validateReservedNames(
   if (reserved.length > 0) {
     return err(
       `"${YARGS_DEFAULT_COMMAND}" is reserved for the default command. Use \`default: true\` instead of naming or aliasing a command "${YARGS_DEFAULT_COMMAND}".`
+    )
+  }
+
+  return ok()
+}
+
+/**
+ * Validate that no two commands in a level resolve to the same name.
+ *
+ * An explicit `name` overrides the map key, so two distinct keys can normalize to
+ * one name. Yargs keeps only the last registration under a given command key, which
+ * would silently make the earlier command unreachable.
+ *
+ * @private
+ * @param entries - The `[name, Command]` pairs registered at one level.
+ * @returns A Result tuple — `[null, void]` on success or `[Error, null]` on a collision.
+ */
+function validateUniqueNames(
+  entries: readonly (readonly [string, Command])[]
+): Result<void, Error> {
+  const names = entries.map(([name]) => name)
+  const duplicates = [...new Set(names.filter((name, index) => names.indexOf(name) !== index))]
+
+  if (duplicates.length > 0) {
+    return err(
+      `Duplicate command names: ${duplicates.map((name) => `"${name}"`).join(', ')}. Each command at a level needs a unique name.`
     )
   }
 

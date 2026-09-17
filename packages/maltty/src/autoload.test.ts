@@ -40,6 +40,28 @@ function makeDirent(name: string, isFile: boolean): Dirent {
 
 const mockedReaddir = vi.mocked(readdir)
 
+// Every specifier any test registers a `vi.doMock()` factory for.
+// Resetting modules drops the cache but leaves those factories registered.
+// Each is retired before the next test imports its path.
+const MOCKED_SPECIFIERS = [
+  '/tmp/commands/broken.ts',
+  '/tmp/commands/build.ts',
+  '/tmp/commands/compile.ts',
+  '/tmp/commands/deploy.js',
+  '/tmp/commands/doctor.ts',
+  '/tmp/commands/generate/command.ts',
+  '/tmp/commands/generate/index.ts',
+  '/tmp/commands/generate/middleware.ts',
+  '/tmp/commands/index.js',
+  '/tmp/commands/index.ts',
+  '/tmp/commands/init.ts',
+  '/tmp/commands/remote/index.js',
+  '/tmp/commands/remote/index.ts',
+  '/tmp/commands/search.ts',
+  '/tmp/commands/tools/lint.ts',
+  '/tmp/commands/utils.ts',
+] as const
+
 function mockCollidingDefaults(): void {
   mockedReaddir.mockResolvedValue([
     makeDirent('index.ts', true),
@@ -58,6 +80,7 @@ describe('autoload()', () => {
   beforeEach(() => {
     vi.clearAllMocks()
     vi.restoreAllMocks()
+    MOCKED_SPECIFIERS.map((specifier) => vi.doUnmock(specifier))
     vi.resetModules()
     mockPathToFileURL.mockImplementation((p: string) => ({ href: p }))
   })
@@ -223,9 +246,9 @@ describe('autoload()', () => {
 
     await autoload({ dir: '/tmp/commands' })
 
-    expect(warnSpy).toHaveBeenCalledWith(
-      expect.not.stringContaining('marked default') as unknown as string
-    )
+    const messages = warnSpy.mock.calls.map(([message]) => String(message))
+
+    expect(messages.some((message) => message.includes('marked default'))).toBeFalsy()
   })
 
   it('should resolve every root index file into a default command', async () => {

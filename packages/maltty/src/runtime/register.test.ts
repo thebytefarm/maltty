@@ -730,6 +730,24 @@ describe('default commands', () => {
     expect(registerError?.message).toContain('reserved for the default command')
   })
 
+  it('should return an error when two commands resolve to the same name', () => {
+    const commands: CommandMap = {
+      alpha: command({ description: 'Alpha', name: 'shared' }),
+      beta: command({ description: 'Beta', name: 'shared' }),
+    }
+
+    const resolved: ResolvedRef = { ref: undefined }
+
+    const [registerError] = registerCommands({
+      commands,
+      instance: yargs([]),
+      parentPath: [],
+      resolved,
+    })
+
+    expect(registerError?.message).toContain('Duplicate command names: "shared"')
+  })
+
   it('should return an error when a command aliases the reserved $0 name', () => {
     const commands: CommandMap = {
       search: command({ aliases: ['find', '$0'], description: 'Sneaky default' }),
