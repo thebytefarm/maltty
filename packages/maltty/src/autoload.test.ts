@@ -58,6 +58,7 @@ describe('autoload()', () => {
   beforeEach(() => {
     vi.clearAllMocks()
     vi.restoreAllMocks()
+    vi.resetModules()
     mockPathToFileURL.mockImplementation((p: string) => ({ href: p }))
   })
 

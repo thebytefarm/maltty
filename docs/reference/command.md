@@ -107,7 +107,7 @@ const oldDeploy = command({
 
 ## Default commands
 
-Mark a command `default: true` to make it run when no subcommand matches. Both invocation forms stay available, and `ctx.meta.command` still reports the command's own name.
+Mark a command `default: true` to make it run when no subcommand matches. Both invocation forms stay available, and `ctx.meta.command` still reports the command's own name. A nameless root `index` command is the exception -- it has no name to report, so it contributes no path segment and `ctx.meta.command` is `[]`.
 
 ```ts
 const search = command({

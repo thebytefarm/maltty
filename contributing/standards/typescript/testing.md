@@ -106,8 +106,11 @@ it('should load the command', async () => {
 })
 ```
 
-Reset state in `beforeEach` with `vi.clearAllMocks()` and `vi.restoreAllMocks()`
-so a factory does not leak into the next test.
+`vi.clearAllMocks()` and `vi.restoreAllMocks()` reset call history and spies but
+leave the registered factory in place, and `vi.resetModules()` only drops the
+module cache. To retire a factory, call `vi.doUnmock(specifier)` for each mocked
+path and then `vi.resetModules()` before the next dynamic import -- otherwise a
+later test reuses the previous test's module.
 
 ### Organize Tests by Feature
 
