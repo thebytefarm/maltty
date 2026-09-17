@@ -1,0 +1,50 @@
+docs/guides/build-a-cli.md
+  s_142bec305d77f5::t_4e90c198351692 208
+docs/reference/cli.md
+  s_142bec305d77f5::t_4e90c198351692 144
+packages/maltty/src/runtime/register.ts
+  s_142bec305d77f5::t_d9ab71dd238027 400-424
+  s_142bec305d77f5::t_1888e4ed8f3f8b 382-386
+  s_142bec305d77f5::t_dd3bbf2e6ad537 38,42,44-45,50,65-66
+  s_142bec305d77f5::t_abada3921ca96e 399
+packages/maltty/src/runtime/resolve.ts
+  s_142bec305d77f5::t_d66bdf6b1a3780 21,53-55
+packages/maltty/src/autoload.ts
+  s_142bec305d77f5::t_d66bdf6b1a3780 83-89,91
+packages/maltty/src/cli.ts
+  s_142bec305d77f5::t_25b7537729d069 25,79,87-88
+packages/maltty/src/runtime/resolve.test.ts
+  s_142bec305d77f5::t_ab33602b10d4e5 50-51
+contributing/concepts/cli.md
+  s_142bec305d77f5::t_4e90c198351692 263
+packages/maltty/src/runtime/register.test.ts
+  s_142bec305d77f5::t_147a9db1622e09 152,173,680,773
+  s_142bec305d77f5::t_7ad5a95a924baa 140,149,161,169-170,182,190-191,203,211,230,237,259,286,321,423,431,452,484,511,673,695-696,794
+  s_142bec305d77f5::t_d66bdf6b1a3780 688-693,787-792
+  s_142bec305d77f5::t_b80a5a35c7eb9d 697,699-711,713-730
+  s_b7ab3d5bc95267::t_c5cf6b4e6c18cd 694,698
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "548bdd2f9a8f3195830e5e5af69cc3842175009f",
+  "prompts": {},
+  "sessions": {
+    "s_142bec305d77f5": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "6e0f1a58-e89a-4ce5-916d-8079994a6454",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Zac Rosenbauer <me@zrosenbauer.com>"
+    },
+    "s_b7ab3d5bc95267": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_f54aa1cd0ffeQOP3GVYB2NNBGW",
+        "model": "glm-5.3"
+      },
+      "human_author": "Zac Rosenbauer <me@zrosenbauer.com>"
+    }
+  }
+}
