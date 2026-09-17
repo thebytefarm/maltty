@@ -1,0 +1,31 @@
+contributing/concepts/architecture.md
+  s_142bec305d77f5::t_d2838408328d07 272,285
+packages/maltty/src/autoload.ts
+  s_142bec305d77f5::t_4e1d9f763a26a4 116-118
+  s_142bec305d77f5::t_0fead4e7cf2fe8 136-161
+  s_10a4914da73c93::t_7e272001db3a29 135
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.0",
+  "base_commit_sha": "999e71a325f174ef1787e1ecb9d5702b7cd2ba1e",
+  "prompts": {},
+  "sessions": {
+    "s_10a4914da73c93": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_f678fe36fffeHA52r2uVyGfdfk",
+        "model": "gpt-5.6-sol"
+      },
+      "human_author": "Zac Rosenbauer <me@zrosenbauer.com>"
+    },
+    "s_142bec305d77f5": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "6e0f1a58-e89a-4ce5-916d-8079994a6454",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Zac Rosenbauer <me@zrosenbauer.com>"
+    }
+  }
+}
