@@ -245,6 +245,24 @@ describe('autoload()', () => {
     expect(Object.keys(result).toSorted()).toStrictEqual(['from-js', 'from-ts'])
   })
 
+  it('should mark every resolved root index file as a default command', async () => {
+    mockedReaddir.mockResolvedValue([
+      makeDirent('index.js', true),
+      makeDirent('index.ts', true),
+    ] as unknown as Dirent[])
+
+    vi.doMock('/tmp/commands/index.ts', () => ({
+      default: withTag({ description: 'From ts', name: 'from-ts' }, 'Command'),
+    }))
+    vi.doMock('/tmp/commands/index.js', () => ({
+      default: withTag({ description: 'From js', name: 'from-js' }, 'Command'),
+    }))
+
+    const result = await autoload({ dir: '/tmp/commands' })
+
+    expect([result['from-js'].default, result['from-ts'].default]).toStrictEqual([true, true])
+  })
+
   it('should warn when a subdirectory holds more than one index file', async () => {
     const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => undefined)
     mockedReaddir

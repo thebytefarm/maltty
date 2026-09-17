@@ -1,4 +1,4 @@
-import { err, ok } from '@maltty/utils/fp'
+import { attemptAsync } from '@maltty/utils/fp'
 import type { Result } from '@maltty/utils/fp'
 import { withTag } from '@maltty/utils/tag'
 
@@ -21,11 +21,7 @@ import { isCommand } from './register.js'
 export async function resolveCommandTree(
   commands: CommandMap
 ): Promise<Result<CommandMap, Error>> {
-  try {
-    return ok(await resolveTree(commands))
-  } catch (error: unknown) {
-    return err(error)
-  }
+  return attemptAsync<CommandMap, Error>(() => resolveTree(commands))
 }
 
 // ---------------------------------------------------------------------------
@@ -35,8 +31,8 @@ export async function resolveCommandTree(
 /**
  * Await every nested subcommand map, rejecting if any of them does.
  *
- * Rejections are converted to a Result once, at the exported boundary, so the
- * recursion stays a plain async walk.
+ * `attemptAsync` converts a rejection to a Result once, at the exported boundary,
+ * so the recursion stays a plain async walk.
  *
  * @private
  * @param commands - The command map to resolve.

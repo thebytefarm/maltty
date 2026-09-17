@@ -189,7 +189,7 @@ my-app generate         # runs the generate command, not search
 
 A registered command name always wins over the default command's positionals -- `my-app generate` can never pass `generate` as a `pattern`. Use the explicit form when you need that value.
 
-Only one command per level may be marked default. Note that adding a default command means a bare `my-app` runs that handler instead of printing help, so `help.header` no longer appears.
+Mark only one command per level as default. Note that adding a default command means a bare `my-app` runs that handler instead of printing help, so `help.header` no longer appears.
 
 ### 7. Autoload commands from a directory
 
@@ -205,7 +205,7 @@ cli({
 })
 ```
 
-Assign it to a key instead -- `commands: { generate: autoload({ dir: './commands/generate' }) }` -- to mount the directory under a parent command, where every discovered command is reached as `my-app generate <name>`.
+Assign it to a key instead -- `commands: { generate: autoload({ dir: './commands/generate' }) }` -- to mount the directory under a parent command, where you invoke every discovered command as `my-app generate <name>`.
 
 An `index` file at the root of an autoloaded directory becomes that level's default command:
 
@@ -216,7 +216,7 @@ commands/
 └── status.ts    # my-app status
 ```
 
-Give it a `name` to keep a named invocation form alongside the default; without one it is reachable only as the default.
+Give it a `name` to keep a named invocation form alongside the default; without one you can invoke it only as the default.
 
 ### 8. Add typed config
 

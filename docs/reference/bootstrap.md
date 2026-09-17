@@ -66,7 +66,7 @@ The `commands` field accepts several forms:
 | `CommandsConfig`      | Structured config with optional `order` array for display ordering |
 | _(omitted)_           | Loads `maltty.config.ts` and autoloads from its `commands` field   |
 
-When autoloading, an `index` file at the root of the directory is registered as the [default command](./command.md#default-commands) rather than as a command named `index`.
+Autoload registers an `index` file at the root of the directory as the [default command](./command.md#default-commands) rather than as a command named `index`.
 
 ## defineConfig()
 

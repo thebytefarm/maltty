@@ -264,7 +264,7 @@ commands/
 - Files named `index` never become a subcommand called `index` -- at the root they become the default command, inside a subdirectory they become that directory's parent handler
 - Subdirectories become parent commands with nested subcommands
 
-A root `index` command is keyed by its explicit `name` when it declares one -- keeping `mycli <name>` available alongside the bare form -- and stays keyed `index` otherwise, which registers it with no invocable name. See [default commands](../../docs/reference/command.md#default-commands).
+Autoload keys a root `index` command by its explicit `name` when it declares one -- keeping `mycli <name>` available alongside the bare form -- and falls back to the reserved `index` key otherwise, which registers the command with no invocable name. See [default commands](../../docs/reference/command.md#default-commands).
 
 ## Error Flow
 
