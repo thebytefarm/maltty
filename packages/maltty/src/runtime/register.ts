@@ -397,25 +397,28 @@ function validateLevel(params: {
 }
 
 /**
- * Validate that no command claims the yargs default sigil as its name.
+ * Validate that no command claims the yargs default sigil as a name or alias.
  *
- * `CommandMap` keys and `name` are both free-form strings, so a command can ask
+ * Map keys, `name`, and `aliases` are all free-form strings, so a command can ask
  * to be registered as `$0` — which yargs silently treats as a default command,
  * bypassing `default: true` and its single-default check. Claiming it is a
  * startup error; `default: true` is the supported way to reach that behaviour.
  *
  * @private
  * @param entries - The `[name, Command]` pairs registered at one level.
- * @returns A Result tuple — `[null, void]` on success or `[Error, null]` when a name is reserved.
+ * @returns A Result tuple — `[null, void]` on success or `[Error, null]` when a name or alias is reserved.
  */
 function validateReservedNames(
   entries: readonly (readonly [string, Command])[]
 ): Result<void, Error> {
-  const reserved = entries.filter(([name]) => name === YARGS_DEFAULT_COMMAND)
+  const reserved = entries.filter(
+    ([name, cmd]) =>
+      name === YARGS_DEFAULT_COMMAND || (cmd.aliases ?? []).includes(YARGS_DEFAULT_COMMAND)
+  )
 
   if (reserved.length > 0) {
     return err(
-      `"${YARGS_DEFAULT_COMMAND}" is reserved for the default command. Use \`default: true\` instead of naming a command "${YARGS_DEFAULT_COMMAND}".`
+      `"${YARGS_DEFAULT_COMMAND}" is reserved for the default command. Use \`default: true\` instead of naming or aliasing a command "${YARGS_DEFAULT_COMMAND}".`
     )
   }
 

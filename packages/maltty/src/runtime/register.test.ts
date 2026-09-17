@@ -730,6 +730,23 @@ describe('default commands', () => {
     expect(registerError?.message).toContain('reserved for the default command')
   })
 
+  it('should return an error when a command aliases the reserved $0 name', () => {
+    const commands: CommandMap = {
+      search: command({ aliases: ['find', '$0'], description: 'Sneaky default' }),
+    }
+
+    const resolved: ResolvedRef = { ref: undefined }
+
+    const [registerError] = registerCommands({
+      commands,
+      instance: yargs([]),
+      parentPath: [],
+      resolved,
+    })
+
+    expect(registerError?.message).toContain('reserved for the default command')
+  })
+
   it('should run a default subcommand inside a group', async () => {
     const handler = vi.fn()
     const commands: CommandMap = {

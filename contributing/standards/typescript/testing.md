@@ -86,6 +86,29 @@ expect(mockCallback).toHaveBeenCalledWith('arg')
 expect(mockCallback).toHaveBeenCalledTimes(1)
 ```
 
+#### Exception: per-test module factories
+
+Use `vi.doMock` when the code under test loads a module through a dynamic
+`await import()` and individual tests need different factories for the same
+specifier. `vi.mock` hoists to the top of the file and applies one factory to
+every test, so those tests would share the first fixture registered.
+
+`autoload()` in `packages/maltty` is the case this covers -- each test declares a
+different fake command module for the same path.
+
+```ts
+it('should load the command', async () => {
+  vi.doMock('/tmp/commands/deploy.ts', () => ({ default: someCommand }))
+
+  const result = await autoload({ dir: '/tmp/commands' })
+
+  expect(result['deploy']).toBeDefined()
+})
+```
+
+Reset state in `beforeEach` with `vi.clearAllMocks()` and `vi.restoreAllMocks()`
+so a factory does not leak into the next test.
+
 ### Organize Tests by Feature
 
 Group related tests with nested `describe` blocks. Use `beforeEach` to reset mocks and shared state before each test.
