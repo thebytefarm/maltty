@@ -1,0 +1,37 @@
+packages/maltty/src/cli.ts
+  s_142bec305d77f5::t_40d6dfa41e24e5 71-77
+  s_142bec305d77f5::t_409e453aeae6a8 232,236,238,240-246
+packages/maltty/src/runtime/resolve.test.ts
+  s_142bec305d77f5::t_e352d5ca8624a2 50-51
+  s_142bec305d77f5::t_9e310588ec55d0 56-68
+  s_142bec305d77f5::t_43984874cca4e6 18,20,31,33,49,77,79
+packages/maltty/src/runtime/resolve.ts
+  s_142bec305d77f5::t_f1f1c603f433de 1-2,19,21-28,35-49,66
+docs/guides/build-a-cli.md
+  s_142bec305d77f5::t_2f1b5500b0ab4f 204,208
+  s_cc2aaa428ecc5e::t_082ce67fa766bd 209
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "277f9c3c952d0833684000778459e31ee89c7ecd",
+  "prompts": {},
+  "sessions": {
+    "s_142bec305d77f5": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "6e0f1a58-e89a-4ce5-916d-8079994a6454",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Zac Rosenbauer <me@zrosenbauer.com>"
+    },
+    "s_cc2aaa428ecc5e": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_f52f59837ffel85xvyo3p2vniF",
+        "model": "gpt-5.6-sol"
+      },
+      "human_author": "Zac Rosenbauer <me@zrosenbauer.com>"
+    }
+  }
+}
