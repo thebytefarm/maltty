@@ -35,20 +35,19 @@ export function isCommand(value: unknown): value is Command {
  * Register all commands from a CommandMap on a yargs instance.
  *
  * Iterates over the command map, filters for valid Command objects,
- * validates the order array, sorts entries, and recursively registers
+ * validates the whole tree, sorts entries, and recursively registers
  * each command (including subcommands) on the provided yargs Argv instance.
  *
  * @param options - Registration options including the command map, yargs instance, and resolution ref.
+ * @returns A Result tuple — `[null, void]` once registered, `[Error, null]` on a validation failure.
  */
-export function registerCommands(options: RegisterCommandsOptions): void {
-  const { instance, commands, resolved, parentPath, order, errorRef } = options
+export function registerCommands(options: RegisterCommandsOptions): Result<void, Error> {
+  const { instance, commands, resolved, parentPath, order } = options
   const commandEntries = toCommandEntries(commands)
 
   const [validationError] = validateTree({ entries: commandEntries, order })
   if (validationError) {
-    // Intentional mutation: errorRef is a mutable holder for deferred error reporting.
-    errorRef.error = validationError
-    return
+    return [validationError, null]
   }
 
   const sorted = sortCommandEntries({ entries: commandEntries, order })
@@ -63,16 +62,11 @@ export function registerCommands(options: RegisterCommandsOptions): void {
       resolved,
     })
   )
+
+  return ok()
 }
 
 export type { ResolvedCommand, ResolvedRef } from './types.js'
-
-/**
- * Mutable ref holder for deferred error reporting during command registration.
- */
-export interface ErrorRef {
-  error: Error | undefined
-}
 
 // ---------------------------------------------------------------------------
 // Private
@@ -97,7 +91,6 @@ interface RegisterSingleCommandOptions {
 
 interface RegisterCommandsOptions {
   commands: CommandMap
-  errorRef: ErrorRef
   instance: Argv
   order?: readonly string[]
   parentPath: string[]
@@ -386,6 +379,11 @@ function validateLevel(params: {
 }): Result<void, Error> {
   const { entries, order } = params
 
+  const [reservedError] = validateReservedNames(entries)
+  if (reservedError) {
+    return [reservedError, null]
+  }
+
   const [defaultError] = validateSingleDefault(entries)
   if (defaultError) {
     return [defaultError, null]
@@ -396,6 +394,32 @@ function validateLevel(params: {
   }
 
   return validateCommandOrder({ commandNames: entries.map(([name]) => name), order })
+}
+
+/**
+ * Validate that no command claims the yargs default sigil as its name.
+ *
+ * `CommandMap` keys and `name` are both free-form strings, so a command can ask
+ * to be registered as `$0` — which yargs silently treats as a default command,
+ * bypassing `default: true` and its single-default check. Claiming it is a
+ * startup error; `default: true` is the supported way to reach that behaviour.
+ *
+ * @private
+ * @param entries - The `[name, Command]` pairs registered at one level.
+ * @returns A Result tuple — `[null, void]` on success or `[Error, null]` when a name is reserved.
+ */
+function validateReservedNames(
+  entries: readonly (readonly [string, Command])[]
+): Result<void, Error> {
+  const reserved = entries.filter(([name]) => name === YARGS_DEFAULT_COMMAND)
+
+  if (reserved.length > 0) {
+    return err(
+      `"${YARGS_DEFAULT_COMMAND}" is reserved for the default command. Use \`default: true\` instead of naming a command "${YARGS_DEFAULT_COMMAND}".`
+    )
+  }
+
+  return ok()
 }
 
 /**

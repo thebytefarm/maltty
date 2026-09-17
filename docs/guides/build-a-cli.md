@@ -205,7 +205,7 @@ cli({
 })
 ```
 
-Assign it to a key instead -- `commands: { generate: autoload({ dir: './commands/generate' }) }` -- to mount the directory under a parent command, where you invoke every discovered command as `my-app generate <name>`.
+Assign it to a key instead -- `commands: { generate: autoload({ dir: './commands/generate' }) }` -- to mount the directory under a parent command. You then invoke each named command as `my-app generate <name>`, and a nameless `index.ts` default as `my-app generate`.
 
 An `index` file at the root of an autoloaded directory becomes that level's default command:
 

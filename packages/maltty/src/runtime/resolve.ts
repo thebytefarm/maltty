@@ -18,9 +18,7 @@ import { isCommand } from './register.js'
  * @param commands - The command map to resolve.
  * @returns A Result tuple — `[null, CommandMap]` on success, `[Error, null]` when a nested map rejects.
  */
-export async function resolveCommandTree(
-  commands: CommandMap
-): Promise<Result<CommandMap, Error>> {
+export async function resolveCommandTree(commands: CommandMap): Promise<Result<CommandMap, Error>> {
   return attemptAsync<CommandMap, Error>(() => resolveTree(commands))
 }
 
@@ -52,7 +50,9 @@ async function resolveTree(commands: CommandMap): Promise<CommandMap> {
  * @param entry - The map entry to resolve.
  * @returns A promise resolving to the entry with its subtree awaited.
  */
-async function resolveEntry(entry: readonly [string, Command]): Promise<readonly [string, Command]> {
+async function resolveEntry(
+  entry: readonly [string, Command]
+): Promise<readonly [string, Command]> {
   const [key, cmd] = entry
   if (!isCommand(cmd) || !cmd.commands) {
     return entry

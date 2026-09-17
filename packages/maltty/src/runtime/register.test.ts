@@ -6,7 +6,6 @@ import { z } from 'zod'
 import { command } from '@/command.js'
 import type { CommandMap } from '@/types/index.js'
 
-import type { ErrorRef } from './register.js'
 import { registerCommands } from './register.js'
 import type { ResolvedRef } from './types.js'
 
@@ -129,7 +128,6 @@ describe('command ordering', () => {
     }
 
     const resolved: ResolvedRef = { ref: undefined }
-    const errorRef: ErrorRef = { error: undefined }
     const instance = yargs([])
 
     const registeredNames: string[] = []
@@ -139,9 +137,8 @@ describe('command ordering', () => {
       return originalCommand(name as string, ...(rest as [string]))
     })
 
-    registerCommands({
+    const [registerError] = registerCommands({
       commands,
-      errorRef,
       instance,
       order: ['gamma', 'alpha'],
       parentPath: [],
@@ -149,53 +146,49 @@ describe('command ordering', () => {
     })
 
     expect(registeredNames).toStrictEqual(['gamma', 'alpha', 'beta'])
-    expect(errorRef.error).toBeUndefined()
+    expect(registerError).toBeNull()
   })
 
-  it('should set errorRef when order contains invalid names', () => {
+  it('should return an error when order contains invalid names', () => {
     const commands: CommandMap = {
       alpha: command({ description: 'Alpha' }),
       beta: command({ description: 'Beta' }),
     }
 
     const resolved: ResolvedRef = { ref: undefined }
-    const errorRef: ErrorRef = { error: undefined }
     const instance = yargs([])
 
-    registerCommands({
+    const [registerError] = registerCommands({
       commands,
-      errorRef,
       instance,
       order: ['alpha', 'missing'],
       parentPath: [],
       resolved,
     })
 
-    expect(errorRef.error).toBeInstanceOf(Error)
-    expect(errorRef.error?.message).toContain('"missing"')
+    expect(registerError).toBeInstanceOf(Error)
+    expect(registerError?.message).toContain('"missing"')
   })
 
-  it('should set errorRef when order contains duplicate names', () => {
+  it('should return an error when order contains duplicate names', () => {
     const commands: CommandMap = {
       alpha: command({ description: 'Alpha' }),
       beta: command({ description: 'Beta' }),
     }
 
     const resolved: ResolvedRef = { ref: undefined }
-    const errorRef: ErrorRef = { error: undefined }
     const instance = yargs([])
 
-    registerCommands({
+    const [registerError] = registerCommands({
       commands,
-      errorRef,
       instance,
       order: ['alpha', 'alpha'],
       parentPath: [],
       resolved,
     })
 
-    expect(errorRef.error).toBeInstanceOf(Error)
-    expect(errorRef.error?.message).toContain('duplicate')
+    expect(registerError).toBeInstanceOf(Error)
+    expect(registerError?.message).toContain('duplicate')
   })
 
   it('should not validate order when order array is empty', () => {
@@ -205,19 +198,17 @@ describe('command ordering', () => {
     }
 
     const resolved: ResolvedRef = { ref: undefined }
-    const errorRef: ErrorRef = { error: undefined }
     const instance = yargs([])
 
-    registerCommands({
+    const [registerError] = registerCommands({
       commands,
-      errorRef,
       instance,
       order: [],
       parentPath: [],
       resolved,
     })
 
-    expect(errorRef.error).toBeUndefined()
+    expect(registerError).toBeNull()
   })
 
   it('should handle subcommand ordering via cmd.help.order', () => {
@@ -234,18 +225,16 @@ describe('command ordering', () => {
     }
 
     const resolved: ResolvedRef = { ref: undefined }
-    const errorRef: ErrorRef = { error: undefined }
     const instance = yargs([])
 
-    registerCommands({
+    const [registerError] = registerCommands({
       commands,
-      errorRef,
       instance,
       parentPath: [],
       resolved,
     })
 
-    expect(errorRef.error).toBeUndefined()
+    expect(registerError).toBeNull()
   })
 })
 
@@ -256,7 +245,6 @@ describe('hidden and deprecated commands', () => {
     }
 
     const resolved: ResolvedRef = { ref: undefined }
-    const errorRef: ErrorRef = { error: undefined }
     const instance = yargs([])
 
     const registeredDescriptions: (string | false)[] = []
@@ -268,9 +256,8 @@ describe('hidden and deprecated commands', () => {
       }
     )
 
-    registerCommands({
+    const [registerError] = registerCommands({
       commands,
-      errorRef,
       instance,
       parentPath: [],
       resolved,
@@ -285,7 +272,6 @@ describe('hidden and deprecated commands', () => {
     }
 
     const resolved: ResolvedRef = { ref: undefined }
-    const errorRef: ErrorRef = { error: undefined }
     const instance = yargs([])
 
     const registeredDescriptions: (string | false)[] = []
@@ -297,9 +283,8 @@ describe('hidden and deprecated commands', () => {
       }
     )
 
-    registerCommands({
+    const [registerError] = registerCommands({
       commands,
-      errorRef,
       instance,
       parentPath: [],
       resolved,
@@ -314,7 +299,6 @@ describe('hidden and deprecated commands', () => {
     }
 
     const resolved: ResolvedRef = { ref: undefined }
-    const errorRef: ErrorRef = { error: undefined }
     const instance = yargs([])
 
     const registeredDeprecated: (string | boolean | undefined)[] = []
@@ -334,9 +318,8 @@ describe('hidden and deprecated commands', () => {
       }
     )
 
-    registerCommands({
+    const [registerError] = registerCommands({
       commands,
-      errorRef,
       instance,
       parentPath: [],
       resolved,
@@ -428,7 +411,6 @@ describe('positional argument support', () => {
     }
 
     const resolved: ResolvedRef = { ref: undefined }
-    const errorRef: ErrorRef = { error: undefined }
     const instance = yargs([])
 
     const registeredNames: string[] = []
@@ -438,16 +420,15 @@ describe('positional argument support', () => {
       return originalCommand(name as string, ...(rest as [string]))
     })
 
-    registerCommands({
+    const [registerError] = registerCommands({
       commands,
-      errorRef,
       instance,
       parentPath: [],
       resolved,
     })
 
     expect(registeredNames).toStrictEqual(['create <workspace>'])
-    expect(errorRef.error).toBeUndefined()
+    expect(registerError).toBeNull()
   })
 
   it('should register command with optional positional placeholder', () => {
@@ -459,7 +440,6 @@ describe('positional argument support', () => {
     }
 
     const resolved: ResolvedRef = { ref: undefined }
-    const errorRef: ErrorRef = { error: undefined }
     const instance = yargs([])
 
     const registeredNames: string[] = []
@@ -469,9 +449,8 @@ describe('positional argument support', () => {
       return originalCommand(name as string, ...(rest as [string]))
     })
 
-    registerCommands({
+    const [registerError] = registerCommands({
       commands,
-      errorRef,
       instance,
       parentPath: [],
       resolved,
@@ -493,7 +472,6 @@ describe('positional argument support', () => {
     }
 
     const resolved: ResolvedRef = { ref: undefined }
-    const errorRef: ErrorRef = { error: undefined }
     const instance = yargs([])
 
     const registeredNames: string[] = []
@@ -503,9 +481,8 @@ describe('positional argument support', () => {
       return originalCommand(name as string, ...(rest as [string]))
     })
 
-    registerCommands({
+    const [registerError] = registerCommands({
       commands,
-      errorRef,
       instance,
       parentPath: [],
       resolved,
@@ -522,7 +499,6 @@ describe('positional argument support', () => {
     }
 
     const resolved: ResolvedRef = { ref: undefined }
-    const errorRef: ErrorRef = { error: undefined }
     const instance = yargs([])
 
     const registeredNames: string[] = []
@@ -532,9 +508,8 @@ describe('positional argument support', () => {
       return originalCommand(name as string, ...(rest as [string]))
     })
 
-    registerCommands({
+    const [registerError] = registerCommands({
       commands,
-      errorRef,
       instance,
       parentPath: [],
       resolved,
@@ -686,7 +661,6 @@ describe('default commands', () => {
     }
 
     const resolved: ResolvedRef = { ref: undefined }
-    const errorRef: ErrorRef = { error: undefined }
     const instance = yargs([])
 
     const originalCommand = instance.command.bind(instance)
@@ -696,26 +670,64 @@ describe('default commands', () => {
         originalCommand(name as string, ...(rest as [string]))
       )
 
-    registerCommands({ commands, errorRef, instance, parentPath: [], resolved })
+    const [registerError] = registerCommands({ commands, instance, parentPath: [], resolved })
 
     expect(commandSpy.mock.calls.map(([name]) => name)).toStrictEqual([
       ['search <pattern>', 'find', '$0'],
     ])
   })
 
-  it('should set errorRef when two commands are marked default', () => {
+  it('should return an error when two commands are marked default', () => {
     const commands: CommandMap = {
       find: command({ default: true, description: 'Find things' }),
       search: command({ default: true, description: 'Search things' }),
     }
 
     const resolved: ResolvedRef = { ref: undefined }
-    const errorRef: ErrorRef = { error: undefined }
 
-    registerCommands({ commands, errorRef, instance: yargs([]), parentPath: [], resolved })
+    const [registerError] = registerCommands({
+      commands,
+      instance: yargs([]),
+      parentPath: [],
+      resolved,
+    })
 
-    expect(errorRef.error).toBeInstanceOf(Error)
-    expect(errorRef.error?.message).toContain('Multiple default commands')
+    expect(registerError).toBeInstanceOf(Error)
+    expect(registerError?.message).toContain('Multiple default commands')
+  })
+
+  it('should return an error when a command is keyed by the reserved $0 name', () => {
+    const commands: CommandMap = {
+      $0: command({ description: 'Sneaky default' }),
+    }
+
+    const resolved: ResolvedRef = { ref: undefined }
+
+    const [registerError] = registerCommands({
+      commands,
+      instance: yargs([]),
+      parentPath: [],
+      resolved,
+    })
+
+    expect(registerError?.message).toContain('reserved for the default command')
+  })
+
+  it('should return an error when a command is explicitly named $0', () => {
+    const commands: CommandMap = {
+      search: command({ description: 'Sneaky default', name: '$0' }),
+    }
+
+    const resolved: ResolvedRef = { ref: undefined }
+
+    const [registerError] = registerCommands({
+      commands,
+      instance: yargs([]),
+      parentPath: [],
+      resolved,
+    })
+
+    expect(registerError?.message).toContain('reserved for the default command')
   })
 
   it('should run a default subcommand inside a group', async () => {
@@ -758,7 +770,7 @@ describe('default command edge cases', () => {
     )
   })
 
-  it('should set errorRef when two subcommands in an unselected group are marked default', () => {
+  it('should return an error when two subcommands in an unselected group are marked default', () => {
     const commands: CommandMap = {
       other: command({ description: 'Unrelated' }),
       remote: command({
@@ -771,11 +783,15 @@ describe('default command edge cases', () => {
     }
 
     const resolved: ResolvedRef = { ref: undefined }
-    const errorRef: ErrorRef = { error: undefined }
 
-    registerCommands({ commands, errorRef, instance: yargs([]), parentPath: [], resolved })
+    const [registerError] = registerCommands({
+      commands,
+      instance: yargs([]),
+      parentPath: [],
+      resolved,
+    })
 
-    expect(errorRef.error?.message).toContain('Multiple default commands')
+    expect(registerError?.message).toContain('Multiple default commands')
   })
 
   it('should keep the named form for a default command explicitly named index', async () => {

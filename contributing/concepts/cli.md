@@ -260,7 +260,7 @@ commands/
 
 - Files must have a default export created via `command()`
 - Extensions: `.ts` or `.js` (not `.d.ts`)
-- Ignored: files starting with `_` or `.`
+- Autoload ignores files starting with `_` or `.`
 - Files named `index` never become a subcommand called `index` -- at the root they become the default command, inside a subdirectory they become that directory's parent handler
 - Subdirectories become parent commands with nested subcommands
 

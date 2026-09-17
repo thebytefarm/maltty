@@ -22,7 +22,7 @@ import type {
 import { autoload } from './autoload.js'
 import { isCommandsConfig } from './command.js'
 import { createRuntime, registerCommands, resolveCommandTree } from './runtime/index.js'
-import type { ErrorRef, ResolvedRef } from './runtime/index.js'
+import type { ResolvedRef } from './runtime/index.js'
 
 /**
  * Bootstrap and run the CLI application.
@@ -66,7 +66,6 @@ export async function cli(options: CliOptions): Promise<void> {
     }
 
     const resolved: ResolvedRef = { ref: undefined }
-    const errorRef: ErrorRef = { error: undefined }
 
     const [treeError, loadedCmds] = await resolveCommandTrees(
       await resolveCommands(options.commands)
@@ -77,17 +76,16 @@ export async function cli(options: CliOptions): Promise<void> {
     const resolvedCmds = loadedCmds ?? undefined
 
     if (resolvedCmds) {
-      registerCommands({
+      const [registerError] = registerCommands({
         commands: resolvedCmds.commands,
-        errorRef,
         instance: program,
         order: options.help?.order,
         parentPath: [],
         resolved,
       })
 
-      if (errorRef.error) {
-        return errorRef.error
+      if (registerError) {
+        return registerError
       }
     }
 

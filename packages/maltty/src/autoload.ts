@@ -80,13 +80,15 @@ async function resolveRootDefaultCommands(params: {
   const { dir, entries } = params
 
   const pairs = await Promise.all(
-    findIndexEntries(entries).map(async (entry): Promise<readonly [string, Command] | undefined> => {
-      const cmd = await importCommand(join(dir, entry.name))
-      if (!cmd) {
-        return undefined
+    findIndexEntries(entries).map(
+      async (entry): Promise<readonly [string, Command] | undefined> => {
+        const cmd = await importCommand(join(dir, entry.name))
+        if (!cmd) {
+          return undefined
+        }
+        return [cmd.name ?? INDEX_COMMAND_NAME, withTag({ ...cmd, default: true }, 'Command')]
       }
-      return [cmd.name ?? INDEX_COMMAND_NAME, withTag({ ...cmd, default: true }, 'Command')]
-    })
+    )
   )
 
   return pairs.filter((pair): pair is readonly [string, Command] => pair !== undefined)

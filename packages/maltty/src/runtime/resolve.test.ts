@@ -47,8 +47,8 @@ describe('resolveCommandTree()', () => {
     }
 
     const [, resolved] = await resolveCommandTree(commands)
-    const deploy = (resolved as CommandMap)['deploy']
-    const env = (deploy.commands as CommandMap)['env']
+    const { deploy } = resolved as CommandMap
+    const { env } = deploy.commands as CommandMap
 
     expect(Object.keys(env.commands as CommandMap)).toStrictEqual(['list'])
   })
