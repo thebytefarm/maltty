@@ -21,7 +21,7 @@ import type {
 
 import { autoload } from './autoload.js'
 import { isCommandsConfig } from './command.js'
-import { createRuntime, registerCommands } from './runtime/index.js'
+import { createRuntime, registerCommands, resolveCommandTree } from './runtime/index.js'
 import type { ErrorRef, ResolvedRef } from './runtime/index.js'
 
 /**
@@ -68,7 +68,7 @@ export async function cli(options: CliOptions): Promise<void> {
     const resolved: ResolvedRef = { ref: undefined }
     const errorRef: ErrorRef = { error: undefined }
 
-    const resolvedCmds = await resolveCommands(options.commands)
+    const resolvedCmds = await resolveCommandTrees(await resolveCommands(options.commands))
 
     if (resolvedCmds) {
       registerCommands({
@@ -213,6 +213,25 @@ async function resolveCommands(
     .when(isCommandsConfig, (cfg) => resolveCommandsConfig(cfg))
     .when(isPlainObject, (cmds) => ({ commands: cmds }))
     .otherwise(() => resolveCommandsFromConfig())
+}
+
+/**
+ * Await every nested subcommand map in the loaded commands.
+ *
+ * Registration is synchronous, so a nested `commands` promise — what `autoload()`
+ * returns — has to be resolved before the tree reaches yargs.
+ *
+ * @private
+ * @param loaded - The loaded commands, or undefined when none were configured.
+ * @returns The same value with every nested map awaited.
+ */
+async function resolveCommandTrees(
+  loaded: ResolvedCommands | undefined
+): Promise<ResolvedCommands | undefined> {
+  if (!loaded) {
+    return undefined
+  }
+  return { ...loaded, commands: await resolveCommandTree(loaded.commands) }
 }
 
 /**

@@ -227,6 +227,45 @@ describe('autoload()', () => {
     )
   })
 
+  it('should resolve every root index file into a default command', async () => {
+    mockedReaddir.mockResolvedValue([
+      makeDirent('index.js', true),
+      makeDirent('index.ts', true),
+    ] as unknown as Dirent[])
+
+    vi.doMock('/tmp/commands/index.ts', () => ({
+      default: withTag({ description: 'From ts', name: 'from-ts' }, 'Command'),
+    }))
+    vi.doMock('/tmp/commands/index.js', () => ({
+      default: withTag({ description: 'From js', name: 'from-js' }, 'Command'),
+    }))
+
+    const result = await autoload({ dir: '/tmp/commands' })
+
+    expect(Object.keys(result).toSorted()).toStrictEqual(['from-js', 'from-ts'])
+  })
+
+  it('should warn when a subdirectory holds more than one index file', async () => {
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => undefined)
+    mockedReaddir
+      .mockResolvedValueOnce([makeDirent('remote', false)] as unknown as Dirent[])
+      .mockResolvedValueOnce([
+        makeDirent('index.js', true),
+        makeDirent('index.ts', true),
+      ] as unknown as Dirent[])
+
+    vi.doMock('/tmp/commands/remote/index.js', () => ({
+      default: withTag({ description: 'From js' }, 'Command'),
+    }))
+    vi.doMock('/tmp/commands/remote/index.ts', () => ({
+      default: withTag({ description: 'From ts' }, 'Command'),
+    }))
+
+    await autoload({ dir: '/tmp/commands' })
+
+    expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('multiple index files'))
+  })
+
   it('should ignore a root index.ts without a valid Command default export', async () => {
     mockedReaddir.mockResolvedValue([makeDirent('index.ts', true)] as unknown as Dirent[])
 

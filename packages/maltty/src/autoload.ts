@@ -28,16 +28,16 @@ const VALID_EXTENSIONS = new Set(['.ts', '.js', '.mjs', '.tsx', '.jsx'])
 export async function autoload(options?: AutoloadOptions): Promise<CommandMap> {
   const dir = resolveDir(options)
   const entries = await readdir(dir, { withFileTypes: true })
-  const [commands, defaultPair] = await Promise.all([
+  const [commands, defaultPairs] = await Promise.all([
     resolveCommandMapFromEntries(dir, entries),
-    resolveRootDefaultCommand({ dir, entries }),
+    resolveRootDefaultCommands({ dir, entries }),
   ])
 
-  if (!defaultPair) {
+  if (defaultPairs.length === 0) {
     return commands
   }
 
-  return Object.fromEntries(deduplicateCommandPairs([defaultPair, ...Object.entries(commands)]))
+  return Object.fromEntries(deduplicateCommandPairs([...defaultPairs, ...Object.entries(commands)]))
 }
 
 // ---------------------------------------------------------------------------
@@ -59,32 +59,37 @@ function resolveDir(options?: AutoloadOptions): string {
 }
 
 /**
- * Resolve the root `index` file into a default command entry.
+ * Resolve every root `index` file into a default command entry.
  *
- * The command is keyed by its explicit `name` when it declares one — keeping the
+ * Each command is keyed by its explicit `name` when it declares one — keeping the
  * named invocation form available alongside the default — and by the reserved
  * index name otherwise, which registers it with no name of its own.
  *
+ * A directory can hold more than one index file across the supported extensions.
+ * All of them are resolved so a genuine conflict reaches registration as a
+ * multiple-default error rather than being decided by directory order.
+ *
  * @private
  * @param params - The scanned directory and its pre-read entries.
- * @returns A tuple of [name, Command] or undefined when there is no root index command.
+ * @returns The resolved [name, Command] tuples, empty when there is no root index command.
  */
-async function resolveRootDefaultCommand(params: {
+async function resolveRootDefaultCommands(params: {
   readonly dir: string
   readonly entries: Dirent[]
-}): Promise<[string, Command] | undefined> {
+}): Promise<readonly (readonly [string, Command])[]> {
   const { dir, entries } = params
-  const indexFile = findIndexInEntries(entries)
-  if (!indexFile) {
-    return undefined
-  }
 
-  const cmd = await importCommand(join(dir, indexFile.name))
-  if (!cmd) {
-    return undefined
-  }
+  const pairs = await Promise.all(
+    findIndexEntries(entries).map(async (entry): Promise<readonly [string, Command] | undefined> => {
+      const cmd = await importCommand(join(dir, entry.name))
+      if (!cmd) {
+        return undefined
+      }
+      return [cmd.name ?? INDEX_COMMAND_NAME, withTag({ ...cmd, default: true }, 'Command')]
+    })
+  )
 
-  return [cmd.name ?? INDEX_COMMAND_NAME, withTag({ ...cmd, default: true }, 'Command')]
+  return pairs.filter((pair): pair is readonly [string, Command] => pair !== undefined)
 }
 
 /**
@@ -102,9 +107,16 @@ async function resolveDirCommand(dir: string): Promise<[string, Command] | undef
   const dirName = basename(dir)
   const dirEntries = await readdir(dir, { withFileTypes: true })
   const subCommands = await resolveCommandMapFromEntries(dir, dirEntries)
-  const indexFile = findIndexInEntries(dirEntries)
+  const indexFiles = findIndexEntries(dirEntries)
+  const [indexFile] = indexFiles
 
   if (indexFile) {
+    if (indexFiles.length > 1) {
+      console.warn(
+        `[maltty] multiple index files in "${dirName}" (${indexFiles.map((entry) => entry.name).join(', ')}) — a group has one parent handler, so "${indexFile.name}" wins`
+      )
+    }
+
     const parentCommand = await importCommand(join(dir, indexFile.name))
     if (parentCommand) {
       const name = parentCommand.name ?? dirName
@@ -156,21 +168,26 @@ async function resolveCommandMapFromEntries(dir: string, entries: Dirent[]): Pro
 }
 
 /**
- * Find the index file (index.ts or index.js) in pre-read directory entries.
+ * Find every index file (`index.ts`, `index.js`, ...) in pre-read directory entries.
+ *
+ * Results are sorted by filename so callers that can only use one candidate pick
+ * the same file on every platform, regardless of directory read order.
  *
  * @private
  * @param entries - Pre-read directory entries.
- * @returns The index file's Dirent or undefined.
+ * @returns The index files' Dirents, sorted by name.
  */
-function findIndexInEntries(entries: Dirent[]): Dirent | undefined {
-  return entries.find(
-    (entry) =>
-      entry.isFile() &&
-      !entry.name.endsWith('.d.ts') &&
-      !entry.name.endsWith('.d.tsx') &&
-      VALID_EXTENSIONS.has(extname(entry.name)) &&
-      basename(entry.name, extname(entry.name)) === INDEX_COMMAND_NAME
-  )
+function findIndexEntries(entries: Dirent[]): readonly Dirent[] {
+  return entries
+    .filter(
+      (entry) =>
+        entry.isFile() &&
+        !entry.name.endsWith('.d.ts') &&
+        !entry.name.endsWith('.d.tsx') &&
+        VALID_EXTENSIONS.has(extname(entry.name)) &&
+        basename(entry.name, extname(entry.name)) === INDEX_COMMAND_NAME
+    )
+    .toSorted((a, b) => a.name.localeCompare(b.name))
 }
 
 /**

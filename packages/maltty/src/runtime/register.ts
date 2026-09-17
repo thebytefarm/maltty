@@ -321,8 +321,11 @@ function formatCommandSpec(params: {
  * Normalize a CommandMap into `[name, Command]` pairs.
  *
  * Non-Command values are dropped and each entry resolves to its explicit `name`
- * when it declares one, falling back to its map key. An unresolved promise has
- * no own entries and yields no pairs.
+ * when it declares one, falling back to its map key.
+ *
+ * `Command.commands` is typed as possibly promised, but `resolveCommandTree` has
+ * already awaited the whole tree by the time registration runs — the union here
+ * only satisfies the declared type.
  *
  * @private
  * @param commands - The command map to normalize.
