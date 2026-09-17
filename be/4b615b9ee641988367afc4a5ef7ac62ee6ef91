@@ -1,0 +1,46 @@
+packages/maltty/src/runtime/resolve.test.ts
+  s_142bec305d77f5::t_bf3112fcc14815 1-67
+packages/maltty/src/autoload.test.ts
+  s_142bec305d77f5::t_4e91602e2c8ad9 230-268
+packages/maltty/src/cli.ts
+  s_142bec305d77f5::t_368a99443fb838 24
+  s_142bec305d77f5::t_f6564a93c07004 219-236
+  s_142bec305d77f5::t_222f4de5d91636 71
+  s_0df4078764a054::t_9b354a64fe3377 218
+packages/maltty/src/autoload.ts
+  s_142bec305d77f5::t_34d1efdd60bbed 110-111
+  s_142bec305d77f5::t_1f510299cf42c0 171-174,178,180-190
+  s_142bec305d77f5::t_f691461a1ce907 31,33,36,40
+  s_142bec305d77f5::t_572dbae9cdb39a 114-119
+  s_142bec305d77f5::t_f4e48d0c36f8c8 62,64,68-71,74,76,79,82-90,92
+packages/maltty/src/runtime/resolve.ts
+  s_142bec305d77f5::t_ec27706a2926b6 1-45
+packages/maltty/src/runtime/index.ts
+  s_142bec305d77f5::t_5001007cfc51e6 3
+packages/maltty/src/runtime/register.ts
+  s_142bec305d77f5::t_47d2f6a3c4c08c 324-328
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "be4b615b9ee641988367afc4a5ef7ac62ee6ef91",
+  "prompts": {},
+  "sessions": {
+    "s_0df4078764a054": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_f530a10ffffebKfJV9R6fIGOZt",
+        "model": "gpt-5.6-sol"
+      },
+      "human_author": "Zac Rosenbauer <me@zrosenbauer.com>"
+    },
+    "s_142bec305d77f5": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "6e0f1a58-e89a-4ce5-916d-8079994a6454",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Zac Rosenbauer <me@zrosenbauer.com>"
+    }
+  }
+}
