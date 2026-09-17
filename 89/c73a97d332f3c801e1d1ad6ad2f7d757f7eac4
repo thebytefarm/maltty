@@ -1,0 +1,23 @@
+packages/maltty/src/runtime/register.test.ts
+  s_142bec305d77f5::t_7634dce986d8a5 733-749
+packages/maltty/src/runtime/register.ts
+  s_142bec305d77f5::t_d6d705ef0fa86d 400,402,409,414-417,421
+contributing/standards/typescript/testing.md
+  s_142bec305d77f5::t_d0904544cc858a 89-111
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.0",
+  "base_commit_sha": "89c73a97d332f3c801e1d1ad6ad2f7d757f7eac4",
+  "prompts": {},
+  "sessions": {
+    "s_142bec305d77f5": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "6e0f1a58-e89a-4ce5-916d-8079994a6454",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Zac Rosenbauer <me@zrosenbauer.com>"
+    }
+  }
+}
