@@ -269,7 +269,7 @@ The `autoload()` function discovers command files from a directory:
 
 ```
 commands/
-├── index.ts            -> { index: Command } with `default: true`
+├── index.ts            -> { <name>: Command } with `default: true` (keyed `index` when unnamed)
 ├── deploy.ts           -> { deploy: Command }
 ├── status.ts           -> { status: Command }
 └── auth/
@@ -282,7 +282,7 @@ commands/
 
 - Files must export a default `Command` (created via `command()`)
 - Extensions: `.ts` or `.js` (not `.d.ts`)
-- Ignored: files starting with `_` or `.`
+- Autoload ignores files starting with `_` or `.`
 - Subdirectories become parent commands; `index.ts` in a subdirectory becomes the parent handler
 - `index.ts` at the root becomes the default command, keyed by its explicit `name` when it has one and by the reserved `index` name otherwise
 

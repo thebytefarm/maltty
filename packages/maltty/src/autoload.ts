@@ -113,10 +113,9 @@ async function resolveDirCommand(dir: string): Promise<[string, Command] | undef
   const [indexFile] = indexFiles
 
   if (indexFile) {
-    if (indexFiles.length > 1) {
-      console.warn(
-        `[maltty] multiple index files in "${dirName}" (${indexFiles.map((entry) => entry.name).join(', ')}) — a group has one parent handler, so "${indexFile.name}" wins`
-      )
+    const warning = formatMultipleIndexWarning({ dirName, indexFiles, winner: indexFile.name })
+    if (warning) {
+      console.warn(warning)
     }
 
     const parentCommand = await importCommand(join(dir, indexFile.name))
@@ -131,6 +130,33 @@ async function resolveDirCommand(dir: string): Promise<[string, Command] | undef
   }
 
   return [dirName, withTag({ commands: subCommands }, 'Command')]
+}
+
+/**
+ * Build the warning for a subdirectory holding more than one index file.
+ *
+ * A group has room for exactly one parent handler, so the extra candidates are
+ * dropped. Only the winner is deterministic — which file that is depends on the
+ * sort in `findIndexEntries`, so the collision is worth naming.
+ *
+ * @private
+ * @param params - The directory name, its index candidates, and the winning filename.
+ * @returns The warning message, or undefined when there is no ambiguity.
+ */
+function formatMultipleIndexWarning(params: {
+  readonly dirName: string
+  readonly indexFiles: readonly Dirent[]
+  readonly winner: string
+}): string | undefined {
+  const { dirName, indexFiles, winner } = params
+
+  return match(indexFiles.length)
+    .when(
+      (count) => count > 1,
+      () =>
+        `[maltty] multiple index files in "${dirName}" (${indexFiles.map((entry) => entry.name).join(', ')}) — a group has one parent handler, so "${winner}" wins`
+    )
+    .otherwise(() => undefined)
 }
 
 /**
