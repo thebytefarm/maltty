@@ -1,0 +1,21 @@
+packages/cli/package.json
+  s_142bec305d77f5::t_ded7575245d454 51
+pnpm-lock.yaml
+  s_142bec305d77f5::t_af4198cfd71bfc 342-344
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "557a5672ea53fcd3bbadab60a3b4d6f29a39e47e",
+  "prompts": {},
+  "sessions": {
+    "s_142bec305d77f5": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "6e0f1a58-e89a-4ce5-916d-8079994a6454",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Zac Rosenbauer <me@zrosenbauer.com>"
+    }
+  }
+}
