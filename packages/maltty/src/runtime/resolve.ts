@@ -1,3 +1,5 @@
+import { err, ok } from '@maltty/utils/fp'
+import type { Result } from '@maltty/utils/fp'
 import { withTag } from '@maltty/utils/tag'
 
 import type { Command, CommandMap } from '@/types/index.js'
@@ -14,16 +16,36 @@ import { isCommand } from './register.js'
  * nested autoloading behave like a static map.
  *
  * @param commands - The command map to resolve.
- * @returns A promise resolving to an equivalent map with every nested map awaited.
+ * @returns A Result tuple — `[null, CommandMap]` on success, `[Error, null]` when a nested map rejects.
  */
-export async function resolveCommandTree(commands: CommandMap): Promise<CommandMap> {
-  const entries = await Promise.all(Object.entries(commands).map(resolveEntry))
-  return Object.fromEntries(entries)
+export async function resolveCommandTree(
+  commands: CommandMap
+): Promise<Result<CommandMap, Error>> {
+  try {
+    return ok(await resolveTree(commands))
+  } catch (error: unknown) {
+    return err(error)
+  }
 }
 
 // ---------------------------------------------------------------------------
 // Private
 // ---------------------------------------------------------------------------
+
+/**
+ * Await every nested subcommand map, rejecting if any of them does.
+ *
+ * Rejections are converted to a Result once, at the exported boundary, so the
+ * recursion stays a plain async walk.
+ *
+ * @private
+ * @param commands - The command map to resolve.
+ * @returns A promise resolving to an equivalent map with every nested map awaited.
+ */
+async function resolveTree(commands: CommandMap): Promise<CommandMap> {
+  const entries = await Promise.all(Object.entries(commands).map(resolveEntry))
+  return Object.fromEntries(entries)
+}
 
 /**
  * Resolve one `[name, Command]` entry, awaiting its subcommand map when present.
@@ -41,5 +63,5 @@ async function resolveEntry(entry: readonly [string, Command]): Promise<readonly
   }
 
   const nested = await cmd.commands
-  return [key, withTag({ ...cmd, commands: await resolveCommandTree(nested) }, 'Command')]
+  return [key, withTag({ ...cmd, commands: await resolveTree(nested) }, 'Command')]
 }

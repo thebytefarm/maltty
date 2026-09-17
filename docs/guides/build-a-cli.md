@@ -201,11 +201,11 @@ import { autoload } from 'maltty'
 cli({
   name: 'my-app',
   version: '1.0.0',
-  commands: {
-    generate: autoload({ dir: './commands/generate' }),
-  },
+  commands: autoload({ dir: './commands' }),
 })
 ```
+
+Assign it to a key instead -- `commands: { generate: autoload({ dir: './commands/generate' }) }` -- to mount the directory under a parent command, where every discovered command is reached as `my-app generate <name>`.
 
 An `index` file at the root of an autoloaded directory becomes that level's default command:
 

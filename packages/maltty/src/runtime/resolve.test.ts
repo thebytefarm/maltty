@@ -15,9 +15,9 @@ describe('resolveCommandTree()', () => {
       }),
     }
 
-    const resolved = await resolveCommandTree(commands)
+    const [error, resolved] = await resolveCommandTree(commands)
 
-    expect(resolved).toStrictEqual(commands)
+    expect([error, resolved]).toStrictEqual([null, commands])
   })
 
   it('should await a promised subcommand map', async () => {
@@ -28,9 +28,9 @@ describe('resolveCommandTree()', () => {
       }),
     }
 
-    const resolved = await resolveCommandTree(commands)
+    const [, resolved] = await resolveCommandTree(commands)
 
-    expect(Object.keys(resolved['deploy'].commands as CommandMap)).toStrictEqual(['preview'])
+    expect(Object.keys(resolved?.['deploy'].commands as CommandMap)).toStrictEqual(['preview'])
   })
 
   it('should await a promised map nested inside a promised map', async () => {
@@ -46,10 +46,24 @@ describe('resolveCommandTree()', () => {
       }),
     }
 
-    const resolved = await resolveCommandTree(commands)
-    const env = (resolved['deploy'].commands as CommandMap)['env']
+    const [, resolved] = await resolveCommandTree(commands)
+    const deploy = (resolved as CommandMap)['deploy']
+    const env = (deploy.commands as CommandMap)['env']
 
     expect(Object.keys(env.commands as CommandMap)).toStrictEqual(['list'])
+  })
+
+  it('should return an error result when a nested map rejects', async () => {
+    const commands: CommandMap = {
+      deploy: command({
+        commands: Promise.reject(new Error('autoload failed')),
+        description: 'Deploy',
+      }),
+    }
+
+    const [error] = await resolveCommandTree(commands)
+
+    expect(error?.message).toBe('autoload failed')
   })
 
   it('should keep the Command tag on a rebuilt command', async () => {
@@ -60,8 +74,8 @@ describe('resolveCommandTree()', () => {
       }),
     }
 
-    const resolved = await resolveCommandTree(commands)
+    const [, resolved] = await resolveCommandTree(commands)
 
-    expect(isCommand(resolved['deploy'])).toBeTruthy()
+    expect(isCommand(resolved?.['deploy'])).toBeTruthy()
   })
 })

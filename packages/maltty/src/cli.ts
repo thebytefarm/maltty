@@ -68,7 +68,13 @@ export async function cli(options: CliOptions): Promise<void> {
     const resolved: ResolvedRef = { ref: undefined }
     const errorRef: ErrorRef = { error: undefined }
 
-    const resolvedCmds = await resolveCommandTrees(await resolveCommands(options.commands))
+    const [treeError, loadedCmds] = await resolveCommandTrees(
+      await resolveCommands(options.commands)
+    )
+    if (treeError) {
+      return treeError
+    }
+    const resolvedCmds = loadedCmds ?? undefined
 
     if (resolvedCmds) {
       registerCommands({
@@ -223,15 +229,21 @@ async function resolveCommands(
  *
  * @private
  * @param loaded - The loaded commands, or undefined when none were configured.
- * @returns The same value with every nested map awaited.
+ * @returns A Result tuple carrying the same value with every nested map awaited.
  */
 async function resolveCommandTrees(
   loaded: ResolvedCommands | undefined
-): Promise<ResolvedCommands | undefined> {
+): Promise<Result<ResolvedCommands | undefined, Error>> {
   if (!loaded) {
-    return undefined
+    return ok(undefined)
   }
-  return { ...loaded, commands: await resolveCommandTree(loaded.commands) }
+
+  const [treeError, commands] = await resolveCommandTree(loaded.commands)
+  if (treeError) {
+    return [treeError, null]
+  }
+
+  return ok({ ...loaded, commands })
 }
 
 /**
