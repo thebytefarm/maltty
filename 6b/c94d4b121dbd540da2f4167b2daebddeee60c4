@@ -1,0 +1,38 @@
+packages/stories/src/registry.test.ts
+  s_da10681e7c6f70::t_928be2c36a39c3 59-70
+packages/stories/src/watcher.test.ts
+  s_da10681e7c6f70::t_928be2c36a39c3 93-115,147-170,198-221,287,298-327,354-383
+  s_da10681e7c6f70::t_f14a47701c7aae 328-353,384
+  s_da10681e7c6f70::t_852905e06db87e 385
+packages/stories/vitest.config.ts
+  s_da10681e7c6f70::t_e0d83121cf1a93 23-26
+packages/stories/src/check.test.ts
+  s_da10681e7c6f70::t_928be2c36a39c3 23-30
+packages/stories/src/discover.test.ts
+  s_da10681e7c6f70::t_928be2c36a39c3 33-46
+packages/stories/src/schema.test.ts
+  s_da10681e7c6f70::t_928be2c36a39c3 115-184,214-216
+  s_da10681e7c6f70::t_3f76ddc3643b4b 217
+packages/stories/src/importer.test.ts
+  s_da10681e7c6f70::t_10926dce6b6c5b 34
+  s_da10681e7c6f70::t_e0d83121cf1a93 1-33,35-46,48-111,113-136,138-187,189-197,199-211
+  s_da10681e7c6f70::t_e78a94c5350d2b 47
+  s_da10681e7c6f70::t_e1f27003b539dd 112
+  s_da10681e7c6f70::t_a9a96ada0f3da4 137,188,198
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "6bc94d4b121dbd540da2f4167b2daebddeee60c4",
+  "prompts": {},
+  "sessions": {
+    "s_da10681e7c6f70": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_f43a5f0eaffeuOt2XIsO4uy016",
+        "model": "gpt-5.6-sol"
+      },
+      "human_author": "Zac Rosenbauer <me@zrosenbauer.com>"
+    }
+  }
+}
