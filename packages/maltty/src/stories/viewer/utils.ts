@@ -1,6 +1,5 @@
+import type { Decorator } from '@maltty/stories'
 import type { ComponentType } from 'react'
-
-import type { Decorator } from '../types.js'
 
 // ---------------------------------------------------------------------------
 // Exports

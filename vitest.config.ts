@@ -76,6 +76,7 @@ export default defineConfig({
       'packages/cli',
       'packages/config',
       'packages/maltty',
+      'packages/stories',
       'packages/utils',
       {
         test: {

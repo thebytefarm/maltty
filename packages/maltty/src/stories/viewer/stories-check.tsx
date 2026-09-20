@@ -1,5 +1,6 @@
 import process from 'node:process'
 
+import { checkStories, createStoryImporter, discoverStories } from '@maltty/stories'
 import { useApp } from 'ink'
 import type { ReactElement } from 'react'
 import { useEffect, useRef } from 'react'
@@ -7,9 +8,6 @@ import { match } from 'ts-pattern'
 
 import { useScreenContext } from '../../screen/provider.js'
 import { Output } from '../../ui/output.js'
-import { checkStories } from '../check.js'
-import { discoverStories } from '../discover.js'
-import { createStoryImporter } from '../importer.js'
 import { buildIncludePatterns } from './utils.js'
 
 // ---------------------------------------------------------------------------

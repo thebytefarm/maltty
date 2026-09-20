@@ -1,8 +1,8 @@
+import { stories } from '@maltty/stories'
+import type { StoryGroup } from '@maltty/stories'
 import type { ComponentType } from 'react'
 import { z } from 'zod'
 
-import { stories } from '../../stories/story.js'
-import type { StoryGroup } from '../../stories/types.js'
 import { StatusMessage } from './status-message.js'
 
 const schema = z.object({

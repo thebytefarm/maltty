@@ -1,11 +1,10 @@
+import type { FieldControlKind, FieldDescriptor, FieldError } from '@maltty/stories'
 import { Box, Text } from 'ink'
 import type { ReactElement } from 'react'
 import { match } from 'ts-pattern'
 
 import type { TabItem } from '../../../ui/layout/tabs.js'
 import { Tabs } from '../../../ui/layout/tabs.js'
-import type { FieldControlKind, FieldDescriptor } from '../../types.js'
-import type { FieldError } from '../../validate.js'
 import { FieldControl } from './field-control.js'
 
 // ---------------------------------------------------------------------------

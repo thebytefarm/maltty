@@ -1,3 +1,4 @@
+import type { FieldDescriptor, FieldError, Story } from '@maltty/stories'
 import type { DOMElement } from 'ink'
 import { Box, Text } from 'ink'
 import type { ComponentType, ReactElement } from 'react'
@@ -6,8 +7,6 @@ import { match } from 'ts-pattern'
 
 import { ScrollArea } from '../../../ui/layout/scroll-area.js'
 import { useSize } from '../../../ui/layout/use-size.js'
-import type { FieldDescriptor, Story } from '../../types.js'
-import type { FieldError } from '../../validate.js'
 import { applyDecorators } from '../utils.js'
 import { EmptyState } from './empty-state.js'
 import { ErrorBoundary } from './error-boundary.js'
