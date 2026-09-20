@@ -11,7 +11,11 @@ interface ReadBundleGraphArgs {
 }
 
 const DIST_DIR = fileURLToPath(new URL('../../dist', import.meta.url))
-const LOCAL_IMPORT_PATTERN = /from\s+["'](\.\.?\/[^"']+)["']/g
+const LOCAL_IMPORT_PATTERNS = [
+  /from\s+["'](\.\.?\/[^"']+)["']/g,
+  /import\s+["'](\.\.?\/[^"']+)["']/g,
+  /import\(\s*["'](\.\.?\/[^"']+)["']\s*\)/g,
+] as const
 
 /**
  * Read an emitted bundle and its local chunk graph without revisiting cycles.
@@ -25,8 +29,10 @@ function readBundleGraph({ filePath, visited = [] }: ReadBundleGraphArgs): reado
     .with(true, () => [])
     .with(false, () => {
       const source = fs.readFileSync(filePath, 'utf8')
-      const imports = [...source.matchAll(LOCAL_IMPORT_PATTERN)].map((result) =>
-        path.resolve(path.dirname(filePath), result[1] ?? '')
+      const imports = LOCAL_IMPORT_PATTERNS.flatMap((pattern) =>
+        [...source.matchAll(pattern)].map((result) =>
+          path.resolve(path.dirname(filePath), result[1] ?? '')
+        )
       )
 
       return [
