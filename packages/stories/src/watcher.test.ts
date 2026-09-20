@@ -280,6 +280,7 @@ describe('story watcher', () => {
     vi.mocked(watch)
       .mockReturnValueOnce({ close: closeFn, on: vi.fn() } as unknown as FSWatcher)
       .mockImplementationOnce(() => {
+        // eslint-disable-next-line no-throw-literal -- simulating synchronous fs.watch failure
         throw new Error('permission denied')
       })
 
@@ -342,6 +343,7 @@ describe('story watcher', () => {
       registry: createMockRegistry(),
       debounceMs: 10,
       onReloadStart: () => {
+        // eslint-disable-next-line no-throw-literal -- simulating reload callback failure
         throw new Error('callback failed')
       },
     })

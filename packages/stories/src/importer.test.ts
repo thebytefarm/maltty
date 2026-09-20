@@ -18,8 +18,9 @@ const moduleInternals = Module as unknown as { _resolveFilename: ResolveFilename
 const originalResolveFilename = moduleInternals._resolveFilename
 
 afterEach(() => {
-  moduleInternals._resolveFilename = originalResolveFilename
   vi.restoreAllMocks()
+  // The importer installs a global resolver patch outside Vitest's spy lifecycle.
+  moduleInternals._resolveFilename = originalResolveFilename
 })
 
 /**
@@ -30,10 +31,30 @@ afterEach(() => {
  * @returns The mocked createJiti factory.
  */
 function mockJiti(importModule: (filePath: string) => Promise<unknown>) {
+  if (!vi.isMockFunction(moduleInternals._resolveFilename)) {
+    vi.spyOn(moduleInternals, '_resolveFilename')
+  }
   const createJiti = vi.fn(() => ({ import: importModule }))
   const requireJiti = (() => ({ createJiti })) as unknown as ReturnType<typeof Module.createRequire>
   vi.spyOn(Module, 'createRequire').mockReturnValue(requireJiti)
   return createJiti
+}
+
+/**
+ * Run an assertion while the private Node resolver is unavailable.
+ *
+ * @private
+ * @param action - The assertion setup to run.
+ * @returns The action result.
+ */
+function withUndefinedResolver<T>(action: () => T): T {
+  const resolver = moduleInternals._resolveFilename
+  try {
+    moduleInternals._resolveFilename = undefined as unknown as ResolveFilename
+    return action()
+  } finally {
+    moduleInternals._resolveFilename = resolver
+  }
 }
 
 describe('createStoryImporter()', () => {
@@ -94,6 +115,7 @@ describe('createStoryImporter()', () => {
 
   it('should return a setup error when jiti creation fails', () => {
     const createJiti = vi.fn(() => {
+      // eslint-disable-next-line no-throw-literal -- simulating synchronous jiti setup failure
       throw new Error('setup failed')
     })
     const requireJiti = (() => ({ createJiti })) as unknown as ReturnType<
@@ -109,6 +131,7 @@ describe('createStoryImporter()', () => {
 
   it('should explain how to install a missing jiti peer', () => {
     vi.spyOn(Module, 'createRequire').mockImplementation(() => {
+      // eslint-disable-next-line no-throw-literal -- simulating missing optional peer resolution
       throw Object.assign(new Error('missing'), { code: 'MODULE_NOT_FOUND' })
     })
 
@@ -120,6 +143,7 @@ describe('createStoryImporter()', () => {
 
   it('should preserve unexpected jiti resolution errors', () => {
     vi.spyOn(Module, 'createRequire').mockImplementation(() => {
+      // eslint-disable-next-line no-throw-literal -- simulating nested module resolution failure
       throw Object.assign(new Error('blocked'), {
         code: 'MODULE_NOT_FOUND',
         requireStack: ['parent.cjs'],
@@ -134,7 +158,7 @@ describe('createStoryImporter()', () => {
 
   it('should preserve non-error jiti resolution failures', () => {
     vi.spyOn(Module, 'createRequire').mockImplementation(() => {
-      // oxlint-disable-next-line no-throw-literal -- verifies unknown thrown values are normalized
+      // eslint-disable-next-line no-throw-literal -- verifies unknown thrown values are normalized
       throw 'blocked'
     })
 
@@ -146,9 +170,7 @@ describe('createStoryImporter()', () => {
 
   it('should return an error when the module resolver cannot be patched', () => {
     mockJiti(vi.fn())
-    moduleInternals._resolveFilename = undefined as unknown as ResolveFilename
-
-    const [error, importer] = createStoryImporter()
+    const [error, importer] = withUndefinedResolver(createStoryImporter)
 
     expect(error).toBeInstanceOf(Error)
     expect(importer).toBeNull()
@@ -171,9 +193,10 @@ describe('createStoryImporter()', () => {
       if (request === './component.ts' || request === './view.tsx') {
         return `/resolved/${request.slice(2)}`
       }
+      // eslint-disable-next-line no-throw-literal -- simulating native resolver fallback
       throw new Error(`missing ${request}`)
     })
-    moduleInternals._resolveFilename = baseResolver
+    vi.spyOn(moduleInternals, '_resolveFilename').mockImplementation(baseResolver)
     mockJiti(vi.fn())
     createStoryImporter()
 
@@ -196,6 +219,7 @@ describe('createStoryImporter()', () => {
 
   it('should rethrow when no alternate extension resolves', () => {
     vi.spyOn(moduleInternals, '_resolveFilename').mockImplementation((request: string) => {
+      // eslint-disable-next-line no-throw-literal -- simulating exhausted resolver fallbacks
       throw new Error(`missing ${request}`)
     })
     mockJiti(vi.fn())
