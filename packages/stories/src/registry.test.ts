@@ -56,6 +56,18 @@ describe('story registry', () => {
     expect(listener).toHaveBeenCalledOnce()
   })
 
+  it('should not notify subscribers when setting the same entry twice', () => {
+    const registry = createStoryRegistry()
+    const listener = vi.fn()
+    const entry = createMockStory('button')
+
+    registry.subscribe(listener)
+    registry.set('button', entry)
+    registry.set('button', entry)
+
+    expect(listener).toHaveBeenCalledOnce()
+  })
+
   it('should notify subscribers on remove', () => {
     const registry = createStoryRegistry()
     const listener = vi.fn()
