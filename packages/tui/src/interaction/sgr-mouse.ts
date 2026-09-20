@@ -59,8 +59,8 @@ export interface SgrMouseParseError {
  * Result returned by {@link parseSgrMouse}.
  */
 export type SgrMouseParseResult =
-  | readonly [SgrMouseParseError, null]
-  | readonly [null, SgrMouseEvent]
+  | readonly [null, SgrMouseParseError]
+  | readonly [SgrMouseEvent, null]
 
 /**
  * Parse one complete SGR mouse sequence into a normalized pointer event.
@@ -71,12 +71,12 @@ export type SgrMouseParseResult =
  * can also be reused at a lower input boundary.
  *
  * @param input - Complete SGR mouse sequence in Ink, 7-bit CSI, or 8-bit CSI form.
- * @returns An error-first result containing a zero-based pointer event.
+ * @returns A data-first result containing a zero-based pointer event.
  */
 export function parseSgrMouse(input: string): SgrMouseParseResult {
   const parsed = SGR_MOUSE_PATTERN.exec(removeEscapePrefix(input))
   if (parsed === null) {
-    return [createParseError({ input, type: 'invalid_sequence' }), null]
+    return [null, createParseError({ input, type: 'invalid_sequence' })]
   }
 
   const rawCode = parsed.groups?.['code']
@@ -90,18 +90,18 @@ export function parseSgrMouse(input: string): SgrMouseParseResult {
     rawRow === undefined ||
     (suffix !== 'M' && suffix !== 'm')
   ) {
-    return [createParseError({ input, type: 'invalid_sequence' }), null]
+    return [null, createParseError({ input, type: 'invalid_sequence' })]
   }
 
   const code = Number(rawCode)
   if (!isValidCode({ code, suffix })) {
-    return [createParseError({ input, type: 'invalid_code' }), null]
+    return [null, createParseError({ input, type: 'invalid_code' })]
   }
 
   const column = Number(rawColumn)
   const row = Number(rawRow)
   if (!isValidCoordinate(column) || !isValidCoordinate(row)) {
-    return [createParseError({ input, type: 'invalid_coordinates' }), null]
+    return [null, createParseError({ input, type: 'invalid_coordinates' })]
   }
 
   const decodedButton = resolveButton(code)
@@ -121,9 +121,9 @@ export function parseSgrMouse(input: string): SgrMouseParseResult {
     y: row - 1,
   })
   if (scroll === undefined) {
-    return [null, event]
+    return [event, null]
   }
-  return [null, Object.freeze({ ...event, scroll })]
+  return [Object.freeze({ ...event, scroll }), null]
 }
 
 // ---------------------------------------------------------------------------

@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest'
 
 import type { TerminalCleanupHost } from './terminal-cleanup.js'
-import { createTerminalCleanupCoordinator } from './terminal-cleanup.js'
+import { createTerminalCleanupCoordinator, terminalCleanup } from './terminal-cleanup.js'
 
 function createHost() {
   const exitHandlers = new Set<() => void>()
@@ -85,5 +85,31 @@ describe(createTerminalCleanupCoordinator, () => {
 
     expect(fixture.signalHandlers.size).toBe(0)
     expect(fixture.exitHandlers.size).toBe(0)
+  })
+})
+
+describe('node terminal cleanup', () => {
+  it('should terminate after a bounded delay when stdout does not flush', async () => {
+    vi.useFakeTimers()
+    const existingHandlers = new Set(process.listeners('SIGTERM'))
+    const exit = vi.spyOn(process, 'exit').mockImplementation(() => undefined as never)
+    const write = vi.spyOn(process.stdout, 'write').mockImplementation(() => true)
+    const cleanup = vi.fn()
+    terminalCleanup.register(cleanup)
+    const handler = process
+      .listeners('SIGTERM')
+      .findLast((candidate) => !existingHandlers.has(candidate)) as (signal: NodeJS.Signals) => void
+
+    handler('SIGTERM')
+    await vi.advanceTimersByTimeAsync(100)
+
+    expect(cleanup).toHaveBeenCalledOnce()
+    expect(exit).toHaveBeenCalledOnce()
+    expect(exit).toHaveBeenCalledWith(143)
+
+    terminalCleanup.unregister(cleanup)
+    write.mockRestore()
+    exit.mockRestore()
+    vi.useRealTimers()
   })
 })

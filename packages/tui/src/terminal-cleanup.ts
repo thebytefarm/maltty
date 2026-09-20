@@ -129,7 +129,12 @@ const nodeTerminalCleanupHost: TerminalCleanupHost = Object.freeze({
       SIGTERM: 143,
     }
     const exitCode = exitCodes[signal] ?? 1
-    process.stdout.write('', () => process.exit(exitCode))
+    const fallback = setTimeout(() => process.exit(exitCode), 100)
+    fallback.unref()
+    process.stdout.write('', () => {
+      clearTimeout(fallback)
+      process.exit(exitCode)
+    })
   },
 })
 

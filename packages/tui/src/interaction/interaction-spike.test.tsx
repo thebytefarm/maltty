@@ -32,7 +32,7 @@ function Probe({ offsetX, offsetY, onHit, onMeasure }: ProbeProps): ReactElement
   }, [offsetX, offsetY, onMeasure])
 
   useInput((input) => {
-    const [error, event] = parseSgrMouse(input)
+    const [event, error] = parseSgrMouse(input)
     if (error || rect.current === null) {
       return
     }
