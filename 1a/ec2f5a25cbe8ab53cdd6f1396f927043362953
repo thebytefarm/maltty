@@ -1,0 +1,25 @@
+packages/tui/test/integration/package-contract.test.ts
+  s_da10681e7c6f70::t_cdc03235f3cfa4 1,3,5-10,12-13,43-44,47-48,52-53,56-69
+packages/tui/test/integration/bundle-isolation.test.ts
+  s_da10681e7c6f70::t_b5cf1abaf398ef 15-16
+packages/tui/package.json
+  s_da10681e7c6f70::t_cdc03235f3cfa4 152-153
+pnpm-lock.yaml
+  s_da10681e7c6f70::t_d22c3e28ba469b 572-574
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "1aec2f5a25cbe8ab53cdd6f1396f927043362953",
+  "prompts": {},
+  "sessions": {
+    "s_da10681e7c6f70": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_f43a5f0eaffeuOt2XIsO4uy016",
+        "model": "gpt-5.6-sol"
+      },
+      "human_author": "Zac Rosenbauer <me@zrosenbauer.com>"
+    }
+  }
+}
