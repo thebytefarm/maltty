@@ -1,0 +1,80 @@
+packages/tui/src/interaction/hit-testing.ts
+  s_da10681e7c6f70::t_2dc745c5a8e241 1-3,9-11,17-19
+  s_da10681e7c6f70::t_762927e800beda 4-8,12-16,20-89
+packages/tui/src/terminal-cleanup.test.ts
+  s_da10681e7c6f70::t_7c7ba5b594896e 57-72
+  s_da10681e7c6f70::t_6b9e9faa6c93d6 1-23,25-55,73-89
+  s_da10681e7c6f70::t_cc3ef233a912eb 24,56
+packages/tui/src/interaction/mouse-mode.ts
+  s_da10681e7c6f70::t_2dc745c5a8e241 4-6,9-11,14-16,19-21,24-26,51-53,59-61,67-69
+  s_da10681e7c6f70::t_cc3ef233a912eb 38
+  s_da10681e7c6f70::t_6b9e9faa6c93d6 1-2,45,48,73-74
+  s_da10681e7c6f70::t_762927e800beda 3,7-8,12-13,17-18,22-23,27-37,39-44,46-47,49-50,54-58,62-66,70-72,75-76
+.changeset/tidy-suns-signal.md
+  s_da10681e7c6f70::t_af2e2694d68ec3 1-4
+  s_da10681e7c6f70::t_cc3ef233a912eb 5
+packages/tui/src/interaction/mouse-mode.test.ts
+  s_da10681e7c6f70::t_6b9e9faa6c93d6 3,12-16,18,24-27,40,42-46,49,58-62,66,70-74,78
+  s_da10681e7c6f70::t_2dc745c5a8e241 21
+  s_da10681e7c6f70::t_d55b2554b976c3 55-57,63-65
+  s_da10681e7c6f70::t_762927e800beda 1-2,4-11,17,19-20,22-23,28-39,41,47-48,50-54,67-69,75-77,79-80
+packages/tui/src/interaction/hit-testing.test.ts
+  s_da10681e7c6f70::t_762927e800beda 1-16,18-25,27-32,34-41,43-45,47-71
+  s_da10681e7c6f70::t_2dc745c5a8e241 17,26,33,42,46
+packages/tui/src/interaction/interaction-spike.test.tsx
+  s_da10681e7c6f70::t_c606919044c12d 66-67,69-74,125-131,134-142,145-148
+  s_da10681e7c6f70::t_b25a36817f5959 100-107,110-112,119-121
+  s_da10681e7c6f70::t_e70a312b44bc27 61-65,68,132-133,143-144,149
+  s_da10681e7c6f70::t_2dc745c5a8e241 26-28,36-38,47-49,78,82
+  s_da10681e7c6f70::t_762927e800beda 1-25,29-35,39-46,50-60,75-77,79-81,83-99,108-109,113-118,122-124,150-153
+packages/tui/src/layout/fullscreen.test.ts
+  s_da10681e7c6f70::t_af2e2694d68ec3 2,4-5,14,67-68,70-74,80-84,87-91,93-99,107
+  s_da10681e7c6f70::t_11656959fc82ae 78,85,103-106
+  s_da10681e7c6f70::t_cc3ef233a912eb 69,75-77,100,102,109-110
+  s_da10681e7c6f70::t_f04c6c6b4212b5 101
+  s_da10681e7c6f70::t_6b9e9faa6c93d6 8-12,86,108
+  s_da10681e7c6f70::t_face89458b5d15 13,65-66,79,92
+contributing/concepts/tui-interaction.md
+  s_da10681e7c6f70::t_6b9e9faa6c93d6 13,18
+  s_da10681e7c6f70::t_762927e800beda 1-12,14-17,20-47
+  s_da10681e7c6f70::t_cc3ef233a912eb 19
+packages/tui/src/layout/fullscreen.tsx
+  s_da10681e7c6f70::t_6b9e9faa6c93d6 7-8,165-169,171,174-175
+packages/tui/src/terminal-cleanup.ts
+  s_da10681e7c6f70::t_f04c6c6b4212b5 131-132
+  s_da10681e7c6f70::t_6b9e9faa6c93d6 1-30,34-44,48-50,66-67,71-76,80-85,89-92,96-105,109-126,133-134
+  s_da10681e7c6f70::t_08338a5526dc1f 135-139
+  s_da10681e7c6f70::t_cc3ef233a912eb 31-33,56,127-130
+  s_da10681e7c6f70::t_7c7ba5b594896e 51-55,57-63,65
+  s_da10681e7c6f70::t_5142126d786545 64
+  s_da10681e7c6f70::t_11656959fc82ae 45-47,68-70,77-79,86-88,93-95,106-108
+packages/tui/src/interaction/sgr-mouse.ts
+  s_da10681e7c6f70::t_6b9e9faa6c93d6 70-71,73,233
+  s_da10681e7c6f70::t_2dc745c5a8e241 5-7,10-12,15-17,20-22,29-31,37-39,49-51,58-60,112-117,119-126,133-135,141-143,149-151,158-160
+  s_da10681e7c6f70::t_1c1aeb22364a49 201-207
+  s_da10681e7c6f70::t_762927e800beda 1-2,4,8-9,13-14,18-19,23-28,32-36,40-48,52-57,61-69,72,74-76,78-96,98-111,118,127-132,136-140,144-148,152-157,161-191,246-317
+  s_da10681e7c6f70::t_d55b2554b976c3 97,192-200,208-225
+  s_da10681e7c6f70::t_11656959fc82ae 236-245
+  s_da10681e7c6f70::t_c5b2083780713a 3,77,226-232,234-235
+packages/tui/src/interaction/sgr-mouse.test.ts
+  s_da10681e7c6f70::t_2dc745c5a8e241 5
+  s_da10681e7c6f70::t_762927e800beda 1-4,6-22,27-78,87
+  s_da10681e7c6f70::t_6b9e9faa6c93d6 23-26
+  s_da10681e7c6f70::t_d55b2554b976c3 79-86
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "d41065d82e5ea53947ebd05252fefe3e7670b3ad",
+  "prompts": {},
+  "sessions": {
+    "s_da10681e7c6f70": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_f43a5f0eaffeuOt2XIsO4uy016",
+        "model": "gpt-5.6-sol"
+      },
+      "human_author": "Zac Rosenbauer <me@zrosenbauer.com>"
+    }
+  }
+}
