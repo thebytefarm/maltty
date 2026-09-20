@@ -1,9 +1,8 @@
+import { SelectKey } from '@maltty/tui/select-key'
 import { stories } from 'maltty/stories'
 import type { StoryGroup } from 'maltty/stories'
 import type { ComponentType } from 'react'
 import { z } from 'zod'
-
-import { SelectKey } from './select-key.js'
 
 const schema = z.object({
   disabled: z.boolean().optional().describe('Disable the component'),

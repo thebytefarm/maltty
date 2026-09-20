@@ -1,9 +1,8 @@
 import { stories } from '@maltty/stories'
 import type { StoryGroup } from '@maltty/stories'
+import { Alert } from '@maltty/tui/alert'
 import type { ComponentType } from 'react'
 import { z } from 'zod'
-
-import { Alert } from './alert.js'
 
 const schema = z.object({
   children: z.string().describe('The content to display inside the alert box'),

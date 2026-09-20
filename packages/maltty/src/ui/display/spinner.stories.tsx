@@ -1,9 +1,8 @@
 import { stories } from '@maltty/stories'
 import type { StoryGroup } from '@maltty/stories'
+import { Spinner } from '@maltty/tui/spinner'
 import type { ComponentType } from 'react'
 import { z } from 'zod'
-
-import { Spinner } from './spinner.js'
 
 const schema = z.object({
   label: z.string().optional().describe('Text label displayed next to the spinner'),

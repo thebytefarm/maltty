@@ -1,9 +1,8 @@
+import { GroupMultiSelect } from '@maltty/tui/group-multi-select'
 import { stories } from 'maltty/stories'
 import type { StoryGroup } from 'maltty/stories'
 import type { ComponentType } from 'react'
 import { z } from 'zod'
-
-import { GroupMultiSelect } from './group-multi-select.js'
 
 const schema = z.object({
   required: z.boolean().optional().describe('Require at least one selection'),

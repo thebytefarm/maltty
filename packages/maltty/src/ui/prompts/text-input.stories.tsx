@@ -1,9 +1,8 @@
+import { TextInput } from '@maltty/tui/text-input'
 import { stories } from 'maltty/stories'
 import type { StoryGroup } from 'maltty/stories'
 import type { ComponentType } from 'react'
 import { z } from 'zod'
-
-import { TextInput } from './text-input.js'
 
 const schema = z.object({
   placeholder: z.string().describe('Placeholder text'),

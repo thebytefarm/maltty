@@ -1,9 +1,8 @@
 import { stories } from '@maltty/stories'
 import type { StoryGroup } from '@maltty/stories'
+import { ProgressBar } from '@maltty/tui/progress-bar'
 import type { ComponentType } from 'react'
 import { z } from 'zod'
-
-import { ProgressBar } from './progress-bar.js'
 
 const schema = z.object({
   value: z.number().describe('Current progress value'),

@@ -35,6 +35,7 @@
         "@maltty/config#build",
         "maltty#build",
         "@maltty/stories#build",
+        "@maltty/tui#build",
         "@maltty/utils#build"
       ]
     }

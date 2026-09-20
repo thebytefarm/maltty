@@ -1,13 +1,12 @@
 import type { FieldControlKind } from '@maltty/stories'
+import type { PromptOption } from '@maltty/tui'
+import { Confirm } from '@maltty/tui/confirm'
+import { MultiSelect } from '@maltty/tui/multi-select'
+import { Select } from '@maltty/tui/select'
+import { TextInput } from '@maltty/tui/text-input'
 import { Box, Text } from 'ink'
 import type { ReactElement } from 'react'
 import { match } from 'ts-pattern'
-
-import { Confirm } from '../../../ui/prompts/confirm.js'
-import { MultiSelect } from '../../../ui/prompts/multi-select.js'
-import { Select } from '../../../ui/prompts/select.js'
-import { TextInput } from '../../../ui/prompts/text-input.js'
-import type { PromptOption } from '../../../ui/prompts/types.js'
 
 // ---------------------------------------------------------------------------
 // Types

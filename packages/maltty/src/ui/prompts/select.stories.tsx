@@ -1,9 +1,8 @@
+import { Select } from '@maltty/tui/select'
 import { stories } from 'maltty/stories'
 import type { StoryGroup } from 'maltty/stories'
 import type { ComponentType } from 'react'
 import { z } from 'zod'
-
-import { Select } from './select.js'
 
 const schema = z.object({
   maxVisible: z.number().describe('Max visible options'),

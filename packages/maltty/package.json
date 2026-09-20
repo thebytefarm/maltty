@@ -95,6 +95,7 @@
     "@clack/prompts": "^1.7.0",
     "@maltty/config": "workspace:*",
     "@maltty/stories": "workspace:*",
+    "@maltty/tui": "workspace:*",
     "@maltty/utils": "workspace:*",
     "@pinojs/redact": "^0.4.0",
     "c12": "4.0.0-beta.5",

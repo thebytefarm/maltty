@@ -6,6 +6,7 @@
     { "path": "packages/config" },
     { "path": "packages/maltty" },
     { "path": "packages/stories" },
+    { "path": "packages/tui" },
     { "path": "packages/utils" }
   ]
 }

@@ -1,13 +1,12 @@
 import type { Story, StoryEntry, StoryGroup } from '@maltty/stories'
+import { ScrollArea } from '@maltty/tui/scroll-area'
+import { useSize } from '@maltty/tui/use-size'
 import { hasTag } from '@maltty/utils/tag'
 import type { DOMElement } from 'ink'
 import { Box, Text, useInput } from 'ink'
 import type { ReactElement } from 'react'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { match } from 'ts-pattern'
-
-import { ScrollArea } from '../../../ui/layout/scroll-area.js'
-import { useSize } from '../../../ui/layout/use-size.js'
 
 // ---------------------------------------------------------------------------
 // Types

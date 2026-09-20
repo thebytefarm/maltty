@@ -1,9 +1,8 @@
+import { Confirm } from '@maltty/tui/confirm'
 import { stories } from 'maltty/stories'
 import type { StoryGroup } from 'maltty/stories'
 import type { ComponentType } from 'react'
 import { z } from 'zod'
-
-import { Confirm } from './confirm.js'
 
 const schema = z.object({
   active: z.string().describe('Label for the affirmative choice'),

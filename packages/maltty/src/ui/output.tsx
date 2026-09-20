@@ -1,3 +1,5 @@
+import { Spinner } from '@maltty/tui/spinner'
+import { colors, symbols } from '@maltty/tui/theme'
 import { Box, Text } from 'ink'
 import type { ReactElement } from 'react'
 import { useSyncExternalStore } from 'react'
@@ -8,9 +10,6 @@ import { formatFinding } from '@/lib/format/finding.js'
 import { formatSummary } from '@/lib/format/tally.js'
 import type { LogLevel, OutputEntry, SpinnerState } from '@/screen/output/types.js'
 import { useOutputStore } from '@/screen/output/use-output-store.js'
-
-import { Spinner } from './display/spinner.js'
-import { colors, symbols } from './theme.js'
 
 // ---------------------------------------------------------------------------
 // Exports

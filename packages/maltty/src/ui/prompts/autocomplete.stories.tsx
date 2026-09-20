@@ -1,9 +1,8 @@
+import { Autocomplete } from '@maltty/tui/autocomplete'
 import { stories } from 'maltty/stories'
 import type { StoryGroup } from 'maltty/stories'
 import type { ComponentType } from 'react'
 import { z } from 'zod'
-
-import { Autocomplete } from './autocomplete.js'
 
 const schema = z.object({
   placeholder: z.string().optional().describe('Placeholder text for the search input'),
