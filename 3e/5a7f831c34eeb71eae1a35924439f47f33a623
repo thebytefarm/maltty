@@ -1,0 +1,27 @@
+tests/exports.test.ts
+  s_da10681e7c6f70::t_20f629fa5309ed 129,133
+packages/tui/package.json
+  s_da10681e7c6f70::t_20f629fa5309ed 155-156
+packages/tui/test/integration/bundle-isolation.test.ts
+  s_da10681e7c6f70::t_20f629fa5309ed 5,8-11,13-14,16-22,24-30,32-39,43-44
+  s_da10681e7c6f70::t_0695cf252cf2d8 23
+packages/maltty/package.json
+  s_da10681e7c6f70::t_06207be1bdd95c 123
+  s_da10681e7c6f70::t_20f629fa5309ed 126
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "3e5a7f831c34eeb71eae1a35924439f47f33a623",
+  "prompts": {},
+  "sessions": {
+    "s_da10681e7c6f70": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_f43a5f0eaffeuOt2XIsO4uy016",
+        "model": "gpt-5.6-sol"
+      },
+      "human_author": "Zac Rosenbauer <me@zrosenbauer.com>"
+    }
+  }
+}
