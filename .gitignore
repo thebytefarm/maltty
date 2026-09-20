@@ -159,3 +159,6 @@ vite.config.ts.timestamp-*
 
 # serena
 .serena
+
+# scratchpad for files you don't want to commit
+.scratchpad
