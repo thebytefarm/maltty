@@ -126,11 +126,11 @@ describe('package.json bin', () => {
 })
 
 describe('@maltty/tui package', () => {
-  it('exports every public component and subfeature', () => {
+  it('should export every public component and subfeature', () => {
     expect(Object.keys(tuiPackage.exports ?? {})).toEqual(TUI_EXPORTS)
   })
 
-  it('has no runtime dependencies beyond its peers', () => {
+  it('should have no runtime dependencies beyond its peers', () => {
     expect(tuiPackage.dependencies).toBeUndefined()
   })
 })

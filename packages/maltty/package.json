@@ -120,10 +120,10 @@
     "vitest": "catalog:"
   },
   "peerDependencies": {
-    "ink": "^7.1.1",
+    "ink": ">=5.0.0",
     "jiti": ">=2.0.0",
     "pino": ">=9.0.0",
-    "react": "^19.2.0",
+    "react": ">=18.0.0",
     "vitest": ">=2.0.0"
   },
   "peerDependenciesMeta": {

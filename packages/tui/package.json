@@ -152,8 +152,8 @@
     "vitest": "catalog:"
   },
   "peerDependencies": {
-    "ink": "^7.1.1",
-    "react": "^19.2.0"
+    "ink": ">=5.0.0",
+    "react": ">=18.0.0"
   },
   "engines": {
     "bun": ">=1.3",
