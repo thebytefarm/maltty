@@ -12,8 +12,8 @@ interface ReadBundleGraphArgs {
 
 const DIST_DIR = fileURLToPath(new URL('../../dist', import.meta.url))
 const LOCAL_IMPORT_PATTERNS = [
-  /from\s+["'](\.\.?\/[^"']+)["']/g,
-  /import\s+["'](\.\.?\/[^"']+)["']/g,
+  /from\s*["'](\.\.?\/[^"']+)["']/g,
+  /import\s*["'](\.\.?\/[^"']+)["']/g,
   /import\(\s*["'](\.\.?\/[^"']+)["']\s*\)/g,
 ] as const
 
