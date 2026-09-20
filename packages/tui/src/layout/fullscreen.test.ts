@@ -1,6 +1,16 @@
 import process from 'node:process'
+import { PassThrough } from 'node:stream'
 
+import { render, Text } from 'ink'
+import { createElement } from 'react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
+
+import {
+  createMouseModeLifecycle,
+  DISABLE_BUTTON_MOUSE,
+  DISABLE_SGR_MOUSE,
+} from '../interaction/mouse-mode.js'
+import { FullScreen as FullScreenComponent } from './fullscreen.js'
 
 describe('useTerminalSize', () => {
   beforeEach(() => {
@@ -52,8 +62,52 @@ describe('useTerminalSize export', () => {
 
 describe('fullScreen export', () => {
   it('should export FullScreen as a function component', async () => {
-    const { FullScreen } = await import('./fullscreen.js')
-    expect(typeof FullScreen).toBe('function')
+    const { FullScreen: ExportedFullScreen } = await import('./fullscreen.js')
+    expect(typeof ExportedFullScreen).toBe('function')
+  })
+
+  it('should coordinate cleanup before terminating with another signal listener', async () => {
+    const stdout = new PassThrough() as unknown as NodeJS.WriteStream
+    Object.defineProperty(stdout, 'columns', { value: 80 })
+    Object.defineProperty(stdout, 'isTTY', { value: true })
+    Object.defineProperty(stdout, 'rows', { value: 24 })
+    const existingHandlers = new Set(process.listeners('SIGTERM'))
+    const competingHandler = vi.fn()
+    const exit = vi.spyOn(process, 'exit').mockImplementation(() => undefined as never)
+    process.on('SIGTERM', competingHandler)
+    const mouseWrite = vi.fn<(data: string) => void>()
+    const app = render(createElement(FullScreenComponent, {}, createElement(Text, {}, 'test')), {
+      interactive: true,
+      patchConsole: false,
+      stderr: stdout,
+      stdout,
+    })
+    const mouse = createMouseModeLifecycle({ write: mouseWrite })
+    mouse.registerCleanup()
+
+    await app.waitUntilRenderFlush()
+    const handler = await vi.waitFor(() => {
+      const registered = process
+        .listeners('SIGTERM')
+        .findLast((candidate) => !existingHandlers.has(candidate))
+      expect(registered).toBeTypeOf('function')
+      return registered as (signal: NodeJS.Signals) => void
+    })
+
+    handler('SIGTERM')
+
+    expect(process.listeners('SIGTERM')).not.toContain(handler)
+    expect(process.listeners('SIGTERM')).toContain(competingHandler)
+    await vi.waitFor(() => expect(exit).toHaveBeenCalledOnce())
+    expect(exit).toHaveBeenCalledWith(143)
+    expect(mouseWrite.mock.calls.map(([data]) => data)).toStrictEqual([
+      DISABLE_SGR_MOUSE,
+      DISABLE_BUTTON_MOUSE,
+    ])
+    app.unmount()
+    mouse.unregisterCleanup()
+    process.off('SIGTERM', competingHandler)
+    exit.mockRestore()
   })
 })
 

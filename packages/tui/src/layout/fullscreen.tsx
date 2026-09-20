@@ -4,6 +4,8 @@ import { Box, useStdout } from 'ink'
 import type { ReactElement, ReactNode } from 'react'
 import { createContext, useContext, useEffect, useState } from 'react'
 
+import { terminalCleanup } from '../terminal-cleanup.js'
+
 // ---------------------------------------------------------------------------
 // Constants
 // ---------------------------------------------------------------------------
@@ -160,16 +162,17 @@ export function FullScreen({ children, hideCursor = false }: FullScreenProps): R
       write(HIDE_CURSOR)
     }
 
-    const handlers = createCleanupHandlers({
-      hideCursor,
-      write,
-    })
+    const cleanup = () =>
+      writeLeaveSequence({
+        hideCursor,
+        write,
+      })
 
-    handlers.register()
+    terminalCleanup.register(cleanup)
 
     return () => {
-      handlers.unregister()
-      writeLeaveSequence({ hideCursor, write })
+      terminalCleanup.unregister(cleanup)
+      cleanup()
     }
   }, [write, hideCursor])
 
@@ -222,66 +225,4 @@ function writeLeaveSequence({
     write(SHOW_CURSOR)
   }
   write(LEAVE_ALT_SCREEN)
-}
-
-/**
- * Configuration for creating cleanup handlers.
- *
- * @private
- */
-interface CleanupHandlerConfig {
-  readonly hideCursor: boolean
-  readonly write: (data: string) => void
-}
-
-/**
- * Handlers returned by {@link createCleanupHandlers}.
- *
- * @private
- */
-interface CleanupHandlers {
-  readonly register: () => void
-  readonly unregister: () => void
-}
-
-/**
- * Create signal and process-exit handlers that leave the alternate screen
- * buffer on abnormal termination. All handlers are idempotent.
- *
- * @private
- * @param config - Configuration including write function and cursor visibility.
- * @returns Frozen object with `register` and `unregister` methods.
- */
-function createCleanupHandlers(config: CleanupHandlerConfig): CleanupHandlers {
-  /**
-   * Handle SIGINT / SIGTERM — leave alt screen and re-raise.
-   *
-   * @private
-   */
-  function handleSignal(signal: NodeJS.Signals): void {
-    writeLeaveSequence(config)
-    process.kill(process.pid, signal)
-  }
-
-  /**
-   * Handle process.exit — leave alt screen synchronously.
-   *
-   * @private
-   */
-  function handleExit(): void {
-    writeLeaveSequence(config)
-  }
-
-  return Object.freeze({
-    register: () => {
-      process.on('SIGINT', handleSignal)
-      process.on('SIGTERM', handleSignal)
-      process.on('exit', handleExit)
-    },
-    unregister: () => {
-      process.off('SIGINT', handleSignal)
-      process.off('SIGTERM', handleSignal)
-      process.off('exit', handleExit)
-    },
-  })
 }
