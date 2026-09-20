@@ -1,0 +1,24 @@
+packages/stories/src/importer.test.ts
+  s_da10681e7c6f70::t_fe9e856e8fd3b3 34-36,118,134,146,161,196,199,222
+  s_da10681e7c6f70::t_dc4ed63322688e 43-59,173
+  s_da10681e7c6f70::t_df708c75dd4054 23
+  s_da10681e7c6f70::t_e80e5c61f73871 22
+packages/stories/src/watcher.test.ts
+  s_da10681e7c6f70::t_fe9e856e8fd3b3 283,346
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "883537e772ad58ea0ebc0b156c5ded90edbcb194",
+  "prompts": {},
+  "sessions": {
+    "s_da10681e7c6f70": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_f43a5f0eaffeuOt2XIsO4uy016",
+        "model": "gpt-5.6-sol"
+      },
+      "human_author": "Zac Rosenbauer <me@zrosenbauer.com>"
+    }
+  }
+}
