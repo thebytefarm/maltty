@@ -95,6 +95,7 @@
     "@clack/prompts": "^1.7.0",
     "@maltty/config": "workspace:*",
     "@maltty/stories": "workspace:*",
+    "@maltty/tui": "workspace:*",
     "@maltty/utils": "workspace:*",
     "@pinojs/redact": "^0.4.0",
     "c12": "4.0.0-beta.5",
@@ -119,10 +120,10 @@
     "vitest": "catalog:"
   },
   "peerDependencies": {
-    "ink": ">=5.0.0",
+    "ink": "^7.1.1",
     "jiti": ">=2.0.0",
     "pino": ">=9.0.0",
-    "react": ">=18.0.0",
+    "react": "^19.2.0",
     "vitest": ">=2.0.0"
   },
   "peerDependenciesMeta": {

@@ -1,0 +1,162 @@
+{
+  "name": "@maltty/tui",
+  "version": "1.0.0-rc.4",
+  "description": "Standalone React and Ink components for terminal user interfaces",
+  "keywords": [
+    "cli",
+    "ink",
+    "maltty",
+    "react",
+    "terminal",
+    "tui"
+  ],
+  "homepage": "https://github.com/thebytefarm/maltty/tree/main/packages/tui",
+  "bugs": {
+    "url": "https://github.com/thebytefarm/maltty/issues"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/thebytefarm/maltty.git",
+    "directory": "packages/tui"
+  },
+  "files": [
+    "dist"
+  ],
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./alert": {
+      "types": "./dist/alert.d.ts",
+      "default": "./dist/alert.js"
+    },
+    "./autocomplete": {
+      "types": "./dist/autocomplete.d.ts",
+      "default": "./dist/autocomplete.js"
+    },
+    "./confirm": {
+      "types": "./dist/confirm.d.ts",
+      "default": "./dist/confirm.js"
+    },
+    "./display": {
+      "types": "./dist/display.d.ts",
+      "default": "./dist/display.js"
+    },
+    "./error-message": {
+      "types": "./dist/error-message.d.ts",
+      "default": "./dist/error-message.js"
+    },
+    "./fullscreen": {
+      "types": "./dist/fullscreen.d.ts",
+      "default": "./dist/fullscreen.js"
+    },
+    "./group-multi-select": {
+      "types": "./dist/group-multi-select.d.ts",
+      "default": "./dist/group-multi-select.js"
+    },
+    "./keys": {
+      "types": "./dist/keys.d.ts",
+      "default": "./dist/keys.js"
+    },
+    "./layout": {
+      "types": "./dist/layout.d.ts",
+      "default": "./dist/layout.js"
+    },
+    "./multi-select": {
+      "types": "./dist/multi-select.d.ts",
+      "default": "./dist/multi-select.js"
+    },
+    "./password-input": {
+      "types": "./dist/password-input.d.ts",
+      "default": "./dist/password-input.js"
+    },
+    "./path-input": {
+      "types": "./dist/path-input.d.ts",
+      "default": "./dist/path-input.js"
+    },
+    "./progress-bar": {
+      "types": "./dist/progress-bar.d.ts",
+      "default": "./dist/progress-bar.js"
+    },
+    "./prompts": {
+      "types": "./dist/prompts.d.ts",
+      "default": "./dist/prompts.js"
+    },
+    "./scroll-area": {
+      "types": "./dist/scroll-area.d.ts",
+      "default": "./dist/scroll-area.js"
+    },
+    "./select": {
+      "types": "./dist/select.d.ts",
+      "default": "./dist/select.js"
+    },
+    "./select-key": {
+      "types": "./dist/select-key.d.ts",
+      "default": "./dist/select-key.js"
+    },
+    "./spinner": {
+      "types": "./dist/spinner.d.ts",
+      "default": "./dist/spinner.js"
+    },
+    "./status-message": {
+      "types": "./dist/status-message.d.ts",
+      "default": "./dist/status-message.js"
+    },
+    "./tabs": {
+      "types": "./dist/tabs.d.ts",
+      "default": "./dist/tabs.js"
+    },
+    "./text-input": {
+      "types": "./dist/text-input.d.ts",
+      "default": "./dist/text-input.js"
+    },
+    "./theme": {
+      "types": "./dist/theme.d.ts",
+      "default": "./dist/theme.js"
+    },
+    "./use-hotkey": {
+      "types": "./dist/use-hotkey.d.ts",
+      "default": "./dist/use-hotkey.js"
+    },
+    "./use-size": {
+      "types": "./dist/use-size.d.ts",
+      "default": "./dist/use-size.js"
+    }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tsdown",
+    "typecheck": "tsgo --noEmit",
+    "lint": "oxlint --ignore-pattern node_modules",
+    "lint:fix": "oxlint --fix --ignore-pattern node_modules",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "test:watch": "vitest"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "@types/react": "^19.2.17",
+    "figures": "^6.1.0",
+    "ink": "^7.1.1",
+    "picocolors": "^1.1.1",
+    "react": "^19.2.8",
+    "ts-pattern": "catalog:",
+    "tsdown": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "catalog:"
+  },
+  "peerDependencies": {
+    "ink": "^7.1.1",
+    "react": "^19.2.0"
+  },
+  "engines": {
+    "bun": ">=1.3",
+    "node": ">=22"
+  }
+}

@@ -1,9 +1,8 @@
 import { stories } from '@maltty/stories'
 import type { StoryGroup } from '@maltty/stories'
+import { StatusMessage } from '@maltty/tui/status-message'
 import type { ComponentType } from 'react'
 import { z } from 'zod'
-
-import { StatusMessage } from './status-message.js'
 
 const schema = z.object({
   children: z.string().describe('The message content'),

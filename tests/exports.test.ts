@@ -21,6 +21,7 @@ interface BinEntry {
 
 interface PackageJson {
   readonly name: string
+  readonly dependencies?: Record<string, string>
   readonly exports?: Record<string, Record<string, string>>
   readonly bin?: Record<string, string>
 }
@@ -73,6 +74,35 @@ const toBinEntries = (pkgDir: string): BinEntry[] => {
 const packageDirs = fs.readdirSync(PACKAGES_DIR).filter(isDirectory)
 const exportEntries = packageDirs.flatMap(toExportEntries)
 const binEntries = packageDirs.flatMap(toBinEntries)
+const tuiPackage = readPackageJson('tui')
+
+const TUI_EXPORTS = [
+  '.',
+  './alert',
+  './autocomplete',
+  './confirm',
+  './display',
+  './error-message',
+  './fullscreen',
+  './group-multi-select',
+  './keys',
+  './layout',
+  './multi-select',
+  './password-input',
+  './path-input',
+  './progress-bar',
+  './prompts',
+  './scroll-area',
+  './select',
+  './select-key',
+  './spinner',
+  './status-message',
+  './tabs',
+  './text-input',
+  './theme',
+  './use-hotkey',
+  './use-size',
+] as const
 
 describe('package.json exports', () => {
   it.each(exportEntries)(
@@ -92,5 +122,15 @@ describe('package.json bin', () => {
       fs.existsSync(path.join(pkgRoot, binPath)),
       `Bin file does not exist: ${binPath}`
     ).toBeTruthy()
+  })
+})
+
+describe('@maltty/tui package', () => {
+  it('exports every public component and subfeature', () => {
+    expect(Object.keys(tuiPackage.exports ?? {})).toEqual(TUI_EXPORTS)
+  })
+
+  it('has no runtime dependencies beyond its peers', () => {
+    expect(tuiPackage.dependencies).toBeUndefined()
   })
 })

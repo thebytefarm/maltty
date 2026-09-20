@@ -90,6 +90,18 @@ export default screen({
 })
 ```
 
+Reusable components are also available without the maltty runtime:
+
+```bash
+pnpm add @maltty/tui ink react
+```
+
+```tsx
+import { Spinner } from '@maltty/tui/spinner'
+```
+
+Existing `maltty/ui` imports remain supported and include the maltty-owned screen and output APIs.
+
 ### Run it
 
 ```bash
