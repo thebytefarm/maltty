@@ -1,0 +1,14 @@
+.gitignore
+  h_475ea7276ec9b8 162-164
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "f6ee37b2c8508ea6443a886e1a2052f373d419ee",
+  "prompts": {},
+  "humans": {
+    "h_475ea7276ec9b8": {
+      "author": "Zac Rosenbauer <me@zrosenbauer.com>"
+    }
+  }
+}
