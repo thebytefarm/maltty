@@ -7,6 +7,7 @@ interface StatusProps {
   readonly status: 'ready' | 'working'
 }
 
+/** @private */
 function Status({ status }: StatusProps): ReactElement {
   return <Text>{status}</Text>
 }
