@@ -1,6 +1,6 @@
 {
   "name": "@maltty/stories",
-  "version": "1.0.0-rc.4",
+  "version": "1.0.0-rc.5",
   "description": "Framework-independent component stories for React and Ink",
   "keywords": [
     "cli",

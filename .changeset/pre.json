@@ -12,10 +12,16 @@
     "@maltty/cli": "0.11.9",
     "@maltty/config": "0.4.1",
     "maltty": "0.24.0",
-    "@maltty/utils": "0.4.2"
+    "@maltty/utils": "0.4.2",
+    "@examples/stories-ink": "0.0.0",
+    "@maltty/stories": "1.0.0-rc.4",
+    "@maltty/tui": "1.0.0-rc.4"
   },
   "changesets": [
+    "default-commands",
     "expose-lib-subpaths",
+    "extract-stories-package",
+    "extract-tui-package",
     "fix-zod-v4-schema-detection",
     "kebab-case-schema-keys",
     "kidd-to-maltty-rename",
