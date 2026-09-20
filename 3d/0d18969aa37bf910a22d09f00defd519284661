@@ -1,0 +1,21 @@
+packages/tui/test/integration/package-contract.test.ts
+  s_da10681e7c6f70::t_30542b156841b7 1-50
+packages/tui/test/integration/bundle-isolation.test.ts
+  s_da10681e7c6f70::t_b333a4a4f2e889 14-18,32-35
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "3d0d18969aa37bf910a22d09f00defd519284661",
+  "prompts": {},
+  "sessions": {
+    "s_da10681e7c6f70": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_f43a5f0eaffeuOt2XIsO4uy016",
+        "model": "gpt-5.6-sol"
+      },
+      "human_author": "Zac Rosenbauer <me@zrosenbauer.com>"
+    }
+  }
+}
