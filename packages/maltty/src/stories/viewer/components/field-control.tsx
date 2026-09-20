@@ -1,3 +1,4 @@
+import type { FieldControlKind } from '@maltty/stories'
 import { Box, Text } from 'ink'
 import type { ReactElement } from 'react'
 import { match } from 'ts-pattern'
@@ -7,7 +8,6 @@ import { MultiSelect } from '../../../ui/prompts/multi-select.js'
 import { Select } from '../../../ui/prompts/select.js'
 import { TextInput } from '../../../ui/prompts/text-input.js'
 import type { PromptOption } from '../../../ui/prompts/types.js'
-import type { FieldControlKind } from '../../types.js'
 
 // ---------------------------------------------------------------------------
 // Types

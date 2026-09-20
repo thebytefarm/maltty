@@ -1,3 +1,4 @@
+import type { Decorator } from '@maltty/stories'
 import { Box } from 'ink'
 import type { ComponentType, ReactElement } from 'react'
 import React from 'react'
@@ -5,7 +6,6 @@ import React from 'react'
 import type { ScreenContext } from '../context/types.js'
 import { MalttyProvider } from '../screen/provider.js'
 import { FullScreen } from '../ui/layout/fullscreen.js'
-import type { Decorator } from './types.js'
 
 // ---------------------------------------------------------------------------
 // Types

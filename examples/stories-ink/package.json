@@ -1,0 +1,21 @@
+{
+  "name": "@examples/stories-ink",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsdown",
+    "typecheck": "tsgo --noEmit"
+  },
+  "dependencies": {
+    "@maltty/stories": "workspace:*",
+    "ink": "^7.1.1",
+    "react": "^19.2.8",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.17",
+    "tsdown": "catalog:",
+    "typescript": "catalog:"
+  }
+}

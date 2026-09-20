@@ -20,6 +20,14 @@ describe('checkStories()', () => {
     expect(result).toStrictEqual({ diagnostics: [], storyCount: 0, passed: true })
   })
 
+  it('should ignore entries without a story tag', () => {
+    const entries = new Map<string, StoryEntry>([['unknown', {} as StoryEntry]])
+
+    const result = checkStories(entries)
+
+    expect(result).toStrictEqual({ diagnostics: [], storyCount: 0, passed: true })
+  })
+
   it('should return storyCount 1 and passed true for a single valid story', () => {
     const story = withTag(
       {

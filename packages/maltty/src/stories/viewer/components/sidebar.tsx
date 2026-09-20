@@ -1,3 +1,4 @@
+import type { Story, StoryEntry, StoryGroup } from '@maltty/stories'
 import { hasTag } from '@maltty/utils/tag'
 import type { DOMElement } from 'ink'
 import { Box, Text, useInput } from 'ink'
@@ -7,7 +8,6 @@ import { match } from 'ts-pattern'
 
 import { ScrollArea } from '../../../ui/layout/scroll-area.js'
 import { useSize } from '../../../ui/layout/use-size.js'
-import type { Story, StoryEntry, StoryGroup } from '../../types.js'
 
 // ---------------------------------------------------------------------------
 // Types

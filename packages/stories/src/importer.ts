@@ -76,7 +76,7 @@ export function createStoryImporter(): readonly [Error, null] | readonly [null, 
 /**
  * Attempt to resolve the `jiti` package at runtime.
  *
- * `jiti` is an optional peer dependency of `maltty`, but the stories
+ * `jiti` is an optional peer dependency of `@maltty/stories`, but the stories
  * subsystem cannot function without it. Returns a Result tuple so callers can
  * surface a helpful message instead of crashing with a cryptic import error.
  *

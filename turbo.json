@@ -34,6 +34,7 @@
         "@maltty/cli#build",
         "@maltty/config#build",
         "maltty#build",
+        "@maltty/stories#build",
         "@maltty/utils#build"
       ]
     }

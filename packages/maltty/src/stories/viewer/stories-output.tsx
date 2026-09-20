@@ -1,14 +1,13 @@
 import process from 'node:process'
 
+import { createStoryImporter, discoverStories } from '@maltty/stories'
+import type { Decorator, Story, StoryEntry, StoryGroup } from '@maltty/stories'
 import { hasTag } from '@maltty/utils/tag'
 import { Box, Text, useApp } from 'ink'
 import type { ComponentType, ReactElement } from 'react'
 import { useEffect, useMemo, useState } from 'react'
 import { match } from 'ts-pattern'
 
-import { discoverStories } from '../discover.js'
-import { createStoryImporter } from '../importer.js'
-import type { Decorator, Story, StoryEntry, StoryGroup } from '../types.js'
 import { applyDecorators, buildIncludePatterns } from './utils.js'
 
 // ---------------------------------------------------------------------------

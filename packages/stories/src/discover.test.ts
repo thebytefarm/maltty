@@ -30,6 +30,20 @@ describe('story discovery', () => {
     expect(result.errors).toHaveLength(0)
   })
 
+  it('should use the process directory when cwd is omitted', async () => {
+    const { glob } = await import('node:fs/promises')
+    vi.mocked(glob).mockReturnValue(asyncIterableOf([]))
+
+    await discoverStories({
+      importer: createMockImporter(async () => [new Error('should not be called'), null]),
+    })
+
+    expect(glob).toHaveBeenCalledWith(expect.any(String), {
+      cwd: process.cwd(),
+      exclude: ['node_modules/**'],
+    })
+  })
+
   it('should collect entries from matched files', async () => {
     const { glob } = await import('node:fs/promises')
     vi.mocked(glob).mockReturnValue(asyncIterableOf(['button.stories.ts']))

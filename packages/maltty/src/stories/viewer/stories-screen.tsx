@@ -1,16 +1,17 @@
 import process from 'node:process'
 
+import {
+  createStoryImporter,
+  createStoryRegistry,
+  createStoryWatcher,
+  discoverStories,
+} from '@maltty/stories'
+import type { DiscoverError, StoryEntry } from '@maltty/stories'
 import { Box, Text } from 'ink'
 import type { ReactElement } from 'react'
 import { useEffect, useState } from 'react'
 import { P, match } from 'ts-pattern'
 
-import type { DiscoverError } from '../discover.js'
-import { discoverStories } from '../discover.js'
-import { createStoryImporter } from '../importer.js'
-import { createStoryRegistry } from '../registry.js'
-import type { StoryEntry } from '../types.js'
-import { createStoryWatcher } from '../watcher.js'
 import { useReloadState } from './hooks/use-reload-state.js'
 import { StoriesApp } from './stories-app.js'
 import { StoriesCheck } from './stories-check.js'

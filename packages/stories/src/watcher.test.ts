@@ -90,6 +90,29 @@ describe('story watcher', () => {
     expect(closeFn).toHaveBeenCalledOnce()
   })
 
+  it('should cancel pending reloads on close', async () => {
+    const { watch } = await import('node:fs')
+    const callbacks: WatchCallback[] = []
+    vi.mocked(watch).mockImplementation((_path, _opts, cb) => {
+      if (typeof cb === 'function') {
+        callbacks.push(cb as WatchCallback)
+      }
+      return { close: vi.fn(), on: vi.fn() } as unknown as FSWatcher
+    })
+    const importer = createMockImporter()
+
+    const [, watcher] = createStoryWatcher({
+      directories: ['/app/src'],
+      importer,
+      registry: createMockRegistry(),
+    })
+    callbacks[0]('change', 'button.stories.ts')
+    watcher?.close()
+    await vi.advanceTimersByTimeAsync(200)
+
+    expect(importer.importStory).not.toHaveBeenCalled()
+  })
+
   it('should debounce and reload a story file on change', async () => {
     const { watch } = await import('node:fs')
     const callbacks: WatchCallback[] = []
@@ -121,6 +144,30 @@ describe('story watcher', () => {
     expect(importer.importStory).toHaveBeenCalledOnce()
   })
 
+  it('should replace an existing debounce timer for the same story', async () => {
+    const { watch } = await import('node:fs')
+    const callbacks: WatchCallback[] = []
+    vi.mocked(watch).mockImplementation((_path, _opts, cb) => {
+      if (typeof cb === 'function') {
+        callbacks.push(cb as WatchCallback)
+      }
+      return { close: vi.fn(), on: vi.fn() } as unknown as FSWatcher
+    })
+    const importer = createMockImporter()
+
+    createStoryWatcher({
+      directories: ['/app/src'],
+      importer,
+      registry: createMockRegistry(),
+      debounceMs: 10,
+    })
+    callbacks[0]('change', 'button.stories.ts')
+    callbacks[0]('change', 'button.stories.ts')
+    await vi.advanceTimersByTimeAsync(20)
+
+    expect(importer.importStory).toHaveBeenCalledOnce()
+  })
+
   it('should ignore non-story files', async () => {
     const { watch } = await import('node:fs')
     const callbacks: WatchCallback[] = []
@@ -144,6 +191,30 @@ describe('story watcher', () => {
     expect(error).toBeNull()
     callbacks[0]('change', 'utils.ts')
     await vi.advanceTimersByTimeAsync(60)
+
+    expect(importer.importStory).not.toHaveBeenCalled()
+  })
+
+  it('should ignore files outside supported source extensions', async () => {
+    const { watch } = await import('node:fs')
+    const callbacks: WatchCallback[] = []
+    vi.mocked(watch).mockImplementation((_path, _opts, cb) => {
+      if (typeof cb === 'function') {
+        callbacks.push(cb as WatchCallback)
+      }
+      return { close: vi.fn(), on: vi.fn() } as unknown as FSWatcher
+    })
+    const importer = createMockImporter()
+
+    createStoryWatcher({
+      directories: ['/app/src'],
+      importer,
+      registry: createMockRegistry(),
+      debounceMs: 10,
+    })
+    callbacks[0]('change', 'README.md')
+    callbacks[0]('change', 'node_modules/dependency.ts')
+    await vi.advanceTimersByTimeAsync(20)
 
     expect(importer.importStory).not.toHaveBeenCalled()
   })
@@ -209,11 +280,12 @@ describe('story watcher', () => {
     vi.mocked(watch)
       .mockReturnValueOnce({ close: closeFn, on: vi.fn() } as unknown as FSWatcher)
       .mockImplementationOnce(() => {
+        // eslint-disable-next-line no-throw-literal -- simulating synchronous fs.watch failure
         throw new Error('permission denied')
       })
 
     const [error, watcher] = createStoryWatcher({
-      directories: ['/app/src', '/app/restricted'],
+      directories: ['/app/src', '/app/restricted', '/app/skipped'],
       importer: createMockImporter(),
       registry: createMockRegistry(),
     })
@@ -222,6 +294,95 @@ describe('story watcher', () => {
     expect(error?.message).toBe('permission denied')
     expect(watcher).toBeNull()
     expect(closeFn).toHaveBeenCalledOnce()
+  })
+
+  it('should run reload callbacks when an import rejects', async () => {
+    const { watch } = await import('node:fs')
+    const callbacks: WatchCallback[] = []
+    vi.mocked(watch).mockImplementation((_path, _opts, cb) => {
+      if (typeof cb === 'function') {
+        callbacks.push(cb as WatchCallback)
+      }
+      return { close: vi.fn(), on: vi.fn() } as unknown as FSWatcher
+    })
+    const onReloadStart = vi.fn()
+    const onReloadEnd = vi.fn()
+    const importer = Object.freeze({
+      importStory: vi.fn(() => Promise.reject(new Error('import failed'))),
+    })
+
+    createStoryWatcher({
+      directories: ['/app/src'],
+      importer,
+      registry: createMockRegistry(),
+      debounceMs: 10,
+      onReloadStart,
+      onReloadEnd,
+    })
+    callbacks[0]('change', 'button.stories.ts')
+    await vi.advanceTimersByTimeAsync(20)
+
+    expect(onReloadStart).toHaveBeenCalledOnce()
+    expect(onReloadEnd).toHaveBeenCalledOnce()
+  })
+
+  it('should absorb errors thrown by the reload-start callback', async () => {
+    const { watch } = await import('node:fs')
+    const callbacks: WatchCallback[] = []
+    vi.mocked(watch).mockImplementation((_path, _opts, cb) => {
+      if (typeof cb === 'function') {
+        callbacks.push(cb as WatchCallback)
+      }
+      return { close: vi.fn(), on: vi.fn() } as unknown as FSWatcher
+    })
+    const importer = createMockImporter()
+
+    createStoryWatcher({
+      directories: ['/app/src'],
+      importer,
+      registry: createMockRegistry(),
+      debounceMs: 10,
+      onReloadStart: () => {
+        // eslint-disable-next-line no-throw-literal -- simulating reload callback failure
+        throw new Error('callback failed')
+      },
+    })
+    callbacks[0]('change', 'button.stories.ts')
+    await vi.advanceTimersByTimeAsync(20)
+
+    expect(importer.importStory).not.toHaveBeenCalled()
+  })
+
+  it('should reload every registered story when a source file changes', async () => {
+    const { watch } = await import('node:fs')
+    const callbacks: WatchCallback[] = []
+    vi.mocked(watch).mockImplementation((_path, _opts, cb) => {
+      if (typeof cb === 'function') {
+        callbacks.push(cb as WatchCallback)
+      }
+      return { close: vi.fn(), on: vi.fn() } as unknown as FSWatcher
+    })
+    const importer = createMockImporter()
+    const registry = createMockRegistry()
+    vi.mocked(registry.getAll).mockReturnValue(
+      new Map([
+        ['/app/src/button.stories.ts', {} as StoryEntry],
+        ['/app/src/card.stories.ts', {} as StoryEntry],
+      ])
+    )
+
+    createStoryWatcher({
+      directories: ['/app/src'],
+      importer,
+      registry,
+      debounceMs: 10,
+      onReloadStart: vi.fn(),
+      onReloadEnd: vi.fn(),
+    })
+    callbacks[0]('change', 'button.ts')
+    await vi.advanceTimersByTimeAsync(20)
+
+    expect(importer.importStory).toHaveBeenCalledTimes(2)
   })
 
   it('should set entry in registry when import succeeds', async () => {

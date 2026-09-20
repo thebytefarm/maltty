@@ -1,7 +1,5 @@
+import type { StoryEntry, StoryRegistry } from '@maltty/stories'
 import { useSyncExternalStore } from 'react'
-
-import type { StoryRegistry } from '../../registry.js'
-import type { StoryEntry } from '../../types.js'
 
 // ---------------------------------------------------------------------------
 // Exports

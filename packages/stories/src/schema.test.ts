@@ -112,6 +112,76 @@ describe('schemaToFieldDescriptors()', () => {
     expect(result).toStrictEqual([])
   })
 
+  it('should fall back to unknown metadata for an unrecognized schema definition', () => {
+    const schema = {
+      shape: { value: { _def: {} } },
+    } as unknown as z.ZodObject<z.ZodRawShape>
+
+    const [field] = schemaToFieldDescriptors(schema)
+
+    expect(field).toMatchObject({ control: 'json', zodTypeName: 'unknown' })
+  })
+
+  it('should tolerate optional metadata without an inner type', () => {
+    const schema = {
+      shape: { value: { _def: { type: 'optional' } } },
+    } as unknown as z.ZodObject<z.ZodRawShape>
+
+    const [field] = schemaToFieldDescriptors(schema)
+
+    expect(field).toMatchObject({ isOptional: true, zodTypeName: 'optional' })
+  })
+
+  it('should tolerate default metadata without an inner type', () => {
+    const schema = {
+      shape: { value: { _def: { defaultValue: () => 'generated', type: 'default' } } },
+    } as unknown as z.ZodObject<z.ZodRawShape>
+
+    const [field] = schemaToFieldDescriptors(schema)
+
+    expect(field).toMatchObject({ defaultValue: 'generated', isOptional: true })
+  })
+
+  it('should preserve an outer default when a nested default is undefined', () => {
+    const schema = {
+      shape: {
+        value: {
+          _def: {
+            defaultValue: 'outer',
+            innerType: {
+              _def: {
+                defaultValue: undefined,
+                innerType: { _def: { type: 'string' } },
+                type: 'default',
+              },
+            },
+            type: 'default',
+          },
+        },
+      },
+    } as unknown as z.ZodObject<z.ZodRawShape>
+
+    const [field] = schemaToFieldDescriptors(schema)
+
+    expect(field.defaultValue).toBe('outer')
+  })
+
+  it('should tolerate enum and array metadata without entries or elements', () => {
+    const schema = {
+      shape: {
+        choices: { _def: { type: 'enum' } },
+        values: { _def: { type: 'array' } },
+      },
+    } as unknown as z.ZodObject<z.ZodRawShape>
+
+    const result = schemaToFieldDescriptors(schema)
+
+    expect(result.map(({ control, options }) => ({ control, options }))).toStrictEqual([
+      { control: 'select', options: undefined },
+      { control: 'json', options: undefined },
+    ])
+  })
+
   it('should handle multiple fields preserving order', () => {
     const schema = z.object({
       alpha: z.string(),
@@ -139,6 +209,10 @@ describe('resolveControlKind()', () => {
 
   it('should return select for enum type', () => {
     expect(resolveControlKind({ typeName: 'enum', def: {} })).toBe('select')
+  })
+
+  it('should return select for native enum type', () => {
+    expect(resolveControlKind({ typeName: 'nativeEnum', def: {} })).toBe('select')
   })
 
   it('should return readonly for literal type', () => {
