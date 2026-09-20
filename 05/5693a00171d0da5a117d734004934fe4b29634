@@ -1,0 +1,110 @@
+packages/maltty/src/ui/prompts/path-input.stories.tsx
+  s_0930e020ce1bd3::t_c7cdc4805fbdad 1
+README.md
+  s_0930e020ce1bd3::t_7ffe763b895d79 93-104
+packages/tui/tsconfig.json
+  s_0930e020ce1bd3::t_1fed83d78676ac 1-14
+packages/maltty/src/screen/screen.tsx
+  s_0930e020ce1bd3::t_c7cdc4805fbdad 3
+tests/exports.test.ts
+  s_0930e020ce1bd3::t_7ffe763b895d79 24,77-105,127-135
+  s_dadd8954dfd756::t_08ddf191acf54c 136
+packages/maltty/src/ui/display/alert.stories.tsx
+  s_0930e020ce1bd3::t_c7cdc4805fbdad 3
+packages/maltty/src/ui/index.ts
+  s_0930e020ce1bd3::t_8f72f9627bbe0e 1
+packages/maltty/package.json
+  s_0930e020ce1bd3::t_3c498274be75f1 98
+  s_0930e020ce1bd3::t_610e733a894dc3 123,126
+vitest.config.ts
+  s_0930e020ce1bd3::t_3c498274be75f1 80
+packages/tui/test/bundle-isolation.test.ts
+  s_0930e020ce1bd3::t_1fed83d78676ac 1-19,24-34
+  s_0930e020ce1bd3::t_c7cdc4805fbdad 20-23
+packages/tui/README.md
+  s_0930e020ce1bd3::t_1fed83d78676ac 1-13,15,17-33
+  s_0930e020ce1bd3::t_7ffe763b895d79 14,16
+packages/maltty/src/stories/decorators.tsx
+  s_0930e020ce1bd3::t_c7cdc4805fbdad 2
+packages/tui/src/index.ts
+  s_0930e020ce1bd3::t_1fed83d78676ac 1-125
+.changeset/extract-tui-package.md
+  s_0930e020ce1bd3::t_1fed83d78676ac 1-8
+packages/maltty/src/ui/output.tsx
+  s_0930e020ce1bd3::t_c7cdc4805fbdad 1-2
+packages/tui/tsdown.config.ts
+  s_0930e020ce1bd3::t_1fed83d78676ac 1-5,8-17,19-22,24-27,29-41
+  s_0930e020ce1bd3::t_3c498274be75f1 18,23,28
+  s_0930e020ce1bd3::t_b1f5aa425934a6 6
+  s_0930e020ce1bd3::t_7ffe763b895d79 7
+packages/maltty/src/ui/prompts/confirm.stories.tsx
+  s_0930e020ce1bd3::t_c7cdc4805fbdad 1
+packages/maltty/src/stories/viewer/components/props-editor.tsx
+  s_0930e020ce1bd3::t_c7cdc4805fbdad 2-3
+turbo.json
+  s_0930e020ce1bd3::t_3c498274be75f1 38
+packages/tui/package.json
+  s_0930e020ce1bd3::t_1fed83d78676ac 1-44,49-64,69-83,88-146,148-162
+  s_0930e020ce1bd3::t_3c498274be75f1 45-48,65-68,84-87
+  s_0930e020ce1bd3::t_b1f5aa425934a6 147
+packages/maltty/src/stories/viewer/components/preview.tsx
+  s_0930e020ce1bd3::t_c7cdc4805fbdad 2-3
+packages/maltty/src/ui/prompts/select-key.stories.tsx
+  s_0930e020ce1bd3::t_c7cdc4805fbdad 1
+packages/maltty/src/ui/display/spinner.stories.tsx
+  s_0930e020ce1bd3::t_c7cdc4805fbdad 3
+packages/maltty/src/ui/display/progress-bar.stories.tsx
+  s_0930e020ce1bd3::t_c7cdc4805fbdad 3
+packages/maltty/src/ui/display/status-message.stories.tsx
+  s_0930e020ce1bd3::t_c7cdc4805fbdad 3
+packages/maltty/src/ui/prompts/text-input.stories.tsx
+  s_0930e020ce1bd3::t_c7cdc4805fbdad 1
+packages/maltty/src/ui/prompts/group-multi-select.stories.tsx
+  s_0930e020ce1bd3::t_c7cdc4805fbdad 1
+tsconfig.json
+  s_0930e020ce1bd3::t_3c498274be75f1 9
+packages/maltty/src/ui/prompts/password-input.stories.tsx
+  s_0930e020ce1bd3::t_c7cdc4805fbdad 1
+packages/maltty/src/ui/prompts/autocomplete.stories.tsx
+  s_0930e020ce1bd3::t_c7cdc4805fbdad 1
+packages/tui/vitest.config.ts
+  s_0930e020ce1bd3::t_c7cdc4805fbdad 6
+  s_0930e020ce1bd3::t_1fed83d78676ac 1-5,7-18
+packages/maltty/src/stories/viewer/stories-app.tsx
+  s_0930e020ce1bd3::t_c7cdc4805fbdad 7-8
+packages/maltty/src/ui/prompts/select.stories.tsx
+  s_0930e020ce1bd3::t_c7cdc4805fbdad 1
+packages/maltty/src/stories/viewer/components/sidebar.tsx
+  s_0930e020ce1bd3::t_c7cdc4805fbdad 2-3
+packages/maltty/src/stories/viewer/components/field-control.tsx
+  s_0930e020ce1bd3::t_c7cdc4805fbdad 2
+  s_0930e020ce1bd3::t_8f72f9627bbe0e 3-6
+packages/maltty/src/ui/prompts/multi-select.stories.tsx
+  s_0930e020ce1bd3::t_c7cdc4805fbdad 1
+pnpm-lock.yaml
+  s_0930e020ce1bd3::t_93f574b28b9dff 432-434,533-565
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "055693a00171d0da5a117d734004934fe4b29634",
+  "prompts": {},
+  "sessions": {
+    "s_0930e020ce1bd3": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_f42fc7e41ffeRBoIkoSC4iA1Y1",
+        "model": "gpt-5.6-sol"
+      },
+      "human_author": "Zac Rosenbauer <me@zrosenbauer.com>"
+    },
+    "s_dadd8954dfd756": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_f48bb41d4ffeFyxI1peXgn5sPi",
+        "model": "gpt-5.6-sol"
+      },
+      "human_author": "Zac Rosenbauer <me@zrosenbauer.com>"
+    }
+  }
+}
