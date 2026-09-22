@@ -95,21 +95,25 @@ describe('node terminal cleanup', () => {
     const exit = vi.spyOn(process, 'exit').mockImplementation(() => undefined as never)
     const write = vi.spyOn(process.stdout, 'write').mockImplementation(() => true)
     const cleanup = vi.fn()
-    terminalCleanup.register(cleanup)
-    const handler = process
-      .listeners('SIGTERM')
-      .findLast((candidate) => !existingHandlers.has(candidate)) as (signal: NodeJS.Signals) => void
+    try {
+      terminalCleanup.register(cleanup)
+      const handler = process
+        .listeners('SIGTERM')
+        .findLast((candidate) => !existingHandlers.has(candidate)) as (
+        signal: NodeJS.Signals
+      ) => void
 
-    handler('SIGTERM')
-    await vi.advanceTimersByTimeAsync(100)
+      handler('SIGTERM')
+      await vi.advanceTimersByTimeAsync(100)
 
-    expect(cleanup).toHaveBeenCalledOnce()
-    expect(exit).toHaveBeenCalledOnce()
-    expect(exit).toHaveBeenCalledWith(143)
-
-    terminalCleanup.unregister(cleanup)
-    write.mockRestore()
-    exit.mockRestore()
-    vi.useRealTimers()
+      expect(cleanup).toHaveBeenCalledOnce()
+      expect(exit).toHaveBeenCalledOnce()
+      expect(exit).toHaveBeenCalledWith(143)
+    } finally {
+      terminalCleanup.unregister(cleanup)
+      write.mockRestore()
+      exit.mockRestore()
+      vi.useRealTimers()
+    }
   })
 })
