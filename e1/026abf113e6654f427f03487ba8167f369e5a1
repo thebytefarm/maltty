@@ -1,0 +1,19 @@
+packages/tui/src/terminal-cleanup.test.ts
+  s_da10681e7c6f70::t_4facd8d491c6c9 98-117
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "e1026abf113e6654f427f03487ba8167f369e5a1",
+  "prompts": {},
+  "sessions": {
+    "s_da10681e7c6f70": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_f43a5f0eaffeuOt2XIsO4uy016",
+        "model": "gpt-5.6-sol"
+      },
+      "human_author": "Zac Rosenbauer <me@zrosenbauer.com>"
+    }
+  }
+}
