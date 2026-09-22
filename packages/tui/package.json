@@ -58,6 +58,10 @@
       "types": "./dist/group-multi-select.d.ts",
       "default": "./dist/group-multi-select.js"
     },
+    "./interaction": {
+      "types": "./dist/interaction.d.ts",
+      "default": "./dist/interaction.js"
+    },
     "./keys": {
       "types": "./dist/keys.d.ts",
       "default": "./dist/keys.js"

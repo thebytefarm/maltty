@@ -107,6 +107,18 @@ export type {
 } from './layout/index.js'
 
 // ---------------------------------------------------------------------------
+// Interaction
+// ---------------------------------------------------------------------------
+
+export { Pressable, renderInteractive } from './interaction/index.js'
+export type {
+  InteractionClickEvent,
+  InteractionPoint,
+  InteractiveRenderOptions,
+  PressableProps,
+} from './interaction/index.js'
+
+// ---------------------------------------------------------------------------
 // Theme and input
 // ---------------------------------------------------------------------------
 

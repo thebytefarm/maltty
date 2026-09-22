@@ -2,8 +2,11 @@
 
 ## Status
 
-Accepted for the interaction spike. Public component APIs remain deferred until the provider and focus
-model are implemented.
+Accepted for the first pointer interaction feature. Focus, hover, drag, and selection remain deferred.
+
+Pointer interaction is opt-in. Applications call `renderInteractive()` instead of Ink's `render()` and use
+`Pressable` for clickable layout boxes. A `Pressable` rendered by ordinary Ink remains visually identical
+to `Box`, and its `onClick` handler is inert.
 
 ## Input ownership
 
@@ -28,20 +31,70 @@ ancestor offsets. It does not return viewport coordinates. Full-screen applicati
 origin only when the interactive live region starts at viewport `{ x: 0, y: 0 }`; static output above the
 live region invalidates that assumption even in the alternate screen buffer.
 
-The public interaction surface will therefore require a known origin:
+The public interaction surface therefore requires a known origin:
 
-- a full-screen surface supplies `{ x: 0, y: 0 }` and must not place `<Static>` output above it;
-- embedded and inline surfaces must receive an explicit viewport origin;
-- pointer behavior stays disabled when an origin is unknown;
+- `renderInteractive()` uses Ink's alternate screen and origin `{ x: 0, y: 0 }` by default;
+- applications that disable the alternate screen must supply their live region's viewport `origin`;
 - keyboard behavior remains available in every layout.
 
 Automatic inline origin discovery through cursor-position reports (`CSI 6 n`) is deferred. It would
 compete for stdin ownership and terminal responses, so it will ship only after a separate proof shows
 reliable behavior across supported terminals.
 
-## Overlap model
+## Hit-grid frames
 
-Hit testing uses measured rectangles with inclusive top/left and exclusive bottom/right edges. Disabled
-targets are ignored. Higher interaction priority wins; equal priorities resolve to the latest registered
-target. Arbitrary visual stacking and clipping are not promised until nested interaction surfaces define
-those semantics.
+Interaction lookup uses an invisible terminal-cell ownership grid paired with the rendered frame. Target
+rectangles use inclusive top/left and exclusive bottom/right edges. They are painted into the grid in the
+same order as Ink paints the corresponding host nodes, so later nodes overwrite earlier ownership. Disabled
+targets paint nothing. Every active ancestor clip must also contain a cell before the target can own it.
+
+The next grid is built as a complete immutable value and atomically committed only from Ink's `onRender`
+callback. Input reads the last committed grid and never observes a partially rebuilt target list. Resize and
+layout changes replace the complete grid dimensions and ownership together.
+
+Ink invokes `onRender` after Yoga layout and output generation but before React attaches refs for newly
+mounted nodes. A target registration must therefore request one immediate follow-up frame from a layout
+effect after its ref attaches. The first frame remains non-interactive; the follow-up frame publishes the
+target before the JavaScript event loop can process terminal input. A component-only hook cannot provide
+this guarantee because it does not control Ink's render callback.
+
+`renderInteractive()` owns target registration and composes Ink's `onRender` option. Reconstructing
+ownership from ANSI output or asynchronously cached measurements is explicitly rejected.
+
+## Usage
+
+```tsx
+import { Pressable, renderInteractive, Text } from '@maltty/tui'
+
+const app = renderInteractive(
+  <Pressable onClick={({ localX, localY }) => handleClick({ localX, localY })}>
+    <Text>Launch</Text>
+  </Pressable>
+)
+
+await app.waitUntilExit()
+```
+
+Clicks fire only when pointer down and pointer up resolve to the same enabled `Pressable`. This prevents a
+press on one target followed by a release elsewhere from activating either target.
+
+## Influences
+
+- [OpenTUI](https://github.com/anomalyco/opentui) maintains current and next cell-ownership grids, applies
+  renderer paint order and clipping, and swaps grids only after a successful frame. This is the primary
+  model for frame publication and constant-time lookup.
+- [Textual](https://github.com/Textualize/textual) stores render-derived geometry, effective clips, and paint
+  order together in its compositor. This informs semantic target rectangles when renderer-level glyph
+  ownership is unavailable.
+- Blessed-style cached bounds and existing Ink mouse hooks were rejected because effect- or time-based
+  measurement can drift from the visible frame and does not reliably model clipping or overlap.
+
+## Manual verification
+
+Run `pnpm --filter=@examples/tui interaction` from the repository root in a real terminal. The playground
+enters the alternate screen and enables SGR mouse reporting while it is active.
+
+- Click each card and confirm only the card under the pointer changes to `CLICKED`.
+- Modifier-click a card and confirm the event details update.
+- Resize the terminal, then click the moved cards to confirm the hit grid follows the rendered frame.
+- Press `q` or Escape and confirm the original screen, cursor, and normal terminal mouse behavior return.

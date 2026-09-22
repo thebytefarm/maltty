@@ -3,55 +3,39 @@ import { PassThrough } from 'node:stream'
 import type { DOMElement } from 'ink'
 import { Box, measureElement, render, Text, useInput } from 'ink'
 import type { ReactElement } from 'react'
-import { useEffect, useRef } from 'react'
+import { useLayoutEffect, useReducer } from 'react'
 import { describe, expect, it, vi } from 'vitest'
 
-import type { InteractionRect, InteractionTarget } from './hit-testing.js'
-import { resolveInteractionTarget } from './hit-testing.js'
+import type { InteractionHitGridStore, InteractionRect, InteractionTarget } from './hit-testing.js'
+import { createInteractionHitGrid, createInteractionHitGridStore } from './hit-testing.js'
 import type { SgrMouseEvent } from './sgr-mouse.js'
 import { parseSgrMouse } from './sgr-mouse.js'
 
 interface ProbeProps {
+  readonly hitGrid: InteractionHitGridStore
   readonly offsetX: number
   readonly offsetY: number
+  readonly onElement: (element: DOMElement | null) => void
   readonly onHit: (event: SgrMouseEvent) => void
-  readonly onMeasure: (rect: InteractionRect) => void
 }
 
-function Probe({ offsetX, offsetY, onHit, onMeasure }: ProbeProps): ReactElement {
-  const ref = useRef<DOMElement>(null)
-  const rect = useRef<InteractionRect | null>(null)
-
-  useEffect(() => {
-    if (ref.current === null) {
-      return
-    }
-    const measured = Object.freeze(measureElement(ref.current))
-    rect.current = measured
-    onMeasure(measured)
-  }, [offsetX, offsetY, onMeasure])
+function Probe({ hitGrid, offsetX, offsetY, onElement, onHit }: ProbeProps): ReactElement {
+  useFrameAfterRefsAttach()
 
   useInput((input) => {
     const [event, error] = parseSgrMouse(input)
-    if (error || rect.current === null) {
+    if (error) {
       return
     }
 
-    const target: InteractionTarget = {
-      disabled: false,
-      id: 'probe',
-      priority: 0,
-      rect: rect.current,
-    }
-    const resolved = resolveInteractionTarget({ point: event, targets: [target] })
-    if (resolved !== null) {
+    if (hitGrid.resolve(event) !== null) {
       onHit(event)
     }
   })
 
   return (
     <Box paddingLeft={offsetX} paddingTop={offsetY}>
-      <Box ref={ref} height={1} width={5}>
+      <Box ref={onElement} height={1} width={5}>
         <Text>probe</Text>
       </Box>
     </Box>
@@ -63,6 +47,8 @@ function ResizeProbe({
 }: {
   readonly onElement: (element: DOMElement | null) => void
 }): ReactElement {
+  useFrameAfterRefsAttach()
+
   return (
     <Box justifyContent="flex-end" width="100%">
       <Box ref={onElement} height={1} width={5}>
@@ -70,6 +56,11 @@ function ResizeProbe({
       </Box>
     </Box>
   )
+}
+
+function useFrameAfterRefsAttach(): void {
+  const [, requestFrame] = useReducer((generation: number) => generation + 1, 0)
+  useLayoutEffect(requestFrame, [requestFrame])
 }
 
 function createInput(): NodeJS.ReadStream {
@@ -92,19 +83,46 @@ function createOutput(): NodeJS.WriteStream {
 }
 
 describe('interaction spike', () => {
-  it('should align nested Ink measurements with SGR input after layout changes', async () => {
+  it('should publish hit grids with rendered Ink frames after layout changes', async () => {
     const stdin = createInput()
     const stdout = createOutput()
     const onHit = vi.fn<(event: SgrMouseEvent) => void>()
     const onMeasure = vi.fn<(rect: InteractionRect) => void>()
-    const app = render(<Probe offsetX={3} offsetY={2} onHit={onHit} onMeasure={onMeasure} />, {
-      exitOnCtrlC: false,
-      interactive: true,
-      patchConsole: false,
-      stderr: stdout,
-      stdin,
-      stdout,
+    const elements = new Map<string, DOMElement>()
+    const hitGrid = createInteractionHitGridStore({
+      frame: createInteractionHitGrid({ height: 0, targets: [], width: 0 }),
     })
+    const onElement = (element: DOMElement | null): void => {
+      if (element === null) {
+        elements.delete('probe')
+        return
+      }
+      elements.set('probe', element)
+    }
+    const commitFrame = (): void => {
+      const element = elements.get('probe')
+      if (element === undefined) {
+        return
+      }
+      const rect = Object.freeze(measureElement(element))
+      const target: InteractionTarget = Object.freeze({ disabled: false, id: 'probe', rect })
+      hitGrid.commit(
+        createInteractionHitGrid({ height: stdout.rows, targets: [target], width: stdout.columns })
+      )
+      onMeasure(rect)
+    }
+    const app = render(
+      <Probe hitGrid={hitGrid} offsetX={3} offsetY={2} onElement={onElement} onHit={onHit} />,
+      {
+        exitOnCtrlC: false,
+        interactive: true,
+        onRender: commitFrame,
+        patchConsole: false,
+        stderr: stdout,
+        stdin,
+        stdout,
+      }
+    )
 
     await app.waitUntilRenderFlush()
     await vi.waitFor(() =>
@@ -114,7 +132,9 @@ describe('interaction spike', () => {
     stdin.push('\u001B[<0;4;3M')
     await vi.waitFor(() => expect(onHit).toHaveBeenCalledTimes(1))
 
-    app.rerender(<Probe offsetX={7} offsetY={4} onHit={onHit} onMeasure={onMeasure} />)
+    app.rerender(
+      <Probe hitGrid={hitGrid} offsetX={7} offsetY={4} onElement={onElement} onHit={onHit} />
+    )
     await app.waitUntilRenderFlush()
     await vi.waitFor(() =>
       expect(onMeasure).toHaveBeenLastCalledWith({ height: 1, width: 5, x: 7, y: 4 })
@@ -130,9 +150,26 @@ describe('interaction spike', () => {
     const stdin = createInput()
     const stdout = createOutput()
     const onElement = vi.fn<(element: DOMElement | null) => void>()
+    const hitGrid = createInteractionHitGridStore({
+      frame: createInteractionHitGrid({ height: 0, targets: [], width: 0 }),
+    })
+    const commitFrame = (): void => {
+      const element = onElement.mock.calls.at(-1)?.[0]
+      if (element === null || element === undefined) {
+        return
+      }
+      hitGrid.commit(
+        createInteractionHitGrid({
+          height: stdout.rows,
+          targets: [{ disabled: false, id: 'probe', rect: measureElement(element) }],
+          width: stdout.columns,
+        })
+      )
+    }
     const app = render(<ResizeProbe onElement={onElement} />, {
       exitOnCtrlC: false,
       interactive: true,
+      onRender: commitFrame,
       patchConsole: false,
       stderr: stdout,
       stdin,
@@ -142,11 +179,14 @@ describe('interaction spike', () => {
     await app.waitUntilRenderFlush()
     const element = onElement.mock.calls.at(-1)?.[0] as DOMElement
     expect(measureElement(element)).toStrictEqual({ height: 1, width: 5, x: 75, y: 0 })
+    expect(hitGrid.resolve({ x: 75, y: 0 })?.id).toBe('probe')
 
     Object.defineProperty(stdout, 'columns', { configurable: true, value: 60 })
     stdout.emit('resize')
     await app.waitUntilRenderFlush()
     expect(measureElement(element)).toStrictEqual({ height: 1, width: 5, x: 55, y: 0 })
+    expect(hitGrid.resolve({ x: 75, y: 0 })).toBeNull()
+    expect(hitGrid.resolve({ x: 55, y: 0 })?.id).toBe('probe')
 
     app.unmount()
   })

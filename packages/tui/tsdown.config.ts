@@ -20,6 +20,7 @@ export default defineConfig({
     fullscreen: 'src/layout/fullscreen.tsx',
     'group-multi-select': 'src/prompts/group-multi-select.tsx',
     keys: 'src/keys.ts',
+    interaction: 'src/interaction/index.ts',
     layout: 'src/layout/index.ts',
     'multi-select': 'src/prompts/multi-select.tsx',
     'password-input': 'src/prompts/password-input.tsx',

@@ -1,3 +1,5 @@
+import { match } from 'ts-pattern'
+
 /**
  * A zero-based point in terminal or surface coordinates.
  */
@@ -15,13 +17,39 @@ export interface InteractionRect extends InteractionPoint {
 }
 
 /**
- * A candidate interaction target and its deterministic overlap priority.
+ * An ancestor clip applied on selected terminal axes.
+ */
+export interface InteractionClip {
+  readonly horizontal: boolean
+  readonly rect: InteractionRect
+  readonly vertical: boolean
+}
+
+/**
+ * A target painted into an interaction hit-grid frame.
  */
 export interface InteractionTarget {
+  readonly clips?: readonly InteractionClip[]
   readonly disabled: boolean
   readonly id: string
-  readonly priority: number
   readonly rect: InteractionRect
+}
+
+/**
+ * Cell ownership produced alongside one complete rendered frame.
+ */
+export interface InteractionHitGrid {
+  readonly cells: readonly (InteractionTarget | null)[]
+  readonly height: number
+  readonly width: number
+}
+
+/**
+ * Atomic access to the last complete interaction frame.
+ */
+export interface InteractionHitGridStore {
+  readonly commit: (frame: InteractionHitGrid) => void
+  readonly resolve: (point: InteractionPoint) => InteractionTarget | null
 }
 
 /**
@@ -62,28 +90,124 @@ export function containsInteractionPoint({
 }
 
 /**
- * Resolve the enabled target under a point using priority and mount order.
+ * Paint target ownership into a complete immutable terminal-cell grid.
  *
- * Higher priority wins. When priorities match, the later target wins so a
- * registry can use immutable append order as its initial stacking model.
+ * Targets must be provided in the same order Ink paints them. Later targets
+ * overwrite earlier ownership, while nested clip rectangles restrict which
+ * cells a target can own.
  *
- * @param options - Registered targets and a point in surface coordinates.
- * @returns The winning target, or `null` when no target contains the point.
+ * @param options - Frame dimensions and targets in renderer paint order.
+ * @returns A complete hit-grid frame ready for atomic publication.
+ */
+export function createInteractionHitGrid({
+  height,
+  targets,
+  width,
+}: {
+  readonly height: number
+  readonly targets: readonly InteractionTarget[]
+  readonly width: number
+}): InteractionHitGrid {
+  const frameWidth = normalizeDimension(width)
+  const frameHeight = normalizeDimension(height)
+  const cells = Array.from({ length: frameWidth * frameHeight }, (_, index) => {
+    const point = Object.freeze({
+      x: index % frameWidth,
+      y: Math.floor(index / frameWidth),
+    })
+    return targets.findLast((target) => ownsInteractionPoint({ point, target })) ?? null
+  })
+
+  return Object.freeze({ cells: Object.freeze(cells), height: frameHeight, width: frameWidth })
+}
+
+/**
+ * Resolve the target owning a cell in a completed hit-grid frame.
+ *
+ * @param options - Completed frame and a point in its coordinate space.
+ * @returns The cell owner, or `null` outside the frame and on unowned cells.
  */
 export function resolveInteractionTarget({
+  frame,
   point,
-  targets,
+}: {
+  readonly frame: InteractionHitGrid
+  readonly point: InteractionPoint
+}): InteractionTarget | null {
+  if (
+    !Number.isInteger(point.x) ||
+    !Number.isInteger(point.y) ||
+    point.x < 0 ||
+    point.x >= frame.width ||
+    point.y < 0 ||
+    point.y >= frame.height
+  ) {
+    return null
+  }
+
+  return frame.cells[point.y * frame.width + point.x] ?? null
+}
+
+/**
+ * Create an atomic store that never exposes a partially built hit grid.
+ *
+ * Build the next frame independently, then commit it from Ink's `onRender`
+ * callback after layout and output generation complete.
+ *
+ * @param options - Initial completed frame.
+ * @returns A frozen frame publication boundary.
+ */
+export function createInteractionHitGridStore({
+  frame,
+}: {
+  readonly frame: InteractionHitGrid
+}): InteractionHitGridStore {
+  const frames = new Map([['current', frame] as const])
+
+  return Object.freeze({
+    commit: (nextFrame: InteractionHitGrid) => frames.set('current', nextFrame),
+    resolve: (point: InteractionPoint) =>
+      resolveInteractionTarget({ frame: frames.get('current') ?? frame, point }),
+  })
+}
+
+/**
+ * Normalize invalid frame dimensions to an empty axis.
+ *
+ * @private
+ * @param dimension - Requested terminal axis length.
+ * @returns A safe non-negative integer axis length.
+ */
+function normalizeDimension(dimension: number): number {
+  return match(dimension)
+    .when(
+      (value) => Number.isSafeInteger(value) && value > 0,
+      (value) => value
+    )
+    .otherwise(() => 0)
+}
+
+/**
+ * Determine whether a target paints one cell after applying every clip.
+ *
+ * @private
+ * @param options - Candidate target and cell point.
+ * @returns Whether the target owns the cell.
+ */
+function ownsInteractionPoint({
+  point,
+  target,
 }: {
   readonly point: InteractionPoint
-  readonly targets: readonly InteractionTarget[]
-}): InteractionTarget | null {
-  return targets.reduce<InteractionTarget | null>((resolved, target) => {
-    if (target.disabled || !containsInteractionPoint({ point, rect: target.rect })) {
-      return resolved
-    }
-    if (resolved === null || target.priority >= resolved.priority) {
-      return target
-    }
-    return resolved
-  }, null)
+  readonly target: InteractionTarget
+}): boolean {
+  if (target.disabled || !containsInteractionPoint({ point, rect: target.rect })) {
+    return false
+  }
+
+  return (target.clips ?? []).every(
+    (clip) =>
+      (!clip.horizontal || (point.x >= clip.rect.x && point.x < clip.rect.x + clip.rect.width)) &&
+      (!clip.vertical || (point.y >= clip.rect.y && point.y < clip.rect.y + clip.rect.height))
+  )
 }

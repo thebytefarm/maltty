@@ -1,0 +1,174 @@
+import { PassThrough } from 'node:stream'
+
+import type { RenderOptions } from 'ink'
+import { Box, render, Text, useInput } from 'ink'
+import type { ReactElement } from 'react'
+import { describe, expect, it, vi } from 'vitest'
+
+import type { InteractionClickEvent } from './controller.js'
+import { Pressable } from './pressable.js'
+import { renderInteractive } from './render-interactive.js'
+
+interface ClickProbeProps {
+  readonly disabled?: boolean
+  readonly onClick: (event: InteractionClickEvent) => void
+}
+
+function ClickProbe({ disabled = false, onClick }: ClickProbeProps): ReactElement {
+  return (
+    <Pressable disabled={disabled} height={1} onClick={onClick} width={5}>
+      <Text>probe</Text>
+    </Pressable>
+  )
+}
+
+function InputSink(): null {
+  useInput(() => undefined)
+  return null
+}
+
+function createInput(): NodeJS.ReadStream {
+  const input = new PassThrough() as unknown as NodeJS.ReadStream
+  Object.defineProperty(input, 'isTTY', { value: true })
+  Object.defineProperty(input, 'ref', { value: vi.fn<() => NodeJS.ReadStream>(() => input) })
+  Object.defineProperty(input, 'setRawMode', {
+    value: vi.fn<(mode: boolean) => NodeJS.ReadStream>(() => input),
+  })
+  Object.defineProperty(input, 'unref', { value: vi.fn<() => NodeJS.ReadStream>(() => input) })
+  return input
+}
+
+function createOutput(): NodeJS.WriteStream {
+  const output = new PassThrough() as unknown as NodeJS.WriteStream
+  Object.defineProperty(output, 'columns', { configurable: true, value: 80 })
+  Object.defineProperty(output, 'isTTY', { value: true })
+  Object.defineProperty(output, 'rows', { configurable: true, value: 24 })
+  return output
+}
+
+function waitForInput(): Promise<void> {
+  return new Promise((resolve) => {
+    setImmediate(resolve)
+  })
+}
+
+describe(renderInteractive, () => {
+  it('should dispatch a click after press and release on the same target', async () => {
+    const stdin = createInput()
+    const stdout = createOutput()
+    const onClick = vi.fn<(event: InteractionClickEvent) => void>()
+    const onRender = vi.fn<NonNullable<RenderOptions['onRender']>>()
+    const app = renderInteractive(<ClickProbe onClick={onClick} />, {
+      alternateScreen: false,
+      interactive: true,
+      onRender,
+      origin: { x: 0, y: 0 },
+      patchConsole: false,
+      stdin,
+      stdout,
+    })
+
+    await app.waitUntilRenderFlush()
+    await vi.waitFor(() => expect(onRender.mock.calls.length).toBeGreaterThanOrEqual(2))
+
+    stdin.push('\u001B[<0;1;1M')
+    await waitForInput()
+    stdin.push('\u001B[<0;1;1m')
+
+    await vi.waitFor(() => expect(onClick).toHaveBeenCalledOnce())
+    expect(onClick).toHaveBeenCalledWith({
+      button: 'left',
+      localX: 0,
+      localY: 0,
+      modifiers: { alt: false, ctrl: false, shift: false },
+      targetId: expect.any(String),
+      viewportX: 0,
+      viewportY: 0,
+    })
+
+    app.unmount()
+  })
+
+  it('should not dispatch clicks for disabled targets', async () => {
+    const stdin = createInput()
+    const stdout = createOutput()
+    const onClick = vi.fn<(event: InteractionClickEvent) => void>()
+    const app = renderInteractive(<ClickProbe disabled onClick={onClick} />, {
+      alternateScreen: false,
+      interactive: true,
+      origin: { x: 0, y: 0 },
+      patchConsole: false,
+      stdin,
+      stdout,
+    })
+
+    await app.waitUntilRenderFlush()
+    stdin.push('\u001B[<0;1;1M')
+    await waitForInput()
+    stdin.push('\u001B[<0;1;1m')
+    await waitForInput()
+
+    expect(onClick).not.toHaveBeenCalled()
+    app.unmount()
+  })
+
+  it('should not dispatch when press and release resolve to different targets', async () => {
+    const stdin = createInput()
+    const stdout = createOutput()
+    const onFirstClick = vi.fn<(event: InteractionClickEvent) => void>()
+    const onSecondClick = vi.fn<(event: InteractionClickEvent) => void>()
+    const app = renderInteractive(
+      <Box flexDirection="row">
+        <ClickProbe onClick={onFirstClick} />
+        <ClickProbe onClick={onSecondClick} />
+      </Box>,
+      {
+        alternateScreen: false,
+        interactive: true,
+        origin: { x: 0, y: 0 },
+        patchConsole: false,
+        stdin,
+        stdout,
+      }
+    )
+
+    await app.waitUntilRenderFlush()
+    stdin.push('\u001B[<0;1;1M')
+    await waitForInput()
+    stdin.push('\u001B[<0;6;1m')
+    await waitForInput()
+
+    expect(onFirstClick).not.toHaveBeenCalled()
+    expect(onSecondClick).not.toHaveBeenCalled()
+    app.unmount()
+  })
+})
+
+describe(Pressable, () => {
+  it('should leave onClick inert under ordinary Ink rendering', async () => {
+    const stdin = createInput()
+    const stdout = createOutput()
+    const onClick = vi.fn<(event: InteractionClickEvent) => void>()
+    const app = render(
+      <>
+        <ClickProbe onClick={onClick} />
+        <InputSink />
+      </>,
+      {
+        interactive: true,
+        patchConsole: false,
+        stdin,
+        stdout,
+      }
+    )
+
+    await app.waitUntilRenderFlush()
+    stdin.push('\u001B[<0;1;1M')
+    await waitForInput()
+    stdin.push('\u001B[<0;1;1m')
+    await waitForInput()
+
+    expect(onClick).not.toHaveBeenCalled()
+    app.unmount()
+  })
+})

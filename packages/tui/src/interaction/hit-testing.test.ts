@@ -3,6 +3,8 @@ import { describe, expect, it } from 'vitest'
 import type { InteractionTarget } from './hit-testing.js'
 import {
   containsInteractionPoint,
+  createInteractionHitGrid,
+  createInteractionHitGridStore,
   resolveInteractionTarget,
   toSurfacePoint,
 } from './hit-testing.js'
@@ -10,7 +12,6 @@ import {
 const baseTarget: InteractionTarget = Object.freeze({
   disabled: false,
   id: 'base',
-  priority: 0,
   rect: Object.freeze({ height: 3, width: 4, x: 2, y: 1 }),
 })
 
@@ -43,29 +44,75 @@ describe(containsInteractionPoint, () => {
   })
 })
 
-describe(resolveInteractionTarget, () => {
+describe(createInteractionHitGrid, () => {
+  it('should paint complete target rectangles into terminal cells', () => {
+    const frame = createInteractionHitGrid({ height: 5, targets: [baseTarget], width: 7 })
+
+    expect(resolveInteractionTarget({ frame, point: { x: 2, y: 1 } })?.id).toBe('base')
+    expect(resolveInteractionTarget({ frame, point: { x: 5, y: 3 } })?.id).toBe('base')
+    expect(resolveInteractionTarget({ frame, point: { x: 6, y: 3 } })).toBeNull()
+  })
+
+  it('should let later paint order overwrite earlier ownership', () => {
+    const foreground = { ...baseTarget, id: 'foreground' }
+    const frame = createInteractionHitGrid({
+      height: 5,
+      targets: [baseTarget, foreground],
+      width: 7,
+    })
+
+    expect(resolveInteractionTarget({ frame, point: { x: 2, y: 1 } })?.id).toBe('foreground')
+  })
+
+  it('should restrict ownership to every active clip rectangle', () => {
+    const clipped = {
+      ...baseTarget,
+      clips: [
+        {
+          horizontal: true,
+          rect: { height: 2, width: 2, x: 3, y: 2 },
+          vertical: true,
+        },
+      ],
+    }
+    const frame = createInteractionHitGrid({ height: 5, targets: [clipped], width: 7 })
+
+    expect(resolveInteractionTarget({ frame, point: { x: 3, y: 2 } })?.id).toBe('base')
+    expect(resolveInteractionTarget({ frame, point: { x: 2, y: 1 } })).toBeNull()
+  })
+
   it('should ignore disabled targets', () => {
-    expect(
-      resolveInteractionTarget({
-        point: { x: 2, y: 1 },
-        targets: [{ ...baseTarget, disabled: true }],
-      })
-    ).toBeNull()
+    const frame = createInteractionHitGrid({
+      height: 5,
+      targets: [{ ...baseTarget, disabled: true }],
+      width: 7,
+    })
+
+    expect(resolveInteractionTarget({ frame, point: { x: 2, y: 1 } })).toBeNull()
   })
 
-  it('should choose the highest-priority overlapping target', () => {
-    const foreground = { ...baseTarget, id: 'foreground', priority: 2 }
+  it('should reject coordinates outside the completed frame', () => {
+    const frame = createInteractionHitGrid({ height: 5, targets: [baseTarget], width: 7 })
 
-    expect(
-      resolveInteractionTarget({ point: { x: 2, y: 1 }, targets: [foreground, baseTarget] })?.id
-    ).toBe('foreground')
+    expect(resolveInteractionTarget({ frame, point: { x: -1, y: 1 } })).toBeNull()
+    expect(resolveInteractionTarget({ frame, point: { x: 7, y: 1 } })).toBeNull()
   })
+})
 
-  it('should choose the latest target when overlap priorities match', () => {
-    const latest = { ...baseTarget, id: 'latest' }
+describe(createInteractionHitGridStore, () => {
+  it('should publish only explicitly committed complete frames', () => {
+    const initial = createInteractionHitGrid({ height: 5, targets: [baseTarget], width: 7 })
+    const next = createInteractionHitGrid({
+      height: 5,
+      targets: [{ ...baseTarget, id: 'next' }],
+      width: 7,
+    })
+    const store = createInteractionHitGridStore({ frame: initial })
 
-    expect(
-      resolveInteractionTarget({ point: { x: 2, y: 1 }, targets: [baseTarget, latest] })?.id
-    ).toBe('latest')
+    expect(store.resolve({ x: 2, y: 1 })?.id).toBe('base')
+
+    store.commit(next)
+
+    expect(store.resolve({ x: 2, y: 1 })?.id).toBe('next')
   })
 })

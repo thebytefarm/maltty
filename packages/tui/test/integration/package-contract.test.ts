@@ -21,6 +21,7 @@ const TUI_EXPORTS = [
   './error-message',
   './fullscreen',
   './group-multi-select',
+  './interaction',
   './keys',
   './layout',
   './multi-select',
