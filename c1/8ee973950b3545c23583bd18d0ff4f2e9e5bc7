@@ -1,0 +1,83 @@
+contributing/concepts/tui-interaction.md
+  s_da10681e7c6f70::t_ff8be6979b9f82 44-59,77,80-90
+  s_da10681e7c6f70::t_811e261d6bed53 5-9,34,36-37,60-76,78-79
+  s_da10681e7c6f70::t_438fb01c1c19ea 91-95,97,99-100
+  s_da10681e7c6f70::t_64aefa95a977e4 98
+packages/tui/test/integration/package-contract.test.ts
+  s_da10681e7c6f70::t_80019cb3fa3b6b 24
+packages/tui/src/index.ts
+  s_da10681e7c6f70::t_da92f4abe1a0c5 109-119
+  s_da10681e7c6f70::t_03b963f0f40b61 120
+packages/tui/src/interaction/pressable.tsx
+  s_da10681e7c6f70::t_a3b40168f7a953 27-28,50-57
+  s_da10681e7c6f70::t_afd1585a3ebdf6 4
+  s_da10681e7c6f70::t_da92f4abe1a0c5 1-3,5-6,8-26,29-49,58
+  s_da10681e7c6f70::t_715cad00b1b81f 7
+examples/tui/package.json
+  s_da10681e7c6f70::t_571083c698a4fa 9
+packages/tui/src/interaction/context.tsx
+  s_da10681e7c6f70::t_da92f4abe1a0c5 1-2,4-29,31-54
+  s_da10681e7c6f70::t_afd1585a3ebdf6 3
+  s_da10681e7c6f70::t_715cad00b1b81f 30
+packages/tui/src/interaction/render-interactive.tsx
+  s_da10681e7c6f70::t_da92f4abe1a0c5 1-5,7-8,10-16,26-67
+  s_da10681e7c6f70::t_afd1585a3ebdf6 6
+  s_da10681e7c6f70::t_715cad00b1b81f 9
+  s_da10681e7c6f70::t_a3b40168f7a953 17-25
+packages/tui/src/interaction/interaction.test.tsx
+  s_da10681e7c6f70::t_1936d3f3a680fc 3,50-52,60
+  s_da10681e7c6f70::t_4a1b4a1bf9a377 4,112-142
+  s_da10681e7c6f70::t_2c6c5b3d69f96d 49,53-54,75,107,109,167,169
+  s_da10681e7c6f70::t_703a2f69ffb25e 1-2,5-48,55-59,61-64,66-74,76-98,100-106,108,110-111,143-166,168,170-174
+  s_da10681e7c6f70::t_a3b40168f7a953 65,99
+packages/tui/src/interaction/interaction-spike.test.tsx
+  s_da10681e7c6f70::t_b55c85b464a8ab 9,115,136
+  s_da10681e7c6f70::t_b34d075093fbca 6,23,50-51,61-62
+  s_da10681e7c6f70::t_fb622bf9f86df5 63
+  s_da10681e7c6f70::t_f2eccf834a764c 10,15,18,22,27,31,38,86,91-93,95-114,116-125,135,137,153-168,172,182,188-189
+  s_da10681e7c6f70::t_61ade676d3b94d 64-65
+.changeset/witty-ships-click.md
+  s_da10681e7c6f70::t_da92f4abe1a0c5 1-6
+packages/tui/tsdown.config.ts
+  s_da10681e7c6f70::t_da92f4abe1a0c5 23
+packages/tui/src/interaction/hit-testing.ts
+  s_da10681e7c6f70::t_111bec6c0a56e0 29,38-54,93,95-125,127-128,131,134,137-181,188-207
+  s_da10681e7c6f70::t_fb622bf9f86df5 182-187
+  s_da10681e7c6f70::t_ee701ce8f25afd 1-2
+  s_da10681e7c6f70::t_da92f4abe1a0c5 20-28,32,208-209,211-212
+  s_da10681e7c6f70::t_715cad00b1b81f 210
+examples/tui/src/interaction-demo.tsx
+  s_da10681e7c6f70::t_fa3ced231b81f1 100
+  s_da10681e7c6f70::t_715cad00b1b81f 110
+  s_da10681e7c6f70::t_b7759a5f0b72f7 1,3,6-7,22,25,36,40,49,80-94,108,115,131,136
+  s_da10681e7c6f70::t_64aefa95a977e4 101
+  s_da10681e7c6f70::t_3523db29d0b290 4,27-28,30-33,48,57-62
+  s_da10681e7c6f70::t_571083c698a4fa 2,5,8-21,23-24,26,29,34-35,37-39,41-47,50-56,63-79,95-99,102-107,109,111-114,116-130,132-135
+packages/tui/src/interaction/controller.ts
+  s_da10681e7c6f70::t_da92f4abe1a0c5 1-91,93-132,140-235
+  s_da10681e7c6f70::t_7523ba619890eb 92
+  s_da10681e7c6f70::t_715cad00b1b81f 133-139
+packages/tui/src/interaction/hit-testing.test.ts
+  s_da10681e7c6f70::t_da92f4abe1a0c5 70-76
+  s_da10681e7c6f70::t_111bec6c0a56e0 6-7,47-69,77-83,85-91,94-95,97-98,100-112,114,116
+packages/tui/package.json
+  s_da10681e7c6f70::t_da92f4abe1a0c5 61-64
+packages/tui/src/interaction/index.ts
+  s_da10681e7c6f70::t_da92f4abe1a0c5 1-6
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "c18ee973950b3545c23583bd18d0ff4f2e9e5bc7",
+  "prompts": {},
+  "sessions": {
+    "s_da10681e7c6f70": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_f43a5f0eaffeuOt2XIsO4uy016",
+        "model": "gpt-5.6-sol"
+      },
+      "human_author": "Zac Rosenbauer <me@zrosenbauer.com>"
+    }
+  }
+}
