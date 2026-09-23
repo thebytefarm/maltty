@@ -5,7 +5,7 @@ export default defineConfig({
   deps: {
     alwaysBundle: ['figures', 'picocolors', 'ts-pattern'],
     onlyBundle: ['figures', 'is-unicode-supported', 'picocolors', 'ts-pattern'],
-    onlyImport: ['ink', 'react'],
+    onlyImport: ['ink', 'react', 'zod'],
   },
   dts: true,
   fixedExtension: false,
@@ -20,6 +20,7 @@ export default defineConfig({
     fullscreen: 'src/layout/fullscreen.tsx',
     'group-multi-select': 'src/prompts/group-multi-select.tsx',
     keys: 'src/keys.ts',
+    interaction: 'src/interaction/index.ts',
     layout: 'src/layout/index.ts',
     'multi-select': 'src/prompts/multi-select.tsx',
     'password-input': 'src/prompts/password-input.tsx',

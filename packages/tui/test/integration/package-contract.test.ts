@@ -21,6 +21,7 @@ const TUI_EXPORTS = [
   './error-message',
   './fullscreen',
   './group-multi-select',
+  './interaction',
   './keys',
   './layout',
   './multi-select',
@@ -48,9 +49,9 @@ describe('@maltty/tui package', () => {
     expect(Object.keys(tuiPackage?.exports ?? {})).toEqual(TUI_EXPORTS)
   })
 
-  it('should have no runtime dependencies beyond its peers', () => {
+  it('should declare only its boundary validation dependency', () => {
     expect(packageError).toBeNull()
-    expect(tuiPackage?.dependencies).toBeUndefined()
+    expect(tuiPackage?.dependencies).toEqual({ zod: 'catalog:' })
   })
 })
 

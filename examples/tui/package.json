@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "maltty dev",
     "build": "maltty build",
+    "interaction": "tsx src/interaction-demo.tsx",
     "stories": "maltty stories --cwd ../../packages/maltty",
     "typecheck": "tsgo --noEmit"
   },
