@@ -1,0 +1,21 @@
+packages/tui/src/interaction/render-interactive.tsx
+  s_da10681e7c6f70::t_1ce08a8b0cd615 91-92
+packages/tui/src/interaction/interaction.test.tsx
+  s_da10681e7c6f70::t_1ce08a8b0cd615 314-347
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "16073042404bc6324ec75de67174beccb038d00f",
+  "prompts": {},
+  "sessions": {
+    "s_da10681e7c6f70": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_f43a5f0eaffeuOt2XIsO4uy016",
+        "model": "gpt-5.6-sol"
+      },
+      "human_author": "Zac Rosenbauer <me@zrosenbauer.com>"
+    }
+  }
+}
