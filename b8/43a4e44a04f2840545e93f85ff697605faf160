@@ -1,0 +1,37 @@
+packages/tui/src/interaction/render-interactive.tsx
+  s_da10681e7c6f70::t_7564ae6193362e 40
+  s_da10681e7c6f70::t_95712d45707664 37-39,41,72,74-106,108-123
+packages/tui/src/index.ts
+  s_da10681e7c6f70::t_95712d45707664 120
+contributing/concepts/tui-interaction.md
+  s_da10681e7c6f70::t_a78cbe076ea7ca 73-77
+  s_da10681e7c6f70::t_95712d45707664 68-72,78-88
+packages/tui/src/interaction/interaction.test.tsx
+  s_da10681e7c6f70::t_7564ae6193362e 70-83,110-122,139-156,174-191,216-228
+  s_da10681e7c6f70::t_a78cbe076ea7ca 1,4,57-63,231,237,246-253
+  s_da10681e7c6f70::t_ee0c7139c02fef 230
+packages/tui/src/interaction/index.ts
+  s_da10681e7c6f70::t_95712d45707664 6-10
+packages/maltty/package.json
+  s_da10681e7c6f70::t_95712d45707664 126
+packages/tui/package.json
+  s_da10681e7c6f70::t_95712d45707664 163
+examples/tui/src/interaction-demo.tsx
+  s_da10681e7c6f70::t_95712d45707664 4,133-147
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "b843a4e44a04f2840545e93f85ff697605faf160",
+  "prompts": {},
+  "sessions": {
+    "s_da10681e7c6f70": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_f43a5f0eaffeuOt2XIsO4uy016",
+        "model": "gpt-5.6-sol"
+      },
+      "human_author": "Zac Rosenbauer <me@zrosenbauer.com>"
+    }
+  }
+}
