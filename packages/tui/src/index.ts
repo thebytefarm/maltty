@@ -117,6 +117,7 @@ export type {
   InteractiveRenderOptions,
   PressableProps,
   RenderInteractiveParams,
+  RenderInteractiveResult,
 } from './interaction/index.js'
 
 // ---------------------------------------------------------------------------

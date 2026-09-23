@@ -1,7 +1,7 @@
 import { Box, Text, useApp, useInput } from 'ink'
 import type { ReactElement } from 'react'
 import { useState } from 'react'
-import { match } from 'ts-pattern'
+import { match, P } from 'ts-pattern'
 
 import type { InteractionClickEvent } from '../../../packages/tui/src/interaction/index.js'
 import { Pressable, renderInteractive } from '../../../packages/tui/src/interaction/index.js'
@@ -130,12 +130,18 @@ function InteractionDemo(): ReactElement {
   )
 }
 
-const app = renderInteractive({
-  node: <InteractionDemo />,
-  options: {
-    exitOnCtrlC: true,
-    patchConsole: false,
-  },
-})
-
-await app.waitUntilExit()
+await match(
+  renderInteractive({
+    node: <InteractionDemo />,
+    options: {
+      exitOnCtrlC: true,
+      patchConsole: false,
+    },
+  })
+)
+  .with([P.not(null), null], ([app]) => app.waitUntilExit())
+  .with([null, P.not(null)], ([, error]) => {
+    process.stderr.write(`${error.message}\n`)
+    return Promise.resolve()
+  })
+  .exhaustive()

@@ -34,6 +34,11 @@ export interface RenderInteractiveParams {
   readonly options?: InteractiveRenderOptions
 }
 
+/**
+ * Result of validating options and starting an interactive Ink render.
+ */
+export type RenderInteractiveResult = readonly [Instance, null] | readonly [null, z.ZodError]
+
 const InteractionPointSchema = z.object({
   x: z.number().int().finite(),
   y: z.number().int().finite(),
@@ -64,46 +69,56 @@ const InteractiveRenderOptionsSchema = z.union([
  * disable it and provide their known viewport `origin` explicitly.
  *
  * @param params - React tree, Ink options, and interaction surface viewport origin.
- * @returns The standard Ink render instance.
+ * @returns A Result tuple containing the Ink render instance or validation error.
  */
-export function renderInteractive({ node, options = {} }: RenderInteractiveParams): Instance {
-  InteractiveRenderOptionsSchema.parse(options)
-  const {
-    alternateScreen = true,
-    interactive = true,
-    onRender,
-    origin = Object.freeze({ x: 0, y: 0 }),
-    stdin = process.stdin,
-    stdout = process.stdout,
-    ...renderOptions
-  } = options
-  const controller = createInteractionController({
-    height: () => stdout.rows ?? 24,
-    origin,
-    width: () => stdout.columns ?? 80,
-    write: (data) => {
-      stdout.write(data)
-    },
-  })
-  const renderedNode = match({
-    interactive,
-    stdinIsTty: stdin.isTTY === true,
-    stdoutIsTty: stdout.isTTY === true,
-  })
-    .with({ interactive: true, stdinIsTty: true, stdoutIsTty: true }, () => (
-      <InteractionRuntime controller={controller}>{node}</InteractionRuntime>
-    ))
-    .otherwise(() => node)
+export function renderInteractive({
+  node,
+  options = {},
+}: RenderInteractiveParams): RenderInteractiveResult {
+  return match(InteractiveRenderOptionsSchema.safeParse(options))
+    .with({ success: false }, ({ error }) => [null, error] as const)
+    .with({ success: true }, () => {
+      const {
+        alternateScreen = true,
+        interactive = true,
+        onRender,
+        origin = Object.freeze({ x: 0, y: 0 }),
+        stdin = process.stdin,
+        stdout = process.stdout,
+        ...renderOptions
+      } = options
+      const inkInteractive = interactive && stdout.isTTY === true
+      const controller = createInteractionController({
+        height: () => stdout.rows ?? 24,
+        origin,
+        width: () => stdout.columns ?? 80,
+        write: (data) => {
+          stdout.write(data)
+        },
+      })
+      const renderedNode = match({
+        interactive: inkInteractive,
+        stdinIsTty: stdin.isTTY === true,
+      })
+        .with({ interactive: true, stdinIsTty: true }, () => (
+          <InteractionRuntime controller={controller}>{node}</InteractionRuntime>
+        ))
+        .otherwise(() => node)
 
-  return render(renderedNode, {
-    ...renderOptions,
-    alternateScreen,
-    interactive,
-    onRender: (metrics) => {
-      controller.commitFrame()
-      onRender?.(metrics)
-    },
-    stdin,
-    stdout,
-  })
+      return [
+        render(renderedNode, {
+          ...renderOptions,
+          alternateScreen,
+          interactive: inkInteractive,
+          onRender: (metrics) => {
+            controller.commitFrame()
+            onRender?.(metrics)
+          },
+          stdin,
+          stdout,
+        }),
+        null,
+      ] as const
+    })
+    .exhaustive()
 }

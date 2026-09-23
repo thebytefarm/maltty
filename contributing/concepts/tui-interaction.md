@@ -65,16 +65,27 @@ ownership from ANSI output or asynchronously cached measurements is explicitly r
 
 ```tsx
 import { Pressable, renderInteractive, Text } from '@maltty/tui'
+import { match, P } from 'ts-pattern'
 
-const app = renderInteractive({
-  node: (
-    <Pressable onClick={({ localX, localY }) => handleClick({ localX, localY })}>
-      <Text>Launch</Text>
-    </Pressable>
-  ),
-})
-
-await app.waitUntilExit()
+await match(
+  renderInteractive({
+    node: (
+      <Pressable
+        onClick={({ localX, localY }) => {
+          process.stderr.write(`Clicked at (${localX}, ${localY})\n`)
+        }}
+      >
+        <Text>Launch</Text>
+      </Pressable>
+    ),
+  })
+)
+  .with([P.not(null), null], ([app]) => app.waitUntilExit())
+  .with([null, P.not(null)], ([, error]) => {
+    process.stderr.write(`${error.message}\n`)
+    return Promise.resolve()
+  })
+  .exhaustive()
 ```
 
 Clicks fire only when pointer down and pointer up resolve to the same enabled `Pressable`. This prevents a
