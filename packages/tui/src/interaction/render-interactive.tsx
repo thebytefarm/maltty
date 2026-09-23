@@ -9,7 +9,7 @@ import { z } from 'zod'
 
 import { InteractionRuntime } from './context.js'
 import { createInteractionController } from './controller.js'
-import type { InteractionPoint } from './hit-testing.js'
+import type { InteractionHitGrid, InteractionPoint } from './hit-testing.js'
 
 /**
  * Ink render options for an opt-in pointer-interactive root.
@@ -88,6 +88,7 @@ export function renderInteractive({
         ...renderOptions
       } = options
       const inkInteractive = interactive && stdout.isTTY === true
+      const pointerInteractive = inkInteractive && stdin.isTTY === true
       const controller = createInteractionController({
         height: () => stdout.rows ?? 24,
         origin,
@@ -96,29 +97,56 @@ export function renderInteractive({
           stdout.write(data)
         },
       })
-      const renderedNode = match({
-        interactive: inkInteractive,
-        stdinIsTty: stdin.isTTY === true,
-      })
-        .with({ interactive: true, stdinIsTty: true }, () => (
-          <InteractionRuntime controller={controller}>{node}</InteractionRuntime>
-        ))
-        .otherwise(() => node)
-
-      return [
-        render(renderedNode, {
-          ...renderOptions,
-          alternateScreen,
-          interactive: inkInteractive,
-          onRender: (metrics) => {
-            controller.commitFrame()
-            onRender?.(metrics)
+      const instanceReady = Promise.withResolvers<Instance>()
+      const publications = new Set<Promise<void>>()
+      const wrapNode = (nextNode: ReactNode): ReactNode =>
+        match(pointerInteractive)
+          .with(true, () => (
+            <InteractionRuntime controller={controller}>{nextNode}</InteractionRuntime>
+          ))
+          .otherwise(() => nextNode)
+      const schedulePublication = (frame: InteractionHitGrid): void => {
+        const publication = instanceReady.promise.then(async (instance) => {
+          await instance.waitUntilRenderFlush()
+          controller.commitFrame(frame)
+          return undefined
+        })
+        publications.add(publication)
+        void publication.then(
+          () => {
+            publications.delete(publication)
+            return undefined
           },
-          stdin,
-          stdout,
-        }),
-        null,
-      ] as const
+          () => {
+            publications.delete(publication)
+            return undefined
+          }
+        )
+      }
+      const instance = render(wrapNode(node), {
+        ...renderOptions,
+        alternateScreen,
+        interactive: inkInteractive,
+        onRender: (metrics) => {
+          schedulePublication(controller.captureFrame())
+          onRender?.(metrics)
+        },
+        stdin,
+        stdout,
+      })
+      instanceReady.resolve(instance)
+      const interactiveInstance = Object.freeze({
+        ...instance,
+        rerender: (nextNode: ReactNode) => {
+          instance.rerender(wrapNode(nextNode))
+        },
+        waitUntilRenderFlush: async () => {
+          await instance.waitUntilRenderFlush()
+          await Promise.all(publications)
+        },
+      })
+
+      return [interactiveInstance, null] as const
     })
     .exhaustive()
 }

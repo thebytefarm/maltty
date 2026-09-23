@@ -166,6 +166,77 @@ describe(renderInteractive, () => {
     app.unmount()
   })
 
+  it('should preserve pointer interaction across rerenders', async () => {
+    const stdin = createInput()
+    const stdout = createOutput()
+    const onFirstClick = vi.fn<(event: InteractionClickEvent) => void>()
+    const onSecondClick = vi.fn<(event: InteractionClickEvent) => void>()
+    const app = expectRenderSuccess(
+      renderInteractive({
+        node: <ClickProbe onClick={onFirstClick} />,
+        options: {
+          alternateScreen: false,
+          interactive: true,
+          origin: { x: 0, y: 0 },
+          patchConsole: false,
+          stdin,
+          stdout,
+        },
+      })
+    )
+
+    await app.waitUntilRenderFlush()
+    app.rerender(<ClickProbe onClick={onSecondClick} />)
+    await app.waitUntilRenderFlush()
+    stdin.push('\u001B[<0;1;1M')
+    await waitForInput()
+    stdin.push('\u001B[<0;1;1m')
+    await vi.waitFor(() => expect(onSecondClick).toHaveBeenCalledOnce())
+
+    expect(onFirstClick).not.toHaveBeenCalled()
+    app.unmount()
+  })
+
+  it('should publish targets only after the matching output frame flushes', async () => {
+    const stdin = createInput()
+    const stdout = createOutput()
+    const onClick = vi.fn<(event: InteractionClickEvent) => void>()
+    stdout.cork()
+    const app = expectRenderSuccess(
+      renderInteractive({
+        node: <ClickProbe onClick={onClick} />,
+        options: {
+          alternateScreen: false,
+          interactive: true,
+          origin: { x: 0, y: 0 },
+          patchConsole: false,
+          stdin,
+          stdout,
+        },
+      })
+    )
+
+    try {
+      await waitForInput()
+      stdin.push('\u001B[<0;1;1M')
+      await waitForInput()
+      stdin.push('\u001B[<0;1;1m')
+      await waitForInput()
+
+      expect(onClick).not.toHaveBeenCalled()
+
+      stdout.uncork()
+      await app.waitUntilRenderFlush()
+      stdin.push('\u001B[<0;1;1M')
+      await waitForInput()
+      stdin.push('\u001B[<0;1;1m')
+      await vi.waitFor(() => expect(onClick).toHaveBeenCalledOnce())
+    } finally {
+      stdout.uncork()
+      app.unmount()
+    }
+  })
+
   it('should exclude overflow-hidden ancestor borders from child hit targets', async () => {
     const stdin = createInput()
     const stdout = createOutput()

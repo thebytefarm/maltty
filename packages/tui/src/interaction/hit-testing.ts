@@ -151,8 +151,8 @@ export function resolveInteractionTarget({
 /**
  * Create an atomic store that never exposes a partially built hit grid.
  *
- * Build the next frame independently, then commit it from Ink's `onRender`
- * callback after layout and output generation complete.
+ * Build the next frame independently, then commit it after Ink flushes the
+ * corresponding output frame.
  *
  * @param options - Initial completed frame.
  * @returns A frozen frame publication boundary.

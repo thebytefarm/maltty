@@ -2,7 +2,12 @@ import type { DOMElement } from 'ink'
 import { measureElement } from 'ink'
 import { match } from 'ts-pattern'
 
-import type { InteractionClip, InteractionPoint, InteractionTarget } from './hit-testing.js'
+import type {
+  InteractionClip,
+  InteractionHitGrid,
+  InteractionPoint,
+  InteractionTarget,
+} from './hit-testing.js'
 import {
   createInteractionHitGrid,
   createInteractionHitGridStore,
@@ -28,7 +33,8 @@ export interface InteractionClickEvent {
  * Mutable renderer boundary shared by the interactive root and pressable nodes.
  */
 export interface InteractionController {
-  readonly commitFrame: () => void
+  readonly captureFrame: () => InteractionHitGrid
+  readonly commitFrame: (frame: InteractionHitGrid) => void
   readonly configure: (options: ConfigureInteractionTargetOptions) => void
   readonly connectFrameRequest: (requestFrame: () => void) => () => void
   readonly disable: () => void
@@ -114,7 +120,7 @@ export function createInteractionController({
     }
   }
 
-  function commitFrame(): void {
+  function captureFrame(): InteractionHitGrid {
     const targets = [...elements.entries()]
       .toSorted(([, left], [, right]) => comparePaintOrder({ left, right }))
       .map<InteractionTarget>(([id, element]) => {
@@ -127,7 +133,11 @@ export function createInteractionController({
         })
       })
 
-    hitGrid.commit(createInteractionHitGrid({ height: height(), targets, width: width() }))
+    return createInteractionHitGrid({ height: height(), targets, width: width() })
+  }
+
+  function commitFrame(frame: InteractionHitGrid): void {
+    hitGrid.commit(frame)
   }
 
   function dispatchClick({
@@ -181,6 +191,7 @@ export function createInteractionController({
   }
 
   return Object.freeze({
+    captureFrame,
     commitFrame,
     configure,
     connectFrameRequest,

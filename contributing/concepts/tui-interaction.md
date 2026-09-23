@@ -48,9 +48,10 @@ rectangles use inclusive top/left and exclusive bottom/right edges. They are pai
 same order as Ink paints the corresponding host nodes, so later nodes overwrite earlier ownership. Disabled
 targets paint nothing. Every active ancestor clip must also contain a cell before the target can own it.
 
-The next grid is built as a complete immutable value and atomically committed only from Ink's `onRender`
-callback. Input reads the last committed grid and never observes a partially rebuilt target list. Resize and
-layout changes replace the complete grid dimensions and ownership together.
+The next grid is captured as a complete immutable value from Ink's `onRender` callback, then atomically
+committed only after `waitUntilRenderFlush()` confirms that Ink wrote the matching frame. Input reads the
+last committed grid and never observes a partially rebuilt target list. Resize and layout changes replace
+the complete grid dimensions and ownership together.
 
 Ink invokes `onRender` after Yoga layout and output generation but before React attaches refs for newly
 mounted nodes. A target registration must therefore request one immediate follow-up frame from a layout
