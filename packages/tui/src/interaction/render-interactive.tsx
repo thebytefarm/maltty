@@ -88,7 +88,8 @@ export function renderInteractive({
         ...renderOptions
       } = options
       const inkInteractive = interactive && stdout.isTTY === true
-      const pointerInteractive = inkInteractive && stdin.isTTY === true
+      const pointerInteractive =
+        renderOptions.debug !== true && inkInteractive && stdin.isTTY === true
       const controller = createInteractionController({
         height: () => stdout.rows ?? 24,
         origin,

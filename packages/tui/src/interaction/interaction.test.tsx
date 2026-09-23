@@ -311,6 +311,40 @@ describe(renderInteractive, () => {
     app.unmount()
   })
 
+  it('should leave pointer interaction disabled for debug rendering', async () => {
+    const stdin = createInput()
+    const stdout = createOutput()
+    const write = vi.spyOn(stdout, 'write')
+    const onClick = vi.fn<(event: InteractionClickEvent) => void>()
+    const app = expectRenderSuccess(
+      renderInteractive({
+        node: <ClickProbe onClick={onClick} />,
+        options: {
+          alternateScreen: false,
+          debug: true,
+          interactive: true,
+          origin: { x: 0, y: 0 },
+          patchConsole: false,
+          stdin,
+          stdout,
+        },
+      })
+    )
+
+    await app.waitUntilRenderFlush()
+    stdin.push('\u001B[<0;1;1M')
+    await waitForInput()
+    stdin.push('\u001B[<0;1;1m')
+    await waitForInput()
+
+    const output = write.mock.calls.map(([chunk]) => String(chunk)).join('')
+    expect(output).not.toContain(ENABLE_BUTTON_MOUSE)
+    expect(output).not.toContain(ENABLE_SGR_MOUSE)
+    expect(onClick).not.toHaveBeenCalled()
+
+    app.unmount()
+  })
+
   it.each([
     { x: 0.5, y: 0 },
     { x: Number.POSITIVE_INFINITY, y: 0 },
