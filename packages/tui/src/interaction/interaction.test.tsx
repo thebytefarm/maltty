@@ -6,6 +6,7 @@ import type { ReactElement } from 'react'
 import { describe, expect, it, vi } from 'vitest'
 
 import type { InteractionClickEvent } from './controller.js'
+import { ENABLE_BUTTON_MOUSE, ENABLE_SGR_MOUSE } from './mouse-mode.js'
 import { Pressable } from './pressable.js'
 import { renderInteractive } from './render-interactive.js'
 
@@ -27,9 +28,9 @@ function InputSink(): null {
   return null
 }
 
-function createInput(): NodeJS.ReadStream {
+function createInput({ isTty = true }: { readonly isTty?: boolean } = {}): NodeJS.ReadStream {
   const input = new PassThrough() as unknown as NodeJS.ReadStream
-  Object.defineProperty(input, 'isTTY', { value: true })
+  Object.defineProperty(input, 'isTTY', { value: isTty })
   Object.defineProperty(input, 'ref', { value: vi.fn<() => NodeJS.ReadStream>(() => input) })
   Object.defineProperty(input, 'setRawMode', {
     value: vi.fn<(mode: boolean) => NodeJS.ReadStream>(() => input),
@@ -38,10 +39,10 @@ function createInput(): NodeJS.ReadStream {
   return input
 }
 
-function createOutput(): NodeJS.WriteStream {
+function createOutput({ isTty = true }: { readonly isTty?: boolean } = {}): NodeJS.WriteStream {
   const output = new PassThrough() as unknown as NodeJS.WriteStream
   Object.defineProperty(output, 'columns', { configurable: true, value: 80 })
-  Object.defineProperty(output, 'isTTY', { value: true })
+  Object.defineProperty(output, 'isTTY', { value: isTty })
   Object.defineProperty(output, 'rows', { configurable: true, value: 24 })
   return output
 }
@@ -58,14 +59,17 @@ describe(renderInteractive, () => {
     const stdout = createOutput()
     const onClick = vi.fn<(event: InteractionClickEvent) => void>()
     const onRender = vi.fn<NonNullable<RenderOptions['onRender']>>()
-    const app = renderInteractive(<ClickProbe onClick={onClick} />, {
-      alternateScreen: false,
-      interactive: true,
-      onRender,
-      origin: { x: 0, y: 0 },
-      patchConsole: false,
-      stdin,
-      stdout,
+    const app = renderInteractive({
+      node: <ClickProbe onClick={onClick} />,
+      options: {
+        alternateScreen: false,
+        interactive: true,
+        onRender,
+        origin: { x: 0, y: 0 },
+        patchConsole: false,
+        stdin,
+        stdout,
+      },
     })
 
     await app.waitUntilRenderFlush()
@@ -93,13 +97,16 @@ describe(renderInteractive, () => {
     const stdin = createInput()
     const stdout = createOutput()
     const onClick = vi.fn<(event: InteractionClickEvent) => void>()
-    const app = renderInteractive(<ClickProbe disabled onClick={onClick} />, {
-      alternateScreen: false,
-      interactive: true,
-      origin: { x: 0, y: 0 },
-      patchConsole: false,
-      stdin,
-      stdout,
+    const app = renderInteractive({
+      node: <ClickProbe disabled onClick={onClick} />,
+      options: {
+        alternateScreen: false,
+        interactive: true,
+        origin: { x: 0, y: 0 },
+        patchConsole: false,
+        stdin,
+        stdout,
+      },
     })
 
     await app.waitUntilRenderFlush()
@@ -117,20 +124,22 @@ describe(renderInteractive, () => {
     const stdout = createOutput()
     const onFirstClick = vi.fn<(event: InteractionClickEvent) => void>()
     const onSecondClick = vi.fn<(event: InteractionClickEvent) => void>()
-    const app = renderInteractive(
-      <Box flexDirection="row">
-        <ClickProbe onClick={onFirstClick} />
-        <ClickProbe onClick={onSecondClick} />
-      </Box>,
-      {
+    const app = renderInteractive({
+      node: (
+        <Box flexDirection="row">
+          <ClickProbe onClick={onFirstClick} />
+          <ClickProbe onClick={onSecondClick} />
+        </Box>
+      ),
+      options: {
         alternateScreen: false,
         interactive: true,
         origin: { x: 0, y: 0 },
         patchConsole: false,
         stdin,
         stdout,
-      }
-    )
+      },
+    })
 
     await app.waitUntilRenderFlush()
     stdin.push('\u001B[<0;1;1M')
@@ -141,6 +150,85 @@ describe(renderInteractive, () => {
     expect(onFirstClick).not.toHaveBeenCalled()
     expect(onSecondClick).not.toHaveBeenCalled()
     app.unmount()
+  })
+
+  it('should exclude overflow-hidden ancestor borders from child hit targets', async () => {
+    const stdin = createInput()
+    const stdout = createOutput()
+    const onClick = vi.fn<(event: InteractionClickEvent) => void>()
+    const onRender = vi.fn<NonNullable<RenderOptions['onRender']>>()
+    const app = renderInteractive({
+      node: (
+        <Box borderStyle="single" overflow="hidden" width={7}>
+          <ClickProbe onClick={onClick} />
+        </Box>
+      ),
+      options: {
+        alternateScreen: false,
+        interactive: true,
+        onRender,
+        origin: { x: 0, y: 0 },
+        patchConsole: false,
+        stdin,
+        stdout,
+      },
+    })
+
+    await app.waitUntilRenderFlush()
+    await vi.waitFor(() => expect(onRender.mock.calls.length).toBeGreaterThanOrEqual(2))
+
+    stdin.push('\u001B[<0;1;2M')
+    await waitForInput()
+    stdin.push('\u001B[<0;1;2m')
+    await waitForInput()
+
+    expect(onClick).not.toHaveBeenCalled()
+
+    stdin.push('\u001B[<0;2;2M')
+    await waitForInput()
+    stdin.push('\u001B[<0;2;2m')
+    await vi.waitFor(() => expect(onClick).toHaveBeenCalledOnce())
+
+    app.unmount()
+  })
+
+  it('should leave pointer interaction disabled for non-TTY streams', async () => {
+    const stdin = createInput({ isTty: false })
+    const stdout = createOutput({ isTty: false })
+    const write = vi.spyOn(stdout, 'write')
+    const onClick = vi.fn<(event: InteractionClickEvent) => void>()
+    const app = renderInteractive({
+      node: <ClickProbe onClick={onClick} />,
+      options: {
+        alternateScreen: false,
+        interactive: true,
+        origin: { x: 0, y: 0 },
+        patchConsole: false,
+        stdin,
+        stdout,
+      },
+    })
+
+    await app.waitUntilRenderFlush()
+
+    const output = write.mock.calls.map(([chunk]) => String(chunk)).join('')
+    expect(output).not.toContain(ENABLE_BUTTON_MOUSE)
+    expect(output).not.toContain(ENABLE_SGR_MOUSE)
+    expect(onClick).not.toHaveBeenCalled()
+
+    app.unmount()
+  })
+
+  it.each([
+    { x: 0.5, y: 0 },
+    { x: Number.POSITIVE_INFINITY, y: 0 },
+  ])('should reject non-integer or non-finite origins: $x,$y', (origin) => {
+    expect(() =>
+      renderInteractive({
+        node: <Text>probe</Text>,
+        options: { origin },
+      })
+    ).toThrow()
   })
 })
 

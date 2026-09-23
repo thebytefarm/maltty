@@ -5,7 +5,7 @@ export default defineConfig({
   deps: {
     alwaysBundle: ['figures', 'picocolors', 'ts-pattern'],
     onlyBundle: ['figures', 'is-unicode-supported', 'picocolors', 'ts-pattern'],
-    onlyImport: ['ink', 'react'],
+    onlyImport: ['ink', 'react', 'zod'],
   },
   dts: true,
   fixedExtension: false,

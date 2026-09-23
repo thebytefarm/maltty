@@ -227,9 +227,56 @@ function getInteractionClips(element: DOMElement): readonly InteractionClip[] {
           ...clips,
           Object.freeze({
             horizontal,
-            rect: Object.freeze(measureElement(value)),
+            rect: getClipRect({ element: value, horizontal, vertical }),
             vertical,
           }),
         ])
     })
+}
+
+/**
+ * Inset clipped axes by Ink's one-cell borders to match rendered child output.
+ *
+ * @private
+ * @param options - Ancestor element and axes with overflow clipping enabled.
+ * @returns The visible child-output rectangle used by Ink's renderer.
+ */
+function getClipRect({
+  element,
+  horizontal,
+  vertical,
+}: {
+  readonly element: DOMElement
+  readonly horizontal: boolean
+  readonly vertical: boolean
+}): InteractionTarget['rect'] {
+  const rect = measureElement(element)
+  const hasBorder = element.style.borderStyle !== undefined
+  const left = Number(hasBorder && element.style.borderLeft !== false)
+  const right = Number(hasBorder && element.style.borderRight !== false)
+  const top = Number(hasBorder && element.style.borderTop !== false)
+  const bottom = Number(hasBorder && element.style.borderBottom !== false)
+
+  return Object.freeze({
+    height:
+      rect.height -
+      match(vertical)
+        .with(true, () => top + bottom)
+        .otherwise(() => 0),
+    width:
+      rect.width -
+      match(horizontal)
+        .with(true, () => left + right)
+        .otherwise(() => 0),
+    x:
+      rect.x +
+      match(horizontal)
+        .with(true, () => left)
+        .otherwise(() => 0),
+    y:
+      rect.y +
+      match(vertical)
+        .with(true, () => top)
+        .otherwise(() => 0),
+  })
 }

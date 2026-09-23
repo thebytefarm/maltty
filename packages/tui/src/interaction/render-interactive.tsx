@@ -4,6 +4,8 @@ import type { Instance, RenderOptions } from 'ink'
 import { render } from 'ink'
 import type { ReactNode } from 'react'
 import React from 'react'
+import { match } from 'ts-pattern'
+import { z } from 'zod'
 
 import { InteractionRuntime } from './context.js'
 import { createInteractionController } from './controller.js'
@@ -25,24 +27,53 @@ export type InteractiveRenderOptions = RenderOptions & {
   )
 
 /**
+ * Parameters for rendering an opt-in pointer-interactive root.
+ */
+export interface RenderInteractiveParams {
+  readonly node: ReactNode
+  readonly options?: InteractiveRenderOptions
+}
+
+const InteractionPointSchema = z.object({
+  x: z.number().int().finite(),
+  y: z.number().int().finite(),
+})
+
+const InteractiveRenderOptionsSchema = z.union([
+  z
+    .object({
+      alternateScreen: z.literal(false),
+      interactive: z.boolean().optional(),
+      origin: InteractionPointSchema,
+    })
+    .passthrough(),
+  z
+    .object({
+      alternateScreen: z.literal(true).optional(),
+      interactive: z.boolean().optional(),
+      origin: InteractionPointSchema.optional(),
+    })
+    .passthrough(),
+])
+
+/**
  * Render an Ink tree with frame-synchronized pointer interaction enabled.
  *
  * The alternate screen is enabled by default so SGR viewport coordinates and
  * Ink layout coordinates share origin `{x: 0, y: 0}`. Inline applications may
  * disable it and provide their known viewport `origin` explicitly.
  *
- * @param node - React tree containing optional {@link Pressable} nodes.
- * @param options - Ink options and the interaction surface viewport origin.
+ * @param params - React tree, Ink options, and interaction surface viewport origin.
  * @returns The standard Ink render instance.
  */
-export function renderInteractive(
-  node: ReactNode,
-  options: InteractiveRenderOptions = {}
-): Instance {
+export function renderInteractive({ node, options = {} }: RenderInteractiveParams): Instance {
+  InteractiveRenderOptionsSchema.parse(options)
   const {
     alternateScreen = true,
+    interactive = true,
     onRender,
     origin = Object.freeze({ x: 0, y: 0 }),
+    stdin = process.stdin,
     stdout = process.stdout,
     ...renderOptions
   } = options
@@ -54,14 +85,25 @@ export function renderInteractive(
       stdout.write(data)
     },
   })
+  const renderedNode = match({
+    interactive,
+    stdinIsTty: stdin.isTTY === true,
+    stdoutIsTty: stdout.isTTY === true,
+  })
+    .with({ interactive: true, stdinIsTty: true, stdoutIsTty: true }, () => (
+      <InteractionRuntime controller={controller}>{node}</InteractionRuntime>
+    ))
+    .otherwise(() => node)
 
-  return render(<InteractionRuntime controller={controller}>{node}</InteractionRuntime>, {
+  return render(renderedNode, {
     ...renderOptions,
     alternateScreen,
+    interactive,
     onRender: (metrics) => {
       controller.commitFrame()
       onRender?.(metrics)
     },
+    stdin,
     stdout,
   })
 }

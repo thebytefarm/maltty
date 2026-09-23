@@ -1,7 +1,7 @@
 import { Box, Text, useApp, useInput } from 'ink'
 import type { ReactElement } from 'react'
 import { useState } from 'react'
-import { match, P } from 'ts-pattern'
+import { match } from 'ts-pattern'
 
 import type { InteractionClickEvent } from '../../../packages/tui/src/interaction/index.js'
 import { Pressable, renderInteractive } from '../../../packages/tui/src/interaction/index.js'
@@ -19,7 +19,12 @@ interface TargetCardProps {
   readonly active: boolean
   readonly id: TargetId
   readonly label: string
-  readonly onClick: (event: InteractionClickEvent) => void
+  readonly onClick: (params: TargetCardClickParams) => void
+}
+
+interface TargetCardClickParams {
+  readonly event: InteractionClickEvent
+  readonly targetId: TargetId
 }
 
 function TargetCard({ active, id, label, onClick }: TargetCardProps): ReactElement {
@@ -37,7 +42,7 @@ function TargetCard({ active, id, label, onClick }: TargetCardProps): ReactEleme
       borderColor={color}
       borderStyle="round"
       flexDirection="column"
-      onClick={onClick}
+      onClick={(event) => onClick({ event, targetId: id })}
       paddingX={2}
       width={20}
     >
@@ -77,10 +82,7 @@ function InteractionDemo(): ReactElement {
   })
 
   const activeId = lastEvent?.targetId ?? null
-  const handleClick = (event: InteractionClickEvent): void => {
-    const targetId = match(event.targetId)
-      .with(P.union('alpha', 'beta', 'gamma'), (id) => id)
-      .otherwise(() => null)
+  const handleClick = ({ event, targetId }: TargetCardClickParams): void => {
     setLastEvent({
       event: {
         button: event.button,
@@ -128,9 +130,12 @@ function InteractionDemo(): ReactElement {
   )
 }
 
-const app = renderInteractive(<InteractionDemo />, {
-  exitOnCtrlC: true,
-  patchConsole: false,
+const app = renderInteractive({
+  node: <InteractionDemo />,
+  options: {
+    exitOnCtrlC: true,
+    patchConsole: false,
+  },
 })
 
 await app.waitUntilExit()

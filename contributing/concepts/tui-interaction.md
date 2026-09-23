@@ -66,11 +66,13 @@ ownership from ANSI output or asynchronously cached measurements is explicitly r
 ```tsx
 import { Pressable, renderInteractive, Text } from '@maltty/tui'
 
-const app = renderInteractive(
-  <Pressable onClick={({ localX, localY }) => handleClick({ localX, localY })}>
-    <Text>Launch</Text>
-  </Pressable>
-)
+const app = renderInteractive({
+  node: (
+    <Pressable onClick={({ localX, localY }) => handleClick({ localX, localY })}>
+      <Text>Launch</Text>
+    </Pressable>
+  ),
+})
 
 await app.waitUntilExit()
 ```
