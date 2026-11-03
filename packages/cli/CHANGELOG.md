@@ -1,5 +1,27 @@
 # maltty
 
+## 1.0.0-rc.5
+
+### Minor Changes
+
+- c8772ea: Add default commands — a command can now run when no subcommand is given, so `mygrep --filter x` works alongside `mygrep search --filter x`.
+
+  - `command({ default: true })` registers the command as the CLI's default. Both invocation forms stay available and `ctx.meta.command` reports the command's own name.
+  - An `index` file at the root of the commands directory is now autoloaded as the default command. Previously it was silently discarded. Mirrors how an `index` file inside a subdirectory becomes that group's parent command.
+  - Works inside subcommand groups too — a default subcommand makes the bare group invocation dispatch to it instead of erroring with "You must specify a subcommand."
+  - Declaring two default commands at the same level is now a startup error rather than a silent dispatch surprise.
+  - `maltty commands` annotates the default command in its tree output.
+
+### Patch Changes
+
+- Updated dependencies [c8772ea]
+- Updated dependencies [8fc7c38]
+- Updated dependencies [1d2c1ab]
+  - maltty@1.0.0-rc.5
+  - @maltty/bundler@1.0.0-rc.5
+  - @maltty/config@1.0.0-rc.5
+  - @maltty/utils@1.0.0-rc.5
+
 ## 1.0.0-rc.4
 
 ### Patch Changes

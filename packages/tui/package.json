@@ -1,6 +1,6 @@
 {
   "name": "@maltty/tui",
-  "version": "1.0.0-rc.4",
+  "version": "1.0.0-rc.5",
   "description": "Standalone React and Ink components for terminal user interfaces",
   "keywords": [
     "cli",
