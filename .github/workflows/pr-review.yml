@@ -12,6 +12,10 @@ on:
         description: Publish one review and status rather than only an artifact
         default: false
         type: boolean
+      auto-merge:
+        description: Merge approved low-risk non-release PRs after CI passes (requires publish)
+        default: false
+        type: boolean
 
 permissions: {}
 
@@ -19,12 +23,15 @@ jobs:
   review:
     permissions:
       contents: read
+      actions: read
+      checks: read
       pull-requests: read
       id-token: write
-    uses: thebytefarm/.github/.github/workflows/pull-review.yml@e1ba85a421032865ae326526880a997c78cd4576
+    uses: thebytefarm/.github/.github/workflows/pull-review.yml@1902ce1f0faa611dfe123d2c651d78bea58e9bb1
     with:
-      engine-ref: e1ba85a421032865ae326526880a997c78cd4576
-      pr-number: ${{ inputs.pr-number }}
+      engine-ref: 1902ce1f0faa611dfe123d2c651d78bea58e9bb1
+      pr-number: ${{ fromJSON(github.event.inputs.pr-number) }}
       publish: ${{ inputs.publish }}
+      auto-merge: ${{ inputs.auto-merge }}
     secrets:
-      SYNTHETIC_API_KEY: ${{ secrets.SYNTHETIC_API_KEY }}
+      CODEX_AUTH_JSON: ${{ secrets.CODEX_AUTH_JSON }}
