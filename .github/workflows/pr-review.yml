@@ -28,9 +28,8 @@ jobs:
       pull-requests: read
       id-token: write
       statuses: write
-    uses: thebytefarm/.github/.github/workflows/pull-review.yml@eaa87ae4b7fb1ef589cbb60e4f6b40215002c441
+    uses: thebytefarm/.github/.github/workflows/pull-review.yml@main
     with:
-      engine-ref: eaa87ae4b7fb1ef589cbb60e4f6b40215002c441
       pr-number: ${{ fromJSON(github.event.inputs.pr-number) }}
       publish: ${{ inputs.publish }}
       auto-merge: ${{ inputs.auto-merge }}
